@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="110dp"
+                android:contentDescription="@string/app_logo"
+                app:srcCompat="@drawable/logo" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/hiddenFbBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/facebookBtn"
+                android:layout_width="270dp"
+                android:layout_height="48dp"
+                android:text="@string/facebook_regstr_label"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/facebook_icon"
+                android:drawableStart="@drawable/facebook_icon"
+                android:background="@color/facebook_color" />
+
+            <Button
+                android:id="@+id/googleBtn"
+                android:layout_width="270dp"
+                android:layout_height="48dp"
+                android:text="@string/google_regstr_label"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/google_icon"
+                android:drawableStart="@drawable/google_icon"
+                android:background="@color/google_color" />
+
+            <ImageView
+                android:id="@+id/divider"
+                android:layout_width="65dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/divider"
+                app:srcCompat="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="270dp"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="11dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:elevation="2dp"
+                android:weightSum="1"
+                android:focusableInTouchMode="true">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.14"
+                    android:contentDescription="@string/email_icon"
+                    app:srcCompat="@drawable/email" />
+
+                <EditText
+                    android:id="@+id/emailEdt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.86"
+                    android:textSize="12sp"
+                    android:paddingRight="8dp"
+                    android:hint="@string/email_plhldr"
+                    android:background="@android:color/transparent"
+                    android:inputType="textEmailAddress" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="270dp"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:elevation="2dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/imageView412"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.14"
+                    android:contentDescription="@string/lock_icon"
+                    app:srcCompat="@drawable/lock" />
+
+                <EditText
+                    android:id="@+id/passEdt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.86"
+                    android:textSize="12sp"
+                    android:paddingRight="8dp"
+                    android:hint="@string/password_plhldr"
+                    android:background="@android:color/transparent"
+                    android:inputType="textPassword" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test2"
+                android:layout_width="270dp"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:elevation="2dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/imageView4112"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.14"
+                    android:contentDescription="@string/lock_icon"
+                    app:srcCompat="@drawable/lock" />
+
+                <EditText
+                    android:id="@+id/confpassEdt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.86"
+                    android:textSize="12sp"
+                    android:paddingRight="8dp"
+                    android:hint="@string/confrmpassword_plhldr"
+                    android:background="@android:color/transparent"
+                    android:inputType="textPassword" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|bottom"
+                android:orientation="vertical"
+                android:layout_gravity="bottom">
+
+                <Button
+                    android:id="@+id/registerBtn"
+                    android:layout_width="222dp"
+                    android:layout_height="48dp"
+                    android:text="@string/register_btn_label"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/ripple_drawable" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="@string/terms_label"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</layout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "316894629037",
+    "project_id": "dogvip-169012"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316894629037:android:79aef713709b7203",
+        "android_client_info": {
+          "package_name": "com.tsiro.dogvip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316894629037-1hm0i56lm9gejod697r4tqsihb7cqju8.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "316894629037-46t1daujii4e82n4ddve7n3qm8pakqkl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tsiro.dogvip",
+            "certificate_hash": "60f19cea9dc7eda079e97951488389969dfd2aa5"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAFbmKToN0Vcnp8DG4SBPG-QojDxIHA1E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

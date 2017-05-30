@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EEA337</color>
+    <color name="colorPrimaryDark">#F57C00</color>
+    <color name="colorAccent">#006666</color>
+
+    <color name="rippleColor">#F2F57C00</color>
+    <!-- LOGIN ACTIVITY -->
+    <color name="facebook_color">#3B5998</color>
+    <color name="google_color">#DD4B39</color>
+
+</resources>

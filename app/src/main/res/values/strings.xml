@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">DogVIP</string>
+    <string name="facebook_app_id">206869873166065</string>
+    <string name="fb_login_protocol_scheme">fb206869873166065</string>
+    <!-- ACCOUNT -->
+    <string name="account_type">com.dogvip.giannis</string>
+
+    <string name="splash_fgmt">splash_fgmt</string>
+    <string name="regstr_fgmt">register_fgmt</string>
+    <string name="signin_fgmt">signin_fgmt</string>
+    <string name="forgotpaswrd_fgmt">forgotpaswrd_fgmt</string>
+    <!-- ACTIONS -->
+    <string name="register_user">register_user</string>
+    <string name="signin_user">signin_user</string>
+    <string name="forgot_paswrd">forgot_password</string>
+    <string name="forgot_paswrd_email_subaction">is_email_valid</string>
+    <string name="forgot_paswrd_confpass_subaction">submit_paswrd</string>
+    <!-- MSGS -->
+    <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
+    <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>
+    <string name="empty_required_fields">Συμπλήρωσε τα υποχρεωτικά πεδία *</string>
+    <string name="invalid_email">Μη έγκυρο email.</string>
+    <string name="email_not_available">Το συγκεκριμένο email υπάρχει.</string>
+    <string name="invalid_password">Μη έγκυρος κωδικός.</string>
+    <string name="pass_mismatch">Ασυμφωνία κωδικών.</string>
+    <string name="invalid_email_password">Μη έγκυρο email ή κωδικός πρόσβασης.</string>
+    <string name="account_not_verified">Ο λογαριασμός δεν έχει εγκριθεί ακόμα.</string>
+    <string name="email_in_use">Το email χρησιμοποιείται από κάποιον αλλο λογαριασμό.</string>
+    <string name="email_not_found">Το συγκεκριμένο email δεν βρέθηκε.</string>
+    <string name="close">Κλεισιμο</string>
+    <string name="please_wait">Παρακαλώ περιμένετε…</string>
+    <string name="welcome">Καλωσήρθατε στη DogVIP.</string>
+    <string name="confirm_account">Επιβεβαίωσε την εγγραφή σου μέσω email.</string>
+    <string name="sign_up_cancel">Η εγγραφή ακυρώθηκε.</string>
+    <string name="signin_cancel">Η είσοδος ακυρώθηκε.</string>
+    <string name="reset_passwrd_request">Αλλαγή κωδικού στη DogVIP.</string>
+    <string name="reset_passwrd_success">Η αλλαγή του κωδικού πραγματοποιήθηκε με επιτυχία.</string>
+    <string name="new_password_is_same">Ο νέος κωδικός δεν μπορεί να είναι ίδιος με τον παλιό.</string>
+    <!-- TAGS-->
+    <string name="id">id</string>
+    <string name="type">type</string>
+    <string name="email">email</string>
+    <!-- ICONS-->
+    <string name="email_icon">email_icon</string>
+    <string name="lock_icon">lock_icon</string>
+    <!-- LOGIN ACTIVITY -->
+    <string name="app_logo">app_logo</string>
+    <string name="divider">divider</string>
+    <string name="signin_btn_label">Εισοδος</string>
+    <string name="register_btn_label">Εγγραφη</string>
+    <string name="signin">Συνδεση</string>
+    <string name="submit_btn_label">Υποβολη</string>
+    <string name="register_label">Δημιουργία λογαριασμού.</string>
+    <string name="signin_label">Για ήδη εγγεγραμένους χρήστες.</string>
+    <string name="terms_label">Όροι χρήσης.</string>
+    <string name="forgot_password_label">Ξέχασα τον κωδικό μου!</string>
+    <string name="not_member_label">Δεν είστε μέλος. Δημιουργία λογαριασμού.</string>
+    <string name="member_label">Είστε μέλος. Είσοδος εδώ.</string>
+
+    <string name="facebook_regstr_label">Εγγραφη μεσω facebook</string>
+    <string name="google_regstr_label">Εγγραφη μεσω google</string>
+    <string name="facebook_singnin_label">Συνδεση μεσω facebook</string>
+    <string name="google_signin_label">Συνδεση μεσω google</string>
+    <!-- EDITEXT PLACEHOLDERS -->
+    <string name="email_plhldr">*<u>Email</u></string>
+    <string name="password_plhldr">*<u>Κωδικός</u></string>
+    <string name="confrmpassword_plhldr">*<u>Επιβεβαίωση κωδικού</u></string>
+    <string name="new_password_plhldr">* <u>Νέος κωδικός</u></string>
+    <!-- FORM VALIDATION MSG -->
+    <string name="required_field">Υποχρεωτικό πεδίο</string>
+    <string name="not_valid_email">Μη έγκυρο email</string>
+    <string name="not_valid_pass">Απαιτείται κωδικός 8 λατινικών χαρακτήρων</string>
+    <string name="passwrds_not_match">Ασυμφωνία κωδικών</string>
+
+
+</resources>
