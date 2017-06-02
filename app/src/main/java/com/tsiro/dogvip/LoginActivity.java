@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ import io.reactivex.functions.Consumer;
 
 public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseView, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String debugTag = LoginActivity.class.getSimpleName();
     private static boolean anmtionOnPrgrs;
     private static CompositeDisposable mCompDisp;
     private SnackBar mSnackBar;
@@ -158,6 +160,7 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addOnConnectionFailedListener(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
@@ -184,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
             public void run() {
                 if (mProgressDialog != null) mProgressDialog.dismiss();
             }
-        }, 800);
+        }, 500);
     }
 
     public void showSnackBar(int style, String msg) {

@@ -63,6 +63,7 @@ import io.reactivex.functions.Consumer;
 
 public class RegisterFrgmt extends BaseFragment implements RegistrationContract.View {
 
+    private static final String debugTag = RegisterFrgmt.class.getSimpleName();
     private View view;
     private RegisterFrgmtBinding mBinding;
     private RegistrationContract.ViewModel mRegstrViewModel;
@@ -119,6 +120,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 if (mAwesomeValidation.validate()) {
+                    baseView.hideSoftKeyboard();
                     registerUser(mBinding.emailEdt.getText().toString(), 0);
                 }
             }
@@ -301,7 +303,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
     }
 
     private void logoutGoogleUser() {
-        if (mGoogleUserLoggedIn) {
+        if (mGoogleUserLoggedIn && mGoogleApiClient.isConnected()) {
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {@Override public void onResult(@android.support.annotation.NonNull Status status) {}});
             mGoogleUserLoggedIn = false;
         }

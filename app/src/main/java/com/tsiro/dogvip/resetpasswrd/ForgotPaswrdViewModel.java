@@ -18,6 +18,7 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
+    private static final String debugTag = ForgotPaswrdViewModel.class.getSimpleName();
     private ForgotPaswrdRequestManager mForgotPaswrdRequestManager;
     private ForgotPaswrdContract.View viewClback;
     private AsyncProcessor<ForgotPaswrdObj> mForgotPaswrdProcessor;
@@ -35,7 +36,7 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
     @Override
     public void onViewResumed() {
-        if (mForgotPaswrdDisp != null) mForgotPaswrdProcessor.subscribe(new ForgotPaswrdObserver());
+        if (mForgotPaswrdDisp != null && requestState != AppConfig.REQUEST_RUNNING) mForgotPaswrdProcessor.subscribe(new ForgotPaswrdObserver());
     }
 
     @Override

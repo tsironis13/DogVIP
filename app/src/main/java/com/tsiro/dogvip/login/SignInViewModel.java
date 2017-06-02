@@ -19,6 +19,7 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class SignInViewModel implements SignInContract.ViewModel {
 
+    private static final String debugTag = SignInViewModel.class.getSimpleName();
     private SignInRequestManager mSignInRequestManager;
     private SignInContract.View viewClback;
     private int requestState;
@@ -36,7 +37,7 @@ public class SignInViewModel implements SignInContract.ViewModel {
 
     @Override
     public void onViewResumed() {
-        if (mSignInDisp != null) mSignInProcessor.subscribe(new SignInObserver());
+        if (mSignInDisp != null && requestState != AppConfig.REQUEST_RUNNING) mSignInProcessor.subscribe(new SignInObserver());
     }
 
     @Override
@@ -61,7 +62,7 @@ public class SignInViewModel implements SignInContract.ViewModel {
     }
 
     private void onSignInSuccess(AuthenticationResponse response) {
-        Log.e("onSuccess", "onSuccess");
+        Log.e(debugTag, "onSignInSuccess");
         mSignInDisp = null;
         viewClback.onSuccess(response);
     }

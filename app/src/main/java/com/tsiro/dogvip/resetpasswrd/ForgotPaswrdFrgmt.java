@@ -144,6 +144,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                     subaction = getResources().getString(R.string.forgot_paswrd_confpass_subaction);
                 }
                 if (mAwesomeValidation.validate()) {
+                    baseView.hideSoftKeyboard();
                     submit(mBinding.emailEdt.getText().toString(), subaction);
                 }
             }

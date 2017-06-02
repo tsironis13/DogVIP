@@ -64,6 +64,7 @@ import io.reactivex.functions.Consumer;
 
 public class SignInFrgmt extends BaseFragment implements SignInContract.View, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String debugTag = SignInFrgmt.class.getSimpleName();
     private View view;
     private SigninFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;
@@ -183,6 +184,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 if (mAwesomeValidation.validate()) {
+                    baseView.hideSoftKeyboard();
                     signinUser(mBinding.emailEdt.getText().toString(), 0);
                 }
             }
@@ -337,7 +339,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
     }
 
     private void logoutGoogleUser() {
-        if (mGoogleUserLoggedIn) {
+        if (mGoogleUserLoggedIn && mGoogleApiClient.isConnected()) {
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {@Override public void onResult(@android.support.annotation.NonNull Status status) {}});
             mGoogleUserLoggedIn = false;
         }

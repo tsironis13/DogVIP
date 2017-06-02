@@ -11,6 +11,8 @@ import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;

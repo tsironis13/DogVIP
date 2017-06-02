@@ -1,5 +1,7 @@
 package com.tsiro.dogvip.register;
 
+import android.util.Log;
+
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.app.AppConfig;
@@ -30,18 +32,22 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-//        Log.e(debugTag, "onViewATTACHED");
+//        Log.e(debugTag, "onViewAttched ViewModel");
         this.viewClback = (RegistrationContract.View) viewCallback;
     }
 
     @Override
     public void onViewResumed() {
-        if (mRegstrDisp != null) mRegstrProcessor.subscribe(new RegistrationObserver());
+//        Log.e(debugTag, "onResume ViewModel");
+//        Log.e(debugTag, requestState+"");
+//        Log.e(debugTag, mRegstrDisp+ " onResume ViewModel");
+        if (mRegstrDisp != null && requestState != AppConfig.REQUEST_RUNNING) mRegstrProcessor.subscribe(new RegistrationObserver());
     }
 
     @Override
     public void onViewDetached() {
-//        Log.e(debugTag, "onViewDetached");
+//        Log.e(debugTag, "onStop ViewModel");
+//        Log.e(debugTag, mRegstrDisp+ " onStop ViewModel");
         viewClback = null;
         if (mRegstrDisp != null) mRegstrDisp.dispose();
     }
@@ -68,6 +74,7 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
     private void onRegistrationError(int resource, boolean msglength) {
         mRegstrDisp = null;
+//        Log.e(debugTag, viewClback+" ");
         viewClback.onError(resource, msglength);
         if (viewClback != null) requestState = AppConfig.REQUEST_NONE;
     }

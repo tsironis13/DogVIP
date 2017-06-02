@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/mainActions"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home"
+            android:checked="true"
+            android:icon="@drawable/email"
+            android:visible="false"
+            android:title="@string/email" />
+
+        <item
+            android:id="@+id/firm"
+            android:checked="false"
+            android:checkable="true"
+            android:icon="@drawable/facebook_icon"
+            android:visible="false"
+            android:title="@string/facebook_regstr_label" />
+
+        <!--<item-->
+            <!--android:id="@+id/surveys"-->
+            <!--android:icon="@drawable/surveys"-->
+            <!--android:title="@string/firm_surveys" />-->
+
+        <!--<item-->
+            <!--android:id="@+id/user_surveys"-->
+            <!--android:icon="@drawable/user_surveys"-->
+            <!--android:title="@string/user_surveys" />-->
+
+        <!--<item-->
+            <!--android:id="@+id/results"-->
+            <!--android:checked="false"-->
+            <!--android:icon="@drawable/results"-->
+            <!--android:visible="false"-->
+            <!--android:title="@string/results" />-->
+
+        <!--<item-->
+            <!--android:id="@+id/notifications"-->
+            <!--android:checked="false"-->
+            <!--android:icon="@drawable/notifications"-->
+            <!--android:visible="false"-->
+            <!--android:title="@string/notifications" />-->
+
+    </group>
+
+    <!--<group-->
+        <!--android:id="@+id/subActions"-->
+        <!--android:checkableBehavior="single">-->
+
+        <!--<item-->
+            <!--android:id="@+id/settings"-->
+            <!--android:checked="false"-->
+            <!--android:icon="@drawable/settings"-->
+            <!--android:visible="false"-->
+            <!--android:title="@string/settings" />-->
+
+        <!--<item-->
+            <!--android:id="@+id/logout"-->
+            <!--android:icon="@drawable/logout"-->
+            <!--android:title="@string/logout" />-->
+
+    <!--</group>-->
+
+</menu>

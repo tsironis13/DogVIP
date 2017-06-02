@@ -3,7 +3,10 @@ package com.tsiro.dogvip;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -29,7 +32,10 @@ import io.reactivex.schedulers.Schedulers;
 public class DashboardActivity extends AppCompatActivity {
 
     private static final String degbugTag = DashboardActivity.class.getSimpleName();
-    ActivityDashboardBinding binding;
+    private ActivityDashboardBinding mBinding;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private Toolbar mToolbar;
     Disposable disp;
     private ServiceAPI serviceAPI;
     String email;
@@ -41,8 +47,15 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
+        setSupportActionBar(mBinding.incltoolbar.toolbar);
+
+        mToggle = new ActionBarDrawerToggle(this, mBinding.drawerLlt, R.string.common_open_on_phone, R.string.app_logo);
+        mBinding.drawerLlt.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
         Log.e("dashboard", getIntent().getStringExtra("token"));
 
@@ -51,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity {
         token = getIntent().getStringExtra("token");
         type = getIntent().getIntExtra("type", 0);
 
-        RxView.clicks(binding.logout).subscribe(new Consumer<Object>() {
+        RxView.clicks(mBinding.logout).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 final LogoutRequest request = new LogoutRequest();

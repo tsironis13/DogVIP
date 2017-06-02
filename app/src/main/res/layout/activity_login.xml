@@ -4,13 +4,19 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
 
         <RelativeLayout
             android:id="@+id/loginContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:layout_marginTop="@dimen/status_bar_height" />
 
         <com.rey.material.widget.SnackBar
             android:id="@+id/loginSnckBr"
