@@ -9,6 +9,7 @@ import android.accounts.OperationCanceledException;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.R;
@@ -42,14 +43,12 @@ public class MyAccountManager {
         return am.getAccountsByType(mContext.getResources().getString(R.string.account_type)).length != 0;
     }
 
-    public boolean addAccount(String email, int user_id, String token, int regtype) {
+    public boolean addAccount(String email, String token) {
         if (checkAccountExists()) return false;
         Account account = new Account(email, mContext.getResources().getString(R.string.account_type));
 
         Bundle extra = new Bundle();
-//        extra.putString(mContext.getResources().getString(R.string.email), email);
-//        extra.putString(mContext.getResources().getString(R.string.id), String.valueOf(user_id));
-//        extra.putString(mContext.getResources().getString(R.string.type), String.valueOf(regtype));
+        extra.putString(mContext.getResources().getString(R.string.email), email);
         boolean account_added = am.addAccountExplicitly(account, null, extra);
         am.setAuthToken(account, "1", token);
         return account_added;
@@ -63,10 +62,10 @@ public class MyAccountManager {
                 try {
                     Bundle authTokenBundle = future.getResult();
                     AuthenticationResponse response = new AuthenticationResponse();
-                    if (authTokenBundle.get(AccountManager.KEY_AUTHTOKEN) != null) response.setAuthtoken(authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString());
-//                    response.setEmail(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email)));
-//                    response.setUserid(Integer.parseInt(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.id))));
-//                    response.setRegtype(Integer.parseInt(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.type))));
+                    if (authTokenBundle.get(AccountManager.KEY_AUTHTOKEN) != null) {
+                        response.setAuthtoken(authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString());
+                        response.setEmail(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email)));
+                    }
                     baseView.logUserIn(response);
 //                    RxEventBus.createSubject(AppConfig.USER_ACCOUNT_DATA, AppConfig.PUBLISH_SUBJ).post(response);
                 } catch (OperationCanceledException | IOException | AuthenticatorException e) {

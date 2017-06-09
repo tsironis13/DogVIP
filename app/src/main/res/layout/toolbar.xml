@@ -7,8 +7,12 @@
         android:layout_height="?android:attr/actionBarSize"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/TextAppearance.AppCompat.Display1"
-        app:theme="@style/ToolbarTheme" />
+        android:background="@color/colorAccent"
+        android:elevation="4dp"
+        app:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/Base.AppTheme"
+        app:titleTextColor="@android:color/white"
+        app:titleTextAppearance="@style/ToolbarTheme"
+        app:layout_scrollFlags="scroll|enterAlways" />
 
 </layout>

@@ -3,6 +3,8 @@ package com.tsiro.dogvip.retrofit;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.POJO.logout.LogoutRequest;
 import com.tsiro.dogvip.POJO.logout.LogoutResponse;
+import com.tsiro.dogvip.POJO.mypets.GetOwnerRequest;
+import com.tsiro.dogvip.POJO.mypets.GetOwnerResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -32,5 +34,8 @@ public interface ServiceAPI {
     //logout user
     @POST("actions.php")
     Observable<LogoutResponse> logout(@Body LogoutRequest request);
+
+    @POST("actions.php")
+    Flowable<GetOwnerResponse> getOwnerDetails(@Body GetOwnerRequest request);
 
 }

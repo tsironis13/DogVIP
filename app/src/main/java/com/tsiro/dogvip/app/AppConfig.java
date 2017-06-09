@@ -13,7 +13,9 @@ public class AppConfig {
     public static final String BASE_URL = "http://dogvip.votingsystem.gr/api/";
     //TAGS
     public static final String FRAGMENT_CREATED = "fragment_created"; //login activity: check if fragments are created on button click
-
+    //APP ACTIONS
+    public static final int ACTION_IMAGE_CAPTURE = 900;
+    public static final int EXTERNAL_CONTENT_URI = 910;
     //SUBJECT TYPES
     public static final int PUBLISH_SUBJ = 0;
     public static final int REPLAY_SUBJ = 1;
@@ -29,6 +31,7 @@ public class AppConfig {
     //GOOGLE SIGN IN REQUEST CODE
     public static final int GOOGLE_REQ_CODE = 9001;
     //STATUS CODES
+    public static final int READ_EXTERNAL_STORAGE_PERMISSION_RESULT_CODE = 10;
     public static final int STATUS_OK = 200;
     public static final int STATUS_ERROR = -200;
     private static final int ERROR_EMPTY_REQUIRED_FLDS = -210;

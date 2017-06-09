@@ -19,42 +19,369 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="@dimen/status_bar_height"
-            android:background="@android:color/white">
+            android:background="@color/colorPrimary">
 
             <include
                 android:id="@+id/incltoolbar"
                 layout="@layout/toolbar" />
 
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Logout"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="2dp">
 
-            <TextView
-                android:id="@+id/userid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="0.25"
+                        android:layout_marginBottom="2dp">
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/petsLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/terms_label"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignEnd="@+id/divider"
+                            android:layout_alignRight="@+id/divider"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:background="@android:color/white"
+                            android:orientation="vertical"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
 
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/pets_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/my_pets" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                        <View
+                            android:id="@+id/divider"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true" />
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/sittersLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="vertical"
+                            android:background="@android:color/white"
+                            android:layout_alignLeft="@+id/divider"
+                            android:layout_alignStart="@+id/divider"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/sitters_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/sitters" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="0.25"
+                        android:layout_marginBottom="2dp">
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/loveLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/terms_label"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignEnd="@+id/divider2"
+                            android:layout_alignRight="@+id/divider2"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:background="@android:color/white"
+                            android:orientation="vertical"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/love_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/love_match" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true" />
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/profsLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:layout_alignLeft="@+id/divider2"
+                            android:layout_alignStart="@+id/divider2"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="vertical"
+                            android:background="@android:color/white"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/profs_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/profs" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="0.25"
+                        android:layout_marginBottom="2dp">
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/lostLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/terms_label"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignEnd="@+id/divider3"
+                            android:layout_alignRight="@+id/divider3"
+                            android:background="@android:color/white"
+                            android:orientation="vertical"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/lost_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/sos" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                        <View
+                            android:id="@+id/divider3"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true" />
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/vetLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:background="@android:color/white"
+                            android:layout_alignLeft="@+id/divider3"
+                            android:layout_alignStart="@+id/divider3"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="vertical"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/vet_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/vets" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="0.25">
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/offersLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/terms_label"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignEnd="@+id/divider4"
+                            android:layout_alignRight="@+id/divider4"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:background="@android:color/white"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/offers_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/offers" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                        <View
+                            android:id="@+id/divider4"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true" />
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/moreLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:layout_alignLeft="@+id/divider4"
+                            android:layout_alignStart="@+id/divider4"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:background="@android:color/white"
+                            android:clickable="true"
+                            style="@style/TouchRippleStyle">
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginBottom="10dp"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/more_dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:text="@string/more" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.rey.material.widget.SnackBar
+                android:id="@+id/snckBr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="bottom" />
+
+        </FrameLayout>
+
         <android.support.design.widget.NavigationView
             android:id="@+id/navigationView"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="@bool/fitsSystemWindows"
-            app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_menu" />
 
     </android.support.v4.widget.DrawerLayout>

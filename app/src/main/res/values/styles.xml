@@ -14,6 +14,7 @@
     <style name="ToolbarTheme" parent="Base.AppTheme">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <!-- BUTTON -->
@@ -22,7 +23,12 @@
         <item name="rd_delayClick">afterRelease</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
     </style>
-    
+
+    <style name="TouchRippleStyle" parent="Material.Drawable.Ripple.Touch">
+        <item name="rd_rippleColor">@color/colorPrimary</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
+    </style>
+
     <!-- SNACKBARS -->
     <style name="BaseSnackBar" parent="Material.Widget.SnackBar.Mobile">
         <item name="sb_backgroundColor">@android:color/white</item>
@@ -40,5 +46,10 @@
         <item name="sb_height">80dp</item>
         <item name="sb_singleLine">false</item>
     </style>
-    
+    <!-- DIALOS -->
+    <style name="SimpleDialogLight" parent="Material.App.Dialog.Simple.Light">
+        <item name="di_inAnimation">@anim/anim_scale_in</item>
+        <item name="di_outAnimation">@anim/anim_scale_out</item>
+    </style>
+
 </resources>

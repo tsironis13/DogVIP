@@ -9,12 +9,15 @@
     <string name="regstr_fgmt">register_fgmt</string>
     <string name="signin_fgmt">signin_fgmt</string>
     <string name="forgotpaswrd_fgmt">forgotpaswrd_fgmt</string>
+    <string name="owner_fgmt">owner_fgmt</string>
     <!-- ACTIONS -->
     <string name="register_user">register_user</string>
     <string name="signin_user">signin_user</string>
     <string name="forgot_paswrd">forgot_password</string>
+    <string name="logout_user">logout_user</string>
     <string name="forgot_paswrd_email_subaction">is_email_valid</string>
     <string name="forgot_paswrd_confpass_subaction">submit_paswrd</string>
+    <string name="get_owner_details">get_owner_details</string>
     <!-- MSGS -->
     <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
     <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>
@@ -36,13 +39,29 @@
     <string name="reset_passwrd_request">Αλλαγή κωδικού στη DogVIP.</string>
     <string name="reset_passwrd_success">Η αλλαγή του κωδικού πραγματοποιήθηκε με επιτυχία.</string>
     <string name="new_password_is_same">Ο νέος κωδικός δεν μπορεί να είναι ίδιος με τον παλιό.</string>
+    <string name="retry">Ξαναπροσπαθησε</string>
+    <string name="grant_permission">Ενεργοποίησε την κατάλληλη άδεια μέσα από τις ρυθμίσεις της εφαρμογής.</string>
+    <string name="image_size_limit">Όριο εικόνας: 6MB</string>
     <!-- TAGS-->
     <string name="id">id</string>
     <string name="type">type</string>
     <string name="email">email</string>
-    <!-- ICONS-->
-    <string name="email_icon">email_icon</string>
-    <string name="lock_icon">lock_icon</string>
+    <string name="token">token</string>
+    <!--<string name="name">name</string>-->
+    <!--<string name="surname">surname</string>-->
+    <!--<string name="birth_date">birth_date</string>-->
+    <!--<string name="city">city</string>-->
+    <!--<string name="phone">phone</string>-->
+    <string name="profile_photo_gr">ΕΙΚΟΝΑ ΠΡΟΦΙΛ</string>
+    <string name="name_gr">ΟΝΟΜΑ</string>
+    <string name="surname_gr">ΕΠΙΘΕΤΟ</string>
+    <string name="birthdate_gr">ΗΜ. ΓΕΝΝΗΣΗΣ</string>
+    <string name="city_gr">ΠΟΛΗ</string>
+    <string name="phone_gr">ΤΗΛΕΦΩΝΟ</string>
+    <string name="msg_item">Μηνύματα</string>
+    <string name="sitter_item">Sitter</string>
+
+    <string name="remove">Αφαιρεση</string>
     <!-- LOGIN ACTIVITY -->
     <string name="app_logo">app_logo</string>
     <string name="divider">divider</string>
@@ -61,16 +80,31 @@
     <string name="google_regstr_label">Εγγραφη μεσω google</string>
     <string name="facebook_singnin_label">Συνδεση μεσω facebook</string>
     <string name="google_signin_label">Συνδεση μεσω google</string>
+    <string name="logout">Αποσύνδεση</string>
+    <!-- DASHBOARD ACTIVITY -->
+    <string name="my_pets">Τα κατοικίδια μου</string>
+    <string name="sitters">Pet Sitters</string>
+    <string name="love_match">Love Match</string>
+    <string name="profs">Επαγγελματίες</string>
+    <string name="sos">Χάθηκα - Βρέθηκα</string>
+    <string name="vets">Κτηνίατροι</string>
+    <string name="offers">Προσφορές</string>
+    <string name="more">Περισσότερα</string>
     <!-- EDITEXT PLACEHOLDERS -->
     <string name="email_plhldr">*<u>Email</u></string>
     <string name="password_plhldr">*<u>Κωδικός</u></string>
     <string name="confrmpassword_plhldr">*<u>Επιβεβαίωση κωδικού</u></string>
     <string name="new_password_plhldr">* <u>Νέος κωδικός</u></string>
+    <string name="name_plhldr">* <u>Όνομα</u></string>
+    <string name="surname_plhldr">* <u>Επίθετο</u></string>
+    <string name="birth_date_plhldr"><u>Ημ. γέννησης</u></string>
+    <string name="city_plhldr"><u>Πόλη</u></string>
+    <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
     <!-- FORM VALIDATION MSG -->
     <string name="required_field">Υποχρεωτικό πεδίο</string>
     <string name="not_valid_email">Μη έγκυρο email</string>
     <string name="not_valid_pass">Απαιτείται κωδικός 8 λατινικών χαρακτήρων</string>
     <string name="passwrds_not_match">Ασυμφωνία κωδικών</string>
 
-
+    <string name="image_cont_desc">cont_desc</string>
 </resources>

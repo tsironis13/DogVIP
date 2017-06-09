@@ -20,7 +20,7 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
     private static final String debugTag = ForgotPaswrdViewModel.class.getSimpleName();
     private ForgotPaswrdRequestManager mForgotPaswrdRequestManager;
-    private ForgotPaswrdContract.View viewClback;
+    private ForgotPaswrdContract.View mViewClback;
     private AsyncProcessor<ForgotPaswrdObj> mForgotPaswrdProcessor;
     private Disposable mForgotPaswrdDisp;
     private int requestState;
@@ -31,7 +31,7 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-        this.viewClback = (ForgotPaswrdContract.View) viewCallback;
+        this.mViewClback = (ForgotPaswrdContract.View) viewCallback;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
     @Override
     public void onViewDetached() {
-        viewClback = null;
+        mViewClback = null;
         if (mForgotPaswrdDisp != null) mForgotPaswrdDisp.dispose();
     }
 
@@ -62,13 +62,13 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
     private void onForgotPaswrdSuccess(ForgotPaswrdObj response) {
         mForgotPaswrdDisp = null;
-        viewClback.onSuccess(response);
+        mViewClback.onSuccess(response);
     }
 
     private void onForgotPaswrdError(int resource, boolean msglength) {
         mForgotPaswrdDisp = null;
-        viewClback.onError(resource, msglength);
-        if (viewClback != null) requestState = AppConfig.REQUEST_NONE;
+        mViewClback.onError(resource, msglength);
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
     private class ForgotPaswrdObserver extends DisposableSubscriber<ForgotPaswrdObj> {

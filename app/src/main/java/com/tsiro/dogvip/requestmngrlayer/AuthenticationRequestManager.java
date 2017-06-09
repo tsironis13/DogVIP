@@ -7,6 +7,8 @@ import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.networklayer.RegistrationAPIService;
 import com.tsiro.dogvip.register.RegistrationViewModel;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Flowable;
 
 /**
@@ -18,17 +20,18 @@ public class AuthenticationRequestManager {
     private static AuthenticationRequestManager mInstance;
     private RegistrationAPIService mRegistrationAPIService;
 
-    private AuthenticationRequestManager(Context context) {
+    private AuthenticationRequestManager() {
         this.mRegistrationAPIService = new RegistrationAPIService();
     }
 
-    public static AuthenticationRequestManager getInstance(Context context) {
-        if (mInstance == null) mInstance = new AuthenticationRequestManager(context);
+    public static AuthenticationRequestManager getInstance() {
+        if (mInstance == null) mInstance = new AuthenticationRequestManager();
         return mInstance;
     }
 
     public Flowable<AuthenticationResponse> register(RegistrationRequest request, RegistrationViewModel registrationViewModel) {
-        return mRegistrationAPIService.register(request, registrationViewModel);
+        //in case server response is faster than activity lifecycle callback methods
+        return mRegistrationAPIService.register(request, registrationViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 
 }

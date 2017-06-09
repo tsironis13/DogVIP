@@ -65,7 +65,7 @@ import io.reactivex.functions.Consumer;
 public class SignInFrgmt extends BaseFragment implements SignInContract.View, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String debugTag = SignInFrgmt.class.getSimpleName();
-    private View view;
+    private View mView;
     private SigninFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;
     private SignInContract.ViewModel mSignInViewModel;
@@ -103,12 +103,12 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragmentCreatedCode != 100 && fragmentCreatedCode != 200) return null;
 
-        if (view == null) {
+        if (mView == null) {
             mBinding = DataBindingUtil.inflate(inflater, R.layout.signin_frgmt, container, false);
-            view = mBinding.getRoot();
+            mView = mBinding.getRoot();
             fragmentCreatedCode = 300;
         }
-        return view;
+        return mView;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
         mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
         mFragmentManager = getActivity().getSupportFragmentManager();
 
-        mSignInViewModel = new SignInViewModel(SignInRequestManager.getInstance(getActivity().getApplicationContext()));
+        mSignInViewModel = new SignInViewModel(SignInRequestManager.getInstance());
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
@@ -221,22 +221,17 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
 
     @Override
     public void onSuccess(final AuthenticationResponse response) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) ((LoginActivity) getActivity()).dismissDialog();
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                logoutFBUser();
-                logoutGoogleUser();
+        ((LoginActivity) getActivity()).dismissDialog();
+        logoutFBUser();
+        logoutGoogleUser();
 
-                MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
-                //check if account exists, otherwise display the error
-                if (mAccountManager.addAccount(response.getEmail(), response.getUserid(), response.getAuthtoken(), response.getRegtype())) {
-                    mAccountManager.getUserData(baseView);
-                } else {
-                    ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
-                }
-            }
-        });
+        MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
+        //check if account exists, otherwise display the error
+        if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
+            mAccountManager.getUserData(baseView);
+        } else {
+            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
+        }
     }
 
     @Override
@@ -244,15 +239,10 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
         logoutFBUser();
         logoutGoogleUser();
 
-        if (mProgressDialog != null && mProgressDialog.isShowing()) ((LoginActivity) getActivity()).dismissDialog();
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                int style = R.style.SnackBarSingleLine;
-                if (msglength) style = R.style.SnackBarMultiLine;
-                ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
-            }
-        });
+        ((LoginActivity) getActivity()).dismissDialog();
+        int style = R.style.SnackBarSingleLine;
+        if (msglength) style = R.style.SnackBarMultiLine;
+        ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
     }
 
     @Override

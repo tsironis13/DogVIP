@@ -64,7 +64,7 @@ import io.reactivex.functions.Consumer;
 public class RegisterFrgmt extends BaseFragment implements RegistrationContract.View {
 
     private static final String debugTag = RegisterFrgmt.class.getSimpleName();
-    private View view;
+    private View mView;
     private RegisterFrgmtBinding mBinding;
     private RegistrationContract.ViewModel mRegstrViewModel;
     private RegistrationRequest request;
@@ -88,11 +88,11 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (view == null ) {
+        if (mView == null ) {
             mBinding = DataBindingUtil.inflate(inflater, R.layout.register_frgmt, container, false);
-            view = mBinding.getRoot();
+            mView = mBinding.getRoot();
         }
-        return view;
+        return mView;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
         mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
 
         mFragmentManager = getActivity().getSupportFragmentManager();
-        mRegstrViewModel = new RegistrationViewModel(AuthenticationRequestManager.getInstance(getActivity().getApplicationContext()));
+        mRegstrViewModel = new RegistrationViewModel(AuthenticationRequestManager.getInstance());
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
@@ -169,32 +169,27 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
 
     @Override
     public void onSuccess(final AuthenticationResponse response) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) ((LoginActivity) getActivity()).dismissDialog();
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (response.getRegtype() == 0) {
-                    new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
-                    mFragmentManager
-                            .beginTransaction()
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
-                            .addToBackStack(getResources().getString(R.string.signin_fgmt))
-                            .commit();
-                } else {
-                    logoutFBUser();
-                    logoutGoogleUser();
+        ((LoginActivity) getActivity()).dismissDialog();
+        if (response.getRegtype() == 0) {
+            new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
+            mFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
+                    .addToBackStack(getResources().getString(R.string.signin_fgmt))
+                    .commit();
+        } else {
+            logoutFBUser();
+            logoutGoogleUser();
 
-                    MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
-                    //check if account exists, otherwise display the error
-                    if (mAccountManager.addAccount(response.getEmail(), response.getUserid(), response.getAuthtoken(), response.getRegtype())) {
-                        mAccountManager.getUserData(baseView);
-                    } else {
-                        ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
-                    }
-                }
+            MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
+            //check if account exists, otherwise display the error
+            if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
+                mAccountManager.getUserData(baseView);
+            } else {
+                ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
             }
-        });
+        }
     }
 
     @Override
@@ -202,15 +197,10 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
         logoutFBUser();
         logoutGoogleUser();
 
-        if (mProgressDialog != null && mProgressDialog.isShowing()) ((LoginActivity) getActivity()).dismissDialog();
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                int style = R.style.SnackBarSingleLine;
-                if (msglength) style = R.style.SnackBarMultiLine;
-                ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
-            }
-        });
+        ((LoginActivity) getActivity()).dismissDialog();
+        int style = R.style.SnackBarSingleLine;
+        if (msglength) style = R.style.SnackBarMultiLine;
+        ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
     }
 
     @Override

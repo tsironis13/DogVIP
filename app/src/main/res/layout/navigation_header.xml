@@ -1,42 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
-    android:background="@color/colorAccent">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/profileIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/userDetailsContainer"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/email"
-        android:contentDescription="@string/account_not_verified" />
+    <data>
+        <variable
+            name="useremail"
+            type="String" />
+    </data>
 
-    <RelativeLayout
-        android:id="@+id/userDetailsContainer"
+    <FrameLayout
+        android:id="@+id/test2"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="172dp"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/pattern"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-        <com.rey.material.widget.TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white" />
+        <ImageView
+            android:id="@+id/profileIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/navigation_drawer_header_margin"
+            android:background="@drawable/circle_image"
+            android:src="@drawable/default_person"
+            android:contentDescription="@string/image_cont_desc" />
 
         <com.rey.material.widget.TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/username"
-            android:text="@string/email"
+            android:layout_height="56dp"
+            android:text="@{useremail}"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
             android:textColor="@android:color/white" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
-</RelativeLayout>
+</layout>

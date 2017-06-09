@@ -49,7 +49,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContract.View{
 
     private static final String debugTag = ForgotPaswrdFrgmt.class.getSimpleName();
-    private View view;
+    private View mView;
     private ForgotpaswrdFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;
     private int fragmentCreatedCode; // login activity: check if fragments are created on button click
@@ -85,12 +85,12 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragmentCreatedCode != 100) return null;
 
-        if (view == null ) {
+        if (mView == null ) {
             mBinding = DataBindingUtil.inflate(inflater, R.layout.forgotpaswrd_frgmt, container, false);
-            view = mBinding.getRoot();
+            mView = mBinding.getRoot();
             fragmentCreatedCode = 300;
         }
-        return view;
+        return mView;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
         super.onActivityCreated(savedInstanceState);
         mFragmentManager = getActivity().getSupportFragmentManager();
 
-        mForgotPaswrdViewModel = new ForgotPaswrdViewModel(ForgotPaswrdRequestManager.getInstance(getActivity().getApplicationContext()));
+        mForgotPaswrdViewModel = new ForgotPaswrdViewModel(ForgotPaswrdRequestManager.getInstance());
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
@@ -192,41 +192,30 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
 
     @Override
     public void onSuccess(final ForgotPaswrdObj response) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) ((LoginActivity) getActivity()).dismissDialog();
-//        Log.e(debugTag, response+" resp");
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (response.getSubaction().equals(getResources().getString(R.string.forgot_paswrd_email_subaction))) {
-                    mBinding.passLlt.setVisibility(View.VISIBLE);
-                    mBinding.confpassLlt.setVisibility(View.VISIBLE);
-                    emailValidated = true;
-                    user_id = response.getUserId();
-                } else {
-                    new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.reset_passwrd_request), getResources().getString(R.string.reset_passwrd_success));
-                    mFragmentManager
-                            .beginTransaction()
-                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                            .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
-                            .addToBackStack(getResources().getString(R.string.signin_fgmt))
-                            .commit();
-                }
-            }
-        });
+        ((LoginActivity) getActivity()).dismissDialog();
+        if (response.getSubaction().equals(getResources().getString(R.string.forgot_paswrd_email_subaction))) {
+            mBinding.passLlt.setVisibility(View.VISIBLE);
+            mBinding.confpassLlt.setVisibility(View.VISIBLE);
+            emailValidated = true;
+            user_id = response.getUserId();
+        } else {
+            new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.reset_passwrd_request), getResources().getString(R.string.reset_passwrd_success));
+            mFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
+                    .addToBackStack(getResources().getString(R.string.signin_fgmt))
+                    .commit();
+        }
 
     }
 
     @Override
     public void onError(final int resource, final boolean msglength) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) ((LoginActivity) getActivity()).dismissDialog();
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                int style = R.style.SnackBarSingleLine;
-                if (msglength) style = R.style.SnackBarMultiLine;
-                ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
-            }
-        });
+        ((LoginActivity) getActivity()).dismissDialog();
+        int style = R.style.SnackBarSingleLine;
+        if (msglength) style = R.style.SnackBarMultiLine;
+        ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
     }
 
     private void submit(String email, String subaction) {

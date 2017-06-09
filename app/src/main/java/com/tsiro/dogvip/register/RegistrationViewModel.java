@@ -21,7 +21,7 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
     private static final String debugTag = RegistrationViewModel.class.getSimpleName();
     private AuthenticationRequestManager mAuthenticationRequestManager;
-    private RegistrationContract.View viewClback;
+    private RegistrationContract.View mViewClback;
     private AsyncProcessor<AuthenticationResponse> mRegstrProcessor;
     private Disposable mRegstrDisp;
     private int requestState;
@@ -33,7 +33,7 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
 //        Log.e(debugTag, "onViewAttched ViewModel");
-        this.viewClback = (RegistrationContract.View) viewCallback;
+        this.mViewClback = (RegistrationContract.View) viewCallback;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
     public void onViewDetached() {
 //        Log.e(debugTag, "onStop ViewModel");
 //        Log.e(debugTag, mRegstrDisp+ " onStop ViewModel");
-        viewClback = null;
+        mViewClback = null;
         if (mRegstrDisp != null) mRegstrDisp.dispose();
     }
 
@@ -69,14 +69,14 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
     private void onRegistrationSuccess(AuthenticationResponse response) {
         mRegstrDisp = null;
-        viewClback.onSuccess(response);
+        mViewClback.onSuccess(response);
     }
 
     private void onRegistrationError(int resource, boolean msglength) {
         mRegstrDisp = null;
 //        Log.e(debugTag, viewClback+" ");
-        viewClback.onError(resource, msglength);
-        if (viewClback != null) requestState = AppConfig.REQUEST_NONE;
+        mViewClback.onError(resource, msglength);
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
     private class RegistrationObserver extends DisposableSubscriber<AuthenticationResponse> {

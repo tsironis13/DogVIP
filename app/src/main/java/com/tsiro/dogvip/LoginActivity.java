@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
         if (mAccountManager.checkAccountExists()) {
             mAccountManager.getUserData(this);
         } else {
-            mSnackBar = mBinding.loginSnckBr;
+            mSnackBar = mBinding.snckBr;
 
             if (getSupportFragmentManager() != null) {
                 getSupportFragmentManager()
@@ -130,10 +131,8 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
     @Override
     public void logUserIn(AuthenticationResponse response) {
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-//                intent.putExtra("email", data.getEmail());
-//                intent.putExtra("id", data.getUserid());
-//                intent.putExtra("type", data.getRegtype());
-        intent.putExtra("token", response.getAuthtoken());
+        intent.putExtra(getResources().getString(R.string.email), response.getEmail());
+        intent.putExtra(getResources().getString(R.string.token), response.getAuthtoken());
         startActivity(intent);
         finish();
     }
@@ -181,20 +180,19 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
     }
 
     public void dismissDialog() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mProgressDialog != null) mProgressDialog.dismiss();
-            }
-        }, 500);
+        if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
     }
 
-    public void showSnackBar(int style, String msg) {
+    public void showSnackBar(final int style, final String msg) {
         if (mSnackBar != null) {
-            mSnackBar.applyStyle(style);
-            mSnackBar.text(msg);
-            mSnackBar.show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mSnackBar.applyStyle(style);
+                    mSnackBar.text(msg);
+                    mSnackBar.show();
+                }
+            });
         }
     }
 

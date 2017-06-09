@@ -21,7 +21,7 @@ public class SignInViewModel implements SignInContract.ViewModel {
 
     private static final String debugTag = SignInViewModel.class.getSimpleName();
     private SignInRequestManager mSignInRequestManager;
-    private SignInContract.View viewClback;
+    private SignInContract.View mViewClback;
     private int requestState;
     private AsyncProcessor<AuthenticationResponse> mSignInProcessor;
     private Disposable mSignInDisp;
@@ -32,7 +32,7 @@ public class SignInViewModel implements SignInContract.ViewModel {
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-        this.viewClback = (SignInContract.View) viewCallback;
+        this.mViewClback = (SignInContract.View) viewCallback;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SignInViewModel implements SignInContract.ViewModel {
 
     @Override
     public void onViewDetached() {
-        viewClback = null;
+        mViewClback = null;
         if (mSignInDisp != null) mSignInDisp.dispose();
     }
 
@@ -62,15 +62,14 @@ public class SignInViewModel implements SignInContract.ViewModel {
     }
 
     private void onSignInSuccess(AuthenticationResponse response) {
-        Log.e(debugTag, "onSignInSuccess");
         mSignInDisp = null;
-        viewClback.onSuccess(response);
+        mViewClback.onSuccess(response);
     }
 
     private void onSignInError(int resource, boolean msglength) {
         mSignInDisp = null;
-        viewClback.onError(resource, msglength);
-        if (viewClback != null) requestState = AppConfig.REQUEST_NONE;
+        mViewClback.onError(resource, msglength);
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
     private class SignInObserver extends DisposableSubscriber<AuthenticationResponse> {

@@ -1,5 +1,7 @@
 package com.tsiro.dogvip.POJO.forgotpasswrd;
 
+import android.support.v4.app.ActivityCompat;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tsiro.dogvip.app.AppConfig;
@@ -23,7 +25,7 @@ public class ForgotPaswrdObj {
     private String subaction;
     @SerializedName("user_id")
     @Expose
-    private Integer userId;
+    private int userId;
     @SerializedName("email")
     @Expose
     private String email;
@@ -35,7 +37,7 @@ public class ForgotPaswrdObj {
     private String confNewpassword;
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private int code;
     /*
      * used to display multi line or single line snackbar
      * depending the error msg string length
@@ -45,9 +47,7 @@ public class ForgotPaswrdObj {
     @Expose
     private boolean stringlength;
 
-    public String getAction() {
-        return action;
-    }
+    public String getAction() { return action; }
 
     public void setAction(String action) {
         this.action = action;
@@ -97,9 +97,7 @@ public class ForgotPaswrdObj {
         return confNewpassword;
     }
 
-    public void setConfNewpassword(String confNewpassword) {
-        this.confNewpassword = confNewpassword;
-    }
+    public void setConfNewpassword(String confNewpassword) { this.confNewpassword = confNewpassword; }
 
     public Integer getCode() {
         return code;

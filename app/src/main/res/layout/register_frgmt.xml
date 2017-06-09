@@ -18,7 +18,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="110dp"
                 android:contentDescription="@string/app_logo"
@@ -61,11 +60,10 @@
                 android:layout_width="65dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:contentDescription="@string/divider"
+                android:contentDescription="@string/image_cont_desc"
                 app:srcCompat="@android:color/darker_gray" />
 
             <LinearLayout
-                android:id="@+id/linearLayout"
                 android:layout_width="270dp"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
@@ -73,15 +71,14 @@
                 android:background="@android:color/white"
                 android:gravity="center_vertical"
                 android:elevation="2dp"
-                android:weightSum="1"
-                android:focusableInTouchMode="true">
+                android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.14"
-                    android:contentDescription="@string/email_icon"
+                    android:contentDescription="@string/image_cont_desc"
                     app:srcCompat="@drawable/email" />
 
                 <EditText
@@ -98,7 +95,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
                 android:layout_width="270dp"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
@@ -109,11 +105,10 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:id="@+id/imageView412"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.14"
-                    android:contentDescription="@string/lock_icon"
+                    android:contentDescription="@string/image_cont_desc"
                     app:srcCompat="@drawable/lock" />
 
                 <EditText
@@ -130,7 +125,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/test2"
                 android:layout_width="270dp"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
@@ -142,11 +136,10 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:id="@+id/imageView4112"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.14"
-                    android:contentDescription="@string/lock_icon"
+                    android:contentDescription="@string/image_cont_desc"
                     app:srcCompat="@drawable/lock" />
 
                 <EditText

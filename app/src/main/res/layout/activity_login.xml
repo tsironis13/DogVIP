@@ -19,7 +19,7 @@
             android:layout_marginTop="@dimen/status_bar_height" />
 
         <com.rey.material.widget.SnackBar
-            android:id="@+id/loginSnckBr"
+            android:id="@+id/snckBr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"

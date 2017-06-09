@@ -6,19 +6,9 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/home"
-            android:checked="true"
-            android:icon="@drawable/email"
-            android:visible="false"
-            android:title="@string/email" />
-
-        <item
-            android:id="@+id/firm"
-            android:checked="false"
-            android:checkable="true"
+            android:id="@+id/logout"
             android:icon="@drawable/facebook_icon"
-            android:visible="false"
-            android:title="@string/facebook_regstr_label" />
+            android:title="@string/logout" />
 
         <!--<item-->
             <!--android:id="@+id/surveys"-->
