@@ -16,6 +16,11 @@
         android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -48,18 +53,47 @@
         </activity>
 
         <activity
+            android:name=".mypets.ownerprofile.OwnerProfileActivity"
+            android:theme="@style/UserProfileAppTheme"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity" />
+        </activity>
+
+        <activity
             android:name=".DashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/DashboardActivityTheme"
             android:label="@string/app_name" />
 
         <activity
-            android:name=".MyPetsActivity"
+            android:name=".mypets.MyPetsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".mypets.pet.PetActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mypets.ownerprofile.OwnerProfileActivity" />
+        </activity>
+
+        <activity
+            android:name=".uploadimagecontrol.ImageUploadControlActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:label="@string/app_name" />
 
-        
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         
@@ -78,6 +112,16 @@
 
         </service>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        
     </application>
 
 </manifest>

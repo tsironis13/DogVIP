@@ -27,6 +27,7 @@ import com.rey.material.widget.TextView;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.accountmngr.MyAccountManager;
 import com.tsiro.dogvip.app.AppConfig;
+import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityLoginBinding;
 import com.tsiro.dogvip.splashscreen.SplashFrgmt;
@@ -39,30 +40,26 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseView, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String debugTag = LoginActivity.class.getSimpleName();
     private static boolean anmtionOnPrgrs;
     private static CompositeDisposable mCompDisp;
-    private SnackBar mSnackBar;
-    private ProgressDialog mProgressDialog;
-    private MyAccountManager mAccountManager;
     private GoogleApiClient mGoogleApiClient;
+    private ActivityLoginBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityLoginBinding mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 
-        mAccountManager = new MyAccountManager(this);
-        if (mAccountManager.checkAccountExists()) {
-            mAccountManager.getUserData(this);
+        if (getMyAccountManager().checkAccountExists()) {
+//            getMyAccountManager().getUserData(this);
+            logUserIn();
         } else {
-            mSnackBar = mBinding.snckBr;
-
-            if (getSupportFragmentManager() != null) {
+            if (savedInstanceState == null && getSupportFragmentManager() != null) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -86,6 +83,11 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
     }
 
     @Override
+    public Lifecycle.ViewModel getViewModel() {
+        return null;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -103,6 +105,12 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(getResources().getString(R.string.frgmnt_created), 1);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
     }
@@ -116,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
             mGoogleApiClient.disconnect();
         }
         //prevent window leaks
-        if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
+        dismissDialog();
     }
 
     @Override
@@ -128,24 +136,15 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
         }
     }
 
-    @Override
-    public void logUserIn(AuthenticationResponse response) {
-        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-        intent.putExtra(getResources().getString(R.string.email), response.getEmail());
-        intent.putExtra(getResources().getString(R.string.token), response.getAuthtoken());
-        startActivity(intent);
+
+    public void logUserIn() {
+        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
         finish();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
-    }
-
-    //check if network is available
-    public boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     private void initializeGoogleSignUp() {
@@ -168,36 +167,17 @@ public class LoginActivity extends AppCompatActivity implements Lifecycle.BaseVi
         return mGoogleApiClient;
     }
 
-    public ProgressDialog initializeProgressDialog(String msg) {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage(msg);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
-
-        return mProgressDialog;
-    }
-
-    public void dismissDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
-    }
-
     public void showSnackBar(final int style, final String msg) {
-        if (mSnackBar != null) {
+        if (mBinding.snckBr != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mSnackBar.applyStyle(style);
-                    mSnackBar.text(msg);
-                    mSnackBar.show();
+                    mBinding.snckBr.applyStyle(style);
+                    mBinding.snckBr.text(msg);
+                    mBinding.snckBr.show();
                 }
             });
         }
-    }
-
-    public MyAccountManager getMyAccountManager() {
-        return this.mAccountManager;
     }
 
 }

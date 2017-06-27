@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="image"
+            type="com.tsiro.dogvip.POJO.Image" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlPresenter" />
+
+        <import type="android.view.View" />
+    </data>
+    <FrameLayout
+        android:id="@+id/baseFrmlt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/image_cont_desc"
+            android:src="@{image.imageurl}"/>
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="top"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:visibility="@{image.main ? View.VISIBLE : View.GONE}"
+            android:contentDescription="@string/image_cont_desc"
+            android:src="@drawable/ic_photo_white" />
+
+        <CheckBox
+            android:id="@+id/checkBx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:onClick="@{() -> presenter.onCheckBoxClick(baseFrmlt, image.checked)}"
+            android:visibility="@{!image.main ? View.VISIBLE : View.GONE}" />
+
+    </FrameLayout>
+
+</layout>

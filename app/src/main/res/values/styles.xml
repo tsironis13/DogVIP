@@ -10,6 +10,7 @@
     </style>
     <style name="AppTheme" parent="Base.AppTheme" />
     <style name="DashboardActivityTheme" parent="Base.AppTheme" />
+    <style name="UserProfileAppTheme" parent="Base.AppTheme" />
     <!-- TOOLBAR -->
     <style name="ToolbarTheme" parent="Base.AppTheme">
         <item name="android:textColorPrimary">@android:color/white</item>
@@ -24,29 +25,68 @@
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
     </style>
 
-    <style name="TouchRippleStyle" parent="Material.Drawable.Ripple.Touch">
+    <style name="TouchRipplePrimaryStyle" parent="Material.Drawable.Ripple.Touch">
         <item name="rd_rippleColor">@color/colorPrimary</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
+    </style>
+
+    <style name="TouchRippleDarkStyle" parent="Material.Drawable.Ripple.Touch">
+        <item name="rd_rippleColor">@color/colorPrimaryDark</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
+    </style>
+
+    <!-- IMAGE UPLOAD PROGRESS BAR -->
+    <style name="ProcessingImageProgressBarStyle">
+        <item name="colorAccent">@android:color/white</item>
     </style>
 
     <!-- SNACKBARS -->
     <style name="BaseSnackBar" parent="Material.Widget.SnackBar.Mobile">
         <item name="sb_backgroundColor">@android:color/white</item>
         <item name="sb_textColor">@android:color/holo_red_light</item>
-        <item name="sb_actionText">@string/close</item>
         <item name="sb_actionTextColor">@android:color/black</item>
-        <item name="sb_duration">2000</item>
     </style>
 
     <style name="SnackBarSingleLine" parent="BaseSnackBar">
         <item name="sb_height">48dp</item>
+        <item name="sb_actionText">@string/close</item>
+        <item name="sb_duration">2000</item>
+    </style>
+
+    <style name="SnackBarWithAction" parent="BaseSnackBar">
+        <item name="sb_height">48dp</item>
+        <item name="sb_actionText">@string/retry</item>
     </style>
 
     <style name="SnackBarMultiLine" parent="BaseSnackBar">
         <item name="sb_height">80dp</item>
+        <item name="sb_actionText">@string/close</item>
+        <item name="sb_duration">2000</item>
         <item name="sb_singleLine">false</item>
     </style>
-    <!-- DIALOS -->
+    <!-- SPINNER -->
+    <!--<style name="Spinner" parent="Material.Widget.Spinner.Light">-->
+        <!--<item name="rd_style">@style/Material.Drawable.Ripple.Wave.Light</item>-->
+        <!--<item name="spn_dividerColor">@color/colorAccent</item>-->
+        <!--<item name="spn_labelEnable">true</item>-->
+        <!--<item name="spn_arrowSwitchMode">true</item>-->
+        <!--<item name="spn_arrowAnimDuration">@android:integer/config_shortAnimTime</item>-->
+        <!--<item name="spn_arrowInterpolator">@android:anim/decelerate_interpolator</item>-->
+        <!--<item name="spn_arrowColor">#FF78909C</item>-->
+        <!--<item name="android:popupBackground">@drawable/abc_popup_background_mtrl_mult</item>-->
+    <!--</style>-->
+
+    <!--<style name="SpinnerItem" parent="Material.Drawable.Ripple">-->
+        <!--<item name="rd_rippleColor">@color/colorPrimary</item>-->
+        <!--<item name="rd_rippleAnimDuration">300</item>-->
+        <!--<item name="spn_arrowSwitchMode">true</item>-->
+        <!--<item name="rd_maskType">rectangle</item>-->
+        <!--<item name="rd_cornerRadius">0dp</item>-->
+        <!--<item name="rd_delayClick">afterRelease</item>-->
+        <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>-->
+        <!--<item name="android:textColor">@color/abc_primary_text_material_light</item>-->
+    <!--</style>-->
+    <!-- DIALOGS -->
     <style name="SimpleDialogLight" parent="Material.App.Dialog.Simple.Light">
         <item name="di_inAnimation">@anim/anim_scale_in</item>
         <item name="di_outAnimation">@anim/anim_scale_out</item>

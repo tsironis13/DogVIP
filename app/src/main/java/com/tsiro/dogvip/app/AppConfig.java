@@ -16,6 +16,7 @@ public class AppConfig {
     //APP ACTIONS
     public static final int ACTION_IMAGE_CAPTURE = 900;
     public static final int EXTERNAL_CONTENT_URI = 910;
+    public static final int OWNER_ACTIVITY_FOR_RESULT = 1010;
     //SUBJECT TYPES
     public static final int PUBLISH_SUBJ = 0;
     public static final int REPLAY_SUBJ = 1;
@@ -44,6 +45,7 @@ public class AppConfig {
     private static final int ERROR_EMAIL_USED = -280;
     private static final int ERROR_EMAIL_NOT_FOUND = -290;
     private static final int ERROR_NEW_PASSWORD_IS_SAME = -300;
+    private static final int ERROR_INVALID_IMAGE_SIZE = -310;
 
     private static final SparseIntArray inputValidationCodes = new SparseIntArray();
 
@@ -59,6 +61,7 @@ public class AppConfig {
         inputValidationCodes.put(ERROR_EMAIL_USED, R.string.email_in_use);
         inputValidationCodes.put(ERROR_EMAIL_NOT_FOUND, R.string.email_not_found);
         inputValidationCodes.put(ERROR_NEW_PASSWORD_IS_SAME, R.string.new_password_is_same);
+        inputValidationCodes.put(ERROR_INVALID_IMAGE_SIZE, R.string.invalid_image_size);
 
         return inputValidationCodes;
     }

@@ -1,7 +1,7 @@
 package com.tsiro.dogvip.mypets;
 
-import com.tsiro.dogvip.POJO.mypets.GetOwnerRequest;
-import com.tsiro.dogvip.POJO.mypets.GetOwnerResponse;
+import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
+import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.app.Lifecycle;
 
 /**
@@ -11,12 +11,12 @@ import com.tsiro.dogvip.app.Lifecycle;
 public interface GetOwnerContract {
 
     interface View extends Lifecycle.View {
-        void onSuccess(GetOwnerResponse response);
+        void onSuccess(OwnerObj response);
         void onError(int code);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
-        void getOwnerDetails(GetOwnerRequest request);
+        void getOwnerDetails(OwnerRequest request);
         void setRequestState(int state);
     }
 

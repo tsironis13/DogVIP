@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.app;
 
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 
 /**
@@ -10,10 +11,14 @@ public interface Lifecycle {
 
     interface BaseView {
         void hideSoftKeyboard();
-        void logUserIn(AuthenticationResponse response);
     }
 
     interface View {}
+
+    interface ImageUploadModel {
+        void onSuccessImageAction(Image image);
+        void onErrorImageAction();
+    }
 
     interface ViewModel {
         void onViewResumed();

@@ -10,5 +10,7 @@
     <color name="facebook_color">#3B5998</color>
     <color name="google_color">#DD4B39</color>
 
+    <color name="divider_color">#EEE</color>
+    <color name="rcv_background">#FAFAFA</color>
 
 </resources>

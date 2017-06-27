@@ -32,6 +32,9 @@ public class AuthenticationResponse {
     @SerializedName("stringlength")
     @Expose
     private boolean stringlength;
+    @SerializedName("ownerexists")
+    @Expose
+    private boolean ownerexists;
 
     public int getCode() {
         return code;
@@ -60,4 +63,8 @@ public class AuthenticationResponse {
     public boolean isStringlength() { return stringlength; }
 
     public void setStringlength(boolean stringlength) { this.stringlength = stringlength; }
+
+    public boolean isOwnerexists() { return ownerexists; }
+
+    public void setOwnerexists(boolean ownerexists) { this.ownerexists = ownerexists; }
 }

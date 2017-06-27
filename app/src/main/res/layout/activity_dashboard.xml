@@ -53,7 +53,7 @@
                             android:background="@android:color/white"
                             android:orientation="vertical"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -92,7 +92,7 @@
                             android:layout_alignLeft="@+id/divider"
                             android:layout_alignStart="@+id/divider"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -135,7 +135,7 @@
                             android:background="@android:color/white"
                             android:orientation="vertical"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -174,7 +174,7 @@
                             android:orientation="vertical"
                             android:background="@android:color/white"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -217,7 +217,7 @@
                             android:layout_marginEnd="1dp"
                             android:gravity="center_horizontal|center_vertical"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -256,7 +256,7 @@
                             android:gravity="center_horizontal|center_vertical"
                             android:orientation="vertical"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -299,7 +299,7 @@
                             android:gravity="center_horizontal|center_vertical"
                             android:background="@android:color/white"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"
@@ -338,7 +338,7 @@
                             android:gravity="center_horizontal|center_vertical"
                             android:background="@android:color/white"
                             android:clickable="true"
-                            style="@style/TouchRippleStyle">
+                            style="@style/TouchRipplePrimaryStyle">
 
                             <ImageView
                                 android:layout_width="65dp"

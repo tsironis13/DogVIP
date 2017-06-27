@@ -2,13 +2,11 @@ package com.tsiro.dogvip.mypets;
 
 import android.util.Log;
 
-import com.tsiro.dogvip.POJO.mypets.GetOwnerRequest;
-import com.tsiro.dogvip.POJO.mypets.GetOwnerResponse;
+import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
+import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
-
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -24,7 +22,7 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
     private static final String debugTag = GetOwnerViewModel.class.getSimpleName();
     private GetOwnerContract.View mViewClback;
     private MyPetsRequestManager mMyPetsRequestManager;
-    private AsyncProcessor<GetOwnerResponse> mGetOwnerDetailsProcessor;
+    private AsyncProcessor<OwnerObj> mGetOwnerDetailsProcessor;
     private int requestState;
     private Disposable mGetOwnerDetailsDisp;
 
@@ -46,13 +44,13 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
 
     @Override
     public void onViewDetached() {
-        Log.e(debugTag, "onViewDetached");
+//        Log.e(debugTag, "onViewDetached");
         mViewClback = null;
         if (mGetOwnerDetailsDisp != null) mGetOwnerDetailsDisp.dispose();
     }
 
     @Override
-    public void getOwnerDetails(GetOwnerRequest request) {
+    public void getOwnerDetails(OwnerRequest request) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             requestState = AppConfig.REQUEST_RUNNING;
             mGetOwnerDetailsProcessor = AsyncProcessor.create();
@@ -67,8 +65,8 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
         requestState = state;
     }
 
-    private void onGetOwnerSuccess(GetOwnerResponse response) {
-        Log.e(debugTag, "onGetOwnerSuccess");
+    private void onGetOwnerSuccess(OwnerObj response) {
+//        Log.e(debugTag, "onGetOwnerSuccess");
         mGetOwnerDetailsDisp = null;
         mViewClback.onSuccess(response);
     }
@@ -79,14 +77,13 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
-    private class GetOwnerDetailsObserver extends DisposableSubscriber<GetOwnerResponse> {
+    private class GetOwnerDetailsObserver extends DisposableSubscriber<OwnerObj> {
 
         @Override
-        public void onNext(@NonNull GetOwnerResponse response) {
+        public void onNext(@NonNull OwnerObj response) {
             if (response.getCode() != AppConfig.STATUS_OK) {
                 onGetOwnerError(AppConfig.getCodes().get(response.getCode()));
             } else {
-                Log.e(debugTag, "ON NEXT HERE");
                 onGetOwnerSuccess(response);
             }
         }

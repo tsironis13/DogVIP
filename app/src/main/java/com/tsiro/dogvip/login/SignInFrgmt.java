@@ -228,7 +228,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
         MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
         //check if account exists, otherwise display the error
         if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
-            mAccountManager.getUserData(baseView);
+            ((LoginActivity)getActivity()).logUserIn();
         } else {
             ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
         }

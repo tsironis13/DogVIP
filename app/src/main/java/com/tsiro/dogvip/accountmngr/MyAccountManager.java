@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.tsiro.dogvip.POJO.UserAccount;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
@@ -49,31 +50,48 @@ public class MyAccountManager {
 
         Bundle extra = new Bundle();
         extra.putString(mContext.getResources().getString(R.string.email), email);
+        extra.putString(mContext.getResources().getString(R.string.token), token); //used by me to get auth token easily without passing it between activities
         boolean account_added = am.addAccountExplicitly(account, null, extra);
-        am.setAuthToken(account, "1", token);
+        am.setAuthToken(account, "1", token); //used by the authenticator
         return account_added;
     }
 
-    public void getUserData(final Lifecycle.BaseView baseView) {
-        final Account mAccount = getAccountByType(mContext.getResources().getString(R.string.account_type));
-        AccountManager.get(mContext).getAuthToken(mAccount, "1", null, null, new AccountManagerCallback<Bundle>() {
-            @Override
-            public void run(AccountManagerFuture<Bundle> future) {
-                try {
-                    Bundle authTokenBundle = future.getResult();
-                    AuthenticationResponse response = new AuthenticationResponse();
-                    if (authTokenBundle.get(AccountManager.KEY_AUTHTOKEN) != null) {
-                        response.setAuthtoken(authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString());
-                        response.setEmail(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email)));
-                    }
-                    baseView.logUserIn(response);
-//                    RxEventBus.createSubject(AppConfig.USER_ACCOUNT_DATA, AppConfig.PUBLISH_SUBJ).post(response);
-                } catch (OperationCanceledException | IOException | AuthenticatorException e) {
-                    e.printStackTrace();
-                }
+//    public void getUserData(final Lifecycle.BaseView baseView) {
+//        final Account mAccount = getAccountByType(mContext.getResources().getString(R.string.account_type));
+////        AuthenticationResponse response = new AuthenticationResponse();
+////
+////        response.setAuthtoken(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.token)));
+////        response.setEmail(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email)));
+//        baseView.logUserIn(response);
+//
+////        AccountManager.get(mContext).getAuthToken(mAccount, "1", null, null, new AccountManagerCallback<Bundle>() {
+////            @Override
+////            public void run(AccountManagerFuture<Bundle> future) {
+////                try {
+////                    Bundle authTokenBundle = future.getResult();
+////                    AuthenticationResponse response = new AuthenticationResponse();
+////                    if (authTokenBundle.get(AccountManager.KEY_AUTHTOKEN) != null) {
+////                        response.setAuthtoken(authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString());
+////                        response.setEmail(AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email)));
+////                    }
+////                    baseView.logUserIn(response);
+//////                    RxEventBus.createSubject(AppConfig.USER_ACCOUNT_DATA, AppConfig.PUBLISH_SUBJ).post(response);
+////                } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+////                    e.printStackTrace();
+////                }
+////
+////            }
+////        }, null);
+//    }
 
-            }
-        }, null);
+    public UserAccount getAccountDetails() {
+        UserAccount userAccount = new UserAccount();
+        Account mAccount = getAccountByType(mContext.getResources().getString(R.string.account_type));
+        String mtoken = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.token));
+        String email = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email));
+        userAccount.setToken(mtoken);
+        userAccount.setEmail(email);
+        return userAccount;
     }
 
     public void removeAccount() {

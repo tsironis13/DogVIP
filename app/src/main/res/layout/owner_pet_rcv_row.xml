@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.mypets.pet.PetObj" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.mypets.ownerprofile.OwnerProfilePresenter"/>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="82dp">
+
+        <LinearLayout
+            android:id="@+id/revealRowLlt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:clickable="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/edit"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/edit"
+                    android:tint="@android:color/white"
+                    android:contentDescription="@string/image_cont_desc" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delete"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:background="#E53935"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_delete_white"
+                    android:contentDescription="@string/image_cont_desc" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/baseRlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:orientation="horizontal"
+            android:background="@color/rcv_background"
+            android:gravity="center_vertical"
+            android:onClick="@{(v) -> presenter.onBaseViewClick(v)}">
+
+            <ImageView
+                android:id="@+id/petImgv"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/image_cont_desc"
+                android:src="@drawable/ic_pets"
+                android:elevation="2dp"
+                android:background="@drawable/circle_image"
+                android:onClick="@{() -> presenter.onPetImgViewClick(baseRlt)}" />
+
+            <TextView
+                android:id="@+id/nameTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="@{obj.name}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameTtv"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textSize="16sp"
+                android:text="@{obj.race}" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

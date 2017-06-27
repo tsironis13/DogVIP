@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="imagelimit"
+            type="int" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/status_bar_height"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <LinearLayout
+                android:id="@+id/baseLlt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="155dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@string/no_pet_images_yet"
+                    android:visibility="@{imagelimit == 0 ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:text="@string/pet_images_limit"
+                    android:visibility="@{imagelimit == 0 ? View.VISIBLE : View.GONE}" />
+
+                <GridView
+                    android:id="@+id/imageGrdv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:verticalSpacing="0dp"
+                    android:horizontalSpacing="0dp"
+                    android:numColumns="2"
+                    android:visibility="@{imagelimit != 0 ? View.VISIBLE : View.GONE}" />
+
+            </LinearLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/addImageFlbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add"
+                android:visibility="@{imagelimit != 1 ? View.VISIBLE : View.GONE}"
+                app:layout_anchorGravity="bottom|right|end" />
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </FrameLayout>
+
+</layout>

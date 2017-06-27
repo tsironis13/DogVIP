@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewstate"
+            type="boolean" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,7 +71,7 @@
                 android:gravity="center_vertical"
                 android:elevation="2dp"
                 android:weightSum="1"
-                android:visibility="gone">
+                android:visibility="@{viewstate ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:id="@+id/imageView412"
@@ -96,7 +104,7 @@
                 android:gravity="center_vertical"
                 android:elevation="2dp"
                 android:weightSum="1"
-                android:visibility="gone">
+                android:visibility="@{viewstate ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:id="@+id/imageView4112"
@@ -118,6 +126,19 @@
                     android:inputType="textPassword" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="start"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="@color/error_color"
+                android:text="@string/required_fields" />
 
             <LinearLayout
                 android:layout_width="match_parent"

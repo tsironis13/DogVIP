@@ -126,8 +126,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                     @Override
                     public void accept(@NonNull CharSequence charSequence) throws Exception {
                         if (emailValidated) {
-                            mBinding.passLlt.setVisibility(View.GONE);
-                            mBinding.confpassLlt.setVisibility(View.GONE);
+                            mBinding.setViewstate(false);
                             emailValidated = false;
                         }
                     }
@@ -194,8 +193,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     public void onSuccess(final ForgotPaswrdObj response) {
         ((LoginActivity) getActivity()).dismissDialog();
         if (response.getSubaction().equals(getResources().getString(R.string.forgot_paswrd_email_subaction))) {
-            mBinding.passLlt.setVisibility(View.VISIBLE);
-            mBinding.confpassLlt.setVisibility(View.VISIBLE);
+            mBinding.setViewstate(true);
             emailValidated = true;
             user_id = response.getUserId();
         } else {

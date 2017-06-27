@@ -1,17 +1,12 @@
 package com.tsiro.dogvip;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +16,11 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.rey.material.widget.SnackBar;
 import com.tsiro.dogvip.POJO.logout.LogoutRequest;
 import com.tsiro.dogvip.POJO.logout.LogoutResponse;
-import com.tsiro.dogvip.accountmngr.MyAccountManager;
+import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityDashboardBinding;
 import com.tsiro.dogvip.databinding.NavigationHeaderBinding;
+import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
@@ -41,7 +38,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by giannis on 27/5/2017.
  */
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity {
 
     private static final String degbugTag = DashboardActivity.class.getSimpleName();
     private ActivityDashboardBinding mBinding;
@@ -50,7 +47,6 @@ public class DashboardActivity extends AppCompatActivity {
     private ServiceAPI serviceAPI;
     private String email, mToken;
     private int id, type;
-    private MyAccountManager myAccountManager;
     private SnackBar mSnackBar;
     private boolean logout;
     private ProgressDialog mProgressDialog;
@@ -69,14 +65,15 @@ public class DashboardActivity extends AppCompatActivity {
 
         serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
 //        Log.e("dashboard", getIntent().getStringExtra("token"));
-
-        email = getIntent().getStringExtra(getResources().getString(R.string.email));
+        email = getMyAccountManager().getAccountDetails().getEmail();
+        mToken = getMyAccountManager().getAccountDetails().getToken();
+        if (getIntent() != null) {}
 
         NavigationHeaderBinding _bind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_header, mBinding.navigationView, false);
         mBinding.navigationView.addHeaderView(_bind.getRoot());
         _bind.setUseremail(email);
 
-        mToken = getIntent().getStringExtra(getResources().getString(R.string.token));
+//        mToken = getIntent().getStringExtra(getResources().getString(R.string.token));
 
         RxView.clicks(mBinding.petsLlt).subscribe(new Consumer<Object>() {
             @Override
@@ -98,7 +95,6 @@ public class DashboardActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 
@@ -191,8 +187,7 @@ public class DashboardActivity extends AppCompatActivity {
                         @Override
                         public void accept(@NonNull LogoutResponse response) throws Exception {
                             Log.e(degbugTag, response.getCode()+"");
-                            myAccountManager = new MyAccountManager(DashboardActivity.this);
-                            myAccountManager.removeAccount();
+                            getMyAccountManager().removeAccount();
                             Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                             finish();
                             startActivity(intent);
@@ -201,27 +196,6 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
         }
-    }
-
-    //check if network is available
-    public boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
-    public ProgressDialog initializeProgressDialog(String msg) {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage(msg);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
-
-        return mProgressDialog;
-    }
-
-    public void dismissDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
     }
 
     public void showSnackBar(final int style, final String msg) {
@@ -237,4 +211,8 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public Lifecycle.ViewModel getViewModel() {
+        return null;
+    }
 }
