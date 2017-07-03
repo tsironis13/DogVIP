@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -39,14 +40,14 @@ public class ImageGridAdapter extends ArrayAdapter {
 
     private static final String debugTag = ImageGridAdapter.class.getSimpleName();
     private Context mContext;
-    private List<Image> items;
     private int resource;
     private ImageUploadControlPresenter imageUploadControlPresenter;
+    private LayoutInflater mInflater;
+    private CheckBox checkBox;
 
-    public ImageGridAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List objects, ImageUploadControlPresenter imageUploadControlPresenter) {
+    public ImageGridAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Image> objects, ImageUploadControlPresenter imageUploadControlPresenter) {
         super(context, resource, objects);
         this.mContext = context;
-        this.items = objects;
         this.resource = resource;
         this.imageUploadControlPresenter = imageUploadControlPresenter;
     }
@@ -54,33 +55,30 @@ public class ImageGridAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        ViewDataBinding mBinding = DataBindingUtil.inflate(inflater, resource, null, false);
+        if (mInflater == null) mInflater = LayoutInflater.from(mContext);
+        ViewDataBinding mBinding = DataBindingUtil.getBinding(convertView);
+        if (mBinding == null) mBinding = DataBindingUtil.inflate(mInflater, resource, null, false);
+
         mBinding.setVariable(BR.image, getItem(position));
         mBinding.setVariable(BR.presenter, imageUploadControlPresenter);
         mBinding.getRoot().setTag(position);
+        checkBox = (CheckBox) mBinding.getRoot().findViewById(R.id.checkBx);
+        if (checkBox != null) checkBox.setChecked(false);
+
         return mBinding.getRoot();
     }
 
-    public void updateData(Image image, boolean add, ArrayList<ImagePathIndex> checkedUrls) {
-        if (add) {
-            items.add(image);
-        } else {
-            for (int i = 0; i < checkedUrls.size(); i++) {
-                int remove =  checkedUrls.get(i).getIndex();
-                Log.e(debugTag, remove+"");
-//                items.remove(remove);
-            }
-        }
-        notifyDataSetChanged();
-    }
-
+    //grid view images
     @BindingAdapter({"android:src"})
     public static void setImageViewResource(ImageView view, String url) {
-        Glide.with(view.getContext()).load(url).apply(new RequestOptions().error(R.drawable.ic_pets).placeholder(R.drawable.ic_pets).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)).transition(withCrossFade()).into(view);
+        if (url != null && !url.equals(""))
+                        Glide.with(view.getContext()).load(url)
+                                .apply(new RequestOptions().error(R.drawable.ic_pets).placeholder(R.drawable.ic_pets))
+                                .transition(withCrossFade())
+                                .into(view);
     }
 
-//    @BindingAdapter("app:test")
+    //    @BindingAdapter("app:test")
 //    public boolean checkIsMain(View view) {
 //        Log.e(debugTag, "asdasa");
 //        //get main image index

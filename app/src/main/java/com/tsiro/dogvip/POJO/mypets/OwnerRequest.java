@@ -21,6 +21,10 @@ public class OwnerRequest {
     @SerializedName("id")
     @Expose
     private int id;
+    //p_id -> pet id
+    @SerializedName("p_id")
+    @Expose
+    private int p_id;
 
     public String getAction() {
         return action;
@@ -41,4 +45,8 @@ public class OwnerRequest {
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
+
+    public int getP_id() { return p_id; }
+
+    public void setP_id(int p_id) { this.p_id = p_id; }
 }

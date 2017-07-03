@@ -51,7 +51,6 @@ public class SignInViewModel implements SignInContract.ViewModel {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mSignInProcessor = AsyncProcessor.create();
             mSignInDisp = mSignInProcessor.subscribeWith(new SignInObserver());
-
             mSignInRequestManager.signin(request, this).subscribe(mSignInProcessor);
         }
     }

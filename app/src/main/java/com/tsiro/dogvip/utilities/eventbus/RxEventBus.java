@@ -6,9 +6,14 @@ import android.util.SparseArray;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.subjects.AsyncSubject;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.ReplaySubject;
@@ -24,6 +29,8 @@ public class RxEventBus<T> {
     private Subject<T> subject;
     private static SparseArray<RxEventBus> mInstanceMap = new SparseArray<>();
     private static SparseArray<Subject> sSubjectMap = new SparseArray<>();
+    private AsyncProcessor<T> asyncProcessor;
+    private static SparseArray<AsyncProcessor> sAsyncProcessorMap = new SparseArray<>();
     private static Map<Object, CompositeDisposable> sSubscriptionsMap = new HashMap<>();
 
     private RxEventBus(int subjectCode, int subjectType) {
@@ -39,6 +46,8 @@ public class RxEventBus<T> {
                 case 2:
                     subject = BehaviorSubject.create();
                     break;
+                case 3:
+                    subject = AsyncSubject.create();
             }
             sSubjectMap.put(subjectCode, subject);
         }
@@ -85,6 +94,7 @@ public class RxEventBus<T> {
     public static void unregister(Object lifecycle) {
 //        //We have to remove the composition from the map, because once you unsubscribe it can't be used anymore
         CompositeDisposable compositeSubscription = sSubscriptionsMap.remove(lifecycle);
+//        Log.e(debugTag, compositeSubscription+" "+ compositeSubscription.isDisposed()+" ");
         if (compositeSubscription != null) if (!compositeSubscription.isDisposed()) compositeSubscription.dispose();
     }
 }

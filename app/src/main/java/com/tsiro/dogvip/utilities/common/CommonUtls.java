@@ -91,7 +91,7 @@ public class CommonUtls {
     public void deleteAppStorage(File file) {
         if (file != null) {
             boolean deleted = file.delete();
-            Log.e(debugTag, deleted+"");
+//            Log.e(debugTag, deleted+"");
         }
     }
 

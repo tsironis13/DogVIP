@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:background="@color/colorAccent"
         android:elevation="4dp"
-        app:theme="@style/ToolbarTheme"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Base.AppTheme"
         app:titleTextColor="@android:color/white"
         app:titleTextAppearance="@style/ToolbarTheme"

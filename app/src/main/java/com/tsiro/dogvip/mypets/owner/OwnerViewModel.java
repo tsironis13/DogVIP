@@ -88,7 +88,8 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
     @Override
     public void onSuccessImageAction(Image image) {
         mUploadDisp = null;
-        mViewImageUploadClback.onImageActionSuccess(image);
+        //hack for devices which call onDestroy method (OwnerFrgmt should be moved in MyPetsActivity)
+        if (mViewImageUploadClback !=null)mViewImageUploadClback.onImageActionSuccess(image);
     }
 
     @Override
@@ -104,6 +105,7 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
     }
 
     private void onGetOwnerSuccess(OwnerObj response) {
+        Log.e("onGetOwnerSuccess", "onGetOwnerSuccess");
         mDisp = null;
         mViewClback.onSuccess(response);
     }

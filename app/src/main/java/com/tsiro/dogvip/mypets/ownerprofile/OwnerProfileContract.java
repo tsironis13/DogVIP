@@ -3,6 +3,7 @@ package com.tsiro.dogvip.mypets.ownerprofile;
 import android.view.View;
 
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.app.Lifecycle;
 
 /**
@@ -24,7 +25,7 @@ public class OwnerProfileContract {
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
-        void deleteOwner(OwnerRequest request);
+        void manipulateOwner(OwnerRequest request);
         void setRequestState(int state);
     }
 

@@ -1,13 +1,16 @@
 package com.tsiro.dogvip.mypets.ownerprofile;
 
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
@@ -33,7 +36,11 @@ public class OwnerProfileViewModel implements OwnerProfileContract.ViewModel {
 
     @Override
     public void onViewResumed() {
-        if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && mProcessor != null) mProcessor.subscribe(new OwnerProfileObserver());
+        if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && mProcessor != null)
+                mProcessor
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new OwnerProfileObserver());
     }
 
     @Override
@@ -43,10 +50,13 @@ public class OwnerProfileViewModel implements OwnerProfileContract.ViewModel {
     }
 
     @Override
-    public void deleteOwner(OwnerRequest request) {
+    public void manipulateOwner(OwnerRequest request) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mProcessor = AsyncProcessor.create();
-            mDisp = mProcessor.subscribeWith(new OwnerProfileObserver());
+            mDisp = mProcessor
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new OwnerProfileObserver());
 
             mMyPetsRequestManager.deleteOwner(request, this).subscribe(mProcessor);
         }

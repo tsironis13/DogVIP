@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.mypets.pet.PetObj" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.lovematch.LoveMatchPresenter" />
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/baseRlt"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+            <ImageView
+                android:id="@+id/petImgv"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="true"
+                android:contentDescription="@string/image_cont_desc"
+                android:elevation="2dp"
+                android:background="@drawable/circle_image"
+                android:onClick="@{() -> presenter.onIndividualViewClick(baseRlt)}"
+                app:imageUrl="@{obj.main_url}" />
+
+            <TextView
+                android:id="@+id/nameTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="@{obj.name}" />
+
+            <TextView
+                android:id="@+id/raceTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameTtv"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="@{obj.race}" />
+
+            <TextView
+                android:id="@+id/genreTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/raceTtv"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textSize="13sp"
+                android:text="@{obj.genre == 0 ? @string/male : @string/female}" />
+
+            <TextView
+                android:id="@+id/ageTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/raceTtv"
+                android:paddingRight="3dp"
+                android:paddingLeft="3dp"
+                android:layout_toRightOf="@+id/genreTtv"
+                android:layout_toEndOf="@+id/genreTtv"
+                android:textSize="13sp"
+                android:text="@{@string/owner_age(obj.age)}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/raceTtv"
+                android:layout_toRightOf="@+id/ageTtv"
+                android:layout_toEndOf="@+id/ageTtv"
+                android:textSize="13sp"
+                android:text="@{obj.city}" />
+
+            <ImageView
+                android:id="@+id/favBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/chatImgv"
+                android:layout_centerInParent="true"
+                android:paddingRight="13dp"
+                android:paddingLeft="13dp"
+                android:contentDescription="@string/image_cont_desc"
+                android:src="@{obj.isLiked == 0 ? @drawable/ic_favorite_border : @drawable/ic_favorite_black}"
+                android:onClick="@{() -> presenter.onIndividualViewClick(baseRlt)}" />
+
+            <ImageView
+                android:id="@+id/chatImgv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/image_cont_desc"
+                android:src="@drawable/ic_chat_black" />
+
+        </RelativeLayout>
+
+</layout>

@@ -35,6 +35,9 @@ public class Image extends BaseObservable implements Parcelable{
     @SerializedName("imageurl")
     @Expose
     private String imageurl;
+    @SerializedName("mainurl")
+    @Expose
+    private String mainurl;
     @SerializedName("id")
     @Expose
     private int id;
@@ -45,6 +48,11 @@ public class Image extends BaseObservable implements Parcelable{
     @SerializedName("main")
     @Expose
     private boolean main;
+    //use this field when there is only 1 photo available
+    //and user should be able to delete it
+    @SerializedName("canchecked")
+    @Expose
+    private boolean canchecked;
     @SerializedName("checked_urls")
     @Expose
     private ArrayList<ImagePathIndex> checked_urls;
@@ -60,7 +68,9 @@ public class Image extends BaseObservable implements Parcelable{
         id = in.readInt();
 //        main_index = in.readInt();
         main = in.readByte() != 0;
+        canchecked = in.readByte() != 0;
         if (checked_urls == null) checked_urls = new ArrayList<>();
+        in.readTypedList(checked_urls, ImagePathIndex.CREATOR);
     }
 
     public static final Creator<Image> CREATOR = new Creator<Image>() {
@@ -93,6 +103,10 @@ public class Image extends BaseObservable implements Parcelable{
 
     public File getImage() { return image; }
 
+    public String getMainurl() { return mainurl; }
+
+    public void setMainurl(String mainurl) { this.mainurl = mainurl; }
+
     public void setImage(File image) {
         this.image = image;
     }
@@ -114,6 +128,10 @@ public class Image extends BaseObservable implements Parcelable{
     public void setId(int id) { this.id = id; }
 
     public boolean isMain() { return main; }
+
+    public boolean isCanchecked() { return canchecked; }
+
+    public void setCanchecked(boolean canchecked) { this.canchecked = canchecked; }
 
     public void setMain(boolean main) { this.main = main; }
 
@@ -143,6 +161,8 @@ public class Image extends BaseObservable implements Parcelable{
         dest.writeInt(id);
 //        dest.writeInt(main_index);
         dest.writeByte((byte) (main ? 1 : 0));
+        dest.writeByte((byte) (canchecked ? 1 : 0));
+        dest.writeTypedList(checked_urls);
 //        dest.writeIntArray(checked_urls);
     }
 }

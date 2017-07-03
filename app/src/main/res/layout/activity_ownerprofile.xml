@@ -13,6 +13,7 @@
         <variable
             name="haspets"
             type="boolean" />
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout

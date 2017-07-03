@@ -8,9 +8,11 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
@@ -37,7 +39,10 @@ public class PetViewModel implements PetContract.ViewModel {
     @Override
     public void onViewResumed() {
         if (mPetDisp != null && requestState != AppConfig.REQUEST_RUNNING) {
-            mPetProcessor.subscribe(new GetPetDetailsObserver());
+            mPetProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new GetPetDetailsObserver());
         }
     }
 
@@ -52,7 +57,10 @@ public class PetViewModel implements PetContract.ViewModel {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             requestState = AppConfig.REQUEST_RUNNING;
             mPetProcessor = AsyncProcessor.create();
-            mPetDisp = mPetProcessor.subscribeWith(new GetPetDetailsObserver());
+            mPetDisp = mPetProcessor
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeWith(new GetPetDetailsObserver());
 
             mMyPetsRequestManager.submitPet(request, this).subscribe(mPetProcessor);
         }

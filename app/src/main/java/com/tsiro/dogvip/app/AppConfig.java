@@ -23,6 +23,7 @@ public class AppConfig {
     public static final int BEHAVIOR_SUBJ = 2;
     //APPLICATION EVENTS
     public static final int FRAGMENT_ANIMATION = 1000;
+    public static final int REFRESH_PET_INFO = 1020;
     public static final int USER_ACCOUNT_DATA = 900;
     //REQUEST STATE
     public static final int REQUEST_NONE = 0;
@@ -46,6 +47,8 @@ public class AppConfig {
     private static final int ERROR_EMAIL_NOT_FOUND = -290;
     private static final int ERROR_NEW_PASSWORD_IS_SAME = -300;
     private static final int ERROR_INVALID_IMAGE_SIZE = -310;
+
+    public static final int VISIBLE_THRESHOLD = 8;
 
     private static final SparseIntArray inputValidationCodes = new SparseIntArray();
 

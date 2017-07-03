@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorAccent">#006666</color>
 
+    <color name="colorAccentOpaque">#00897B</color>
+
     <color name="rippleColor">#F2F57C00</color>
     <color name="error_color">#D32F2F</color>
     <!-- LOGIN ACTIVITY -->

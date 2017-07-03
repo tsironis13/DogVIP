@@ -33,6 +33,5 @@ public class ImageUploadSubscriber extends DisposableSubscriber<Image> {
 
     @Override
     public void onComplete() {
-        Log.e(debugTag, "onComplete");
     }
 }

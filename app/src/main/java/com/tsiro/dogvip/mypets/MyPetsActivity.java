@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -40,7 +41,8 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
     private ProgressDialog mProgressDialog;
     private SnackBar mSnackBar;
     private String mToken, imageurl;
-    private boolean imageuploading;
+    private boolean imageuploading, editOwner;
+    private OwnerObj ownerObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +53,14 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
 
         mSnackBar = mBinding.mypetsSnckBr;
         mGetOwnerViewModel = new GetOwnerViewModel(MyPetsRequestManager.getInstance());
-
+        mToken = getMyAccountManager().getAccountDetails().getToken();
         if (savedInstanceState != null) {
-//            Log.e(debugTag, "jsd : "+ savedInstanceState.getString(getResources().getString(R.string.token)));
-//            mToken = savedInstanceState.getString(getResources().getString(R.string.token));
-        }
-
-        if (getIntent() != null && savedInstanceState == null) {
-            mToken = getMyAccountManager().getAccountDetails().getToken();
-            if (getIntent().getExtras().getBoolean(getResources().getString(R.string.edit_ownr))) { //edit owner
-                OwnerObj ownerObj = getIntent().getParcelableExtra(getResources().getString(R.string.parcelable_obj));
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .replace(R.id.myPetsContainer, OwnerFrgmt.newInstance(false, mToken, ownerObj), getResources().getString(R.string.owner_fgmt))
-                        .commit();
-            } else {
-                checkOwnerExists(mToken);
+            editOwner = savedInstanceState.getBoolean(getResources().getString(R.string.edit_ownr));
+            configureActivity(savedInstanceState);
+        } else {
+            if (getIntent() != null) {
+                editOwner = getIntent().getExtras().getBoolean(getResources().getString(R.string.edit_ownr));
+                configureActivity(null);
             }
         }
     }
@@ -117,7 +110,8 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(getResources().getString(R.string.frgmnt_created), 1);
-//        outState.putString(getResources().getString(R.string.token), mToken);
+        outState.putBoolean(getResources().getString(R.string.edit_ownr), editOwner);
+        outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
     }
 
     @Override
@@ -152,6 +146,23 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
         if (mProgressDialog != null && mProgressDialog.isShowing()) dismissDialog();
         mBinding.setIsVisible(true);
         mBinding.setErrorText(getResources().getString(R.string.error));
+    }
+
+    private void configureActivity(Bundle saveinstancestate) {
+        if (editOwner) { //edit owner
+            if (saveinstancestate != null) {
+                ownerObj = saveinstancestate.getParcelable(getResources().getString(R.string.parcelable_obj));
+            } else {
+                ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
+            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                    .replace(R.id.myPetsContainer, OwnerFrgmt.newInstance(false, mToken, ownerObj), getResources().getString(R.string.owner_fgmt))
+                    .commit();
+        } else {
+            checkOwnerExists(mToken);
+        }
     }
 
     public void setImageProfileUrl(String url) {

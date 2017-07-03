@@ -38,6 +38,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class BaseActivity extends AppCompatActivity implements Lifecycle.View {
 
+    private static final String debugTag = BaseActivity.class.getSimpleName();
     public abstract Lifecycle.ViewModel getViewModel();
     private Dialog.Builder mBuilder;
     private ProgressDialog mProgressDialog;
@@ -69,35 +70,40 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         if (getViewModel() != null) getViewModel().onViewDetached();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     public MyAccountManager getMyAccountManager() {
         return myAccountManager;
     }
 
-    public Observable<DialogActions> pickDateDialog() {
-        return Observable.create(new ObservableOnSubscribe<DialogActions>() {
-            @Override
-            public void subscribe(@NonNull final ObservableEmitter<DialogActions> subscriber) throws Exception {
-                mBuilder = new DatePickerDialog.Builder() {
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
-//                        Log.e("aa", dialog.getDate()/1000+"");
-                        subscriber.onNext(new DialogActions("", 1, dialog.getDate()/1000, dialog.getFormattedDate(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()))));
-                        super.onPositiveActionClicked(fragment);
-                    }
-                    @Override
-                    public void onNegativeActionClicked(DialogFragment fragment) {
-                        super.onNegativeActionClicked(fragment);
-                        subscriber.onNext(new DialogActions("", 0, 0, ""));
-                    }
-                };
-                mBuilder
-                        .positiveAction(getResources().getString(R.string.ok))
-                        .negativeAction(getResources().getString(R.string.cancel));
-                showDialog();
-            }
-        });
-    }
+//    public Observable<DialogActions> pickDateDialog() {
+//        return Observable.create(new ObservableOnSubscribe<DialogActions>() {
+//            @Override
+//            public void subscribe(@NonNull final ObservableEmitter<DialogActions> subscriber) throws Exception {
+//                mBuilder = new DatePickerDialog.Builder() {
+//                    @Override
+//                    public void onPositiveActionClicked(DialogFragment fragment) {
+//                        DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
+////                        Log.e("aa", dialog.getDate()/1000+"");
+//                        subscriber.onNext(new DialogActions("", 1, dialog.getDate()/1000, dialog.getFormattedDate(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()))));
+//                        super.onPositiveActionClicked(fragment);
+//                    }
+//                    @Override
+//                    public void onNegativeActionClicked(DialogFragment fragment) {
+//                        super.onNegativeActionClicked(fragment);
+//                        subscriber.onNext(new DialogActions("", 0, 0, ""));
+//                    }
+//                };
+//                mBuilder
+//                        .positiveAction(getResources().getString(R.string.ok))
+//                        .negativeAction(getResources().getString(R.string.cancel));
+//                showDialog();
+//            }
+//        });
+//    }
 
     public Observable<DialogActions> initializeGenericDialog(final String action, final String desc, final String title, final String negativeBtnTxt, final String positiveBtnTxt) {
         return Observable.create(new ObservableOnSubscribe<DialogActions>() {
@@ -136,6 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setCancelable(false);
+        Log.e(debugTag, "SHOW DIALOG");
         mProgressDialog.show();
 
         return mProgressDialog;

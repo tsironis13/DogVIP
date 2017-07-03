@@ -31,45 +31,51 @@
             android:layout_marginTop="@dimen/status_bar_height"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <include
-                android:id="@+id/incltoolbar"
-                layout="@layout/toolbar" />
-
             <LinearLayout
-                android:id="@+id/baseLlt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="?attr/actionBarSize"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="155dp"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:text="@string/no_pet_images_yet"
-                    android:visibility="@{imagelimit == 0 ? View.VISIBLE : View.GONE}" />
+                <include
+                    android:id="@+id/incltoolbar"
+                    layout="@layout/toolbar" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="20dp"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:text="@string/pet_images_limit"
-                    android:visibility="@{imagelimit == 0 ? View.VISIBLE : View.GONE}" />
-
-                <GridView
-                    android:id="@+id/imageGrdv"
+                <LinearLayout
+                    android:id="@+id/baseLlt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:verticalSpacing="0dp"
-                    android:horizontalSpacing="0dp"
-                    android:numColumns="2"
-                    android:visibility="@{imagelimit != 0 ? View.VISIBLE : View.GONE}" />
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="155dp"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@string/no_pet_images_yet"
+                        android:visibility="@{imagelimit == 0 ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:gravity="center"
+                        android:textSize="15sp"
+                        android:text="@string/pet_images_limit"
+                        android:visibility="@{imagelimit == 0 ? View.VISIBLE : View.GONE}" />
+
+                    <GridView
+                        android:id="@+id/imageGrdv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:verticalSpacing="0dp"
+                        android:horizontalSpacing="0dp"
+                        android:numColumns="2"
+                        android:visibility="@{imagelimit != 0 ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

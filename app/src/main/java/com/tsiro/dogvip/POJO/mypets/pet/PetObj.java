@@ -1,6 +1,7 @@
 package com.tsiro.dogvip.POJO.mypets.pet;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -24,10 +25,10 @@ public class PetObj extends BaseObservable implements Parcelable {
     private String authtoken;
     @SerializedName("p_id")
     @Expose
-    private Integer p_id;
+    private int p_id;
     @SerializedName("user_role_id")
     @Expose
-    private Integer user_role_id;
+    private int user_role_id;
     @SerializedName("p_name")
     @Expose
     private String p_name;
@@ -55,17 +56,24 @@ public class PetObj extends BaseObservable implements Parcelable {
     @SerializedName("chtr")
     @Expose
     private String chtr;
+    @SerializedName("main_image")
+    @Expose
+    private String main_image;
     @SerializedName("urls")
     @Expose
     private ArrayList<Image> urls;
+    @SerializedName("liked")
+    @Expose
+    private int liked;
+    @SerializedName("total_likes")
+    @Expose
+    private int total_likes;
 
     public PetObj() {}
 
     private PetObj(Parcel in) {
         p_id = in.readInt();
         user_role_id = in.readInt();
-//        action = in.readString();
-//        authtoken = in.readString();
         p_name = in.readString();
         race = in.readString();
         microchip = in.readString();
@@ -73,6 +81,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         p_city = in.readString();
         weight = in.readString();
         neutered = in.readInt();
+        main_image = in.readString();
         genre = in.readInt();
         chtr = in.readString();
         if (urls == null) urls = new ArrayList<>();
@@ -127,6 +136,10 @@ public class PetObj extends BaseObservable implements Parcelable {
 
     public void setAge(String p_age) { this.p_age = p_age; }
 
+    public String getMain_url() { return main_image; }
+
+    public void setMain_url(String main_url) { this.main_image = main_url; }
+
     public String getCity() { return p_city; }
 
     public void setCity(String p_city) { this.p_city = p_city; }
@@ -147,6 +160,14 @@ public class PetObj extends BaseObservable implements Parcelable {
 
     public void setUrls(ArrayList<Image> urls) { this.urls = urls; }
 
+    public int isLiked() { return liked; }
+
+    public void setLiked(int liked) { this.liked = liked; }
+
+    public int getTotal_likes() { return total_likes; }
+
+    public void setTotal_likes(int total_likes) { this.total_likes = total_likes; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -154,7 +175,6 @@ public class PetObj extends BaseObservable implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeString(action);
         dest.writeInt(p_id);
         dest.writeInt(user_role_id);
         dest.writeString(p_name);
@@ -164,6 +184,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         dest.writeString(p_city);
         dest.writeString(weight);
         dest.writeInt(neutered);
+        dest.writeString(main_image);
         dest.writeInt(genre);
         dest.writeString(chtr);
         dest.writeTypedList(urls);

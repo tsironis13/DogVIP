@@ -104,6 +104,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         super.onActivityCreated(savedInstanceState);
         mCommonUtls = ((MyPetsActivity)getActivity()).getCommonUtls();
         mOwnerFrgmtViewModel = new OwnerViewModel(MyPetsRequestManager.getInstance());
+        mToken = ((MyPetsActivity)getActivity()).getMyAccountManager().getAccountDetails().getToken();
 
         if (savedInstanceState != null) {
             state = savedInstanceState.getInt(getResources().getString(R.string.imageview_state));
@@ -111,31 +112,46 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                 String strUri = savedInstanceState.getString(getResources().getString(R.string.gallery_uri));
                 if (strUri != null) {
                     galleryURI = Uri.parse(strUri);
-                    isImageValid(galleryURI, state);
+//                    isImageValid(galleryURI, state);
                 }
             } else if (state == 2) {
                 output=(File) savedInstanceState.getSerializable(getResources().getString(R.string.image_output));
-                if (output != null) isImageValid(mCommonUtls.getUriForFile(output), state);
             }
-//            Log.e(debugTag, savedInstanceState.getInt(getResources().getString(R.string.imageview_state))+" here ");
-        }
-        if (getArguments() != null) {//add or edit owner
-            addowner = getArguments().getBoolean(getResources().getString(R.string.add_ownr));
-            mToken = ((MyPetsActivity)getActivity()).getMyAccountManager().getAccountDetails().getToken();
+            addowner = savedInstanceState.getBoolean(getResources().getString(R.string.add_ownr));
             mBinding.setAdduser(addowner);
             if (addowner) {//add owner
                 getActivity().setTitle(getResources().getString(R.string.add_owner));
                 ownerObj = new OwnerObj();
             } else {//edit owner
                 getActivity().setTitle(getResources().getString(R.string.edit_owner));
-                if (getArguments().getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
-                    ownerObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
+                if (savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
+                    ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
                     mBinding.setOwner(ownerObj);
-                    Log.e(debugTag, ownerObj.getImageurl()+"");
                     if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
                         state = 3;
                         mBinding.setImgstate(state);
                         setOwnerProfileImg(Uri.parse(ownerObj.getImageurl()));
+                    }
+                }
+            }
+        } else {
+            if (getArguments() != null) {//add or edit owner
+                addowner = getArguments().getBoolean(getResources().getString(R.string.add_ownr));
+                mBinding.setAdduser(addowner);
+                if (addowner) {//add owner
+                    getActivity().setTitle(getResources().getString(R.string.add_owner));
+                    ownerObj = new OwnerObj();
+                } else {//edit owner
+                    getActivity().setTitle(getResources().getString(R.string.edit_owner));
+                    if (getArguments().getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
+                        ownerObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
+                        mBinding.setOwner(ownerObj);
+                        Log.e(debugTag, ownerObj.getImageurl()+"");
+                        if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
+                            state = 3;
+                            mBinding.setImgstate(state);
+                            setOwnerProfileImg(Uri.parse(ownerObj.getImageurl()));
+                        }
                     }
                 }
             }
@@ -201,6 +217,8 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         } else if (state == 2){
             if (output != null) outState.putSerializable(getResources().getString(R.string.image_output), output);
         }
+        outState.putBoolean(getResources().getString(R.string.add_ownr), addowner);
+        outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
         outState.putInt(getResources().getString(R.string.imageview_state), state);
     }
 
@@ -359,8 +377,8 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                     if (!mBinding.getProcessing()) {
                         ownerObj.setAction(getResources().getString(R.string.edit_ownr));
 //                        Log.e(debugTag, "IMAGE SHJS"+ownerObj.getImageurl());
-                        if (((MyPetsActivity)getActivity()).getImageurl() != null && !((MyPetsActivity)getActivity()).getImageurl().equals("")) ownerObj.setImageurl(((MyPetsActivity)getActivity()).getImageurl());
                         if (ownerObj.getImageurl() !=null && !ownerObj.getImageurl().equals("")) ownerObj.setImageurl(ownerObj.getImageurl());
+                        if (((MyPetsActivity)getActivity()).getImageurl() != null && !((MyPetsActivity)getActivity()).getImageurl().equals("")) ownerObj.setImageurl(((MyPetsActivity)getActivity()).getImageurl());
 //                        ownerObj.setId(ownerObj.getId());
                         ((MyPetsActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
                         mOwnerFrgmtViewModel.submitOwner(ownerObj);

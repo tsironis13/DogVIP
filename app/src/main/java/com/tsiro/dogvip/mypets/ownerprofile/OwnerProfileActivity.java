@@ -2,9 +2,12 @@ package com.tsiro.dogvip.mypets.ownerprofile;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +29,8 @@ import com.bumptech.glide.request.target.Target;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
 import com.tsiro.dogvip.DashboardActivity;
+import com.tsiro.dogvip.POJO.Image;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
@@ -41,9 +46,15 @@ import com.tsiro.dogvip.mypets.pet.PetActivity;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -60,6 +71,9 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     private String mToken, imageurl;
     private OwnerProfileContract.ViewModel mOwnerProfileViewModel;
     private OwnerProfilePresenter ownerProfilePresenter;
+    private RecyclerViewAdapter rcvAdapter;
+    private OwnerRequest request;
+    private int index;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,73 +82,22 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         setSupportActionBar(mBinding.toolbar);
         mBinding.colTlbrLyt.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
         mOwnerProfileViewModel = new OwnerProfileViewModel(MyPetsRequestManager.getInstance());
+
 //        petObjList = new ArrayList<>();
-        if (getIntent() != null) {
-            ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
-//            Log.e(debugTag, ownerObj.getImageurl()+" IMAGE HERE");
-            mBinding.setOwner(ownerObj);
-            if (ownerObj.getPets().isEmpty()) {
-                mBinding.setHaspets(false);
-            } else {
-                ownerProfilePresenter = new OwnerProfilePresenter(this);
-                mBinding.setHaspets(true);
-                mBinding.rcv.setLayoutManager(new LinearLayoutManager(this));
-                mBinding.rcv.setNestedScrollingEnabled(false);
-                final RecyclerTouchListener listener = new RecyclerTouchListener(this, mBinding.rcv);
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(R.layout.owner_pet_rcv_row) {
-                    @Override
-                    protected Object getObjForPosition(int position) {
-//                        Log.e(debugTag, ownerObj.getPets().get(position).getName()+"");
-                        return ownerObj.getPets().get(position);
-                    }
-                    @Override
-                    protected int getLayoutIdForPosition(int position) {
-                        return R.layout.owner_pet_rcv_row;
-                    }
-                    @Override
-                    protected int getTotalItems() {
-                        return ownerObj.getPets().size();
-                    }
-
-                    @Override
-                    protected Object getClickListenerObject() {
-                        return ownerProfilePresenter;
-                    }
-                };
-//                mBinding.rcv.addOnItemTouchListener(new RecyclerViewTouchListener(this, mBinding.rcv, new RecyclerViewClickListener() {
-//                    @Override
-//                    public void onClick(View view, int position) {
-//                        Log.e(debugTag, view+""+ownerObj.getPets().get(position).getName());
-//
-//                    }
-//                }));
-                mBinding.rcv.setAdapter(adapter);
-                mBinding.rcv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-                listener.setSwipeOptionViews(R.id.edit, R.id.delete)
-                        .setSwipeable(R.id.baseRlt, R.id.revealRowLlt, new RecyclerTouchListener.OnSwipeOptionsClickListener() {
-                            @Override
-                            public void onSwipeOptionClicked(int viewID, int position) {
-                                if (viewID == R.id.edit) {
-                                    startPetActivity(false, position);
-                                    Log.e(debugTag, position+"");
-                                } else {
-                                    Log.e(debugTag, "delete");
-                                }
-                            }
-                        });
-                mBinding.rcv.addOnItemTouchListener(listener);
-                mBinding.setOwner(ownerObj);
+        if (savedInstanceState == null) {
+            if (getIntent() != null) {
+                ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
+                configureActivity();
             }
-            if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
-                setOwnerProfileImg(ownerObj.getImageurl());
-            }
+        } else {
+            ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
+            configureActivity();
         }
+        mBinding.setOwner(ownerObj);
         mToken = getMyAccountManager().getAccountDetails().getToken();
-
         if (getSupportActionBar()!= null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setTitle(ownerObj.getName()+" "+ownerObj.getSurname());
-//            setTitle(mBinding.getOwner().getName()+" "+mBinding.getOwner().getSurname());
+            setTitle(ownerObj.getName() + " " + ownerObj.getSurname());
         }
     }
 
@@ -159,6 +122,12 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
@@ -166,10 +135,33 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == AppConfig.OWNER_ACTIVITY_FOR_RESULT) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == AppConfig.OWNER_ACTIVITY_FOR_RESULT) {
                 imageurl = data.getExtras().getString(getResources().getString(R.string.imageurl));
                 setOwnerProfileImg(imageurl);
+            } else if (requestCode == AppConfig.REFRESH_PET_INFO) {
+                PetObj petObj = data.getExtras().getParcelable(getResources().getString(R.string.pet_obj));
+                int indx = data.getExtras().getInt(getResources().getString(R.string.index));
+//                Log.e(debugTag, "INDEX HERS =? "+indx);
+//                Log.e(debugTag, "MAI IMAGE: "+petObj.getMain_url());
+//                Log.e(debugTag, "PREVIOUS MAIN IMAGE: "+ownerObj.getPets().get(obj.getId()).getMain_url());
+//                        Log.e(debugTag, "INDEX => "+obj.getId());
+//                        Log.e(debugTag, "URLS S => "+petObj.getUrls());
+                        if (petObj.getMain_url() != null) {
+                            Uri main = Uri.parse(petObj.getMain_url());
+//                            Log.e(debugTag, "PETS =>"+ ownerObj.getPets());
+                            if (ownerObj.getPets().get(indx).getMain_url() != null) {
+                                Uri previous = Uri.parse(ownerObj.getPets().get(indx).getMain_url());
+                                if (!main.equals(previous)) {
+                                    ownerObj.getPets().get(indx).setMain_url(petObj.getMain_url());
+                                    rcvAdapter.notifyItemChanged(indx);
+                                }
+                            } else {
+                                ownerObj.getPets().get(indx).setMain_url(petObj.getMain_url());
+                                rcvAdapter.notifyItemChanged(indx);
+                            }
+                        }
+                        if (petObj.getUrls() != null) ownerObj.getPets().get(indx).setUrls(petObj.getUrls());
             }
         }
     }
@@ -209,10 +201,14 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         int position = (int)view.getTag();
         Intent intent = new Intent(OwnerProfileActivity.this, ImageUploadControlActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(getResources().getString(R.string.urls), ownerObj.getPets().get(position).getUrls());
-        bundle.putInt(getResources().getString(R.string.pet_id), ownerObj.getPets().get(position).getId());
+//        bundle.putParcelableArrayList(getResources().getString(R.string.urls), ownerObj.getPets().get(position).getUrls());
+//        bundle.putInt(getResources().getString(R.string.pet_id), ownerObj.getPets().get(position).getId());
+//        Log.e(debugTag, ownerObj.getPets().get(0).getMain_url());
+        bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(position));
+        bundle.putInt(getResources().getString(R.string.index), position);
         bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
-        startActivity(intent.putExtras(bundle));
+//        bundle.putString(getResources().getString(R.string.main_image), ownerObj.getPets().get(position).getMain_url());
+        startActivityForResult(intent.putExtras(bundle), AppConfig.REFRESH_PET_INFO);
     }
 
     @Override
@@ -233,7 +229,14 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     public void onSuccess(OwnerRequest response) {
         dismissDialog();
         if (response.getCode() == AppConfig.STATUS_OK) {
-            startActivity(new Intent(this, DashboardActivity.class));
+            if (response.getAction().equals(getResources().getString(R.string.delete_pet))) {
+                ownerObj.getPets().remove(index);
+                rcvAdapter.notifyItemRemoved(index);
+                rcvAdapter.notifyItemChanged(index);
+                if (ownerObj.getPets().size() == 0) mBinding.setHaspets(false);
+            } else {
+                startActivity(new Intent(this, DashboardActivity.class));
+            }
         } else {
             showSnackBar(getResources().getString(R.string.error), getResources().getString(R.string.close));
         }
@@ -245,22 +248,102 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         showSnackBar(getResources().getString(R.string.error), getResources().getString(R.string.close));
     }
 
+    private void configureActivity() {
+        if (ownerObj.getPets().isEmpty()) {
+            mBinding.setHaspets(false);
+        } else {
+            ownerProfilePresenter = new OwnerProfilePresenter(this);
+            mBinding.setHaspets(true);
+            mBinding.rcv.setLayoutManager(new LinearLayoutManager(this));
+            mBinding.rcv.setNestedScrollingEnabled(false);
+//                mBinding.rcv.setHasFixedSize(false);
+            final RecyclerTouchListener listener = new RecyclerTouchListener(this, mBinding.rcv);
+            rcvAdapter = new RecyclerViewAdapter(R.layout.owner_pet_rcv_row) {
+                @Override
+                protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
+//                        Log.e(debugTag, ownerObj.getPets().get(position).getName()+"");
+
+                    return ownerObj.getPets().get(position);
+                }
+                @Override
+                protected int getLayoutIdForPosition(int position) {
+                    return R.layout.owner_pet_rcv_row;
+                }
+                @Override
+                protected int getTotalItems() {
+                    return ownerObj.getPets().size();
+                }
+
+                @Override
+                protected Object getClickListenerObject() {
+                    return ownerProfilePresenter;
+                }
+            };
+            mBinding.rcv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+            listener.setSwipeOptionViews(R.id.edit, R.id.delete)
+                    .setSwipeable(R.id.baseRlt, R.id.revealRowLlt, new RecyclerTouchListener.OnSwipeOptionsClickListener() {
+                        @Override
+                        public void onSwipeOptionClicked(int viewID, int position) {
+                            if (viewID == R.id.edit) {
+                                startPetActivity(false, position);
+                            } else {
+                                deletePet(ownerObj.getPets().get(position).getId());
+                                index = position;
+                            }
+                        }
+                    });
+            mBinding.rcv.addOnItemTouchListener(listener);
+//                mBinding.setOwner(ownerObj);
+        }
+        if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
+            setOwnerProfileImg(ownerObj.getImageurl());
+        }
+        mBinding.rcv.setAdapter(rcvAdapter);
+    }
+
+    private void deletePet(final int id) {
+        Disposable disp = initializeGenericDialog("", getResources().getString(R.string.delete_pet_desc), getResources().getString(R.string.delete_pet_title), getResources().getString(R.string.cancel), getResources().getString(R.string.confirm)).subscribe(new Consumer<DialogActions>() {
+                @Override
+                public void accept(@NonNull DialogActions obj) throws Exception {
+            if (obj.getSelected_action() == 1) {//positive action (camera image)
+                request = new OwnerRequest();
+                request.setAction(getResources().getString(R.string.delete_pet));
+                request.setAuthtoken(mToken);
+                request.setId(ownerObj.getId());
+                request.setP_id(id);
+                if (isNetworkAvailable()) {
+                    mOwnerProfileViewModel.manipulateOwner(request);
+                    initializeProgressDialog(getResources().getString(R.string.please_wait));
+                } else {
+                    showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.close));
+                }
+            }}
+            });
+        RxEventBus.add(this, disp);
+    }
+
     private void startPetActivity(boolean addpet, int position) {
         Intent intent = new Intent(OwnerProfileActivity.this, PetActivity.class);
         Bundle bundle = new Bundle();
-        if (!addpet) bundle.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj.getPets().get(position));
+        if (!addpet) {
+            bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(position));
+            bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getPets().get(position).getUser_role_id());
+        } else {
+            bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
+        }
         bundle.putBoolean(getResources().getString(R.string.add_pet), addpet);
-        bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
-        startActivity(intent.putExtras(bundle));
+        Log.e(debugTag, position+ "POSITION");
+        bundle.putInt(getResources().getString(R.string.index), position);
+        startActivityForResult(intent.putExtras(bundle), AppConfig.REFRESH_PET_INFO);
     }
 
     private void deleteOwner() {
         initializeProgressDialog(getResources().getString(R.string.please_wait));
-        OwnerRequest request = new OwnerRequest();
+        request = new OwnerRequest();
         request.setAction(getResources().getString(R.string.delete_owner));
         request.setAuthtoken(mToken);
         request.setId(ownerObj.getId());
-        mOwnerProfileViewModel.deleteOwner(request);
+        mOwnerProfileViewModel.manipulateOwner(request);
     }
 
     private void editProfile() {

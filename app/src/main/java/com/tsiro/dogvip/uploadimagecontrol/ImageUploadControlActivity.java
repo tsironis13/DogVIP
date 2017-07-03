@@ -20,26 +20,34 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.DialogActions;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.ImagePathIndex;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.ImageGridAdapter;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityImageUploadControlBinding;
+import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
 import com.tsiro.dogvip.requestmngrlayer.ImageUploadControlRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -55,18 +63,19 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     private static final String debugTag = ImageUploadControlActivity.class.getSimpleName();
     private ActivityImageUploadControlBinding mBinding;
     private ArrayList<Image> urls;
-    private int state, petid, userRoleId;
+    //index of recycler view row clicked
+    private int state, petid, userRoleId, selectedIndex, oldMainImageIndex, setMainImageIndex, index;
     private Uri photoURI, galleryURI;
     private File output, filetToUpload;
     private ImageUploadControlContract.ViewModel mViewModel;
     private boolean initializeImagePickerDialog;
-    private String mToken;
+    private String mToken, mainImageUrl;
     private ImageGridAdapter imageGridAdapter;
     private ImageUploadControlPresenter imageUploadControlPresenter;
     private ArrayList<ImagePathIndex> checkedUrls;
-    private ImagePathIndex imagePathIndex;
     private MenuItem mainImageItem, deleteImageItem;
     private Image image;
+    private PetObj petObj;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,39 +92,29 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
             setTitle(getResources().getString(R.string.photos));
         }
         if (savedInstanceState != null) {
+            petObj = savedInstanceState.getParcelable(getResources().getString(R.string.pet_obj));
+            userRoleId = savedInstanceState.getInt(getResources().getString(R.string.user_role_id));
+            index = savedInstanceState.getInt(getResources().getString(R.string.index));
             state = savedInstanceState.getInt(getResources().getString(R.string.imageview_state));
+            mainImageUrl = savedInstanceState.getString(getResources().getString(R.string.main_image));
+//            Log.e(debugTag, mainImageUrl +" UP HERE");
             if (state == 1) {
                 String strUri = savedInstanceState.getString(getResources().getString(R.string.gallery_uri));
                 if (strUri != null) {
                     galleryURI = Uri.parse(strUri);
-                    isImageValid(galleryURI, state);
+//                    isImageValid(galleryURI, state);
                 }
             } else if (state == 2) {
                 output=(File) savedInstanceState.getSerializable(getResources().getString(R.string.image_output));
-                if (output != null) isImageValid(getCommonUtls().getUriForFile(output), state);
             }
-//            Log.e(debugTag, savedInstanceState.getInt(getResources().getString(R.string.imageview_state))+" here ");
-        }
-        if (getIntent() != null) {
-            Log.e(debugTag, getIntent().getExtras().getStringArrayList(getResources().getString(R.string.urls))+"");
-            urls = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.urls));
-            petid = getIntent().getExtras().getInt(getResources().getString(R.string.pet_id));
-            userRoleId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
-//            Log.e(debugTag, userRoleId+"");
-            if (urls != null) {
-                if (urls.isEmpty()) {
-                    mBinding.setImagelimit(0);
-                } else {
-                    Log.e(debugTag , "HEREEEE");
-                    imageGridAdapter = new ImageGridAdapter(this, R.layout.image_grid_item, urls, imageUploadControlPresenter);
-                    mBinding.imageGrdv.setAdapter(imageGridAdapter);
-                    if (urls.size() == 6) {
-                        mBinding.setImagelimit(1);
-                    } else {
-                        mBinding.setImagelimit(2);
-                    }
-                }
+            configureActivity(petObj);
+        } else {
+            if (getIntent() != null) {
+                petObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.pet_obj));
+                userRoleId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
+                index = getIntent().getExtras().getInt(getResources().getString(R.string.index));//recycler view row index clicked
             }
+            configureActivity(petObj);
         }
         if (initializeImagePickerDialog) {
             initializeDialog(getResources().getString(R.string.pick_image_dialog), getResources().getString(R.string.new_image_desc), getResources().getString(R.string.new_image_title), getResources().getString(R.string.gallery), getResources().getString(R.string.camera));
@@ -153,6 +152,10 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         } else if (state == 2){
             if (output != null) outState.putSerializable(getResources().getString(R.string.image_output), output);
         }
+        outState.putParcelable(getResources().getString(R.string.pet_obj), petObj);
+        outState.putInt(getResources().getString(R.string.user_role_id), userRoleId);
+        outState.putInt(getResources().getString(R.string.index), index);
+        outState.putString(getResources().getString(R.string.main_image), mainImageUrl);
         outState.putInt(getResources().getString(R.string.imageview_state), state);
     }
 
@@ -163,28 +166,53 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(debugTag, "activityDESTROYED");
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.e(debugTag, "MAIN IMAGE ON BACK PRESSED => "+ mainImageUrl);
+        petObj.setMain_url(mainImageUrl);
+        petObj.setUrls(urls);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(getResources().getString(R.string.pet_obj), petObj);
+        bundle.putInt(getResources().getString(R.string.index), index);
+        setResult(RESULT_OK, new Intent().putExtras(bundle));
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
     public void onCheckBoxClick(View view, boolean isChecked) {
 //        Log.e(debugTag, isChecked+"");
-        int index = (int) view.getTag();
+        selectedIndex = (int) view.getTag();
 //        Log.e(debugTag, index+" INDEX");
         if (!isChecked) {
-            imagePathIndex = new ImagePathIndex();
-            imagePathIndex.setPath(urls.get(index).getImageurl());
-            imagePathIndex.setIndex(index);
+            ImagePathIndex imagePathIndex = new ImagePathIndex();
+            imagePathIndex.setPath(urls.get(selectedIndex).getImageurl());
+            imagePathIndex.setIndex(selectedIndex);
             checkedUrls.add(imagePathIndex);
-            urls.get(index).setChecked(true);
+            urls.get(selectedIndex).setChecked(true);
         } else {
             for (int i = 0; i < checkedUrls.size(); i++) {
                 int remove =  checkedUrls.get(i).getIndex();
-                if (remove == index) checkedUrls.remove(i);
+                if (remove == selectedIndex) checkedUrls.remove(i);
             }
-            urls.get(index).setChecked(false);
+            urls.get(selectedIndex).setChecked(false);
         }
 //        for (int i = 0; i < checkedUrls.size(); i++) {
 //            Log.e(debugTag, checkedUrls.get(i).getIndex()+"");
 //        }
         if (checkedUrls.size() == 1) {
-            mainImageItem.setVisible(true);
+            if (!urls.get(selectedIndex).isMain()) mainImageItem.setVisible(true);
             deleteImageItem.setVisible(true);
         }
         if (checkedUrls.size() > 1) {
@@ -199,16 +227,32 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     @Override
     public void onSuccess(Image image) {
         dismissDialog();
+        mainImageUrl = image.getMainurl();
+//        Log.e(debugTag, "dfdksllkslsd => "+mainImageUrl);
         if (image.getAction().equals(getResources().getString(R.string.delete_pet_image))) {
-//            imageGridAdapter.updateData(null, false, checkedUrls);
-            for (int i = 0; i < checkedUrls.size(); i++) {
-                int remove =  checkedUrls.get(i).getIndex();
-                Log.e(debugTag, remove+" REMOVE");
-                if (remove == urls.size()) remove--;
-                urls.remove(remove);
+            Iterator<Image> iter = urls.iterator();
+            while (iter.hasNext()) {
+                Image obj = iter.next();
+                if (obj.isChecked()) iter.remove();
             }
             checkedUrls.clear();
-            notifyGridAdapter();
+            if (urls.size() == 1) urls.get(0).setCanchecked(true);
+            notifyGridAdapter(imageGridAdapter);
+            if (urls.size() == 0) {
+                mBinding.setImagelimit(0);
+            }
+            if (urls.size() > 0) mBinding.setImagelimit(2);
+        } else if (image.getAction().equals(getResources().getString(R.string.set_pet_main_image))) {
+//            if (checkBox != null) unCheckItem();
+            petObj.setMain_url(mainImageUrl);
+            urls.get(setMainImageIndex).setChecked(false);
+            checkedUrls.clear();
+            urls.get(oldMainImageIndex).setMain(false);
+            urls.get(oldMainImageIndex).setCanchecked(true);
+            urls.get(setMainImageIndex).setMain(true);
+            urls.get(setMainImageIndex).setCanchecked(false);
+            oldMainImageIndex = setMainImageIndex;
+            notifyGridAdapter(imageGridAdapter);
         } else {
             if (urls != null) {
                 getCommonUtls().deleteAppStorage(output);
@@ -217,23 +261,27 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                     urls.add(image);
                     mBinding.setImagelimit(2);
                     imageGridAdapter = new ImageGridAdapter(this, R.layout.image_grid_item, urls, imageUploadControlPresenter);
-                    mBinding.imageGrdv.setAdapter(imageGridAdapter);
+                    notifyGridAdapter(imageGridAdapter);
                 } else {
                     if (image.getAction().equals(getResources().getString(R.string.upload_pet_img))) {
-//                        imageGridAdapter.updateData(image, true, null);
+                        petObj.setMain_url(mainImageUrl);
+                        if (urls.size() == 1) urls.get(0).setCanchecked(false);
                         urls.add(image);
-                        notifyGridAdapter();
+                        notifyGridAdapter(imageGridAdapter);
                     }
                     if (image.getId() == 5) mBinding.setImagelimit(1);
                 }
                 checkedUrls.clear();
             }
         }
+        clearCheckUrls();
     }
 
     @Override
     public void onError(int resource) {
         dismissDialog();
+//        checkedUrls.clear();
+//        clearCheckUrls();
         showSnackBar(getResources().getString(resource), getResources().getString(R.string.close));
     }
 
@@ -249,7 +297,7 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mainImageItem:
-
+                setMainPetImage();
                 return true;
             case R.id.deleteImageItem:
                 deletePetImage();
@@ -305,16 +353,71 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         return mViewModel;
     }
 
-    private void notifyGridAdapter() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                imageGridAdapter.notifyDataSetChanged();
+    private void clearCheckUrls() {
+        for (Image list : urls) {
+            if (list.isChecked()) list.setChecked(false);
+        }
+        mainImageItem.setVisible(false);
+        deleteImageItem.setVisible(false);
+    }
+
+    private void configureActivity(PetObj petObj) {
+        if (petObj != null) {
+            urls = petObj.getUrls();
+            Log.e(debugTag, urls +"");
+            petid = petObj.getId();
+        }
+//        Log.e(debugTag, "urls => "+ urls);
+        if (urls != null) {
+            if (urls.isEmpty()) {
+                mBinding.setImagelimit(0);
+            } else {
+//                mainImageUrl = petObj.getMain_url();
+                imageGridAdapter = new ImageGridAdapter(this, R.layout.image_grid_item, urls, imageUploadControlPresenter);
+                mBinding.imageGrdv.setAdapter(imageGridAdapter);
+                if (urls.size() == 6) {
+                    mBinding.setImagelimit(1);
+                } else {
+                    mBinding.setImagelimit(2);
+                }
             }
-        });
+        }
+    }
+
+    private void notifyGridAdapter(final ImageGridAdapter imageGridAdptr) {
+        if (imageGridAdptr != null) {
+            mBinding.imageGrdv.setAdapter(imageGridAdptr);
+        } else {
+            imageGridAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void setMainPetImage() {
+//        Log.e(debugTag, mainImage+"");
+        for (int i = 0; i <urls.size(); i++) {
+            if (urls.get(i).isMain()) oldMainImageIndex = i;
+        }
+        for (int i = 0; i <checkedUrls.size(); i++) {
+            setMainImageIndex = checkedUrls.get(i).getIndex();
+//            Log.e(debugTag, checkedUrls.get(i).getIndex()+" INDEX");
+        }
+//        Log.e(debugTag, "MY SELECTED INDEX: "+selectedIndex);
+        image = new Image();
+        image.setAction(getResources().getString(R.string.set_pet_main_image));
+        image.setAuthtoken(mToken);
+        image.setId(petid);
+        image.setUser_role_id(userRoleId);
+        image.setImageurl(urls.get(setMainImageIndex).getImageurl());
+        if (isNetworkAvailable()) {
+            mViewModel.manipulatePetImage(image);
+            initializeProgressDialog(getResources().getString(R.string.please_wait));
+        } else {
+            showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.close));
+        }
     }
 
     private void deletePetImage() {
+//        Log.e(debugTag, urls.get(selectedIndex).isMain()+"sdssd");
         Disposable disp = initializeGenericDialog("", getResources().getString(R.string.clear_images_desc), getResources().getString(R.string.clear_image_title), getResources().getString(R.string.cancel), getResources().getString(R.string.confirm)).subscribe(new Consumer<DialogActions>() {
             @Override
             public void accept(@NonNull DialogActions obj) throws Exception {
@@ -325,8 +428,13 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                     image.setId(petid);
                     image.setUser_role_id(userRoleId);
                     image.setChecked_urls(checkedUrls);
-                    mViewModel.deletePetImage(image);
-                    initializeProgressDialog(getResources().getString(R.string.please_wait));
+                    image.setMain(urls.get(selectedIndex).isMain());
+                    if (isNetworkAvailable()) {
+                        mViewModel.manipulatePetImage(image);
+                        initializeProgressDialog(getResources().getString(R.string.please_wait));
+                    } else {
+                        showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.close));
+                    }
                 }
             }
         });
@@ -338,7 +446,7 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         filetToUpload = img.getImage();
         if (img.getSize()) {
             if (isNetworkAvailable()) {
-//                setOwnerProfileImg(uri);
+                Log.e(debugTag, "jklKALASE");
                 initializeProgressDialog(getResources().getString(R.string.please_wait));
                 uploadImage();
             } else {
@@ -351,7 +459,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     }
 
     private void uploadImage() {
-        Log.e(debugTag, "UPLOAD IMAGE");
         MultipartBody.Part mfile;
         try {
             mfile = getCommonUtls().getRequestFileBody(filetToUpload);
@@ -408,10 +515,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                         state = 1;
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, AppConfig.EXTERNAL_CONTENT_URI);
-                    }
-                } else if (obj.getAction().equals(getResources().getString(R.string.clear_image_dialog))) {
-                    if (obj.getSelected_action() == 1) {//positive action
-//                        deleteImg(ownerObj.getId());
                     }
                 }
             }

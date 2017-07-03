@@ -38,6 +38,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@color/colorPrimary"
+                android:padding="10dp"
                 android:visibility="@{isVisible ? View.VISIBLE : View.GONE}"
                 android:gravity="center">
 

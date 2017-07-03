@@ -20,6 +20,7 @@ import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityDashboardBinding;
 import com.tsiro.dogvip.databinding.NavigationHeaderBinding;
+import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
@@ -50,6 +51,7 @@ public class DashboardActivity extends BaseActivity {
     private SnackBar mSnackBar;
     private boolean logout;
     private ProgressDialog mProgressDialog;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,26 +69,26 @@ public class DashboardActivity extends BaseActivity {
 //        Log.e("dashboard", getIntent().getStringExtra("token"));
         email = getMyAccountManager().getAccountDetails().getEmail();
         mToken = getMyAccountManager().getAccountDetails().getToken();
+        bundle = new Bundle();
         if (getIntent() != null) {}
 
         NavigationHeaderBinding _bind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_header, mBinding.navigationView, false);
         mBinding.navigationView.addHeaderView(_bind.getRoot());
         _bind.setUseremail(email);
 
-//        mToken = getIntent().getStringExtra(getResources().getString(R.string.token));
-
         RxView.clicks(mBinding.petsLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 Intent intent = new Intent(DashboardActivity.this, MyPetsActivity.class);
-                intent.putExtra(getResources().getString(R.string.token), mToken);
+                bundle.putBoolean(getResources().getString(R.string.edit_ownr), false);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
         RxView.clicks(mBinding.loveLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-
+                startActivity(new Intent(DashboardActivity.this, LoveMatchActivity.class));
             }
         });
         RxView.clicks(mBinding.sittersLlt).subscribe(new Consumer<Object>() {

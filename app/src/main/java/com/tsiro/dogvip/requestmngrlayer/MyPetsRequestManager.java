@@ -56,7 +56,7 @@ public class MyPetsRequestManager {
     }
 
     public Flowable<OwnerObj> submitPet(PetObj request, PetViewModel petViewModel) {
-        return mMyPetsAPIService.submitPet(request, petViewModel);
+        return mMyPetsAPIService.submitPet(request, petViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 
 //    public Flowable<GetOwnerResponse> submitOwner(RequestBody request, MultipartBody.Part file, OwnerViewModel ownerViewModel) {

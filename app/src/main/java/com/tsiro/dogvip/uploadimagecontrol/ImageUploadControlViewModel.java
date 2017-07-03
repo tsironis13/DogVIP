@@ -10,9 +10,11 @@ import com.tsiro.dogvip.mypets.owner.OwnerViewModel;
 import com.tsiro.dogvip.requestmngrlayer.ImageUploadControlRequestManager;
 import com.tsiro.dogvip.utilities.ImageUploadSubscriber;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -23,6 +25,7 @@ import okhttp3.RequestBody;
 
 public class ImageUploadControlViewModel implements ImageUploadControlContract.ViewModel, Lifecycle.ImageUploadModel {
 
+    private static final String debugTag = ImageUploadControlViewModel.class.getSimpleName();
     private ImageUploadControlRequestManager mImageUploadControlRequestManager;
     private ImageUploadControlContract.View mViewClback;
     private Disposable mDisp, mManipulatePetImageDisp;
@@ -40,8 +43,18 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onViewResumed() {
-        if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null) imageProcessor.subscribe(new ImageUploadSubscriber(this));
-        if (mManipulatePetImageDisp != null && requestState != AppConfig.REQUEST_RUNNING && manipulatePetImageProcessor != null) manipulatePetImageProcessor.subscribe(new ManipulatePetImageObserver());
+        Log.e(debugTag, "onViewResumed");
+        if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null){
+            imageProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ImageUploadSubscriber(this));
+        }
+        if (mManipulatePetImageDisp != null && requestState != AppConfig.REQUEST_RUNNING && manipulatePetImageProcessor != null)
+                manipulatePetImageProcessor
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new ManipulatePetImageObserver());
     }
 
     @Override
@@ -57,19 +70,26 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
     @Override
     public void uploadPetImage(RequestBody action, RequestBody token, RequestBody user_role_id, RequestBody pet_id, MultipartBody.Part image, RequestBody index) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
+            requestState = AppConfig.REQUEST_RUNNING;
             imageProcessor = AsyncProcessor.create();
-            mDisp = imageProcessor.subscribeWith(new ImageUploadSubscriber(this));
+            mDisp = imageProcessor
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new ImageUploadSubscriber(this));
 
             mImageUploadControlRequestManager.uploadPetImage(action, token, user_role_id, pet_id, image, index, this).subscribe(imageProcessor);
         }
     }
 
     @Override
-    public void deletePetImage(Image image) {
+    public void manipulatePetImage(Image image) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             requestState = AppConfig.REQUEST_RUNNING;
             manipulatePetImageProcessor = AsyncProcessor.create();
-            mManipulatePetImageDisp = manipulatePetImageProcessor.subscribeWith(new ManipulatePetImageObserver());
+            mManipulatePetImageDisp = manipulatePetImageProcessor
+                                                        .subscribeOn(Schedulers.io())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribeWith(new ManipulatePetImageObserver());
 
             mImageUploadControlRequestManager.deletePetImage(image, this).subscribe(manipulatePetImageProcessor);
         }
@@ -82,6 +102,7 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onSuccessImageAction(Image image) {
+        Log.e(debugTag, "onSuccessImageAction");
         mDisp = null;
         if (image.getCode() != AppConfig.STATUS_OK) {
             mViewClback.onError(AppConfig.getCodes().get(image.getCode()));
@@ -95,6 +116,18 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
         mDisp = null;
 //        Log.e("aaa", AppConfig.getCodes().get(AppConfig.STATUS_ERROR)+"");
         mViewClback.onError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+    }
+
+    private void onSuccessImageManipulationAction(Image response) {
+        mManipulatePetImageDisp = null;
+        mViewClback.onSuccess(response);
+    }
+
+    private void onErrorImageManipulationAction(int resource) {
+        mManipulatePetImageDisp = null;
+        mViewClback.onError(resource);
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
     private class ManipulatePetImageObserver extends DisposableSubscriber<Image> {
@@ -102,18 +135,15 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
         @Override
         public void onNext(@NonNull Image response) {
             if (response.getCode() != AppConfig.STATUS_OK) {
-                mViewClback.onError(AppConfig.getCodes().get(response.getCode()));
+                onErrorImageManipulationAction(AppConfig.getCodes().get(response.getCode()));
             } else {
-                mViewClback.onSuccess(response);
+                onSuccessImageManipulationAction(response);
             }
-            mManipulatePetImageDisp = null;
         }
 
         @Override
         public void onError(@NonNull Throwable e) {
-//            Log.e(debugTag, e.toString());
-            mManipulatePetImageDisp = null;
-            mViewClback.onError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
+            onErrorImageManipulationAction(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 
         @Override

@@ -23,7 +23,7 @@
             android:layout_height="225dp"
             android:scaleType="centerCrop"
             android:contentDescription="@string/image_cont_desc"
-            android:src="@{image.imageurl}"/>
+            android:src="@{image.imageurl}" />
 
         <ImageView
             android:layout_width="28dp"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:onClick="@{() -> presenter.onCheckBoxClick(baseFrmlt, image.checked)}"
-            android:visibility="@{!image.main ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{image.canchecked ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 

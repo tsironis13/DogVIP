@@ -27,8 +27,13 @@
     <string name="delete_owner">delete_owner</string>
     <string name="add_pet">add_pet</string>
     <string name="edit_pet">edit_pet</string>
+    <string name="delete_pet">delete_pet</string>
     <string name="delete_pet_image">delete_pet_image</string>
     <string name="set_pet_main_image">set_pet_main_image</string>
+    <string name="get_all_pets_by_filter">get_all_pets_by_filter</string>
+    <string name="like_dislike_pet">like_dislike_pet</string>
+    <string name="like_pet">like_pet</string>
+    <string name="dislike_pet">dislike_pet</string>
     <!-- MSGS -->
     <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
     <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>
@@ -62,6 +67,10 @@
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
     <string name="image_uploading_on_progress">Ανέβασμα φωτογραφίας σε εξέλιξη. Παρακαλώ περιμένετε.</string>
+    <string name="success_action">Η ενέργεια έγινε επιτυχώς.</string>
+    <string name="please_fill_out_search_filters">Παρακαλώ συμπλήρωσε κάποιο φίλτρο αναζήτησης.</string>
+    <string name="no_items">Δεν υπάρχουν διαθέσιμα στοιχεία.</string>
+    <string name="no_owner_created">Για να δεις τη συγκεκριμένη λειτουργία πρέπει να είσαι ιδιοκτήτης κατοικίδιου.\n\n Μπορείς να γίνεις ιδιοκτήτης μέσου του μενού Τα κατοικίδια μου.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
@@ -78,7 +87,10 @@
     <string name="cancel">ΑΚΥΡΩΣΗ</string>
 
     <string name="delete_owner_title">Διαγραφή Ιδιοκτήτη</string>
-    <string name="delete_owner_desc">Ο ιδιοκτήτης θα διαγραφεί οριστικά.</string>
+    <string name="delete_owner_desc">Ο ιδιοκτήτης και όλα τα κατοικίδια του θα διαγραφούν οριστικά.</string>
+
+    <string name="delete_pet_title">Διαγραφή Κατοικίδιου.</string>
+    <string name="delete_pet_desc">Το κατοικίδιο θα διαγραφεί οριστικά.</string>
     <!-- TAGS-->
     <string name="id">id</string>
     <string name="pet_id">pet_id</string>
@@ -87,6 +99,9 @@
     <string name="email">email</string>
     <string name="token">token</string>
     <string name="owner_exists">ownr_exists</string>
+    <string name="main_image">main_image</string>
+    <string name="index">index</string>
+    <string name="has_changes">has_changes</string>
     <!--<string name="name">name</string>-->
     <!--<string name="surname">surname</string>-->
     <!--<string name="birth_date">birth_date</string>-->
@@ -112,8 +127,11 @@
     <string name="frgmnt_created">frgmnt_created</string>
     <string name="imageview_state">imgstate</string>
     <string name="parcelable_obj">parcelable_obj</string>
+    <string name="pet_obj">pet_obj</string>
     <string name="urls">urls</string>
 
+    <string name="male">Αρσενικό,</string>
+    <string name="female">Θηλυκό,</string>
     <string name="remove">Αφαιρεση</string>
     <!-- LOGIN ACTIVITY -->
     <string name="app_logo">app_logo</string>
@@ -171,6 +189,9 @@
     <string name="weight_plhldr"><u>Βάρος</u></string>
     <string name="neutered_plhldr">Στειρωμένο</string>
     <string name="chrctr_plhldr"><u>Χαρακτήρας</u></string>
+    <string name="love_match_location_plhldr">Τοποθεσία - Ράτσα</string>
+    <string name="location_filter_plhldr">Τοποθεσία</string>
+    <string name="race_filter_plhldr">Ράτσα</string>
     <!-- FORM VALIDATION MSG -->
     <string name="required_field">Υποχρεωτικό πεδίο</string>
     <string name="not_valid_email">Μη έγκυρο email</string>
