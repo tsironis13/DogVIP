@@ -9,6 +9,7 @@ import com.tsiro.dogvip.mypets.GetOwnerViewModel;
 import com.tsiro.dogvip.mypets.owner.OwnerViewModel;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileViewModel;
 import com.tsiro.dogvip.mypets.pet.PetViewModel;
+import com.tsiro.dogvip.ownerpets.OwnerPetsViewModel;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
@@ -53,6 +54,30 @@ public class MyPetsAPIService {
                     @Override
                     public void accept(@NonNull OwnerObj response) throws Exception {
                         getOwnerViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                    }
+                });
+    }
+
+    public Flowable<OwnerObj> getOwnerDetails(final OwnerRequest request, final OwnerPetsViewModel viewModel) {
+        return serviceAPI.getOwnerDetails(request)
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                    }
+                })
+                .doOnNext(new Consumer<OwnerObj>() {
+                    @Override
+                    public void accept(@NonNull OwnerObj response) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });
     }

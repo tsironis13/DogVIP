@@ -34,6 +34,12 @@
     <string name="like_dislike_pet">like_dislike_pet</string>
     <string name="like_pet">like_pet</string>
     <string name="dislike_pet">dislike_pet</string>
+    <string name="get_pet_likes">get_pet_likes</string>
+    <string name="get_owner_pets">get_owner_pets</string>
+
+    <string name="date_pick_action">date_pick_action</string>
+    <string name="time_pick_action">time_pick_action</string>
+    <string name="dialog_cancel_action">dialog_cancel_action</string>
     <!-- MSGS -->
     <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
     <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>
@@ -65,12 +71,15 @@
     <string name="edit">Επεξεργασία</string>
     <string name="delete">Διαγραφή</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
+    <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρήσε σαν ιδιοκτήτης στην εφαρμογή.</string>
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
     <string name="image_uploading_on_progress">Ανέβασμα φωτογραφίας σε εξέλιξη. Παρακαλώ περιμένετε.</string>
     <string name="success_action">Η ενέργεια έγινε επιτυχώς.</string>
     <string name="please_fill_out_search_filters">Παρακαλώ συμπλήρωσε κάποιο φίλτρο αναζήτησης.</string>
     <string name="no_items">Δεν υπάρχουν διαθέσιμα στοιχεία.</string>
     <string name="no_owner_created">Για να δεις τη συγκεκριμένη λειτουργία πρέπει να είσαι ιδιοκτήτης κατοικίδιου.\n\n Μπορείς να γίνεις ιδιοκτήτης μέσου του μενού Τα κατοικίδια μου.</string>
+    <string name="city_no_match">Η συγκεκριμένη πόλη δεν είναι διαθέσιμη.</string>
+    <string name="race_not_match">Η συγκεκριμένη ράτσα δεν είναι διαθέσιμη.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
@@ -132,6 +141,9 @@
 
     <string name="male">Αρσενικό,</string>
     <string name="female">Θηλυκό,</string>
+    <string name="male_no_comma">Αρσενικό</string>
+    <string name="female_no_comma">Θηλυκό</string>
+    <string name="no_neutered">Μη στειρωμένο</string>
     <string name="remove">Αφαιρεση</string>
     <!-- LOGIN ACTIVITY -->
     <string name="app_logo">app_logo</string>
@@ -167,7 +179,13 @@
     <string name="no_pets_yet">Δεν υπάρχουν διαθέσιμα κατοικίδια.</string>
     <string name="add_pet_label">Πατήστε το κουμπί προσθήκη για να προσθέσετε τα κατοικίδια σας!</string>
     <!-- PET ACTIVITY -->
-    <string name="show_images">Δες φωτογραφιες</string>
+    <string name="show_images">φωτογραφιες</string>
+    <!-- PET PROFILE -->
+    <string name="genre_label">Φύλλο:</string>
+    <string name="age_label">Ηλικία:</string>
+    <string name="weight_label">Βάρος:</string>
+    <string name="chrctr_label">Χαρακτήρας:</string>
+    <string name="location_label">Τοποθεσία:</string>
     <!-- IMAGE UPLOAD CONTROL ACTIVITY -->
     <string name="no_pet_images_yet">Δεν έχεις προσθέσει κάποια εικόνα.</string>
     <string name="pet_images_limit">Μέγιστος επιτρεπτός αριθμός\n φωτογραφιών: <b>6</b>.</string>
@@ -198,6 +216,7 @@
     <string name="not_valid_pass">Απαιτείται κωδικός 8 λατινικών χαρακτήρων</string>
     <string name="passwrds_not_match">Ασυμφωνία κωδικών</string>
     <string name="not_valid_name_fld">Απαιτούνται μόνο χαρακτήρες</string>
+    <string name="not_valid_microchip">Ο αριθμός αποτελείται από 15 αριθμούς.</string>
 
     <string name="image_cont_desc">cont_desc</string>
 

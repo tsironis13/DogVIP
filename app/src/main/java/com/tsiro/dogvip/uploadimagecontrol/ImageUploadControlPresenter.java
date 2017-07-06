@@ -19,4 +19,9 @@ public class ImageUploadControlPresenter implements ImageUploadControlContract.P
     public void onCheckBoxClick(View view, boolean isChecked) {
         viewcntr.onCheckBoxClick(view, isChecked);
     }
+
+    @Override
+    public void onImageClick(View view) {
+        viewcntr.onImageClick(view);
+    }
 }

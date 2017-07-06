@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -22,6 +23,7 @@ import com.bumptech.glide.request.target.Target;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.interfaces.RecyclerCallback;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -34,6 +36,7 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 
     private int layoutid;
     private ViewDataBinding mBinding;
+
 
     public RecyclerViewAdapter(int layoutId) {
         this.layoutid = layoutId;
@@ -67,11 +70,30 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     @BindingAdapter("bind:imageUrl")
     public static void loadImage(ImageView imageView, String url) {
         //.skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+        int default_img = 0;
+        if (imageView.getId() == R.id.petImgv) {
+            default_img = R.drawable.ic_pets;
+        } else if (imageView.getId() == R.id.profileImgv) {
+            default_img = R.drawable.default_person;
+        }
         Glide.with(imageView.getContext())
                 .load(url)
                 .transition(withCrossFade())
-                .apply(new RequestOptions().circleCrop().error(R.drawable.ic_pets).placeholder(R.drawable.ic_pets))
+                .apply(new RequestOptions().circleCrop().error(default_img).placeholder(default_img))
                 .into(imageView);
+    }
+
+    @BindingAdapter("bind:textPl")
+    public static void setText(TextView textView, String text) {
+        if (textView.getId() == R.id.ageTtv || textView.getId() == R.id.pageTtv || textView.getId() == R.id.customageTtv) {
+            String[] holder = text.split("/");
+            int current_year = Calendar.getInstance().get(Calendar.YEAR);
+            int age = current_year - Integer.valueOf(holder[2]);
+            String fage = String.valueOf(age);
+            if (textView.getId() == R.id.customageTtv) fage = fage + " ετών";
+            textView.setText(fage);
+        }
+//        Log.e("asa", text.split("/").toString());
     }
 
 //    protected abstract int getsItemCount();

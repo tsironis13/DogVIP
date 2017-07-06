@@ -334,6 +334,4 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
             mGoogleUserLoggedIn = false;
         }
     }
-
-
 }

@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
@@ -15,15 +14,14 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.ImageViewPagerActivity;
 import com.tsiro.dogvip.POJO.DialogActions;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.ImagePathIndex;
@@ -34,7 +32,6 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityImageUploadControlBinding;
-import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
 import com.tsiro.dogvip.requestmngrlayer.ImageUploadControlRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
@@ -44,10 +41,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -188,6 +181,19 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         setResult(RESULT_OK, new Intent().putExtras(bundle));
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    public void onImageClick(View view) {
+        int pos = (int) view.getTag();
+        if (urls.get(pos).getImageurl() != null) {
+            String[] petUrls = new String[] {urls.get(pos).getImageurl()};
+            Intent intent = new Intent(this, ImageViewPagerActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArray(getResources().getString(R.string.urls), petUrls);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     @Override

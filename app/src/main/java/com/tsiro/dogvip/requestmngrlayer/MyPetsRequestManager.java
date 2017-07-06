@@ -9,6 +9,7 @@ import com.tsiro.dogvip.mypets.owner.OwnerViewModel;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileViewModel;
 import com.tsiro.dogvip.mypets.pet.PetViewModel;
 import com.tsiro.dogvip.networklayer.MyPetsAPIService;
+import com.tsiro.dogvip.ownerpets.OwnerPetsViewModel;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +60,8 @@ public class MyPetsRequestManager {
         return mMyPetsAPIService.submitPet(request, petViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 
-//    public Flowable<GetOwnerResponse> submitOwner(RequestBody request, MultipartBody.Part file, OwnerViewModel ownerViewModel) {
-//        return mMyPetsAPIService.submitOwner(request, file, ownerViewModel);
-//    }
+    public Flowable<OwnerObj> getOwnerDetails(OwnerRequest request, OwnerPetsViewModel viewModel) {
+        //in case server response is faster than activity lifecycle callback methods
+        return mMyPetsAPIService.getOwnerDetails(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
+    }
 }

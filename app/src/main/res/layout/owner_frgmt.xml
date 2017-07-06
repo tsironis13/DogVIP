@@ -48,7 +48,7 @@
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:textColor="@color/error_color"
-                android:text="@string/required_fields" />
+                android:text="@string/required_fields_owner" />
 
             <RelativeLayout
                 android:id="@+id/profilePhoneLlt"
@@ -261,6 +261,7 @@
                     android:id="@+id/ageEdt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
                     android:layout_weight="0.86"
                     android:textSize="12sp"
                     android:paddingRight="8dp"
@@ -268,7 +269,7 @@
                     android:paddingBottom="12dp"
                     android:hint="@string/age_plhldr"
                     android:background="@android:color/transparent"
-                    android:text="@={owner.age}"
+                    android:text="@{owner.displayage}"
                     android:inputType="number" />
 
             </LinearLayout>
@@ -302,7 +303,7 @@
                     android:contentDescription="@string/image_cont_desc"
                     app:srcCompat="@drawable/location" />
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/cityEdt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

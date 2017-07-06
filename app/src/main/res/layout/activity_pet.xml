@@ -101,7 +101,7 @@
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:hint="@string/name_plhldr"
-                                android:text="@={obj.name}"
+                                android:text="@={obj.p_name}"
                                 android:background="@android:color/transparent"
                                 android:inputType="text" />
 
@@ -135,7 +135,7 @@
                                 android:contentDescription="@string/image_cont_desc"
                                 app:srcCompat="@drawable/ic_pets" />
 
-                            <EditText
+                            <AutoCompleteTextView
                                 android:id="@+id/raceEdt"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -268,13 +268,14 @@
                                 android:id="@+id/ageEdt"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:focusableInTouchMode="false"
                                 android:layout_weight="0.86"
                                 android:textSize="12sp"
                                 android:paddingRight="8dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:hint="@string/age_plhldr"
-                                android:text="@={obj.age}"
+                                android:text="@{obj.p_displayage}"
                                 android:background="@android:color/transparent"
                                 android:inputType="number" />
 
@@ -308,7 +309,7 @@
                                 android:contentDescription="@string/image_cont_desc"
                                 app:srcCompat="@drawable/location" />
 
-                            <EditText
+                            <AutoCompleteTextView
                                 android:id="@+id/cityEdt"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -318,7 +319,7 @@
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:hint="@string/city_plhldr"
-                                android:text="@={obj.city}"
+                                android:text="@{obj.city}"
                                 android:background="@android:color/transparent"
                                 android:inputType="text" />
 
@@ -362,7 +363,7 @@
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:hint="@string/weight_plhldr"
-                                android:text="@={obj.weight}"
+                                android:text="@{obj.weight}"
                                 android:background="@android:color/transparent"
                                 android:inputType="text" />
 
@@ -439,7 +440,7 @@
                                 android:maxLines="10"
                                 android:padding="11dp"
                                 android:hint="@string/chrctr_plhldr"
-                                android:text="@={obj.character}"
+                                android:text="@{obj.character}"
                                 android:textSize="13sp"
                                 android:background="@android:color/transparent"
                                 android:scrollbars="vertical" />

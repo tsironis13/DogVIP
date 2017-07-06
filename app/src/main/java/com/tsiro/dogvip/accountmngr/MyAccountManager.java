@@ -87,10 +87,14 @@ public class MyAccountManager {
     public UserAccount getAccountDetails() {
         UserAccount userAccount = new UserAccount();
         Account mAccount = getAccountByType(mContext.getResources().getString(R.string.account_type));
-        String mtoken = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.token));
-        String email = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email));
-        userAccount.setToken(mtoken);
-        userAccount.setEmail(email);
+        try {
+            String mtoken = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.token));
+            String email = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email));
+            userAccount.setToken(mtoken);
+            userAccount.setEmail(email);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         return userAccount;
     }
 

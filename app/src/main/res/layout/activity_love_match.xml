@@ -142,7 +142,7 @@
                         android:contentDescription="@string/image_cont_desc"
                         app:srcCompat="@drawable/ic_search_white" />
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/locationEdt"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -179,7 +179,7 @@
                         android:contentDescription="@string/image_cont_desc"
                         app:srcCompat="@drawable/ic_pets_white" />
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/raceEdt"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -187,8 +187,6 @@
                         android:textSize="13sp"
                         android:paddingRight="8dp"
                         android:textCursorDrawable="@null"
-                        android:paddingTop="17dp"
-                        android:paddingBottom="17dp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
                         android:textColorHint="@android:color/white"

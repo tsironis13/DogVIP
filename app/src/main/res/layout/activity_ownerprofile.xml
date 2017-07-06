@@ -80,7 +80,7 @@
                         android:layout_below="@+id/profileImgv"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
-                        android:text="@{@string/owner_age(owner.age)}" />
+                        android:text="@{owner.displayage}" />
 
                     <TextView
                         android:id="@+id/cityTtv"
@@ -100,7 +100,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="@={owner.name}" />
+                        android:text="@{owner.name}" />
 
                     <TextView
                         android:id="@+id/surnnameTtv"
@@ -112,7 +112,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="@={owner.surname}" />
+                        android:text="@{owner.surname}" />
 
                     <!--<com.rey.material.widget.ImageButton-->
                         <!--android:id="@+id/editImgv"-->

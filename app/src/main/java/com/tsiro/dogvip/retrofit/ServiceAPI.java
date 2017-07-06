@@ -9,6 +9,8 @@ import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+import com.tsiro.dogvip.POJO.petlikes.PetLikesRequest;
+import com.tsiro.dogvip.POJO.petlikes.PetLikesResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -71,6 +73,9 @@ public interface ServiceAPI {
 
     @POST("actions.php")
     Flowable<LoveMatchResponse> getPetsByFilter(@Body LoveMatchRequest request);
+
+    @POST("actions.php")
+    Flowable<PetLikesResponse> getPetLikes(@Body PetLikesRequest request);
 //    @Multipart
 //    @POST("actions.php")
 //    Flowable<GetOwnerResponse> submitOwner(@Part("body") RequestBody body, @Part MultipartBody.Part image);

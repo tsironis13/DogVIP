@@ -15,6 +15,7 @@ public class OwnerProfileContract {
     interface Presenter {
         void onBaseViewClick(android.view.View view);
         void onPetImgViewClick(android.view.View view);
+        void onLoveViewClick(android.view.View view);
     }
 
     interface View extends Lifecycle.View {
@@ -22,6 +23,7 @@ public class OwnerProfileContract {
         void onError(int resource);
         void onBaseViewClick(android.view.View view);
         void onPetImgViewClick(android.view.View view);
+        void onLoveViewClick(android.view.View view);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {

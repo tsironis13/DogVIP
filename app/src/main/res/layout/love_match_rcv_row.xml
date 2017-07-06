@@ -32,7 +32,7 @@
                 android:contentDescription="@string/image_cont_desc"
                 android:elevation="2dp"
                 android:background="@drawable/circle_image"
-                android:onClick="@{() -> presenter.onIndividualViewClick(baseRlt)}"
+                android:onClick="@{() -> presenter.onPetImageViewClick(baseRlt)}"
                 app:imageUrl="@{obj.main_url}" />
 
             <TextView
@@ -44,15 +44,17 @@
                 android:layout_toEndOf="@+id/petImgv"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:text="@{obj.name}" />
+                android:text="@{obj.p_name}" />
 
             <TextView
                 android:id="@+id/raceTtv"
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nameTtv"
                 android:layout_toRightOf="@+id/petImgv"
                 android:layout_toEndOf="@+id/petImgv"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:text="@{obj.race}" />
@@ -77,7 +79,7 @@
                 android:layout_toRightOf="@+id/genreTtv"
                 android:layout_toEndOf="@+id/genreTtv"
                 android:textSize="13sp"
-                android:text="@{@string/owner_age(obj.age)}" />
+                app:textPl="@{obj.p_displayage}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -98,7 +100,7 @@
                 android:paddingLeft="13dp"
                 android:contentDescription="@string/image_cont_desc"
                 android:src="@{obj.isLiked == 0 ? @drawable/ic_favorite_border : @drawable/ic_favorite_black}"
-                android:onClick="@{() -> presenter.onIndividualViewClick(baseRlt)}" />
+                android:onClick="@{() -> presenter.onLoveImageViewClick(baseRlt)}" />
 
             <ImageView
                 android:id="@+id/chatImgv"

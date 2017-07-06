@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -24,6 +25,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -46,11 +49,14 @@ import com.tsiro.dogvip.app.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.OwnerFrgmtBinding;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
+import com.tsiro.dogvip.utilities.DialogPicker;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -83,6 +89,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         Bundle bundle = new Bundle();
         bundle.putBoolean("add_owner", addNew);
         bundle.putString("token", token);
+
         if (ownerObj != null)bundle.putParcelable("parcelable_obj", ownerObj);
         OwnerFrgmt ownerFrgmt = new OwnerFrgmt();
         ownerFrgmt.setArguments(bundle);
@@ -105,6 +112,8 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         mCommonUtls = ((MyPetsActivity)getActivity()).getCommonUtls();
         mOwnerFrgmtViewModel = new OwnerViewModel(MyPetsRequestManager.getInstance());
         mToken = ((MyPetsActivity)getActivity()).getMyAccountManager().getAccountDetails().getToken();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
+        mBinding.cityEdt.setAdapter(adapter);
 
         if (savedInstanceState != null) {
             state = savedInstanceState.getInt(getResources().getString(R.string.imageview_state));
@@ -122,11 +131,13 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
             if (addowner) {//add owner
                 getActivity().setTitle(getResources().getString(R.string.add_owner));
                 ownerObj = new OwnerObj();
+                mBinding.setOwner(ownerObj);
             } else {//edit owner
                 getActivity().setTitle(getResources().getString(R.string.edit_owner));
                 if (savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
                     ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
                     mBinding.setOwner(ownerObj);
+                    Log.e(debugTag, ownerObj.getImageurl() + "KDA");
                     if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
                         state = 3;
                         mBinding.setImgstate(state);
@@ -141,6 +152,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                 if (addowner) {//add owner
                     getActivity().setTitle(getResources().getString(R.string.add_owner));
                     ownerObj = new OwnerObj();
+                    mBinding.setOwner(ownerObj);
                 } else {//edit owner
                     getActivity().setTitle(getResources().getString(R.string.edit_owner));
                     if (getArguments().getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
@@ -182,6 +194,27 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
             }
         });
         RxEventBus.add(this, disp1);
+        Disposable disp2 = RxView.clicks(mBinding.ageEdt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                DialogFragment newFragment = new DialogPicker();
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+        RxEventBus.add(this, disp2);
+        Disposable disp3 = RxEventBus.createSubject(AppConfig.DIALOG_ACTION, 0).observeEvents(DialogActions.class).subscribe(new Consumer<DialogActions>() {
+            @Override
+            public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
+                if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
+                    Log.e(debugTag, obj.getDisplay_date());
+                    ownerObj.setDisplayage(obj.getDisplay_date());
+                    ownerObj.setAge(obj.getDate());
+                } else {
+                    ownerObj.setDisplayage("");
+                }
+            }
+        });
+        RxEventBus.add(this, disp3);
         if (initializeImagePickerDialog) {
             initializeDialog(getResources().getString(R.string.pick_image_dialog), getResources().getString(R.string.new_image_desc), getResources().getString(R.string.new_image_title), getResources().getString(R.string.gallery), getResources().getString(R.string.camera));
             initializeImagePickerDialog = false;
@@ -218,7 +251,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
             if (output != null) outState.putSerializable(getResources().getString(R.string.image_output), output);
         }
         outState.putBoolean(getResources().getString(R.string.add_ownr), addowner);
-        outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
+        if (ownerObj != null)outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
         outState.putInt(getResources().getString(R.string.imageview_state), state);
     }
 
@@ -271,8 +304,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         Intent intent = new Intent(getActivity(), OwnerProfileActivity.class);
         Bundle mBundle = new Bundle();
         mBundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
-        intent.putExtras(mBundle);
-        startActivity(intent);
+        startActivity(intent.putExtras(mBundle));
     }
 
     @Override
@@ -293,6 +325,8 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                 mBinding.setImgstate(state);
                 setOwnerProfileImg(null);
                 ((MyPetsActivity)getActivity()).setImageProfileUrl("");
+//                Log.e(debugTag, ownerObj.getImageurl()+"");
+                ownerObj.setImageurl("");
                 imageAction = "";
             } else {
                 mBinding.setImgstate(state);
@@ -360,28 +394,33 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         mAwesomeValidation.addValidation(mBinding.nameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.surnameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.ageEdt, ".*\\S.*", getResources().getString(R.string.required_field));
+//        mAwesomeValidation.addValidation(mBinding.ageEdt, "^(0?[1-9]|[1-9][0-9])$", getResources().getString(R.string.required_field));
         if (mAwesomeValidation.validate()) {
             if ((((MyPetsActivity)getActivity()).isNetworkAvailable())) {
 //                ownerObj.setState(state);
-                ownerObj.setAuthtoken(mToken);
-                ownerObj.setName(mBinding.nameEdt.getText().toString());
-                ownerObj.setSurname(mBinding.surnameEdt.getText().toString());
-                ownerObj.setAge(mBinding.ageEdt.getText().toString());
-                ownerObj.setCity(mBinding.cityEdt.getText().toString());
-                ownerObj.setPhone(mBinding.phoneEdt.getText().toString());
-                if (addowner) {
-                    ownerObj.setAction(getResources().getString(R.string.add_ownr));
-                    ((MyPetsActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
-                    mOwnerFrgmtViewModel.submitOwner(ownerObj);
+                if (!Arrays.asList(AppConfig.cities).contains(mBinding.cityEdt.getText().toString())) {
+                    RxEventBus.add(this, ((MyPetsActivity) getActivity()).showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.city_no_match), "").subscribe());
                 } else {
-                    if (!mBinding.getProcessing()) {
-                        ownerObj.setAction(getResources().getString(R.string.edit_ownr));
-//                        Log.e(debugTag, "IMAGE SHJS"+ownerObj.getImageurl());
-                        if (ownerObj.getImageurl() !=null && !ownerObj.getImageurl().equals("")) ownerObj.setImageurl(ownerObj.getImageurl());
-                        if (((MyPetsActivity)getActivity()).getImageurl() != null && !((MyPetsActivity)getActivity()).getImageurl().equals("")) ownerObj.setImageurl(((MyPetsActivity)getActivity()).getImageurl());
-//                        ownerObj.setId(ownerObj.getId());
+                    ownerObj.setAuthtoken(mToken);
+                    ownerObj.setName(mBinding.nameEdt.getText().toString());
+                    ownerObj.setSurname(mBinding.surnameEdt.getText().toString());
+                    ownerObj.setDisplayage(mBinding.ageEdt.getText().toString());
+                    ownerObj.setCity(mBinding.cityEdt.getText().toString());
+                    ownerObj.setPhone(mBinding.phoneEdt.getText().toString());
+                    if (addowner) {
+                        ownerObj.setAction(getResources().getString(R.string.add_ownr));
                         ((MyPetsActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
                         mOwnerFrgmtViewModel.submitOwner(ownerObj);
+                    } else {
+                        if (!mBinding.getProcessing()) {
+                            ownerObj.setAction(getResources().getString(R.string.edit_ownr));
+//                        Log.e(debugTag, "IMAGE SHJS"+ownerObj.getImageurl());
+                            if (ownerObj.getImageurl() !=null && !ownerObj.getImageurl().equals("")) ownerObj.setImageurl(ownerObj.getImageurl());
+                            if (((MyPetsActivity)getActivity()).getImageurl() != null && !((MyPetsActivity)getActivity()).getImageurl().equals("")) ownerObj.setImageurl(((MyPetsActivity)getActivity()).getImageurl());
+//                        ownerObj.setId(ownerObj.getId());
+                            ((MyPetsActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
+                            mOwnerFrgmtViewModel.submitOwner(ownerObj);
+                        }
                     }
                 }
             } else {

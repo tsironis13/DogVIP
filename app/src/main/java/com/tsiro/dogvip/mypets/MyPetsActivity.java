@@ -135,8 +135,8 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
             Intent intent = new Intent(this, OwnerProfileActivity.class);
             Bundle mBundle = new Bundle();
             mBundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
-            intent.putExtras(mBundle);
-            startActivity(intent);
+//            Log.e(debugTag, response.getId()+"");
+            startActivity(intent.putExtras(mBundle));
         }
     }
 

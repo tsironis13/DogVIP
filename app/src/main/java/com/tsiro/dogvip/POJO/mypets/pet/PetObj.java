@@ -5,6 +5,7 @@ import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tsiro.dogvip.POJO.Image;
@@ -38,9 +39,12 @@ public class PetObj extends BaseObservable implements Parcelable {
     @SerializedName("microchip")
     @Expose
     private String microchip;
+    @SerializedName("p_displayage")
+    @Expose
+    private String p_displayage;
     @SerializedName("p_age")
     @Expose
-    private String p_age;
+    private long p_age;
     @SerializedName("p_city")
     @Expose
     private String p_city;
@@ -68,6 +72,27 @@ public class PetObj extends BaseObservable implements Parcelable {
     @SerializedName("total_likes")
     @Expose
     private int total_likes;
+    @SerializedName("strurls")
+    @Expose
+    private String strurls;
+    @SerializedName("name")
+    @Expose
+    private String ownername;
+    @SerializedName("surname")
+    @Expose
+    private String surname;
+    @SerializedName("displayage")
+    @Expose
+    private String ownerage;
+    @SerializedName("city")
+    @Expose
+    private String ownercity;
+    @SerializedName("image_url")
+    @Expose
+    private String image_url;
+//    @SerializedName("liked_at")
+//    @Expose
+//    private String liked_at;
 
     public PetObj() {}
 
@@ -77,15 +102,22 @@ public class PetObj extends BaseObservable implements Parcelable {
         p_name = in.readString();
         race = in.readString();
         microchip = in.readString();
-        p_age = in.readString();
+        p_displayage = in.readString();
+        p_age = in.readLong();
         p_city = in.readString();
         weight = in.readString();
         neutered = in.readInt();
         main_image = in.readString();
+        total_likes = in.readInt();
         genre = in.readInt();
         chtr = in.readString();
         if (urls == null) urls = new ArrayList<>();
         in.readTypedList(urls, Image.CREATOR);
+        ownername = in.readString();
+        surname = in.readString();
+        ownerage = in.readString();
+        ownercity = in.readString();
+        image_url = in.readString();
     }
 
     public static final Creator<PetObj> CREATOR = new Creator<PetObj>() {
@@ -116,9 +148,9 @@ public class PetObj extends BaseObservable implements Parcelable {
 
     public void setUser_role_id(Integer user_role_id) { this.user_role_id = user_role_id; }
 
-    public String getName() { return p_name; }
+    public String getP_name() { return p_name; }
 
-    public void setName(String p_name) { this.p_name = p_name; }
+    public void setP_name(String p_name) { this.p_name = p_name; }
 
     public String getRace() { return race; }
 
@@ -131,10 +163,20 @@ public class PetObj extends BaseObservable implements Parcelable {
     public String getMicroship() { return microchip; }
 
     public void setMicroship(String microship) { this.microchip = microship; }
+    @Bindable
+    public Long getAge() { return p_age; }
 
-    public String getAge() { return p_age; }
+    public void setAge(Long p_age) {
+        this.p_age = p_age;
+        notifyPropertyChanged(BR.age);
+    }
+    @Bindable
+    public String getP_displayage() { return p_displayage; }
 
-    public void setAge(String p_age) { this.p_age = p_age; }
+    public void setP_displayage(String p_displayage) {
+        this.p_displayage = p_displayage;
+        notifyPropertyChanged(BR.p_displayage);
+    }
 
     public String getMain_url() { return main_image; }
 
@@ -168,6 +210,38 @@ public class PetObj extends BaseObservable implements Parcelable {
 
     public void setTotal_likes(int total_likes) { this.total_likes = total_likes; }
 
+    public String getStrurls() { return strurls; }
+
+    public void setStrurls(String strurls) { this.strurls = strurls; }
+
+    public String getOwnername() { return ownername; }
+
+    public void setOwnername(String ownername) { this.ownername = ownername; }
+
+    public String getOwnerage() { return ownerage; }
+
+    public void setOwnerage(String ownerage) { this.ownerage = ownerage; }
+
+    public String getOwnercity() { return ownercity; }
+
+    public void setOwnercity(String ownercity) { this.ownercity = ownercity; }
+
+    public String getSurname() { return surname; }
+
+    public void setSurname(String surname) { this.surname = surname; }
+
+    public String getUserUrl() { return image_url; }
+
+    public void setUserUrl(String image_url) { this.image_url = image_url; }
+
+    public String getImage_url() { return image_url; }
+
+    public void setImage_url(String image_url) { this.image_url = image_url; }
+
+//    public String getLiked_at() { return liked_at; }
+//
+//    public void setLiked_at(String liked_at) { this.liked_at = liked_at; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -180,13 +254,20 @@ public class PetObj extends BaseObservable implements Parcelable {
         dest.writeString(p_name);
         dest.writeString(race);
         dest.writeString(microchip);
-        dest.writeString(p_age);
+        dest.writeString(p_displayage);
+        dest.writeLong(p_age);
         dest.writeString(p_city);
         dest.writeString(weight);
         dest.writeInt(neutered);
         dest.writeString(main_image);
+        dest.writeInt(total_likes);
         dest.writeInt(genre);
         dest.writeString(chtr);
         dest.writeTypedList(urls);
+        dest.writeString(ownername);
+        dest.writeString(surname);
+        dest.writeString(ownerage);
+        dest.writeString(ownercity);
+        dest.writeString(image_url);
     }
 }

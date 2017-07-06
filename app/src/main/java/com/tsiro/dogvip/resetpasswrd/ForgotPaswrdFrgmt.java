@@ -232,4 +232,5 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
             ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
         }
     }
+
 }

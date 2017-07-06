@@ -31,6 +31,7 @@ import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
 import com.tsiro.dogvip.DashboardActivity;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+import com.tsiro.dogvip.petlikes.PetLikesActivity;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
@@ -199,7 +200,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     @Override
     public void onPetImgViewClick(View view) {
         int position = (int)view.getTag();
-        Intent intent = new Intent(OwnerProfileActivity.this, ImageUploadControlActivity.class);
+        Intent intent = new Intent(this, ImageUploadControlActivity.class);
         Bundle bundle = new Bundle();
 //        bundle.putParcelableArrayList(getResources().getString(R.string.urls), ownerObj.getPets().get(position).getUrls());
 //        bundle.putInt(getResources().getString(R.string.pet_id), ownerObj.getPets().get(position).getId());
@@ -209,6 +210,15 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
 //        bundle.putString(getResources().getString(R.string.main_image), ownerObj.getPets().get(position).getMain_url());
         startActivityForResult(intent.putExtras(bundle), AppConfig.REFRESH_PET_INFO);
+    }
+
+    @Override
+    public void onLoveViewClick(View view) {
+        int position = (int)view.getTag();
+        Intent intent = new Intent(this, PetLikesActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(position));
+        startActivity(intent.putExtras(bundle));
     }
 
     @Override

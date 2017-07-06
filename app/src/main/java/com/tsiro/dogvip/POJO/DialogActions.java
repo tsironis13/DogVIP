@@ -10,6 +10,8 @@ public class DialogActions {
     private int selected_action; //0 negative action, 1 positive action
     private long date;
 
+    public DialogActions() {}
+
     public DialogActions(String action, int selected_action, long date, String display_date) {
         this.action = action;
         this.selected_action = selected_action;

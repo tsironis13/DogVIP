@@ -16,7 +16,8 @@
     <FrameLayout
         android:id="@+id/baseFrmlt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{() -> presenter.onImageClick(baseFrmlt)}">
 
         <ImageView
             android:layout_width="match_parent"

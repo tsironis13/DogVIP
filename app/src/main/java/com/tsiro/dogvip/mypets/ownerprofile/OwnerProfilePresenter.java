@@ -24,4 +24,9 @@ public class OwnerProfilePresenter implements OwnerProfileContract.Presenter {
     public void onPetImgViewClick(View view) {
         viewcntr.onPetImgViewClick(view);
     }
+
+    @Override
+    public void onLoveViewClick(View view) {
+        viewcntr.onLoveViewClick(view);
+    }
 }

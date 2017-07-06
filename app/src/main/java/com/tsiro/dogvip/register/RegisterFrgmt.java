@@ -298,5 +298,4 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
             mGoogleUserLoggedIn = false;
         }
     }
-
 }

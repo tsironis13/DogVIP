@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View" />
 
         <variable
             name="obj"
@@ -97,17 +98,34 @@
                 android:paddingTop="16dp"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:text="@{obj.name}" />
+                android:text="@{obj.p_name}" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nameTtv"
                 android:layout_toRightOf="@+id/petImgv"
                 android:layout_toEndOf="@+id/petImgv"
+                android:layout_marginRight="15dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{obj.race}" />
+
+            <TextView
+                android:id="@+id/favTtv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:background="@drawable/ic_favorite_black"
+                android:text="@{String.valueOf(obj.total_likes)}"
+                android:textSize="13sp"
+                android:textColor="@android:color/white"
+                android:visibility="@{obj.total_likes > 0 ? View.VISIBLE : View.GONE}"
+                android:onClick="@{() -> presenter.onLoveViewClick(baseRlt)}" />
 
         </RelativeLayout>
 

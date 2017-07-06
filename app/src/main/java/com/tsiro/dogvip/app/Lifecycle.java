@@ -21,8 +21,8 @@ public interface Lifecycle {
     }
 
     interface ViewModel {
-        void onViewResumed();
         void onViewAttached(View viewCallback);
+        void onViewResumed();
         void onViewDetached();
     }
 

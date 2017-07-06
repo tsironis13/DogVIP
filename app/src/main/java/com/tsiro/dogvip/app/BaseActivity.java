@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 
 import com.rey.material.app.DatePickerDialog;
 import com.rey.material.app.Dialog;
@@ -79,7 +80,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         return myAccountManager;
     }
 
-//    public Observable<DialogActions> pickDateDialog() {
+
+    //    public Observable<DialogActions> pickDateDialog() {
 //        return Observable.create(new ObservableOnSubscribe<DialogActions>() {
 //            @Override
 //            public void subscribe(@NonNull final ObservableEmitter<DialogActions> subscriber) throws Exception {
@@ -142,7 +144,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setCancelable(false);
-        Log.e(debugTag, "SHOW DIALOG");
+//        Log.e(debugTag, "SHOW DIALOG");
         mProgressDialog.show();
 
         return mProgressDialog;

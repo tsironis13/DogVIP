@@ -217,4 +217,5 @@ public class DashboardActivity extends BaseActivity {
     public Lifecycle.ViewModel getViewModel() {
         return null;
     }
+
 }

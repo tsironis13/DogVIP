@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.annotations.Expose;
@@ -56,9 +57,12 @@ public class OwnerObj extends BaseObservable implements Parcelable {
     @SerializedName("surname")
     @Expose
     private String surname;
+    @SerializedName("displayage")
+    @Expose
+    private String displayage;
     @SerializedName("age")
     @Expose
-    private String age;
+    private long age;
     @SerializedName("city")
     @Expose
     private String city;
@@ -68,6 +72,9 @@ public class OwnerObj extends BaseObservable implements Parcelable {
     @SerializedName("imageurl")
     @Expose
     private String imageurl;
+    @SerializedName("liked_at")
+    @Expose
+    private String liked_at;
     @SerializedName("pets")
     @Expose
     private ArrayList<PetObj> pets;
@@ -83,7 +90,8 @@ public class OwnerObj extends BaseObservable implements Parcelable {
         authtoken = in.readString();
         name = in.readString();
         surname = in.readString();
-        age = in.readString();
+        age = in.readLong();
+        displayage = in.readString();
         city = in.readString();
         phone = in.readString();
         imageurl = in.readString();
@@ -136,6 +144,14 @@ public class OwnerObj extends BaseObservable implements Parcelable {
     }
 
     @Bindable
+    public long getAge() { return age; }
+
+    public void setAge(long age) {
+        this.age = age;
+        notifyPropertyChanged(BR.age);
+    }
+
+    @Bindable
     public String getName() {
         return name;
     }
@@ -154,13 +170,13 @@ public class OwnerObj extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.surname);
     }
     @Bindable
-    public String getAge() {
-        return age;
+    public String getDisplayage() {
+        return displayage;
     }
 
-    public void setAge(String age) {
-        this.age = age;
-        notifyPropertyChanged(BR.age);
+    public void setDisplayage(String displayage) {
+        this.displayage = displayage;
+        notifyPropertyChanged(BR.displayage);
     }
     @Bindable
     public String getCity() {
@@ -201,6 +217,10 @@ public class OwnerObj extends BaseObservable implements Parcelable {
 
     public void setPets(ArrayList<PetObj> pets) { this.pets = pets; }
 
+    public String getLiked_at() { return liked_at; }
+
+    public void setLiked_at(String liked_at) { this.liked_at = liked_at; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -209,14 +229,15 @@ public class OwnerObj extends BaseObservable implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(code);
-        dest.writeInt(id);
+        if (id != null)dest.writeInt(id);
         dest.writeByte((byte) (exists ? 1 : 0));
         dest.writeByte((byte) (stringlength ? 1 : 0));
         dest.writeString(action);
         dest.writeString(authtoken);
         dest.writeString(name);
         dest.writeString(surname);
-        dest.writeString(age);
+        dest.writeLong(age);
+        dest.writeString(displayage);
         dest.writeString(city);
         dest.writeString(phone);
         dest.writeString(imageurl);

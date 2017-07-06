@@ -1,9 +1,9 @@
 package com.tsiro.dogvip.lovematch;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -12,13 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
-import com.rey.material.widget.SnackBar;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.app.AppConfig;
@@ -28,11 +28,9 @@ import com.tsiro.dogvip.databinding.ActivityLoveMatchBinding;
 import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import org.reactivestreams.Subscription;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -61,6 +59,13 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         mToken = getMyAccountManager().getAccountDetails().getToken();
         mViewModel = new LoveMatchViewModel(LoveMatchRequestManager.getInstance());
         loveMatchPresenter = new LoveMatchPresenter(this);
+
+        ArrayAdapter<String> cadapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
+        mBinding.locationEdt.setAdapter(cadapter);
+
+        ArrayAdapter<String> radapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.races);
+        mBinding.raceEdt.setAdapter(radapter);
+
         fetchData(page);
     }
 
@@ -99,10 +104,12 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         Disposable disp4 = RxView.clicks(mBinding.searchImgv).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                if (mBinding.locationEdt.getText().toString().isEmpty() && mBinding.raceEdt.getText().toString().isEmpty()) {
-                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.please_fill_out_search_filters), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                hideSoftKeyboard();
+                if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString())) {
+                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.city_no_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                } else if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
+                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.race_not_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
                 } else {
-                    hideSoftKeyboard();
                     page = 1;
                     hasfilters = true;
                     mBinding.setHasFilters(true);
@@ -111,6 +118,10 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                     if (!data.isEmpty())data.clear();
                     fetchData(page);
                 }
+//                if (mBinding.locationEdt.getText().toString().isEmpty() && mBinding.raceEdt.getText().toString().isEmpty()) {
+//                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.please_fill_out_search_filters), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+//                } else {
+//                }
             }
         });
         RxEventBus.add(this, disp4);
@@ -144,7 +155,21 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     @Override
-    public void onIndividualViewClick(View view) {
+    public void onPetImageViewClick(View view) {
+        position = (int)view.getTag();
+        String[] urls = {};
+        if (data.get(position).getStrurls() != null) urls = data.get(position).getStrurls().replace("[", "").replace("]", "").split(",");
+        Intent intent = new Intent(this, PetProfileActivity.class);
+        Bundle bundle = new Bundle();
+        Log.e(debugTag, data.get(position).getUser_role_id()+"");
+        bundle.putParcelable(getResources().getString(R.string.pet_obj), data.get(position));
+        bundle.putStringArray(getResources().getString(R.string.urls), urls);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLoveImageViewClick(View view) {
         position = (int)view.getTag();
         if (isNetworkAvailable()) {
             if (!isLoading) {
@@ -177,6 +202,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             rcvAdapter.notifyItemChanged(position);
             showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.success_action), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
         } else {
+            Log.e(debugTag, response.isExists() +"");
             if (response.isExists()) {
                 mBinding.setExists(true);
                 if (response.getData() != null && response.getData().size() < 20) availableData = false;
@@ -327,4 +353,5 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         textView.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
         snackbar.show();
     }
+
 }

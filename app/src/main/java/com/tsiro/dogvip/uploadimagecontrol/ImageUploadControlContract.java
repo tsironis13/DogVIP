@@ -18,12 +18,14 @@ public interface ImageUploadControlContract {
 
     interface Presenter {
         void onCheckBoxClick(android.view.View view, boolean isChecked);
+        void onImageClick(android.view.View view);
     }
 
     interface View extends Lifecycle.View {
         void onSuccess(Image image);
         void onError(int resource);
         void onCheckBoxClick(android.view.View view, boolean isChecked);
+        void onImageClick(android.view.View view);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
