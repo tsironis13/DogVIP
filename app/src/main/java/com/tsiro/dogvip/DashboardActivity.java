@@ -24,6 +24,7 @@ import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
+import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -75,8 +76,12 @@ public class DashboardActivity extends BaseActivity {
         NavigationHeaderBinding _bind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_header, mBinding.navigationView, false);
         mBinding.navigationView.addHeaderView(_bind.getRoot());
         _bind.setUseremail(email);
+    }
 
-        RxView.clicks(mBinding.petsLlt).subscribe(new Consumer<Object>() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Disposable disp = RxView.clicks(mBinding.petsLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 Intent intent = new Intent(DashboardActivity.this, MyPetsActivity.class);
@@ -85,19 +90,34 @@ public class DashboardActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        RxView.clicks(mBinding.loveLlt).subscribe(new Consumer<Object>() {
+        RxEventBus.add(this, disp);
+        Disposable disp1 = RxView.clicks(mBinding.loveLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 startActivity(new Intent(DashboardActivity.this, LoveMatchActivity.class));
             }
         });
-        RxView.clicks(mBinding.sittersLlt).subscribe(new Consumer<Object>() {
+        RxEventBus.add(this, disp1);
+        Disposable disp2 = RxView.clicks(mBinding.sittersLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
 
             }
         });
+        RxEventBus.add(this, disp2);
+        Disposable disp3 = RxView.clicks(mBinding.lostLlt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                startActivity(new Intent(DashboardActivity.this, LostFoundActivity.class));
+            }
+        });
+        RxEventBus.add(this, disp3);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RxEventBus.unregister(this);
     }
 
     @Override

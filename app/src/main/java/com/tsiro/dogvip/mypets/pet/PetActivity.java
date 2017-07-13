@@ -46,7 +46,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
     private PetContract.ViewModel mPetViewModel;
     private ActivityPetBinding mBinding;
     private boolean addPet; //genre false -> male
-    private SnackBar mSnackBar;
     private PetObj petObj;
     private String mToken, mainImageUrl;
     private int userRoleId, index;
@@ -58,7 +57,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_pet);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         mPetViewModel = new PetViewModel(MyPetsRequestManager.getInstance());
-        mSnackBar = mBinding.mypetsSnckBr;
         mToken = getMyAccountManager().getAccountDetails().getToken();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_row, getResources().getStringArray(R.array.pet_genres));
@@ -104,8 +102,11 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         Disposable disp2 = RxView.clicks(mBinding.ageEdt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                DialogFragment newFragment = new DialogPicker();
-                newFragment.show(getSupportFragmentManager(), "datePicker");
+                Bundle args = new Bundle();
+                args.putInt(getResources().getString(R.string.dialog_type), 0);
+                DialogFragment dialogFragment = new DialogPicker();
+                dialogFragment.setArguments(args);
+                dialogFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
         RxEventBus.add(this, disp2);
@@ -154,7 +155,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         if (resultCode == RESULT_OK) {
            if (requestCode == AppConfig.REFRESH_PET_INFO) {
                 PetObj obj = data.getParcelableExtra(getResources().getString(R.string.pet_obj));
-               Log.e(debugTag, "KALASE=>"+ obj.getMain_url()+ " "+obj.getUrls());
+//               Log.e(debugTag, "KALASE=>"+ obj.getMain_url()+ " "+obj.getUrls());
                 if (obj.getMain_url() != null && !obj.getMain_url().equals("")) {
                     petObj.setMain_url(obj.getMain_url());
                     mainImageUrl = obj.getMain_url();
@@ -279,7 +280,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
                         petObj.setAction(getResources().getString(R.string.edit_pet));
 //                    petObj.setId();
                     }
-                    Log.e(debugTag, "submit");
+//                    Log.e(debugTag, "submit");
                     initializeProgressDialog(getResources().getString(R.string.please_wait));
                     mPetViewModel.submitPet(petObj);
                 }
@@ -289,11 +290,11 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         }
     }
 
-    public void showSnackBar(final int style, final String msg, final String action) {
-        if (mSnackBar != null) {
-            mSnackBar.applyStyle(style);
-            mSnackBar.text(msg);
-            mSnackBar.show();
+    private void showSnackBar(final int style, final String msg, final String action) {
+        if (mBinding.mypetsSnckBr != null) {
+            mBinding.mypetsSnckBr.applyStyle(style);
+            mBinding.mypetsSnckBr.text(msg);
+            mBinding.mypetsSnckBr.show();
         }
     }
 

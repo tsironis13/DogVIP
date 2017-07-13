@@ -6,6 +6,7 @@ import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,12 +89,36 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
         if (textView.getId() == R.id.ageTtv || textView.getId() == R.id.pageTtv || textView.getId() == R.id.customageTtv) {
             String[] holder = text.split("/");
             int current_year = Calendar.getInstance().get(Calendar.YEAR);
+            int current_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
             int age = current_year - Integer.valueOf(holder[2]);
-            String fage = String.valueOf(age);
-            if (textView.getId() == R.id.customageTtv) fage = fage + " ετών";
-            textView.setText(fage);
+            String str;
+            if (age > 0) {
+                str = String.valueOf(age);
+                if (textView.getId() == R.id.customageTtv) str = str + " ετών";
+            } else {
+                int month = current_month - Integer.valueOf(holder[1]);
+                if (month == 0) month = 1;
+                str = String.valueOf(month);
+                if (textView.getId() == R.id.customageTtv) str = str + " μηνών";
+            }
+            textView.setText(str);
         }
 //        Log.e("asa", text.split("/").toString());
+    }
+
+    @BindingAdapter(value={"bind:text1", "bind:text2"}, requireAll=false)
+    public static void setTextSpanColor(TextView textView, String text1, String text2) {
+        String bindtext = "";
+        if (textView.getId() == R.id.dateTimeLostTtv) {
+            bindtext = textView.getContext().getResources().getString(R.string.date_time_holder, text1, text2);
+        } else if (textView.getId() == R.id.locationTtv) {
+            bindtext = textView.getContext().getResources().getString(R.string.place_holder, text1);
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            textView.setText(Html.fromHtml(bindtext, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            textView.setText(Html.fromHtml(bindtext));
+        }
     }
 
 //    protected abstract int getsItemCount();

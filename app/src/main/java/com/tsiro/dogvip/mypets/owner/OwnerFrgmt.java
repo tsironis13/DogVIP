@@ -137,7 +137,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                 if (savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
                     ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
                     mBinding.setOwner(ownerObj);
-                    Log.e(debugTag, ownerObj.getImageurl() + "KDA");
+//                    Log.e(debugTag, ownerObj.getImageurl() + "KDA");
                     if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
                         state = 3;
                         mBinding.setImgstate(state);
@@ -158,7 +158,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                     if (getArguments().getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
                         ownerObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
                         mBinding.setOwner(ownerObj);
-                        Log.e(debugTag, ownerObj.getImageurl()+"");
+//                        Log.e(debugTag, ownerObj.getImageurl()+"");
                         if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
                             state = 3;
                             mBinding.setImgstate(state);
@@ -197,8 +197,11 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
         Disposable disp2 = RxView.clicks(mBinding.ageEdt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                DialogFragment newFragment = new DialogPicker();
-                newFragment.show(getFragmentManager(), "datePicker");
+                Bundle args = new Bundle();
+                args.putInt(getResources().getString(R.string.dialog_type), 0);
+                DialogFragment dialogFragment = new DialogPicker();
+                dialogFragment.setArguments(args);
+                dialogFragment.show(getFragmentManager(), "datePicker");
             }
         });
         RxEventBus.add(this, disp2);
@@ -225,6 +228,12 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
     public void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(debugTag, "onDestroy");
     }
 
     @Override

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@color/colorPrimary">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="2dp">
+
+                <com.rey.material.widget.LinearLayout
+                    android:id="@+id/lostLlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:layout_weight="0.5"
+                    style="@style/TouchRipplePrimaryStyle">
+
+                    <ImageView
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:layout_marginBottom="10dp"
+                        android:contentDescription="@string/image_cont_desc"
+                        android:src="@drawable/ic_lost" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:text="@string/lost" />
+
+                </com.rey.material.widget.LinearLayout>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="1dp" />
+
+                <com.rey.material.widget.LinearLayout
+                    android:id="@+id/foundLlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:layout_weight="0.5"
+                    style="@style/TouchRipplePrimaryStyle">
+
+                    <ImageView
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:layout_marginBottom="10dp"
+                        android:contentDescription="@string/image_cont_desc"
+                        android:src="@drawable/ic_found" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:text="@string/found" />
+
+                </com.rey.material.widget.LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

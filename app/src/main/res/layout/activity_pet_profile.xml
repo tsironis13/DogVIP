@@ -194,7 +194,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:layout_below="@id/raceTtv"
-                    android:background="@drawable/ic_favorite_black"
+                    android:background="@drawable/ic_favorite"
                     android:text="@{String.valueOf(petobj.total_likes)}"
                     android:textColor="@android:color/white"
                     android:visibility="@{petobj.total_likes > 0 ? View.VISIBLE : View.GONE}" />

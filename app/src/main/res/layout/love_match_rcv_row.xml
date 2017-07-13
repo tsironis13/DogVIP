@@ -66,11 +66,11 @@
                 android:layout_below="@id/raceTtv"
                 android:layout_toRightOf="@+id/petImgv"
                 android:layout_toEndOf="@+id/petImgv"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:text="@{obj.genre == 0 ? @string/male : @string/female}" />
 
             <TextView
-                android:id="@+id/ageTtv"
+                android:id="@+id/customageTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/raceTtv"
@@ -78,28 +78,28 @@
                 android:paddingLeft="3dp"
                 android:layout_toRightOf="@+id/genreTtv"
                 android:layout_toEndOf="@+id/genreTtv"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 app:textPl="@{obj.p_displayage}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/raceTtv"
-                android:layout_toRightOf="@+id/ageTtv"
-                android:layout_toEndOf="@+id/ageTtv"
-                android:textSize="13sp"
+                android:layout_toRightOf="@+id/customageTtv"
+                android:layout_toEndOf="@+id/customageTtv"
+                android:textSize="12sp"
                 android:text="@{obj.city}" />
 
             <ImageView
                 android:id="@+id/favBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
                 android:layout_toLeftOf="@+id/chatImgv"
                 android:layout_centerInParent="true"
-                android:paddingRight="13dp"
-                android:paddingLeft="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginLeft="13dp"
                 android:contentDescription="@string/image_cont_desc"
-                android:src="@{obj.isLiked == 0 ? @drawable/ic_favorite_border : @drawable/ic_favorite_black}"
+                android:src="@{obj.isLiked == 0 ? @drawable/ic_favorite_border : @drawable/ic_favorite}"
                 android:onClick="@{() -> presenter.onLoveImageViewClick(baseRlt)}" />
 
             <ImageView

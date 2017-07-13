@@ -4,6 +4,10 @@ import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.POJO.logout.LogoutRequest;
 import com.tsiro.dogvip.POJO.logout.LogoutResponse;
+import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
+import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
+import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPet;
+import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPetResponse;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
@@ -76,6 +80,12 @@ public interface ServiceAPI {
 
     @POST("actions.php")
     Flowable<PetLikesResponse> getPetLikes(@Body PetLikesRequest request);
+
+    @POST("actions.php")
+    Flowable<LostFoundResponse> getLostFound(@Body LostFoundRequest request);
+
+    @POST("actions.php")
+    Flowable<ManipulateLostFoundPetResponse> manipulateLostFound(@Body ManipulateLostFoundPet request);
 //    @Multipart
 //    @POST("actions.php")
 //    Flowable<GetOwnerResponse> submitOwner(@Part("body") RequestBody body, @Part MultipartBody.Part image);

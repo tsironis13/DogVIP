@@ -74,10 +74,10 @@
 
                 <ImageView
                     android:id="@+id/favImgv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
                     android:contentDescription="@string/image_cont_desc"
-                    android:src="@drawable/ic_favorite_black" />
+                    android:src="@drawable/ic_favorite" />
 
                 <TextView
                     android:layout_width="wrap_content"

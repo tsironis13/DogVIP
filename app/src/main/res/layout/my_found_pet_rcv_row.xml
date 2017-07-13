@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.lostfound.LostFoundObj" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="115dp">
+
+        <LinearLayout
+            android:id="@+id/revealRowLlt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/edit"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/edit"
+                    android:tint="@android:color/white"
+                    android:contentDescription="@string/image_cont_desc" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delete"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:background="#E53935"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_delete_white"
+                    android:contentDescription="@string/image_cont_desc" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/baseRlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:background="@color/rcv_background">
+
+            <ImageView
+                android:id="@+id/petImgv"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="true"
+                android:contentDescription="@string/image_cont_desc"
+                android:elevation="2dp"
+                android:background="@drawable/circle_image"
+                app:imageUrl="@{obj.main_image}" />
+
+            <TextView
+                android:id="@+id/infoTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:paddingTop="8dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@{obj.info}" />
+
+            <TextView
+                android:id="@+id/locationTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/infoTtv"
+                android:paddingTop="5dp"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textSize="13sp"
+                app:text1="@{obj.location}" />
+
+            <TextView
+                android:id="@+id/dateTimeLostTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationTtv"
+                android:layout_toRightOf="@+id/petImgv"
+                android:layout_toEndOf="@+id/petImgv"
+                android:textSize="13sp"
+                app:text1="@{obj.displaydate}"
+                app:text2="@{obj.time_lost}" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

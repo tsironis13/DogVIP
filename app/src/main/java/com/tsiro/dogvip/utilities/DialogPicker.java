@@ -11,8 +11,10 @@ import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.app.DatePickerDialog;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -31,19 +33,30 @@ public class DialogPicker extends DialogFragment implements DatePickerDialog.OnD
 
     private static final String debugTag = DialogPicker.class.getSimpleName();
     private DialogActions dialogActions;
+    private int dialogType;
+
+    //type 0 -> date picker dialog
+    //type 1 -> time picker dialog
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dialogActions = new DialogActions();
-        // Use the current date as the default date in the picker
+        dialogType = getArguments().getInt(getResources().getString(R.string.dialog_type));
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        if (dialogType == 0) {
+            // Use the current date as the default date in the picker
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        } else {
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+        }
     }
 
     @Override
@@ -66,13 +79,22 @@ public class DialogPicker extends DialogFragment implements DatePickerDialog.OnD
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        dialogActions.setAction(getResources().getString(R.string.time_pick_action));
+        String sminute = String.valueOf(minute);
+        if (minute <= 9) sminute = String.format(Locale.getDefault(), "%02d", minute);
+        dialogActions.setDisplay_date(hourOfDay+":"+sminute);
 
+        RxEventBus.createSubject(AppConfig.DIALOG_ACTION, 0).post(dialogActions);
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        dialogActions.setAction(getResources().getString(R.string.dialog_cancel_action));
+        if (dialogType == 0) {
+            dialogActions.setAction(getResources().getString(R.string.dialog_cancel_date_action));
+        } else {
+            dialogActions.setAction(getResources().getString(R.string.dialog_cancel_time_action));
+        }
         RxEventBus.createSubject(AppConfig.DIALOG_ACTION, 0).post(dialogActions);
     }
 }

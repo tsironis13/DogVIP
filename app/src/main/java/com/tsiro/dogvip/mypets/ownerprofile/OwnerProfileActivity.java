@@ -242,7 +242,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
             if (response.getAction().equals(getResources().getString(R.string.delete_pet))) {
                 ownerObj.getPets().remove(index);
                 rcvAdapter.notifyItemRemoved(index);
-                rcvAdapter.notifyItemChanged(index);
+                rcvAdapter.notifyDataSetChanged();
                 if (ownerObj.getPets().size() == 0) mBinding.setHaspets(false);
             } else {
                 startActivity(new Intent(this, DashboardActivity.class));
