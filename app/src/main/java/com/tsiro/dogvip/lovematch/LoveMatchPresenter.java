@@ -15,6 +15,11 @@ public class LoveMatchPresenter implements LoveMatchContract.Presenter {
     }
 
     @Override
+    public void onBaseViewClick(View view) {
+        mView.onBaseViewClick(view);
+    }
+
+    @Override
     public void onPetImageViewClick(View view) {
         mView.onPetImageViewClick(view);
     }
@@ -22,5 +27,10 @@ public class LoveMatchPresenter implements LoveMatchContract.Presenter {
     @Override
     public void onLoveImageViewClick(View view) {
         mView.onLoveImageViewClick(view);
+    }
+
+    @Override
+    public void onMessageIconClick(View view) {
+        mView.onMessageIconClick(view);
     }
 }

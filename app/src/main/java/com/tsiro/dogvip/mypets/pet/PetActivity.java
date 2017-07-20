@@ -50,6 +50,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
     private String mToken, mainImageUrl;
     private int userRoleId, index;
     private ArrayList<Image> urls;
+    private ArrayAdapter<String> radapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         ArrayAdapter<String> cadapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.cityEdt.setAdapter(cadapter);
 
-        ArrayAdapter<String> radapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.races);
+        radapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.races);
         mBinding.raceEdt.setAdapter(radapter);
 
         if (savedInstanceState != null) {
@@ -114,9 +115,13 @@ public class PetActivity extends BaseActivity implements PetContract.View {
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-                    Log.e(debugTag, obj.getDisplay_date());
-                    petObj.setP_displayage(obj.getDisplay_date());
-                    petObj.setAge(obj.getDate());
+//                    Log.e(debugTag, obj.getDisplay_date());
+                    if (obj.getCode() == AppConfig.STATUS_OK) {
+                        petObj.setP_displayage(obj.getDisplay_date());
+                        petObj.setAge(obj.getDate());
+                    } else {
+                        showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_date), getResources().getString(R.string.close));
+                    }
                 } else {
                     petObj.setP_displayage("");
                 }
@@ -230,6 +235,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         if (addPet) { //add pet
             setTitle(getResources().getString(R.string.add_owner));
             petObj = new PetObj();
+            petObj.setRace(getResources().getString(R.string.unknown));
         } else { //edit pet
             mBinding.setShowimages(true);
             setTitle(getResources().getString(R.string.edit));
@@ -244,6 +250,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
             mainImageUrl = petObj.getMain_url();
             urls = petObj.getUrls();
             if (petObj.isNeutered() == 1) mBinding.neuteredChbx.setChecked(true);
+            if (petObj.getHalfblood() == 1) mBinding.haldBloodChbx.setChecked(true);
             mBinding.petgenreSpnr.setSelection(petObj.isGenre());
         }
         mBinding.setObj(petObj);
@@ -274,6 +281,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
                     petObj.setCharacter(mBinding.chrctrEdt.getText().toString());
                     petObj.setGenre(mBinding.petgenreSpnr.getSelectedItemPosition());
                     petObj.setNeutered(mBinding.neuteredChbx.isChecked() ? 1 : 0);
+                    petObj.setHalfblood(mBinding.haldBloodChbx.isChecked() ? 1 : 0);
                     if (addPet) {
                         petObj.setAction(getResources().getString(R.string.add_pet));
                     } else {

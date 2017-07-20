@@ -18,6 +18,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
@@ -105,19 +106,54 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 hideSoftKeyboard();
-                if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString())) {
-                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.city_no_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
-                } else if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
-                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.race_not_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                if (mBinding.locationEdt.getText().toString().isEmpty() && mBinding.raceEdt.getText().toString().isEmpty()) {
+                    showSnackBar(getResources().getString(R.string.please_fill_out_search_filters), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                } else if (!mBinding.locationEdt.getText().toString().isEmpty() && mBinding.raceEdt.getText().toString().isEmpty()) {
+                    if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString())) {
+                        showSnackBar(getResources().getString(R.string.city_no_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                    } else {
+                        city = mBinding.locationEdt.getText().toString();
+                        race = "";
+                        search();
+//                        Log.e(debugTag, "search with city only");
+                    }
+                } else if (mBinding.locationEdt.getText().toString().isEmpty() && !mBinding.raceEdt.getText().toString().isEmpty()) {
+                    if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
+                        showSnackBar(getResources().getString(R.string.race_not_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                    } else {
+                        race = mBinding.raceEdt.getText().toString();
+                        city = "";
+                        search();
+//                        Log.e(debugTag, "search with race only");
+                    }
                 } else {
-                    page = 1;
-                    hasfilters = true;
-                    mBinding.setHasFilters(true);
-                    city = mBinding.locationEdt.getText().toString();
-                    race = mBinding.raceEdt.getText().toString();
-                    if (!data.isEmpty())data.clear();
-                    fetchData(page);
+                    if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString()) || !Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
+                        showSnackBar(getResources().getString(R.string.city_race_not_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+                    } else {
+                        city = mBinding.locationEdt.getText().toString();
+                        race = mBinding.raceEdt.getText().toString();
+                        search();
+//                        Log.e(debugTag, "search with both");
+                    }
                 }
+
+//                if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString())) {
+//                    showSnackBar(getResources().getString(R.string.city_no_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+//                } else if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
+//                    showSnackBar(getResources().getString(R.string.race_not_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+//                } else {
+//                    page = 1;
+//                    hasfilters = true;
+//                    mBinding.setHasFilters(true);
+//                    city = mBinding.locationEdt.getText().toString();
+//                    race = mBinding.raceEdt.getText().toString();
+//                    if (!data.isEmpty())data.clear();
+//                    fetchData(page);
+//                }
+
+
+
+
 //                if (mBinding.locationEdt.getText().toString().isEmpty() && mBinding.raceEdt.getText().toString().isEmpty()) {
 //                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.please_fill_out_search_filters), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
 //                } else {
@@ -136,7 +172,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                     fetchData(page);
                     availableData = true;
                 } else {
-                    showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
+                    showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
                 }
             }
         });
@@ -155,17 +191,19 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     @Override
+    public void onBaseViewClick(View view) {
+        position = (int)view.getTag();
+        showPetProfile(position);
+        mBinding.locationEdt.setText("");
+        mBinding.raceEdt.setText("");
+    }
+
+    @Override
     public void onPetImageViewClick(View view) {
         position = (int)view.getTag();
-        String[] urls = {};
-        if (data.get(position).getStrurls() != null) urls = data.get(position).getStrurls().replace("[", "").replace("]", "").split(",");
-        Intent intent = new Intent(this, PetProfileActivity.class);
-        Bundle bundle = new Bundle();
-        Log.e(debugTag, data.get(position).getUser_role_id()+"");
-        bundle.putParcelable(getResources().getString(R.string.pet_obj), data.get(position));
-        bundle.putStringArray(getResources().getString(R.string.urls), urls);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        showPetProfile(position);
+        mBinding.locationEdt.setText("");
+        mBinding.raceEdt.setText("");
     }
 
     @Override
@@ -183,8 +221,22 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                 mViewModel.getPetsByFilter(request);
             }
         } else {
-            showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
+            showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
         }
+    }
+
+    @Override
+    public void onMessageIconClick(View view) {
+        PetObj obj = data.get((int)view.getTag());
+        Bundle bundle = new Bundle();
+        bundle.putInt(getResources().getString(R.string.role), 1);
+        bundle.putInt(getResources().getString(R.string.user_role_id), obj.getUser_role_id());
+        bundle.putInt(getResources().getString(R.string.pet_id), obj.getId());
+        bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.get_chat_rooom_msgs_by_participants));
+        bundle.putString(getResources().getString(R.string.receiver), obj.getOwnername());
+        bundle.putString(getResources().getString(R.string.receiver_surname), obj.getSurname());
+        bundle.putString(getResources().getString(R.string.pet_name), obj.getP_name());
+        startActivity(new Intent(this, ChatRoomActivity.class).putExtras(bundle));
     }
 
     @Override
@@ -193,38 +245,36 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         mBinding.setHasError(false);
         isLoading = false;
         error = false;
+        mBinding.setExists(true);
         if (!response.getAction().equals(getResources().getString(R.string.get_all_pets_by_filter))) {
+            int total_likes = data.get(position).getTotal_likes();
             if (response.getSubaction().equals(getResources().getString(R.string.like_pet))) {
+                total_likes++;
+                data.get(position).setTotal_likes(total_likes);
                 data.get(position).setLiked(1);
             } else {
+                total_likes--;
+                data.get(position).setTotal_likes(total_likes);
                 data.get(position).setLiked(0);
             }
             rcvAdapter.notifyItemChanged(position);
-            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.success_action), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+            showSnackBar(getResources().getString(R.string.success_action), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
         } else {
-            Log.e(debugTag, response.isExists() +"");
-            if (response.isExists()) {
-                mBinding.setExists(true);
-                if (response.getData() != null && response.getData().size() < 20) availableData = false;
-                if (page == 1) {
-                    data = response.getData();
-                    if (data != null && data.isEmpty()) {
-                        mBinding.setHasError(true);
-                        mBinding.setErrorText(getResources().getString(R.string.no_items));
-                        mBinding.setNoitems(true);
-                    } else {
-                        initializeRcView(response.getData());
-                    }
+            if (response.getData() != null && response.getData().size() < 20) availableData = false;
+            if (page == 1) {
+                data = response.getData();
+                if (data != null && data.isEmpty()) {
+                    mBinding.setHasError(true);
+                    mBinding.setErrorText(getResources().getString(R.string.no_items));
+//                    mBinding.setNoitems(true);
                 } else {
-                    for (PetObj item : response.getData()) {
-                        data.add(item);
-                        rcvAdapter.notifyItemInserted(data.size());
-                    }
+                    initializeRcView(response.getData());
                 }
             } else {
-                mBinding.setHasError(true);
-                mBinding.setErrorText(getResources().getString(R.string.no_owner_created));
-                mBinding.setNoitems(true);
+                for (PetObj item : response.getData()) {
+                    data.add(item);
+                    rcvAdapter.notifyItemInserted(data.size());
+                }
             }
         }
     }
@@ -234,12 +284,41 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         dismissDialog();
         isLoading = false;
         error = true;
-        if (page == 1) {
+        if (resource == R.string.no_owner_exists) {
+            mBinding.setExists(false);
             mBinding.setHasError(true);
-            mBinding.setErrorText(getResources().getString(R.string.error));
+            mBinding.setErrorText(getResources().getString(resource));
         } else {
-            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(resource), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+            if (page == 1) {
+                mBinding.setHasError(true);
+                mBinding.setErrorText(getResources().getString(R.string.error));
+            } else {
+                showSnackBar(getResources().getString(resource), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+            }
         }
+    }
+
+    private void search() {
+        page = 1;
+        hasfilters = true;
+        mBinding.setHasFilters(true);
+        if (!data.isEmpty()) {
+            data.clear();
+            rcvAdapter.notifyDataSetChanged();
+        }
+        fetchData(page);
+    }
+
+    private void showPetProfile(int position) {
+        String[] urls = {};
+        if (data.get(position).getStrurls() != null) urls = data.get(position).getStrurls().replace("[", "").replace("]", "").split(",");
+        Intent intent = new Intent(this, PetProfileActivity.class);
+        Bundle bundle = new Bundle();
+        Log.e(debugTag, data.get(position).getUser_role_id()+"");
+        bundle.putParcelable(getResources().getString(R.string.pet_obj), data.get(position));
+        bundle.putStringArray(getResources().getString(R.string.urls), urls);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void collapseSearchFilters() {
@@ -256,6 +335,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     private void initializeRcView(final ArrayList<PetObj> data) {
 //        RecyclerTouchListener listener = new RecyclerTouchListener(this, mBinding.rcv);
         linearLayoutManager = new LinearLayoutManager(this);
+        if (rcvAdapter == null)mBinding.rcv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rcvAdapter = new RecyclerViewAdapter(R.layout.love_match_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
@@ -278,7 +358,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                 return loveMatchPresenter;
             }
         };
-        mBinding.rcv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mBinding.rcv.setLayoutManager(linearLayoutManager);
         mBinding.rcv.setNestedScrollingEnabled(false);
         mBinding.rcv.setAdapter(rcvAdapter);
@@ -303,7 +382,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     private void fetchData(int page) {
-        Log.e(debugTag, page +" PAGE");
+//        Log.e(debugTag, page +" PAGE");
         if (isNetworkAvailable()) {
             if (page ==1 )initializeProgressDialog(getResources().getString(R.string.please_wait));
             LoveMatchRequest request = new LoveMatchRequest();
@@ -322,7 +401,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             Log.e(debugTag, "PAGE HERE" + page);
             if (page > 1) {
                 error = true;
-                showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE);
+                showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE);
             } else {
                 mBinding.setHasError(true);
                 mBinding.setErrorText(getResources().getString(R.string.no_internet_connection));
@@ -337,7 +416,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         mBinding.locationEdt.setFocusableInTouchMode(true);
     }
 
-    public void showSnackBar(final int style, final String msg, final String action, int length_code) {
+    public void showSnackBar(final String msg, final String action, int length_code) {
         Snackbar snackbar = Snackbar
                 .make(mBinding.cntFrml, msg, length_code)
                 .setAction(action, new View.OnClickListener() {

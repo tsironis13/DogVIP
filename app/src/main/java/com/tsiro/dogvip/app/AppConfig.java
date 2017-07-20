@@ -17,6 +17,9 @@ public class AppConfig {
     public static final int ACTION_IMAGE_CAPTURE = 900;
     public static final int EXTERNAL_CONTENT_URI = 910;
     public static final int OWNER_ACTIVITY_FOR_RESULT = 1010;
+
+    public static final int MY_CHAT_VIEW_ITEM = 2030;
+    public static final int OTHER_CHAT_VIEW_ITEM = 2040;
     //SUBJECT TYPES
     public static final int PUBLISH_SUBJ = 0;
     public static final int REPLAY_SUBJ = 1;
@@ -26,6 +29,8 @@ public class AppConfig {
     public static final int REFRESH_PET_INFO = 1020;
     public static final int DIALOG_ACTION = 1030;
     public static final int USER_ACCOUNT_DATA = 900;
+    public static final int UPLOAD_FCM_TOKEN = 1040;
+    public static final int PUBLISH_NOTFCTS = 1050;
     //REQUEST STATE
     public static final int REQUEST_NONE = 0;
     public static final int REQUEST_RUNNING = 10;
@@ -33,6 +38,8 @@ public class AppConfig {
     public static final int REQUEST_FAILED = -11;
     //GOOGLE SIGN IN REQUEST CODE
     public static final int GOOGLE_REQ_CODE = 9001;
+
+    public static final int NOTIFICATION_ID = 1001;
     //STATUS CODES
     public static final int READ_EXTERNAL_STORAGE_PERMISSION_RESULT_CODE = 10;
     public static final int STATUS_OK = 200;
@@ -228,6 +235,7 @@ public class AppConfig {
         };
 
     public static final String[] races = {
+            "Άγνωστο",
             "Αγ. Βερνάρδου - Saint Bernard",
             "Αγγλικό Μπουλντόγκ - English Bulldog",
             "Αγγλικός ποιμενικός - English Sheepdog",

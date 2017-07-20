@@ -33,12 +33,18 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
     @SerializedName("genre")
     @Expose
     private int genre;
+    @SerializedName("half_blood")
+    @Expose
+    private int halfblood;
     @SerializedName("p_displayage")
     @Expose
     private String p_displayage;
     @SerializedName("main_image")
     @Expose
     private String main_image;
+    @SerializedName("thumb_image")
+    @Expose
+    private String thumb_image;
     @SerializedName("location")
     @Expose
     private String location;
@@ -66,8 +72,10 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
         p_id = in.readInt();
         p_name = in.readString();
         race = in.readString();
+        halfblood = in.readInt();
         main_image = in.readString();
-//        genre = in.readInt();
+        thumb_image = in.readString();
+        genre = in.readInt();
         location = in.readString();
         p_displayage = in.readString();
         displaydate = in.readString();
@@ -117,6 +125,10 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
         this.race = race;
     }
 
+    public int getHalfblood() { return halfblood; }
+
+    public void setHalfblood(int halfblood) { this.halfblood = halfblood; }
+
     public String getP_displayage() { return p_displayage; }
 
     public void setP_displayage(String p_displayage) { this.p_displayage = p_displayage; }
@@ -124,6 +136,10 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
     public String getMain_image() { return main_image; }
 
     public void setMain_image(String main_image) { this.main_image = main_image; }
+
+    public String getThumb_image() { return thumb_image; }
+
+    public void setThumb_image(String thumb_image) { this.thumb_image = thumb_image; }
 
     public int getGenre() {
         return genre;
@@ -185,8 +201,10 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
         dest.writeInt(p_id);
         dest.writeString(p_name);
         dest.writeString(race);
+        dest.writeInt(halfblood);
         dest.writeString(main_image);
-//        dest.writeInt(genre);
+        dest.writeString(thumb_image);
+        dest.writeInt(genre);
         dest.writeString(location);
         dest.writeString(p_displayage);
         dest.writeString(displaydate);

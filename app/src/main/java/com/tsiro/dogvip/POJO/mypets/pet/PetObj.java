@@ -57,6 +57,9 @@ public class PetObj extends BaseObservable implements Parcelable {
     @SerializedName("genre")
     @Expose
     private int genre;
+    @SerializedName("half_blood")
+    @Expose
+    private int halfblood;
     @SerializedName("chtr")
     @Expose
     private String chtr;
@@ -110,6 +113,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         main_image = in.readString();
         total_likes = in.readInt();
         genre = in.readInt();
+        halfblood = in.readInt();
         chtr = in.readString();
         if (urls == null) urls = new ArrayList<>();
         in.readTypedList(urls, Image.CREATOR);
@@ -118,6 +122,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         ownerage = in.readString();
         ownercity = in.readString();
         image_url = in.readString();
+        strurls = in.readString();
     }
 
     public static final Creator<PetObj> CREATOR = new Creator<PetObj>() {
@@ -152,13 +157,17 @@ public class PetObj extends BaseObservable implements Parcelable {
 
     public void setP_name(String p_name) { this.p_name = p_name; }
 
+    @Bindable
     public String getRace() { return race; }
+
+    public void setRace(String race) {
+        this.race = race;
+        notifyPropertyChanged(BR.race);
+    }
 
     public int isGenre() { return genre; }
 
     public void setGenre(int genre) { this.genre = genre; }
-
-    public void setRace(String race) { this.race = race; }
 
     public String getMicroship() { return microchip; }
 
@@ -193,6 +202,10 @@ public class PetObj extends BaseObservable implements Parcelable {
     public int isNeutered() { return neutered; }
 
     public void setNeutered(int neutered) { this.neutered = neutered; }
+
+    public int getHalfblood() { return halfblood; }
+
+    public void setHalfblood(int halfblood) { this.halfblood = halfblood; }
 
     public String getCharacter() { return chtr; }
 
@@ -262,6 +275,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         dest.writeString(main_image);
         dest.writeInt(total_likes);
         dest.writeInt(genre);
+        dest.writeInt(halfblood);
         dest.writeString(chtr);
         dest.writeTypedList(urls);
         dest.writeString(ownername);
@@ -269,5 +283,6 @@ public class PetObj extends BaseObservable implements Parcelable {
         dest.writeString(ownerage);
         dest.writeString(ownercity);
         dest.writeString(image_url);
+        dest.writeString(strurls);
     }
 }

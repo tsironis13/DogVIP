@@ -62,13 +62,11 @@
 
                     <ImageView
                         android:id="@+id/profileImgv"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
+                        android:layout_width="70dp"
+                        android:layout_height="75dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginEnd="12dp"
-                        android:padding="1dp"
-                        android:background="@drawable/circle_image"
                         android:contentDescription="@string/image_cont_desc"
                         app:imageUrl="@{petobj.image_url}" />
 
@@ -151,26 +149,42 @@
                     android:layout_centerInParent="true"
                     android:layout_alignParentTop="true"
                     android:elevation="2dp"
-                    android:padding="1dp"
-                    android:background="@drawable/circle_image"
                     android:contentDescription="@string/image_cont_desc"
                     app:imageUrl="@{petobj.main_url}"
                     android:onClick="@{() -> presenter.onPetImgClick()}" />
 
-                <TextView
-                    android:id="@+id/petNameTtv"
+                <RelativeLayout
+                    android:id="@+id/nameRlt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/petImgv"
-                    android:textSize="20sp"
                     android:layout_centerInParent="true"
-                    android:text="@{petobj.p_name}" />
+                    android:layout_below="@+id/petImgv">
+
+                    <TextView
+                        android:id="@+id/petNameTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:text="@{petobj.p_name}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/petNameTtv"
+                        android:layout_toEndOf="@+id/petNameTtv"
+                        android:text="@{petobj.halfblood == 1 ? @string/halfblood : @string/empty}"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/raceTtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/petNameTtv"
+                    android:layout_below="@+id/nameRlt"
                     android:textSize="15sp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"

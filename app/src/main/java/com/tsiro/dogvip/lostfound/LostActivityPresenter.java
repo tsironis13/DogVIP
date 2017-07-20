@@ -10,9 +10,9 @@ import com.tsiro.dogvip.lostfound.manipulatelostpet.ManipulateLostPetContract;
 
 public class LostActivityPresenter implements LostFoundContract.Presenter {
 
-    private LostFoundContract.View viewcntr;
+    private LostFoundContract.FrgmtView viewcntr;
 
-    public LostActivityPresenter(LostFoundContract.View viewcntr) {
+    public LostActivityPresenter(LostFoundContract.FrgmtView viewcntr) {
         this.viewcntr = viewcntr;
     }
 

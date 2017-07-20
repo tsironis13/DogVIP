@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.lostfound;
 
+import com.tsiro.dogvip.POJO.lostfound.LostFoundObj;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
 import com.tsiro.dogvip.POJO.petlikes.PetLikesRequest;
@@ -16,10 +17,14 @@ public interface LostFoundContract {
         void onBaseViewClick(android.view.View view);
     }
 
+    interface FrgmtView {
+        void onBaseViewClick(android.view.View view);
+    }
+
     interface View extends Lifecycle.View {
         void onSuccess(LostFoundResponse response);
         void onError(int resource);
-        void onBaseViewClick(android.view.View view);
+        void onBaseViewClick(LostFoundObj lostFoundObj, int type); //type=>0->lost, 1->found
     }
 
     interface ViewModel extends Lifecycle.ViewModel {

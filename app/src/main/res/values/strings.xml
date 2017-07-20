@@ -12,6 +12,7 @@
     <string name="owner_fgmt">owner_fgmt</string>
     <!-- ACTIONS -->
     <string name="action">action</string>
+    <string name="view_from">view_from</string>
     <string name="register_user">register_user</string>
     <string name="signin_user">signin_user</string>
     <string name="forgot_paswrd">forgot_password</string>
@@ -47,6 +48,12 @@
     <string name="edit_found_pet">edit_found_pet</string>
     <string name="upload_found_pet_img">upload_found_pet_img</string>
     <string name="delete_found_pet_img">delete_found_pet_img</string>
+    <string name="save_registration_token">save_registration_token</string>
+    <string name="get_chat_rooom_msgs_by_participants">get_chat_rooom_msgs_by_participants</string>
+    <string name="get_chat_rooom_msgs_by_chatid">get_chat_rooom_msgs_by_chatid</string>
+    <string name="send_msg">send_msg</string>
+    <string name="update_read_msgs">update_read_msgs</string>
+    <string name="get_chat_rooms">get_chat_rooms</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -83,8 +90,9 @@
     <string name="edit">Επεξεργασία</string>
     <string name="delete">Διαγραφή</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
-    <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρήσε σαν ιδιοκτήτης στην εφαρμογή.</string>
+    <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
+    <string name="swipe_to_edit_delete">Κάνε swipe για επεξεργασία/διαγραφή.</string>
     <string name="image_uploading_on_progress">Ανέβασμα φωτογραφίας σε εξέλιξη. Παρακαλώ περιμένετε.</string>
     <string name="success_action">Η ενέργεια έγινε επιτυχώς.</string>
     <string name="please_fill_out_search_filters">Παρακαλώ συμπλήρωσε κάποιο φίλτρο αναζήτησης.</string>
@@ -92,7 +100,9 @@
     <string name="no_owner_created">Για να δεις τη συγκεκριμένη λειτουργία πρέπει να είσαι ιδιοκτήτης κατοικίδιου.\n\n Μπορείς να γίνεις ιδιοκτήτης μέσου του μενού Τα κατοικίδια μου.</string>
     <string name="city_no_match">Η συγκεκριμένη πόλη δεν είναι διαθέσιμη.</string>
     <string name="race_not_match">Η συγκεκριμένη ράτσα δεν είναι διαθέσιμη.</string>
+    <string name="city_race_not_match">Η συγκεκριμένη πόλη ή ράτσα δεν είναι διαθέσιμη.</string>
     <string name="no_owner_exists">Δεν βρέθηκε ιδιοκτήτης για το συγκεκριμένο λογαριασμό.</string>
+    <string name="invalid_date">Μη έγκυρη ημερομηνία.</string>
     <string name="no_data">Δεν βρέθηκαν αποτελέσματα.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
@@ -119,15 +129,25 @@
     <string name="delete_lost_found_item_desc">Η συγκεκριμένη εγγραφή θα διαγραφεί οριστικά.</string>
     <!-- TAGS-->
     <string name="id">id</string>
+    <string name="myprefs">myprefs</string>
+    <string name="user_logged_in_first_time">user_logged_in_first_time</string>
     <string name="pet_id">pet_id</string>
+    <string name="pet_name">pet_name</string>
     <string name="user_role_id">user_role_id</string>
+    <string name="from_id">from_id</string>
+    <string name="role">role</string>
     <string name="type">type</string>
     <string name="email">email</string>
     <string name="token">token</string>
+    <string name="fcmtoken">fcmtoken</string>
     <string name="owner_exists">ownr_exists</string>
     <string name="main_image">main_image</string>
     <string name="index">index</string>
     <string name="has_changes">has_changes</string>
+    <string name="receiver">receiver</string>
+    <string name="receiver_surname">receiver_surname</string>
+    <string name="new_chat">new_chat</string>
+    <string name="fcmtoken_uploaded">fcmtoken_uploaded</string>
     <!--<string name="name">name</string>-->
     <!--<string name="surname">surname</string>-->
     <!--<string name="birth_date">birth_date</string>-->
@@ -144,9 +164,10 @@
     <string name="race_gr">ΡΑΤΣΑ-ΦΥΛΗ</string>
     <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
     <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
+    <string name="half_blood_gr">ΗΜΙΑΙΜΟ</string>
     <string name="chrctr_gr">ΧΑΡΑΚΤΗΡΑΣ</string>
     <string name="genre_gr">ΦΥΛΛΟ</string>
-    <string name="weight_gr">ΒΑΡΟΣ</string>
+    <string name="weight_gr">ΒΑΡΟΣ ΣΕ ΚΙΛΑ</string>
     <string name="pick_pet_gr">ΕΠΙΛΟΓΗ ΚΑΤΟΙΚΙΔΙΟΥ</string>
     <string name="date_lost_gr">ΗΜΕΡΟΜΗΝΙΑ</string>
     <string name="time_gr">ΩΡΑ</string>
@@ -172,6 +193,13 @@
     <string name="female_no_comma">Θηλυκό</string>
     <string name="no_neutered">Μη στειρωμένο</string>
     <string name="remove">Αφαιρεση</string>
+    <string name="halfblood">- Ημίαιμο</string>
+    <string name="empty"> </string>
+    <!-- NOTIFICATION TAGS -->
+    <string name="title">title</string>
+    <string name="message">message</string>
+    <string name="chat_room_id">chat_room_id</string>
+    <string name="timestamp">timestamp</string>
     <!-- LOGIN ACTIVITY -->
     <string name="app_logo">app_logo</string>
     <string name="divider">divider</string>
@@ -207,6 +235,7 @@
     <string name="add_pet_label">Πατήστε το κουμπί προσθήκη για να προσθέσετε τα κατοικίδια σας!</string>
     <!-- PET ACTIVITY -->
     <string name="show_images">φωτογραφιες</string>
+    <string name="unknown">Άγνωστο</string>
     <!-- PET PROFILE -->
     <string name="genre_label">Φύλλο:</string>
     <string name="age_label">Ηλικία:</string>
@@ -215,10 +244,22 @@
     <string name="location_label">Τοποθεσία:</string>
     <!-- LOST FOUND ACTIVITY -->
     <string name="lost">Χάθηκα!</string>
+    <string name="lost_label">Καταχωρήστε τον σκύλο που χάσατε.</string>
     <string name="found">Βρέθηκα!</string>
+    <string name="found_label">Καταχωρήστε τον σκύλο που βρήκατε.</string>
     <string name="lostfound_title">Χάθηκα-Βρέθηκα</string>
     <string name="lost_title">Χάθηκα</string>
     <string name="found_title">Βρέθηκα</string>
+    <!-- LOST FOUND DETAILS ACTIVITY -->
+    <string name="info_title">Πληροφορίες</string>
+    <string name="place_label">Μέρος: </string>
+    <string name="date_time_label">Ημερομηνία &amp; ώρα: </string>
+    <string name="phone_label">Τηλέφωνο επικοινωνίας: </string>
+    <string name="info_label">Πληροφορίες: </string>
+    <string name="date_time">%1$s %2$s</string>
+    <!-- MY CHAT ROOMS ACTIVITY -->
+    <string name="my_chats_title">Οι συνομιλίες μου</string>
+    <string name="chat_room_username">%1$s %2$s</string>
     <!--<string name="place_holder">Μέρος: %s</string>-->
     <string name="place_holder"><![CDATA[<b><font color=#EEA337>Μέρος: </font></b>]]>%s</string>
     <string name="date_time_holder"><![CDATA[<b><font color=#EEA337>Ημερομηνία &amp; ώρα: </font></b>]]>%1$s %2$s</string>
@@ -252,6 +293,7 @@
     <string name="location_lost_plhldr">*<u>Περιοχή</u></string>
     <string name="contact_phone_plhldr">*<u>Τηλ. επικοινωνίας</u></string>
     <string name="more_info_plhldr"><u>Περισσότερες πληροφορίες</u></string>
+    <string name="enter_message_plhldr">Στείλε μήνυμα&#8230;</string>
     <!-- FORM VALIDATION MSG -->
     <string name="required_field">Υποχρεωτικό πεδίο</string>
     <string name="not_valid_email">Μη έγκυρο email</string>

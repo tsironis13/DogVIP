@@ -7,7 +7,7 @@ package com.tsiro.dogvip.POJO;
 public class DialogActions {
 
     private String action, display_date; //either image dialog or delete image dialog etc
-    private int selected_action; //0 negative action, 1 positive action
+    private int selected_action, code; //0 negative action, 1 positive action
     private long date;
 
     public DialogActions() {}
@@ -34,4 +34,8 @@ public class DialogActions {
     public long getDate() { return date; }
 
     public void setDate(long date) { this.date = date; }
+
+    public int getCode() { return code; }
+
+    public void setCode(int code) { this.code = code; }
 }

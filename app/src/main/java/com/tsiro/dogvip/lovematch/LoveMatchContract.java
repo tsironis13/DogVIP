@@ -15,6 +15,8 @@ public interface LoveMatchContract {
     interface Presenter {
         void onPetImageViewClick(android.view.View view);
         void onLoveImageViewClick(android.view.View view);
+        void onMessageIconClick(android.view.View view);
+        void onBaseViewClick(android.view.View view);
     }
 
     interface View extends Lifecycle.View {
@@ -22,6 +24,8 @@ public interface LoveMatchContract {
         void onError(int resource);
         void onPetImageViewClick(android.view.View view);
         void onLoveImageViewClick(android.view.View view);
+        void onMessageIconClick(android.view.View view);
+        void onBaseViewClick(android.view.View view);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {

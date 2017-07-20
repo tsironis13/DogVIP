@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/msg_item"
-        android:icon="@drawable/ic_message"
         android:title="@string/msg_item"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/dashboard_msg_menu_item" />
 
     <item
         android:id="@+id/sitter_item"

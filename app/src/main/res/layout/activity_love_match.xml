@@ -148,6 +148,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.86"
                         android:textSize="13sp"
+                        android:completionThreshold="1"
                         android:paddingRight="8dp"
                         android:textStyle="bold"
                         android:textCursorDrawable="@null"
@@ -155,12 +156,15 @@
                         android:textColor="@android:color/white"
                         android:textColorHint="@android:color/white"
                         android:hint="@string/love_match_location_plhldr"
+                        android:dropDownWidth="match_parent"
+                        android:dropDownAnchor="@+id/locationLlt"
                         android:background="@android:color/transparent"
                         android:inputType="text" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/raceLlt"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:orientation="horizontal"
@@ -186,12 +190,15 @@
                         android:layout_weight="0.86"
                         android:textSize="13sp"
                         android:paddingRight="8dp"
+                        android:completionThreshold="1"
                         android:textCursorDrawable="@null"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
                         android:textColorHint="@android:color/white"
                         android:hint="@string/race_filter_plhldr"
                         android:background="@android:color/transparent"
+                        android:dropDownWidth="match_parent"
+                        android:dropDownAnchor="@+id/raceLlt"
                         android:inputType="text" />
 
                 </LinearLayout>

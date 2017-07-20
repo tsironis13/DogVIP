@@ -15,9 +15,7 @@ public class LoveMatchResponse {
     @SerializedName("code")
     @Expose
     private int code;
-    @SerializedName("exists")
-    @Expose
-    private boolean exists;
+    private transient boolean exists;
     @SerializedName("action")
     @Expose
     private String action;

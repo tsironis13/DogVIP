@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="hasError"
+            type="boolean" />
+
+        <variable
+            name="sendingMsg"
+            type="boolean" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/cntFrml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@color/colorPrimary">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/sendMsgLlt"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="3dp"
+                    android:scrollbars="vertical"
+                    android:visibility="@{!hasError ? View.VISIBLE : View.GONE}" />
+
+                <LinearLayout
+                    android:id="@+id/sendMsgLlt"
+                    android:background="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:gravity="center"
+                    android:weightSum="100">
+
+                    <EditText
+                        android:id="@+id/msgEdt"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:hint="@string/enter_message_plhldr"
+                        android:textSize="14sp"
+                        android:background="@null"
+                        android:layout_weight="90" />
+
+                    <ProgressBar
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="10"
+                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
+                        android:visibility="@{!sendingMsg ? View.GONE : View.VISIBLE}" />
+
+                    <ImageView
+                        android:id="@+id/sendMsgImgv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:visibility="@{sendingMsg ? View.GONE : View.VISIBLE}"
+                        android:src="@drawable/ic_send_black"
+                        android:contentDescription="@string/image_cont_desc" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+            <!--<LinearLayout-->
+                <!--android:background="@android:color/white"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingStart="16dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:paddingEnd="10dp"-->
+                <!--android:gravity="center"-->
+                <!--android:weightSum="100">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/msgEdt"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:hint="@string/enter_message_plhldr"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:background="@null"-->
+                    <!--android:layout_weight="90" />-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/sendMsgImgv"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="10"-->
+                    <!--android:src="@drawable/ic_send_black"-->
+                    <!--android:contentDescription="@string/image_cont_desc" />-->
+
+            <!--</LinearLayout>-->
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</layout>

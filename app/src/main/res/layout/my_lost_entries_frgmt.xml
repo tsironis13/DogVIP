@@ -30,11 +30,23 @@
             android:text="@{errortext}"
             android:visibility="@{haserror ? View.VISIBLE : View.GONE}" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="@string/swipe_to_edit_delete"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingTop="3dp"
+            android:paddingLeft="15dp"
+            android:background="@color/rcv_background"
+            android:textColor="@color/error_color"
+            android:visibility="@{!haserror ? View.VISIBLE : View.GONE}" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="1dp"
+            android:paddingTop="18dp"
             android:scrollbars="vertical"
             android:visibility="@{!haserror ? View.VISIBLE : View.GONE}" />
 

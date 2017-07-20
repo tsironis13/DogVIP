@@ -185,7 +185,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
             MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
             //check if account exists, otherwise display the error
             if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
-                ((LoginActivity)getActivity()).logUserIn();
+                ((LoginActivity)getActivity()).logUserIn(true);
             } else {
                 ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
             }

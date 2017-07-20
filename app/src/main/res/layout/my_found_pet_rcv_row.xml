@@ -9,12 +9,16 @@
             name="obj"
             type="com.tsiro.dogvip.POJO.lostfound.LostFoundObj" />
 
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.lostfound.LostActivityPresenter" />
+
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:layout_height="115dp">
+        android:layout_height="110dp">
 
         <LinearLayout
             android:id="@+id/revealRowLlt"
@@ -61,63 +65,62 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/baseRlt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
-            android:background="@color/rcv_background">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@color/rcv_background"
+            android:onClick="@{(v) -> presenter.onBaseViewClick(v)}">
 
             <ImageView
                 android:id="@+id/petImgv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/image_cont_desc"
                 android:elevation="2dp"
-                android:background="@drawable/circle_image"
-                app:imageUrl="@{obj.main_image}" />
+                app:imageUrl="@{obj.thumb_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
                 android:id="@+id/infoTtv"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
-                android:paddingTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:ellipsize="end"
-                android:maxLines="3"
-                android:text="@{obj.info}" />
+                android:maxLines="2"
+                android:text="@{obj.info}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/petImgv" />
 
             <TextView
                 android:id="@+id/locationTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/infoTtv"
-                android:paddingTop="5dp"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
                 android:textSize="13sp"
-                app:text1="@{obj.location}" />
+                app:text1="@{obj.location}"
+                app:layout_constraintBottom_toTopOf="@+id/dateTimeLostTtv"
+                app:layout_constraintStart_toStartOf="@+id/infoTtv" />
 
             <TextView
                 android:id="@+id/dateTimeLostTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationTtv"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
                 android:textSize="13sp"
                 app:text1="@{obj.displaydate}"
-                app:text2="@{obj.time_lost}" />
+                app:text2="@{obj.time_lost}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/infoTtv" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </RelativeLayout>
 

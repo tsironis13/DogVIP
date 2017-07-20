@@ -5,25 +5,29 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.rey.material.widget.SnackBar;
+import com.tsiro.dogvip.POJO.FcmTokenUpload;
 import com.tsiro.dogvip.POJO.logout.LogoutRequest;
 import com.tsiro.dogvip.POJO.logout.LogoutResponse;
+import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityDashboardBinding;
 import com.tsiro.dogvip.databinding.NavigationHeaderBinding;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
+import com.tsiro.dogvip.mychatrooms.MyChatRoomsActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
+import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.concurrent.TimeUnit;
@@ -50,9 +54,10 @@ public class DashboardActivity extends BaseActivity {
     private String email, mToken;
     private int id, type;
     private SnackBar mSnackBar;
-    private boolean logout;
+    private boolean logout, userLoggedInFirstTime;
     private ProgressDialog mProgressDialog;
     private Bundle bundle;
+    private CommonUtls mCommonUtls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +65,32 @@ public class DashboardActivity extends BaseActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         mSnackBar = mBinding.snckBr;
         setSupportActionBar(mBinding.incltoolbar.toolbar);
+        mCommonUtls = new CommonUtls(this);
 
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setHomeAsUpIndicator(R.drawable.person);
-        mActionBar.setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar()!= null){
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.person);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         setUpNavigationView();
 
+        if (savedInstanceState != null) {
+            userLoggedInFirstTime = savedInstanceState.getBoolean(getResources().getString(R.string.user_logged_in_first_time));
+        } else {
+            if (getIntent() != null) {
+                if (getIntent().getExtras() != null)
+                userLoggedInFirstTime = getIntent().getExtras().getBoolean(getResources().getString(R.string.user_logged_in_first_time));
+            }
+        }
         serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
-//        Log.e("dashboard", getIntent().getStringExtra("token"));
+
         email = getMyAccountManager().getAccountDetails().getEmail();
         mToken = getMyAccountManager().getAccountDetails().getToken();
         bundle = new Bundle();
-        if (getIntent() != null) {}
 
         NavigationHeaderBinding _bind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_header, mBinding.navigationView, false);
         mBinding.navigationView.addHeaderView(_bind.getRoot());
         _bind.setUseremail(email);
+        RxEventBus.createSubject(AppConfig.UPLOAD_FCM_TOKEN, AppConfig.PUBLISH_SUBJ).post(mToken);
     }
 
     @Override
@@ -112,12 +127,28 @@ public class DashboardActivity extends BaseActivity {
             }
         });
         RxEventBus.add(this, disp3);
+        Log.e(degbugTag, userLoggedInFirstTime +" FIRST TIME " + android.os.Build.SERIAL);
+        String fcmToken = mCommonUtls.getSharedPrefs().getString(getResources().getString(R.string.fcmtoken), null);
+        if (userLoggedInFirstTime) {
+            if (fcmToken != null && isNetworkAvailable()) mCommonUtls.uploadTokenToServer(mToken, fcmToken);
+        } else {
+            if (!mCommonUtls.getSharedPrefs().getBoolean(getResources().getString(R.string.fcmtoken_uploaded), false)) {
+                Log.e(degbugTag, "token not uploaded: " + fcmToken);
+                if (fcmToken != null && isNetworkAvailable()) mCommonUtls.uploadTokenToServer(mToken, fcmToken);
+            }
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(getResources().getString(R.string.user_logged_in_first_time), userLoggedInFirstTime);
     }
 
     @Override
@@ -128,7 +159,27 @@ public class DashboardActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        initializeMsgMenuItem(menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.msg_item:
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void initializeMsgMenuItem(Menu menu) {
+        final View notificaitons = menu.findItem(R.id.msg_item).getActionView();
+        notificaitons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardActivity.this, MyChatRoomsActivity.class));
+            }
+        });
     }
 
     private void setUpNavigationView() {
@@ -171,18 +222,6 @@ public class DashboardActivity extends BaseActivity {
 
             initializeProgressDialog(getResources().getString(R.string.please_wait));
             serviceAPI.logout(request)
-                    .doOnSubscribe(new Consumer<Disposable>() {
-                        @Override
-                        public void accept(@NonNull Disposable subscription) throws Exception {
-                            Log.e(degbugTag, "onSub");
-                        }
-                    })
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Exception {
-                            Log.e(degbugTag, "onCompl");
-                        }
-                    })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .delay(500, TimeUnit.MILLISECONDS)
@@ -195,20 +234,17 @@ public class DashboardActivity extends BaseActivity {
                     .doOnError(new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
-                            Log.e(degbugTag, "onError");
                             dismissDialog();
                         }
                     })
                     .doOnNext(new Consumer<LogoutResponse>() {
                         @Override
                         public void accept(@NonNull LogoutResponse response) throws Exception {
-                            Log.e(degbugTag, response+"");
                             dismissDialog();
                         }
                     }).subscribe(new Consumer<LogoutResponse>() {
                         @Override
                         public void accept(@NonNull LogoutResponse response) throws Exception {
-                            Log.e(degbugTag, response.getCode()+"");
                             getMyAccountManager().removeAccount();
                             Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                             finish();

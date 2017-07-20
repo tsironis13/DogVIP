@@ -20,6 +20,7 @@ import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivityPetLikesBinding;
 import com.tsiro.dogvip.ownerpets.OwnerPetsActivity;
 import com.tsiro.dogvip.requestmngrlayer.PetLikesRequestManager;
@@ -60,8 +61,8 @@ public class PetLikesActivity extends BaseActivity implements PetLikesContract.V
         } else {
             if (getIntent() != null) {
                 petObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.pet_obj));
-                Log.e(debugTag, petObj.getUser_role_id()+"");
-                Log.e(debugTag, petObj.getP_name()+"");
+//                Log.e(debugTag, petObj.getUser_role_id()+"");
+//                Log.e(debugTag, petObj.getP_name()+"");
             }
         }
         if (getSupportActionBar()!= null && !mBinding.getHaserror()) {
@@ -111,11 +112,26 @@ public class PetLikesActivity extends BaseActivity implements PetLikesContract.V
     }
 
     @Override
+    public void onMessageIconClick(View view) {
+        OwnerObj ownerObj = ownerObjs.get((int)view.getTag());
+        Bundle bundle = new Bundle();
+        bundle.putInt(getResources().getString(R.string.role), 1);
+        bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
+        bundle.putInt(getResources().getString(R.string.pet_id), petObj.getId());
+        bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.get_chat_rooom_msgs_by_participants));
+        bundle.putString(getResources().getString(R.string.receiver), ownerObj.getName());
+        bundle.putString(getResources().getString(R.string.receiver_surname), ownerObj.getSurname());
+        bundle.putString(getResources().getString(R.string.pet_name), petObj.getP_name());
+        startActivity(new Intent(this, ChatRoomActivity.class).putExtras(bundle));
+    }
+
+    @Override
     public void onSuccess(final PetLikesResponse response) {
         dismissDialog();
         if (mBinding.getHaserror())mBinding.setHaserror(false);
         mBinding.setProcessing(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mBinding.rcv.setNestedScrollingEnabled(false);
         ownerObjs = response.getData();
         RecyclerViewAdapter rcvAdapter = new RecyclerViewAdapter(R.layout.pet_likes_rcv_row) {
             @Override

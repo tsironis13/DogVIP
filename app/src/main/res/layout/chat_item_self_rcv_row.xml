@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.chat.Message" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/baseRlt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
+        <ImageView
+            android:id="@+id/profileImgv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/image_cont_desc"
+            android:elevation="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="@{!obj.hide_image ? View.VISIBLE : View.INVISIBLE}"
+            app:imageUrl="@{obj.image_url}" />
+
+        <TextView
+            android:id="@+id/messageTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/profileImgv"
+            android:textIsSelectable="true"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_bubble_self"
+            android:textColor="#fff"
+            android:text="@{obj.message}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/messageTtv"
+            android:layout_alignEnd="@id/messageTtv"
+            android:layout_below="@id/messageTtv"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@{obj.created_at}" />
+
+    </RelativeLayout>
+
+</layout>

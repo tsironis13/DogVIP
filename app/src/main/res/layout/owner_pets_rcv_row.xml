@@ -15,65 +15,126 @@
 
     </data>
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/baseRlt"
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
         android:layout_height="82dp"
         android:paddingRight="16dp"
         android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         android:background="@color/rcv_background">
 
         <ImageView
             android:id="@+id/petImgv"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@string/image_cont_desc"
             android:elevation="2dp"
-            android:background="@drawable/circle_image"
+            android:onClick="@{() -> presenter.onPetImageClick(baseRlt)}"
             app:imageUrl="@{obj.main_url}"
-            android:onClick="@{() -> presenter.onPetImageClick(baseRlt)}"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:id="@+id/nameTtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/petImgv"
-            android:layout_toEndOf="@+id/petImgv"
-            android:paddingTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:textSize="16sp"
             android:textColor="@android:color/black"
-            android:text="@{obj.p_name}" />
+            android:text="@{obj.p_name}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/petImgv" />
 
         <TextView
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nameTtv"
-            android:layout_toRightOf="@+id/petImgv"
-            android:layout_toEndOf="@+id/petImgv"
             android:textSize="14sp"
             android:textStyle="bold"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{obj.race}" />
+            android:text="@{obj.race}"
+            app:layout_constraintTop_toBottomOf="@+id/nameTtv"
+            app:layout_constraintStart_toStartOf="@+id/nameTtv" />
 
         <TextView
             android:id="@+id/favTtv"
             android:layout_width="27dp"
             android:layout_height="27dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentRight="true"
             android:gravity="center"
             android:background="@drawable/ic_favorite"
             android:text="@{String.valueOf(obj.total_likes)}"
             android:textSize="13sp"
             android:textColor="@android:color/white"
-            android:visibility="@{obj.total_likes > 0 ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{obj.total_likes > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/baseRlt"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_height="82dp"-->
+        <!--android:paddingRight="16dp"-->
+        <!--android:paddingLeft="16dp"-->
+        <!--android:background="@color/rcv_background">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/petImgv"-->
+            <!--android:layout_width="38dp"-->
+            <!--android:layout_height="38dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:contentDescription="@string/image_cont_desc"-->
+            <!--android:elevation="2dp"-->
+            <!--android:background="@drawable/circle_image"-->
+            <!--app:imageUrl="@{obj.main_url}"-->
+            <!--android:onClick="@{() -> presenter.onPetImageClick(baseRlt)}"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/nameTtv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@+id/petImgv"-->
+            <!--android:layout_toEndOf="@+id/petImgv"-->
+            <!--android:paddingTop="16dp"-->
+            <!--android:textSize="16sp"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:text="@{obj.p_name}" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="170dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/nameTtv"-->
+            <!--android:layout_toRightOf="@+id/petImgv"-->
+            <!--android:layout_toEndOf="@+id/petImgv"-->
+            <!--android:textSize="14sp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:ellipsize="end"-->
+            <!--android:maxLines="1"-->
+            <!--android:text="@{obj.race}" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/favTtv"-->
+            <!--android:layout_width="27dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/ic_favorite"-->
+            <!--android:text="@{String.valueOf(obj.total_likes)}"-->
+            <!--android:textSize="13sp"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:visibility="@{obj.total_likes > 0 ? View.VISIBLE : View.GONE}" />-->
+
+    <!--</RelativeLayout>-->
 
 </layout>

@@ -18,4 +18,9 @@ public class PetLikesPresenter implements PetLikesContract.Presenter {
     public void onPetImageClick(View view) {
         mView.onPetImageClick(view);
     }
+
+    @Override
+    public void onMessageIconClick(View view) {
+        mView.onMessageIconClick(view);
+    }
 }

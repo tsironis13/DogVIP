@@ -87,11 +87,11 @@ public class OwnerPetsActivity extends BaseActivity implements OwnerPetsContract
         outState.putInt(getResources().getString(R.string.user_role_id), userRoleId);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.chat_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.chat_menu, menu);
+//        return true;
+//    }
 
     @Override
     public Lifecycle.ViewModel getViewModel() {

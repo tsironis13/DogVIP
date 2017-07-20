@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.ImageViewPagerActivity;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.R;
+import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivityPetProfileBinding;
 import com.tsiro.dogvip.ownerpets.OwnerPetsActivity;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
@@ -30,7 +33,8 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
     private ActivityPetProfileBinding mBinding;
     private String[] petUrls;
     private PetObj petObj;
-    private PetProfilePresenter mPresenter;
+    //use this option to hide message icon and disable owner profile photo click when current activity is called from OwnerProfileActivity
+    private int viewFrom;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,12 +42,14 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_pet_profile);
         setSupportActionBar(mBinding.toolbar);
         mBinding.colTlbrLyt.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
-        mPresenter = new PetProfilePresenter(this);
+        PetProfilePresenter mPresenter = new PetProfilePresenter(this);
         if (savedInstanceState != null) {
             petObj = savedInstanceState.getParcelable(getResources().getString(R.string.pet_obj));
             petUrls = savedInstanceState.getStringArray(getResources().getString(R.string.urls));
+            viewFrom = savedInstanceState.getInt(getResources().getString(R.string.view_from));
         } else {
             if (getIntent() != null) {
+                if (getIntent().getExtras().getInt(getResources().getString(R.string.view_from)) != 0) viewFrom = 2020;
                 petObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.pet_obj));
                 petUrls = getIntent().getExtras().getStringArray(getResources().getString(R.string.urls));
 //                Log.e(debugTag, petUrls+"");
@@ -51,7 +57,7 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
             }
         }
         if (getSupportActionBar()!= null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (viewFrom != 2020) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle(petObj.getP_name());
         }
         mBinding.setPetobj(petObj);
@@ -61,7 +67,7 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(debugTag, "onResume");
+        Log.e(debugTag, "onResume" + petObj.getTotal_likes() +" TOTAL LIKES");
 //        Disposable disp = RxView.clicks(mBinding.petImgv).subscribe(new Consumer<Object>() {
 //            @Override
 //            public void accept(@NonNull Object o) throws Exception {
@@ -73,10 +79,12 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 Log.e(debugTag, petObj.getUser_role_id()+"");
-                Intent intent = new Intent(PetProfileActivity.this, OwnerPetsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(getResources().getString(R.string.user_role_id), petObj.getUser_role_id());
-                startActivity(intent.putExtras(bundle));
+                if (viewFrom != 2020) {
+                    Intent intent = new Intent(PetProfileActivity.this, OwnerPetsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(getResources().getString(R.string.user_role_id), petObj.getUser_role_id());
+                    startActivity(intent.putExtras(bundle));
+                }
             }
         });
         RxEventBus.add(this, disp1);
@@ -93,6 +101,25 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
         super.onSaveInstanceState(outState);
         outState.putParcelable(getResources().getString(R.string.pet_obj), petObj);
         outState.putStringArray(getResources().getString(R.string.urls), petUrls);
+        outState.putInt(getResources().getString(R.string.view_from), viewFrom);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (viewFrom == 2020) return false;
+        getMenuInflater().inflate(R.menu.chat_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.chatItem:
+                sendMsg();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -108,5 +135,17 @@ public class PetProfileActivity extends AppCompatActivity implements PetProfileC
             intent.putExtras(bundle);
             startActivity(intent);
         }
+    }
+
+    private void sendMsg() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(getResources().getString(R.string.role), 1);
+        bundle.putInt(getResources().getString(R.string.user_role_id), petObj.getUser_role_id());
+        bundle.putInt(getResources().getString(R.string.pet_id), petObj.getId());
+        bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.get_chat_rooom_msgs_by_participants));
+        bundle.putString(getResources().getString(R.string.receiver), petObj.getOwnername());
+        bundle.putString(getResources().getString(R.string.receiver_surname), petObj.getSurname());
+        bundle.putString(getResources().getString(R.string.pet_name), petObj.getP_name());
+        startActivity(new Intent(this, ChatRoomActivity.class).putExtras(bundle));
     }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.DashboardActivity;
 import com.tsiro.dogvip.LostFoundActivity;
+import com.tsiro.dogvip.POJO.lostfound.LostFoundObj;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
@@ -118,8 +119,13 @@ public class LostActivity extends BaseActivity implements LostFoundContract.View
     }
 
     @Override
-    public void onBaseViewClick(View view) {
-        Log.e(debugTag, "oncl");
+    public void onBaseViewClick(LostFoundObj lostFoundObj, int type) {
+        if (lostFoundObj != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(getResources().getString(R.string.parcelable_obj), lostFoundObj);
+            bundle.putInt(getResources().getString(R.string.type), type);
+            startActivity(new Intent(this, LostFoundDetailsActivity.class).putExtras(bundle));
+        }
     }
 
     public String getmToken() {

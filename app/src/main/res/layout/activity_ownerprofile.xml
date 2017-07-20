@@ -64,13 +64,12 @@
                     <ImageView
                         android:id="@+id/profileImgv"
                         android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_height="75dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginEnd="12dp"
                         android:padding="1dp"
                         android:src="@drawable/default_person"
-                        android:background="@drawable/circle_image"
                         android:contentDescription="@string/image_cont_desc" />
 
                     <TextView
@@ -169,6 +168,15 @@
                     android:paddingTop="16dp"
                     android:paddingLeft="16dp"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/swipe_to_edit_delete"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="18dp"
+                    android:textColor="@color/error_color" />
 
                 <TextView
                     android:layout_width="wrap_content"

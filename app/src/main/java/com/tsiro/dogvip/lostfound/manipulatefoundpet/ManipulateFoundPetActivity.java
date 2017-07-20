@@ -205,6 +205,12 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
         bundle = new Bundle();
         bundle.putInt(getResources().getString(R.string.type), 1);
@@ -417,7 +423,7 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                         }
                     })
                     .transition(withCrossFade())
-                    .apply(new RequestOptions().circleCrop().error(R.drawable.ic_pets))
+                    .apply(new RequestOptions().centerCrop().error(R.drawable.ic_pets))
                     .into(mBinding.profileImgv);
         }
     }

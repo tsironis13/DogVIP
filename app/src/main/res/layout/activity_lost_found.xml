@@ -52,8 +52,16 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimary"
                         android:textSize="17sp"
+                        android:layout_marginBottom="3dp"
                         android:textStyle="bold"
                         android:text="@string/lost" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:text="@string/lost_label" />
 
                 </com.rey.material.widget.LinearLayout>
 
@@ -85,9 +93,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimary"
+                        android:layout_marginBottom="3dp"
                         android:textSize="17sp"
                         android:textStyle="bold"
                         android:text="@string/found" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:text="@string/found_label" />
 
                 </com.rey.material.widget.LinearLayout>
 

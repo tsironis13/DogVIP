@@ -209,9 +209,13 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-                    Log.e(debugTag, obj.getDisplay_date());
-                    ownerObj.setDisplayage(obj.getDisplay_date());
-                    ownerObj.setAge(obj.getDate());
+//                    Log.e(debugTag, obj.getDisplay_date());
+                    if (obj.getCode() == AppConfig.STATUS_OK) {
+                        ownerObj.setDisplayage(obj.getDisplay_date());
+                        ownerObj.setAge(obj.getDate());
+                    } else {
+                        ((MyPetsActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_date), "").subscribe();
+                    }
                 } else {
                     ownerObj.setDisplayage("");
                 }
@@ -490,7 +494,7 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                         }
                     })
                     .transition(withCrossFade())
-                    .apply(new RequestOptions().circleCrop().error(R.drawable.default_person).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE))
                     .into(mBinding.profileImgv);
         }
     }

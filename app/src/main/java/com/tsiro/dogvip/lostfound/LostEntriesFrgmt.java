@@ -1,5 +1,7 @@
 package com.tsiro.dogvip.lostfound;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -26,13 +28,14 @@ import java.util.ArrayList;
  * Created by giannis on 10/7/2017.
  */
 
-public class LostEntriesFrgmt extends Fragment {
+public class LostEntriesFrgmt extends Fragment implements LostFoundContract.FrgmtView {
 
     private static final String debugTag = LostEntriesFrgmt.class.getSimpleName();
     private View mView;
     private LostEntriesFrgmtBinding mBinding;
     private ArrayList<LostFoundObj> data;
-    private RecyclerViewAdapter rcvAdapter;
+    private LostActivityPresenter presenter;
+    private LostFoundContract.View viewContract;
 
     public static LostEntriesFrgmt newInstance(ArrayList<LostFoundObj> list) {
         Bundle bundle = new Bundle();
@@ -40,6 +43,12 @@ public class LostEntriesFrgmt extends Fragment {
         LostEntriesFrgmt frgmt = new LostEntriesFrgmt();
         frgmt.setArguments(bundle);
         return frgmt;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if ( context instanceof Activity) this.viewContract = (LostFoundContract.View) context;
     }
 
     @Nullable
@@ -79,20 +88,28 @@ public class LostEntriesFrgmt extends Fragment {
         outState.putParcelableArrayList(getResources().getString(R.string.data), data);
     }
 
+    @Override
+    public void onBaseViewClick(View view) {
+        int position = (int) view.getTag();
+        viewContract.onBaseViewClick(data.get(position), 0);
+    }
+
     private void initializeRcV() {
-//        presenter = new LostActivityPresenter(this);
+        presenter = new LostActivityPresenter(this);
         mBinding.rcv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.rcv.setNestedScrollingEnabled(false);
         mBinding.rcv.setHasFixedSize(true);
-        rcvAdapter = new RecyclerViewAdapter(R.layout.my_lost_pet_rcv_row) {
+        RecyclerViewAdapter rcvAdapter = new RecyclerViewAdapter(R.layout.my_lost_pet_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
                 return data.get(position);
             }
+
             @Override
             protected int getLayoutIdForPosition(int position) {
                 return R.layout.my_lost_pet_rcv_row;
             }
+
             @Override
             protected int getTotalItems() {
                 return data.size();
@@ -100,10 +117,12 @@ public class LostEntriesFrgmt extends Fragment {
 
             @Override
             protected Object getClickListenerObject() {
-                return null;
+                return presenter;
             }
         };
         mBinding.rcv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mBinding.rcv.setAdapter(rcvAdapter);
     }
+
+
 }

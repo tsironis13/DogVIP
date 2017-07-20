@@ -14,12 +14,15 @@ public interface PetLikesContract {
 
     interface Presenter {
         void onPetImageClick(android.view.View view);
+        void onMessageIconClick(android.view.View view);
+
     }
 
     interface View extends Lifecycle.View {
         void onSuccess(PetLikesResponse response);
         void onError(int resource);
         void onPetImageClick(android.view.View view);
+        void onMessageIconClick(android.view.View view);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {

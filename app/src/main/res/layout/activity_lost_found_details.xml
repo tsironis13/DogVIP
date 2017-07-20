@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.lostfound.LostFoundObj" />
+
+        <variable
+            name="type"
+            type="int" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/status_bar_height">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:background="@color/colorPrimary">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/petImgv"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentTop="true"
+                        android:elevation="2dp"
+                        android:contentDescription="@string/image_cont_desc"
+                        app:imageUrl="@{obj.thumb_image}" />
+
+                    <RelativeLayout
+                        android:id="@+id/petNameRlt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_below="@id/petImgv">
+
+                        <TextView
+                            android:id="@+id/petNameTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="@{obj.p_name}"
+                            android:visibility="@{type == 0 ? View.VISIBLE : View.GONE}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginTop="3dp"
+                            android:text="@{obj.halfblood == 1 ? @string/halfblood : @string/empty}"
+                            android:textSize="17sp"
+                            android:layout_toRightOf="@+id/petNameTtv"
+                            android:layout_toEndOf="@id/petNameTtv" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/raceTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/petNameRlt"
+                        android:textSize="15sp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="@{obj.race}"
+                        android:visibility="@{type == 0 ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/genreTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/raceTtv"
+                        android:textSize="15sp"
+                        android:paddingTop="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="@{obj.genre == 0 ? @string/male : @string/female}"
+                        android:visibility="@{type == 0 ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/customageTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/raceTtv"
+                        android:layout_toRightOf="@+id/genreTtv"
+                        android:layout_toEndOf="@+id/genreTtv"
+                        android:textSize="15sp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="3dp"
+                        app:textPl="@{obj.p_displayage}"
+                        android:visibility="@{type == 0 ? View.VISIBLE : View.GONE}" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/genreTtv"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/divider_color"
+                        android:visibility="@{type == 0 ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/placeLblTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/divider"
+                        android:paddingBottom="8dp"
+                        android:paddingRight="4dp"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:text="@string/place_label" />
+
+                    <TextView
+                        android:id="@+id/placeTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_toRightOf="@+id/placeLblTtv"
+                        android:layout_toEndOf="@+id/placeLblTtv"
+                        android:layout_below="@id/divider"
+                        android:text="@{obj.location}" />
+
+                    <TextView
+                        android:id="@+id/dateTimeLblTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/placeLblTtv"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/date_time_label" />
+
+                    <TextView
+                        android:id="@+id/dateTimeTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/dateTimeLblTtv"
+                        android:layout_toEndOf="@+id/dateTimeLblTtv"
+                        android:paddingBottom="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/placeTtv"
+                        android:text="@{@string/date_time(obj.displaydate, obj.time_lost)}" />
+
+                    <TextView
+                        android:id="@+id/phoneLblTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dateTimeLblTtv"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/phone_label" />
+
+                    <TextView
+                        android:id="@+id/phoneTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/phoneLblTtv"
+                        android:layout_toEndOf="@+id/phoneLblTtv"
+                        android:paddingBottom="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/dateTimeTtv"
+                        android:text="@{obj.phone}" />
+
+                    <TextView
+                        android:id="@+id/infoLblTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/phoneLblTtv"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/info_label" />
+
+                    <TextView
+                        android:id="@+id/infoTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/infoLblTtv"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:paddingRight="4dp"
+                        android:text="@{obj.info}" />
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

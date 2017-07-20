@@ -135,6 +135,12 @@ public class ManipulateLostPetActivity extends BaseActivity implements Manipulat
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
         bundle = new Bundle();
         bundle.putInt(getResources().getString(R.string.type), 0);

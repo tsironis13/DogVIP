@@ -9,12 +9,16 @@
             name="obj"
             type="com.tsiro.dogvip.POJO.lostfound.LostFoundObj" />
 
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.lostfound.LostActivityPresenter" />
+
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:layout_height="115dp">
+        android:layout_height="110dp">
 
         <LinearLayout
             android:id="@+id/revealRowLlt"
@@ -61,99 +65,198 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/baseRlt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
-            android:background="@color/rcv_background">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@color/rcv_background"
+            android:onClick="@{(v) -> presenter.onBaseViewClick(v)}">
 
             <ImageView
                 android:id="@+id/petImgv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/image_cont_desc"
                 android:elevation="2dp"
-                android:background="@drawable/circle_image"
-                app:imageUrl="@{obj.main_image}" />
+                app:imageUrl="@{obj.thumb_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
                 android:id="@+id/nameTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
-                android:paddingTop="2dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:text="@{obj.p_name}" />
+                android:text="@{obj.p_name}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/petImgv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="2dp"
+                android:text="@{obj.halfblood == 1 ? @string/halfblood : @string/empty}"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/nameTtv" />
 
             <TextView
                 android:id="@+id/raceTtv"
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/nameTtv"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
-                android:layout_marginRight="15dp"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{obj.race}" />
+                android:text="@{obj.race}"
+                app:layout_constraintTop_toBottomOf="@+id/nameTtv"
+                app:layout_constraintStart_toStartOf="@+id/nameTtv" />
 
             <TextView
                 android:id="@+id/genreTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/raceTtv"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:text="@{obj.genre == 0 ? @string/male : @string/female}" />
+                android:text="@{obj.genre == 0 ? @string/male : @string/female}"
+                app:layout_constraintTop_toBottomOf="@+id/raceTtv"
+                app:layout_constraintStart_toStartOf="@+id/nameTtv" />
 
             <TextView
                 android:id="@+id/customageTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/raceTtv"
                 android:paddingRight="3dp"
                 android:paddingLeft="3dp"
-                android:layout_toRightOf="@+id/genreTtv"
-                android:layout_toEndOf="@+id/genreTtv"
                 android:textSize="13sp"
-                app:textPl="@{obj.p_displayage}" />
+                app:textPl="@{obj.p_displayage}"
+                app:layout_constraintTop_toBottomOf="@+id/raceTtv"
+                app:layout_constraintStart_toEndOf="@+id/genreTtv" />
 
             <TextView
                 android:id="@+id/locationTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/genreTtv"
-                android:paddingTop="5dp"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
                 android:textSize="13sp"
-                app:text1="@{obj.location}" />
-            <!--android:text="@{@string/place_holder(obj.location)}"-->
-<!--android:text="@{@string/date_time_holder(obj.displaydate, obj.time_lost)}"-->
+                app:text1="@{obj.location}"
+                app:layout_constraintBottom_toTopOf="@+id/dateTimeLostTtv"
+                app:layout_constraintStart_toStartOf="@+id/nameTtv" />
+
             <TextView
                 android:id="@+id/dateTimeLostTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationTtv"
-                android:layout_toRightOf="@+id/petImgv"
-                android:layout_toEndOf="@+id/petImgv"
                 android:textSize="13sp"
                 app:text1="@{obj.displaydate}"
-                app:text2="@{obj.time_lost}" />
+                app:text2="@{obj.time_lost}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/nameTtv" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/baseRlt"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:paddingRight="16dp"-->
+            <!--android:paddingLeft="16dp"-->
+            <!--android:background="@color/rcv_background">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/petImgv"-->
+                <!--android:layout_width="38dp"-->
+                <!--android:layout_height="38dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:contentDescription="@string/image_cont_desc"-->
+                <!--android:elevation="2dp"-->
+                <!--android:background="@drawable/circle_image"-->
+                <!--app:imageUrl="@{obj.main_image}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/nameTtv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_toRightOf="@+id/petImgv"-->
+                <!--android:layout_toEndOf="@+id/petImgv"-->
+                <!--android:paddingTop="2dp"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="@{obj.p_name}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/raceTtv"-->
+                <!--android:layout_width="210dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/nameTtv"-->
+                <!--android:layout_toRightOf="@+id/petImgv"-->
+                <!--android:layout_toEndOf="@+id/petImgv"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:textSize="13sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:ellipsize="end"-->
+                <!--android:maxLines="1"-->
+                <!--android:text="@{obj.race}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/genreTtv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/raceTtv"-->
+                <!--android:layout_toRightOf="@+id/petImgv"-->
+                <!--android:layout_toEndOf="@+id/petImgv"-->
+                <!--android:textSize="13sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:text="@{obj.genre == 0 ? @string/male : @string/female}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/customageTtv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/raceTtv"-->
+                <!--android:paddingRight="3dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:layout_toRightOf="@+id/genreTtv"-->
+                <!--android:layout_toEndOf="@+id/genreTtv"-->
+                <!--android:textSize="13sp"-->
+                <!--app:textPl="@{obj.p_displayage}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/locationTtv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/genreTtv"-->
+                <!--android:paddingTop="5dp"-->
+                <!--android:layout_toRightOf="@+id/petImgv"-->
+                <!--android:layout_toEndOf="@+id/petImgv"-->
+                <!--android:textSize="13sp"-->
+                <!--app:text1="@{obj.location}" />-->
+            <!--&lt;!&ndash;android:text="@{@string/place_holder(obj.location)}"&ndash;&gt;-->
+<!--&lt;!&ndash;android:text="@{@string/date_time_holder(obj.displaydate, obj.time_lost)}"&ndash;&gt;-->
+            <!--<TextView-->
+                <!--android:id="@+id/dateTimeLostTtv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/locationTtv"-->
+                <!--android:layout_toRightOf="@+id/petImgv"-->
+                <!--android:layout_toEndOf="@+id/petImgv"-->
+                <!--android:textSize="13sp"-->
+                <!--app:text1="@{obj.displaydate}"-->
+                <!--app:text2="@{obj.time_lost}" />-->
+
+        <!--</RelativeLayout>-->
 
     </RelativeLayout>
 

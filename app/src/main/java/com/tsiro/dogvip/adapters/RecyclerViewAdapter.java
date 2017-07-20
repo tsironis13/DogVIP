@@ -18,10 +18,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.tsiro.dogvip.R;
+import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.interfaces.RecyclerCallback;
 
 import java.util.Calendar;
@@ -38,13 +40,17 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     private int layoutid;
     private ViewDataBinding mBinding;
 
-
     public RecyclerViewAdapter(int layoutId) {
         this.layoutid = layoutId;
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == AppConfig.MY_CHAT_VIEW_ITEM) {
+            layoutid = R.layout.chat_item_self_rcv_row;
+        } else if (viewType == AppConfig.OTHER_CHAT_VIEW_ITEM) {
+            layoutid = R.layout.chat_item_other_rcv_row;
+        }
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         mBinding = DataBindingUtil.inflate(layoutInflater, layoutid, parent, false);
 
@@ -80,28 +86,32 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
         Glide.with(imageView.getContext())
                 .load(url)
                 .transition(withCrossFade())
-                .apply(new RequestOptions().circleCrop().error(default_img).placeholder(default_img))
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .error(default_img).placeholder(default_img))
                 .into(imageView);
     }
 
     @BindingAdapter("bind:textPl")
     public static void setText(TextView textView, String text) {
         if (textView.getId() == R.id.ageTtv || textView.getId() == R.id.pageTtv || textView.getId() == R.id.customageTtv) {
-            String[] holder = text.split("/");
-            int current_year = Calendar.getInstance().get(Calendar.YEAR);
-            int current_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-            int age = current_year - Integer.valueOf(holder[2]);
-            String str;
-            if (age > 0) {
-                str = String.valueOf(age);
-                if (textView.getId() == R.id.customageTtv) str = str + " ετών";
-            } else {
-                int month = current_month - Integer.valueOf(holder[1]);
-                if (month == 0) month = 1;
-                str = String.valueOf(month);
-                if (textView.getId() == R.id.customageTtv) str = str + " μηνών";
+            if (text != null) {
+                String[] holder = text.split("/");
+                int current_year = Calendar.getInstance().get(Calendar.YEAR);
+                int current_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+                int age = current_year - Integer.valueOf(holder[2]);
+                String str;
+                if (age > 0) {
+                    str = String.valueOf(age);
+                    if (textView.getId() == R.id.customageTtv) str = str + " ετών";
+                } else {
+                    int month = current_month - Integer.valueOf(holder[1]);
+                    if (month == 0) month = 1;
+                    str = String.valueOf(month);
+                    if (textView.getId() == R.id.customageTtv) str = str + " μηνών";
+                }
+                textView.setText(str);
             }
-            textView.setText(str);
         }
 //        Log.e("asa", text.split("/").toString());
     }

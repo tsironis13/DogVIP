@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
 
         if (getMyAccountManager().checkAccountExists()) {
 //            getMyAccountManager().getUserData(this);
-            logUserIn();
+            logUserIn(false);
         } else {
             if (savedInstanceState == null && getSupportFragmentManager() != null) {
                 getSupportFragmentManager()
@@ -137,8 +137,10 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
     }
 
 
-    public void logUserIn() {
-        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+    public void logUserIn(boolean userLoggedInFirstTime) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(getResources().getString(R.string.user_logged_in_first_time), userLoggedInFirstTime);
+        startActivity(new Intent(LoginActivity.this, DashboardActivity.class).putExtras(bundle));
         finish();
     }
 

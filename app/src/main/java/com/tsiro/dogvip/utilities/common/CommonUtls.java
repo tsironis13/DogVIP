@@ -2,6 +2,7 @@ package com.tsiro.dogvip.utilities.common;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -10,8 +11,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import com.tsiro.dogvip.POJO.FcmTokenUpload;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.R;
+import com.tsiro.dogvip.accountmngr.MyAccountManager;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +23,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -103,5 +111,42 @@ public class CommonUtls {
 //        RequestBody requestFile = RequestBody.create(MultipartBody.FORM, file);
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
         return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+    }
+
+    public SharedPreferences getSharedPrefs() {
+        return mContext.getSharedPreferences(mContext.getResources().getString(R.string.myprefs), Context.MODE_PRIVATE);
+    }
+
+    private void saveFcmTokenToPrefs(String token) {
+        SharedPreferences.Editor editor = getSharedPrefs().edit();
+        editor.putString(mContext.getResources().getString(R.string.fcmtoken), token);
+        editor.putBoolean(mContext.getResources().getString(R.string.fcmtoken_uploaded), true);
+        editor.apply();
+    }
+
+    public void uploadTokenToServer(String mToken, String fcmToken) {
+        FcmTokenUpload request = new FcmTokenUpload();
+        request.setAction(mContext.getResources().getString(R.string.save_registration_token));
+        request.setAuthtoken(mToken);
+        request.setDeviceid(android.os.Build.SERIAL);
+//        Log.e(degbugTag, fcmToken +" FCM TOKEN");
+        request.setFcmtoken(fcmToken);
+        RetrofitFactory.getInstance().getServiceAPI().uploadFcmToken(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        getSharedPrefs().edit().putBoolean(mContext.getResources().getString(R.string.fcmtoken_uploaded), false).apply();
+                    }
+                })
+                .retry(3)
+                .doOnNext(new Consumer<FcmTokenUpload>() {
+                    @Override
+                    public void accept(@NonNull FcmTokenUpload response) throws Exception {
+                        saveFcmTokenToPrefs(response.getFcmtoken());
+                    }
+                }).subscribe();
+
     }
 }

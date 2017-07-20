@@ -1,9 +1,16 @@
 package com.tsiro.dogvip.mypets.ownerprofile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +30,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
@@ -32,6 +42,7 @@ import com.tsiro.dogvip.DashboardActivity;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.petlikes.PetLikesActivity;
+import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
@@ -47,6 +58,8 @@ import com.tsiro.dogvip.mypets.pet.PetActivity;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
+import java.security.MessageDigest;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -57,6 +70,7 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.R.attr.bitmap;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
@@ -194,7 +208,19 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
 
     @Override
     public void onBaseViewClick(View view) {
-        startPetActivity(false, (int)view.getTag());
+        int ps =(int)view.getTag();
+        String[] urls = {};
+        if (ownerObj.getPets().get(ps).getStrurls() != null) urls = ownerObj.getPets().get(ps).getStrurls().replace("[", "").replace("]", "").split(",");
+        Intent intent = new Intent(this, PetProfileActivity.class);
+        Bundle bundle = new Bundle();
+//        Log.e(debugTag, data.get(position).getUser_role_id()+"");
+        Log.e(debugTag, ownerObj.getPets().get(ps).getStrurls() +"");
+        bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(ps));
+        bundle.putStringArray(getResources().getString(R.string.urls), urls);
+        bundle.putInt(getResources().getString(R.string.view_from), 2020);
+        intent.putExtras(bundle);
+        startActivity(intent);
+//        startPetActivity(false, (int)view.getTag());
     }
 
     @Override
@@ -386,7 +412,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
                         }
                     })
                     .transition(withCrossFade())
-                    .apply(new RequestOptions().circleCrop().error(R.drawable.default_person).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE))
                     .into(mBinding.profileImgv);
         }
     }
@@ -439,4 +465,56 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         snackbar.show();
     }
 
+
+    private static class CircleTransform extends BitmapTransformation {
+        public CircleTransform(Context context) {
+            super(context);
+        }
+
+        @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            return circleCrop(pool, toTransform);
+        }
+
+        private Bitmap circleCrop(BitmapPool pool, Bitmap source) {
+            if (source == null) return null;
+
+            Log.e(debugTag, source.getWidth() +" WIDTH");
+            Log.e(debugTag, source.getHeight() + " HEIGHT");
+
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            Log.e(debugTag, size + " SIZE");
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Log.e(debugTag, x + " X cord");
+            Log.e(debugTag, y + " Y cord");
+
+            // TODO this could be acquired from the pool too
+            Bitmap squared = Bitmap.createBitmap(source, 0, 70, 144, 170);
+
+            Bitmap result = pool.get(size, size, Bitmap.Config.ARGB_8888);
+            if (result == null) {
+                result = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+            }
+
+            Canvas canvas = new Canvas(result);
+            Paint paint = new Paint();
+            paint.setShader(new BitmapShader(squared, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
+            paint.setAntiAlias(true);
+            float r = size / 2f;
+            final Rect rect = new Rect(0, 0, result.getWidth(), result.getHeight());
+            final RectF rectF = new RectF(rect);
+//            final float roundPx = pixels;
+            canvas.drawRoundRect(rectF, 50, 50, paint);
+//            canvas.drawCircle(r, r, r, paint);
+            return result;
+        }
+
+        @Override
+        public void updateDiskCacheKey(MessageDigest messageDigest) {
+
+        }
+    }
 }

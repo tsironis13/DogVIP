@@ -68,12 +68,16 @@ public class DialogPicker extends DialogFragment implements DatePickerDialog.OnD
         cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         cal.set(Calendar.MONTH, month);
         long epoch = cal.getTimeInMillis();
-        SimpleDateFormat datefrmt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String displayDate= datefrmt.format(new Date(epoch));
-//        int age = (current_year - year);
         dialogActions.setAction(getResources().getString(R.string.date_pick_action));
-        dialogActions.setDisplay_date(displayDate);
-        dialogActions.setDate(epoch/1000L);
+        if (epoch/1000L > System.currentTimeMillis()/1000L) {
+            dialogActions.setCode(AppConfig.STATUS_ERROR);
+        } else {
+            SimpleDateFormat datefrmt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String displayDate= datefrmt.format(new Date(epoch));
+            dialogActions.setCode(AppConfig.STATUS_OK);
+            dialogActions.setDisplay_date(displayDate);
+            dialogActions.setDate(epoch/1000L);
+        }
         RxEventBus.createSubject(AppConfig.DIALOG_ACTION, 0).post(dialogActions);
     }
 

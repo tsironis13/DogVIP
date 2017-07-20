@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.chat.ChatRoom" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.mychatrooms.MyChatRoomsPresenter" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/baseRlt"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:background="@color/rcv_background"
+        android:paddingBottom="12dp"
+        android:onClick="@{() -> presenter.onBaseViewClick(baseRlt)}">
+
+        <ImageView
+            android:id="@+id/profileImgv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/image_cont_desc"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:imageUrl="@{obj.image_url}" />
+
+        <TextView
+            android:id="@+id/usernameTtv"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{@string/chat_room_username(obj.name, obj.surname)}"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/profileImgv" />
+
+        <ImageView
+            android:id="@+id/petImgv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/image_cont_desc"
+            android:elevation="2dp"
+            android:visibility="@{obj.pet_id != 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/usernameTtv"
+            app:layout_constraintLeft_toRightOf="@+id/profileImgv"
+            app:imageUrl="@{obj.pet_image}" />
+
+        <TextView
+            android:id="@+id/messageTtv"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{obj.message}"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/usernameTtv"
+            app:layout_constraintLeft_toRightOf="@+id/petNameTtv" />
+
+        <TextView
+            android:id="@+id/petNameTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:text="@{obj.pet_name}"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="@{obj.pet_id != 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/usernameTtv"
+            app:layout_constraintLeft_toRightOf="@+id/petImgv" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="12sp"
+            android:text="@{obj.timestamp}" />
+
+    <!--<TextView-->
+            <!--android:id="@+id/raceTtv"-->
+            <!--android:layout_width="170dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{obj.race}"-->
+            <!--android:maxLines="1"-->
+            <!--android:ellipsize="end"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="14sp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/nameTtv"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/nameTtv" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/genreTtv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="12sp"-->
+            <!--android:text="@{obj.genre == 0 ? @string/male : @string/female}"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/nameTtv" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/customageTtv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="12sp"-->
+            <!--android:paddingLeft="3dp"-->
+            <!--android:paddingStart="3dp"-->
+            <!--android:paddingRight="3dp"-->
+            <!--android:paddingEnd="3dp"-->
+            <!--app:textPl="@{obj.p_displayage}"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/genreTtv" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="12sp"-->
+            <!--android:text="@{obj.city}"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/customageTtv" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/favBtn"-->
+            <!--android:layout_width="27dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_marginRight="13dp"-->
+            <!--android:layout_marginLeft="13dp"-->
+            <!--android:contentDescription="@string/image_cont_desc"-->
+            <!--android:src="@{obj.isLiked == 0 ? @drawable/ic_favorite_border : @drawable/ic_favorite}"-->
+            <!--android:onClick="@{() -> presenter.onLoveImageViewClick(baseRlt)}"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/chatImgv" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/chatImgv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:contentDescription="@string/image_cont_desc"-->
+            <!--android:src="@drawable/ic_chat_black"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--android:onClick="@{() -> presenter.onMessageIconClick(baseRlt)}" />-->
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
