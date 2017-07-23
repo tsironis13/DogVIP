@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.mypets.pet.PetObj" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.ownerpets.OwnerPetsPresenter"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/baseRlt"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@color/rcv_background">
+
+        <ImageView
+            android:id="@+id/petImgv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/image_cont_desc"
+            android:elevation="2dp"
+            android:onClick="@{() -> presenter.onPetImageClick(baseRlt)}"
+            app:imageUrl="@{obj.main_url}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/nameTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:text="@{obj.p_name}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/petImgv" />
+
+        <TextView
+            android:layout_width="425dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{obj.race}"
+            app:layout_constraintTop_toBottomOf="@+id/nameTtv"
+            app:layout_constraintStart_toStartOf="@+id/nameTtv" />
+
+        <TextView
+            android:id="@+id/favTtv"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:background="@drawable/ic_favorite"
+            android:text="@{String.valueOf(obj.total_likes)}"
+            android:textSize="13sp"
+            android:textColor="@android:color/white"
+            android:visibility="@{obj.total_likes > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

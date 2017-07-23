@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.mypets.pet.PetObj" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.lovematch.LoveMatchPresenter" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/baseRlt"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@color/rcv_background"
+        android:onClick="@{() -> presenter.onBaseViewClick(baseRlt)}">
+
+        <ImageView
+            android:id="@+id/petImgv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_image"
+            android:contentDescription="@string/image_cont_desc"
+            android:onClick="@{() -> presenter.onPetImageViewClick(baseRlt)}"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:imageUrl="@{obj.main_url}" />
+
+        <TextView
+            android:id="@+id/nameTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@{obj.p_name}"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/petImgv" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@{obj.halfblood == 1 ? @string/halfblood : @string/empty}"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/nameTtv" />
+
+        <TextView
+            android:id="@+id/raceTtv"
+            android:layout_width="410dp"
+            android:layout_height="wrap_content"
+            android:text="@{obj.race}"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/nameTtv"
+            app:layout_constraintStart_toStartOf="@+id/nameTtv" />
+
+        <TextView
+            android:id="@+id/genreTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@{obj.genre == 0 ? @string/male : @string/female}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/nameTtv" />
+
+        <TextView
+            android:id="@+id/customageTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:paddingLeft="3dp"
+            android:paddingStart="3dp"
+            android:paddingRight="3dp"
+            android:paddingEnd="3dp"
+            app:textPl="@{obj.p_displayage}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/genreTtv" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@{obj.city}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/customageTtv" />
+
+        <ImageView
+            android:id="@+id/favBtn"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginLeft="13dp"
+            android:contentDescription="@string/image_cont_desc"
+            android:src="@{obj.isLiked == 0 ? @drawable/ic_favorite_border : @drawable/ic_favorite}"
+            android:onClick="@{() -> presenter.onLoveImageViewClick(baseRlt)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chatImgv" />
+
+        <ImageView
+            android:id="@+id/chatImgv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_cont_desc"
+            android:src="@drawable/ic_chat_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:onClick="@{() -> presenter.onMessageIconClick(baseRlt)}" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

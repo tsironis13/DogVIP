@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <!-- obj needed by view holder-->
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.mypets.pet.PetObj" />
+
+        <variable
+            name="expanded"
+            type="boolean" />
+
+        <variable
+            name="exists"
+            type="boolean" />
+
+        <variable
+            name="hasError"
+            type="boolean" />
+
+        <variable
+            name="hasFilters"
+            type="boolean" />
+
+        <variable
+            name="noitems"
+            type="boolean" />
+
+        <variable
+            name="errorText"
+            type="String" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/cntFrml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@color/colorPrimary">
+
+            <LinearLayout
+                android:id="@+id/errorLlt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="@{hasError ? View.VISIBLE : View.GONE}"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/errorTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@{errorText}" />
+
+                <Button
+                    android:id="@+id/retryBtn"
+                    android:layout_width="222dp"
+                    android:layout_height="48dp"
+                    android:text="@string/retry"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/ripple_drawable"
+                    android:visibility="@{!noitems ? View.VISIBLE : View.GONE}" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/searchFilterContainerRlt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:padding="15dp"
+                android:visibility="@{exists ? View.VISIBLE : View.GONE}">
+
+                <ImageView
+                    android:id="@+id/collapseImgv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:visibility="@{expanded ? View.VISIBLE : View.GONE}"
+                    android:contentDescription="@string/image_cont_desc"
+                    android:src="@drawable/ic_keyboard_arrow_up_white" />
+
+                <ImageView
+                    android:id="@+id/clearImgv"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/searchImgv"
+                    android:contentDescription="@string/image_cont_desc"
+                    android:visibility="@{hasFilters ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/ic_clear_white" />
+
+                <ImageView
+                    android:id="@+id/searchImgv"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/image_cont_desc"
+                    android:layout_marginBottom="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="@{expanded ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/ic_search_white" />
+
+                <LinearLayout
+                    android:id="@+id/locationLlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="15dp"
+                    android:layout_below="@+id/searchImgv"
+                    android:background="@color/colorAccentOpaque"
+                    android:elevation="2dp"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/locationIconImgv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:contentDescription="@string/image_cont_desc"
+                        app:srcCompat="@drawable/ic_search_white" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/locationEdt"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.9"
+                        android:textSize="13sp"
+                        android:completionThreshold="1"
+                        android:paddingRight="8dp"
+                        android:textStyle="bold"
+                        android:textCursorDrawable="@null"
+                        android:focusableInTouchMode="false"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:hint="@string/love_match_location_plhldr"
+                        android:dropDownWidth="match_parent"
+                        android:dropDownAnchor="@+id/locationLlt"
+                        android:background="@android:color/transparent"
+                        android:inputType="text" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/raceLlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/locationLlt"
+                    android:background="@color/colorAccentOpaque"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="2dp"
+                    android:elevation="2dp"
+                    android:weightSum="1"
+                    android:visibility="@{expanded ? View.VISIBLE : View.GONE}">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:contentDescription="@string/image_cont_desc"
+                        app:srcCompat="@drawable/ic_pets_white" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/raceEdt"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.9"
+                        android:textSize="13sp"
+                        android:paddingRight="8dp"
+                        android:completionThreshold="1"
+                        android:textCursorDrawable="@null"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:hint="@string/race_filter_plhldr"
+                        android:background="@android:color/transparent"
+                        android:dropDownWidth="match_parent"
+                        android:dropDownAnchor="@+id/raceLlt"
+                        android:inputType="text" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchFilterContainerRlt"
+                android:scrollbars="vertical"
+                android:background="@android:color/white"
+                android:visibility="@{exists &amp;&amp; !hasError ? View.VISIBLE : View.GONE}" />
+
+        </RelativeLayout>
+
+        <!--<com.rey.material.widget.SnackBar-->
+        <!--android:id="@+id/snckBr"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_gravity="bottom" />-->
+
+    </FrameLayout>
+
+</layout>

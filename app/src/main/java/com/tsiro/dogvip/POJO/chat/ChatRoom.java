@@ -42,6 +42,9 @@ public class ChatRoom {
     @SerializedName("timestamp")
     @Expose
     private String timestamp;
+    @SerializedName("total") //total unread
+    @Expose
+    private int total;
 
     public int getId() {
         return id;
@@ -122,4 +125,8 @@ public class ChatRoom {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+    public int getTotal() { return total; }
+
+    public void setTotal(int total) { this.total = total; }
 }

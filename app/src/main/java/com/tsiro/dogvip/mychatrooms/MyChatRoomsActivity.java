@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
-import com.tsiro.dogvip.DashboardActivity;
+import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.POJO.chat.ChatRoom;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomsRequest;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomsResponse;
@@ -31,9 +31,11 @@ import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by giannis on 19/7/2017.
@@ -47,6 +49,7 @@ public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsCont
     private String mToken;
     private MyChatRoomsPresenter mPresenter;
     private ArrayList<ChatRoom> data;
+    private RecyclerViewAdapter rcvAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +76,24 @@ public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsCont
             }
         });
         RxEventBus.add(this, disp);
+        Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
+            @Override
+            public void accept(@NonNull Message message) throws Exception {
+//                Log.e(debugTag, message.getChat_room_id() +" MESSAGE CHAT ROOM ID");
+                if (!data.isEmpty() && rcvAdapter != null) {
+                    for(int i = 0; i < data.size(); i++) {
+                        if(data.get(i).getId() == message.getChat_room_id()) {
+                            data.get(i).setMessage(message.getMessage());
+                            int total = data.get(i).getTotal() + 1;
+                            data.get(i).setTotal(total);
+                            data.get(i).setTimestamp(message.getCreated_at());
+                            rcvAdapter.notifyItemChanged(i);
+                        }
+                    }
+                }
+            }
+        });
+        RxEventBus.add(this, disp1);
     }
 
     @Override
@@ -140,7 +161,7 @@ public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsCont
 
     private void initializeRcView(final ArrayList<ChatRoom> data) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        RecyclerViewAdapter rcvAdapter = new RecyclerViewAdapter(R.layout.my_chat_rooms_rcv_row) {
+        rcvAdapter = new RecyclerViewAdapter(R.layout.my_chat_rooms_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
                 return data.get(position);

@@ -11,6 +11,7 @@ import com.tsiro.dogvip.POJO.chat.Message;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
+import com.tsiro.dogvip.utilities.MyLifecycleHandler;
 import com.tsiro.dogvip.utilities.NotificationUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
@@ -55,7 +56,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             resultIntent.putExtras(bundle);
             showNotificationMessage(getApplicationContext(), title, message, resultIntent, image);
 
-            if (!NotificationUtls.isAppIsInBackground(getApplicationContext())) {
+            if (MyLifecycleHandler.isApplicationInForeground()) {
+                Log.e(debugTag, "APPLICATION IN FOREGROUND");
                 Message mesgobj = new Message();
                 mesgobj.setId(mesgId);
                 mesgobj.setMessage(message);
@@ -64,6 +66,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mesgobj.setChat_room_id(chatRoomId);
                 mesgobj.setCreated_at(timestamp);
                 RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).post(mesgobj);
+            } else {
+                Log.e(debugTag, "APPLICATION IN BACKGROUND");
             }
         }
 

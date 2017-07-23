@@ -1,4 +1,4 @@
-package com.tsiro.dogvip.POJO.logout;
+package com.tsiro.dogvip.POJO.dashboard;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by giannis on 27/5/2017.
  */
 
-public class LogoutRequest {
+public class DashboardRequest {
 
     @SerializedName("action")
     @Expose

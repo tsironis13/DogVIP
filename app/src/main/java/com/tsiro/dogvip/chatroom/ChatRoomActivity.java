@@ -3,6 +3,7 @@ package com.tsiro.dogvip.chatroom;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.Api;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomRequest;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomResponse;
@@ -163,6 +165,27 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
             }
         });
         RxEventBus.add(this, disp1);
+//        Disposable disp2 = RxView.clicks(mBinding.msgEdt).subscribe(new Consumer<Object>() {
+//            @Override
+//            public void accept(@NonNull Object o) throws Exception {
+////                mBinding.rcv.getLayoutManager().scrollToPosition(rcvAdapter.getItemCount() - 1);
+//                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+//                    Log.e(debugTag, "haaa");
+//                    if (rcvAdapter.getItemCount() > 1) {
+//                        Log.e(debugTag, "ert");
+//
+//                    }
+//                }
+//            }
+//        });
+//        RxEventBus.add(this, disp2);
+//        Disposable disp3 = RxView.focusChanges(mBinding.msgEdt).subscribe(new Consumer<Boolean>() {
+//            @Override
+//            public void accept(@NonNull Boolean hasFocus) throws Exception {
+//                if (hasFocus && rcvAdapter != null && rcvAdapter.getItemCount() > 1) mBinding.rcv.getLayoutManager().scrollToPosition(rcvAdapter.getItemCount() - 1);
+//            }
+//        });
+//        RxEventBus.add(this, disp3);
     }
 
     @Override
@@ -270,6 +293,8 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
     private void initializeRcView(final ArrayList<Message> data, final int myid) {
         msgdata = data;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setStackFromEnd(true);
         rcvAdapter = new RecyclerViewAdapter(-1) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {

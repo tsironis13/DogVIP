@@ -94,10 +94,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             android:textSize="12sp"
-            android:text="@{obj.timestamp}" />
+            android:text="@{obj.timestamp}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/unread_msg_circle"
+            android:gravity="center"
+            android:text="@{String.valueOf(obj.total)}"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:visibility="@{obj.total != 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     <!--<TextView-->
             <!--android:id="@+id/raceTtv"-->

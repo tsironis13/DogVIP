@@ -1,4 +1,4 @@
-package com.tsiro.dogvip;
+package com.tsiro.dogvip.dashboard;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,9 +14,13 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.rey.material.widget.SnackBar;
-import com.tsiro.dogvip.POJO.FcmTokenUpload;
-import com.tsiro.dogvip.POJO.logout.LogoutRequest;
-import com.tsiro.dogvip.POJO.logout.LogoutResponse;
+import com.tsiro.dogvip.LoginActivity;
+import com.tsiro.dogvip.LostFoundActivity;
+import com.tsiro.dogvip.POJO.chat.Message;
+import com.tsiro.dogvip.POJO.chat.SendMessageRequest;
+import com.tsiro.dogvip.POJO.dashboard.DashboardRequest;
+import com.tsiro.dogvip.POJO.dashboard.DashboardResponse;
+import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
@@ -25,6 +29,7 @@ import com.tsiro.dogvip.databinding.NavigationHeaderBinding;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.mychatrooms.MyChatRoomsActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
+import com.tsiro.dogvip.requestmngrlayer.DashboardRequestManager;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
@@ -35,7 +40,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -44,7 +48,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by giannis on 27/5/2017.
  */
 
-public class DashboardActivity extends BaseActivity {
+public class DashboardActivity extends BaseActivity implements DashboardContract.View{
 
     private static final String degbugTag = DashboardActivity.class.getSimpleName();
     private ActivityDashboardBinding mBinding;
@@ -52,12 +56,13 @@ public class DashboardActivity extends BaseActivity {
     Disposable disp;
     private ServiceAPI serviceAPI;
     private String email, mToken;
-    private int id, type;
+    private int id, type, totalUnreadMsgs;
     private SnackBar mSnackBar;
     private boolean logout, userLoggedInFirstTime;
-    private ProgressDialog mProgressDialog;
     private Bundle bundle;
     private CommonUtls mCommonUtls;
+    private DashboardContract.ViewModel mViewModel;
+    private TextView unreadMsgsBadgeTtv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class DashboardActivity extends BaseActivity {
         mSnackBar = mBinding.snckBr;
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         mCommonUtls = new CommonUtls(this);
+        mViewModel = new DashboardViewModel(DashboardRequestManager.getInstance());
 
         if (getSupportActionBar()!= null){
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.person);
@@ -91,6 +97,7 @@ public class DashboardActivity extends BaseActivity {
         mBinding.navigationView.addHeaderView(_bind.getRoot());
         _bind.setUseremail(email);
         RxEventBus.createSubject(AppConfig.UPLOAD_FCM_TOKEN, AppConfig.PUBLISH_SUBJ).post(mToken);
+        getTotalUnreadMsgs();
     }
 
     @Override
@@ -127,9 +134,19 @@ public class DashboardActivity extends BaseActivity {
             }
         });
         RxEventBus.add(this, disp3);
+        Disposable disp4 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
+            @Override
+            public void accept(@NonNull Message message) throws Exception {
+                if (unreadMsgsBadgeTtv.getVisibility() == View.GONE) unreadMsgsBadgeTtv.setVisibility(View.VISIBLE);
+                totalUnreadMsgs++;
+                unreadMsgsBadgeTtv.setText(String.valueOf(totalUnreadMsgs));
+            }
+        });
+        RxEventBus.add(this, disp4);
         Log.e(degbugTag, userLoggedInFirstTime +" FIRST TIME " + android.os.Build.SERIAL);
         String fcmToken = mCommonUtls.getSharedPrefs().getString(getResources().getString(R.string.fcmtoken), null);
         if (userLoggedInFirstTime) {
+            Log.e(degbugTag, fcmToken +" FCM TOKEN");
             if (fcmToken != null && isNetworkAvailable()) mCommonUtls.uploadTokenToServer(mToken, fcmToken);
         } else {
             if (!mCommonUtls.getSharedPrefs().getBoolean(getResources().getString(R.string.fcmtoken_uploaded), false)) {
@@ -173,8 +190,9 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void initializeMsgMenuItem(Menu menu) {
-        final View notificaitons = menu.findItem(R.id.msg_item).getActionView();
-        notificaitons.setOnClickListener(new View.OnClickListener() {
+        final View notifications = menu.findItem(R.id.msg_item).getActionView();
+        unreadMsgsBadgeTtv = (TextView) notifications.findViewById(R.id.unreadMsgsBadgeTtv);
+                notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashboardActivity.this, MyChatRoomsActivity.class));
@@ -197,7 +215,6 @@ public class DashboardActivity extends BaseActivity {
         });
         //user 5 parameters constructor to handle toolbar click(hamburger icon, etc)
         mToggle = new ActionBarDrawerToggle(this, mBinding.drawerLlt, mBinding.incltoolbar.toolbar, R.string.common_open_on_phone, R.string.app_logo) {
-
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -213,44 +230,24 @@ public class DashboardActivity extends BaseActivity {
         mToggle.syncState();
     }
 
+    private void getTotalUnreadMsgs() {
+        if (isNetworkAvailable()) {
+            DashboardRequest request = new DashboardRequest();
+            request.setAction(getResources().getString(R.string.get_user_total_unread_msgs));
+            request.setAuthtoken(mToken);
+            mViewModel.getTotelUnreadMsgs(request);
+        }
+    }
+
     private void logout() {
         if (isNetworkAvailable()) {
-            LogoutRequest request = new LogoutRequest();
+            DashboardRequest request = new DashboardRequest();
             request.setAction(getResources().getString(R.string.logout_user));
             request.setAuthtoken(mToken);
             request.setDeviceid(android.os.Build.SERIAL);
 
             initializeProgressDialog(getResources().getString(R.string.please_wait));
-            serviceAPI.logout(request)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .delay(500, TimeUnit.MILLISECONDS)
-                    .onErrorReturn(new Function<Throwable, LogoutResponse>() {
-                        @Override
-                        public LogoutResponse apply(@NonNull Throwable throwable) throws Exception {
-                            return new LogoutResponse();
-                        }
-                    })
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            dismissDialog();
-                        }
-                    })
-                    .doOnNext(new Consumer<LogoutResponse>() {
-                        @Override
-                        public void accept(@NonNull LogoutResponse response) throws Exception {
-                            dismissDialog();
-                        }
-                    }).subscribe(new Consumer<LogoutResponse>() {
-                        @Override
-                        public void accept(@NonNull LogoutResponse response) throws Exception {
-                            getMyAccountManager().removeAccount();
-                            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-                            finish();
-                            startActivity(intent);
-                        }
-                    });
+            mViewModel.logoutUser(request);
         } else {
             showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
         }
@@ -271,7 +268,30 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return null;
+        return mViewModel;
     }
 
+    @Override
+    public void onSuccess(DashboardResponse response) {
+        dismissDialog();
+        if (response.getAction().equals(getResources().getString(R.string.logout_user))) {
+            getMyAccountManager().removeAccount();
+            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+            finish();
+            startActivity(intent);
+        } else {
+            if (response.getTotalunread() != 0) {
+                totalUnreadMsgs = response.getTotalunread();
+                unreadMsgsBadgeTtv.setVisibility(View.VISIBLE);
+                unreadMsgsBadgeTtv.setText(String.valueOf(response.getTotalunread()));
+            }
+//            Log.e(degbugTag, "here" + response.getTotalunread());
+        }
+    }
+
+    @Override
+    public void onError(int resource) {
+        dismissDialog();
+        showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
+    }
 }

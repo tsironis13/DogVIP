@@ -4,17 +4,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
-import com.tsiro.dogvip.DashboardActivity;
 import com.tsiro.dogvip.LostFoundActivity;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundObj;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.LostFoundViewPager;
 import com.tsiro.dogvip.app.BaseActivity;

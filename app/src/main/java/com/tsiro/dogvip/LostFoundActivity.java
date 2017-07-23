@@ -7,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.jakewharton.rxbinding2.view.RxView;
-import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.app.BaseActivity;
-import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityLostFoundBinding;
 import com.tsiro.dogvip.lostfound.LostActivity;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;

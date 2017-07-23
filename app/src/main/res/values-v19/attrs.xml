@@ -3,4 +3,6 @@
     <bool name="fitsSystemWindows">false</bool>
     <dimen name="navigation_drawer_header_margin">41dp</dimen>
     <dimen name="status_bar_height">25dp</dimen>
+    <!-- resolve API 19 keyboard opened issue (hides send msg editext) -->
+    <dimen name="status_bar_height_keyboard_exists">0dp</dimen>
 </resources>

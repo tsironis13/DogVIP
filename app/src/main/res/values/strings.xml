@@ -54,6 +54,7 @@
     <string name="send_msg">send_msg</string>
     <string name="update_read_msgs">update_read_msgs</string>
     <string name="get_chat_rooms">get_chat_rooms</string>
+    <string name="get_user_total_unread_msgs">get_user_total_unread_msgs</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>

@@ -9,20 +9,6 @@
             name="obj"
             type="com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPet" />
 
-        <variable
-            name="add"
-            type="boolean" />
-
-        <variable
-            name="processing"
-            type="boolean" />
-
-        <variable
-            name="imgstate"
-            type="int" />
-
-        <import type="android.view.View"/>
-
     </data>
 
     <FrameLayout
@@ -61,7 +47,7 @@
 
                     <TextView
                         android:id="@+id/reqfldsTtv"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15dp"
                         android:layout_gravity="center_horizontal"
@@ -71,105 +57,59 @@
                         android:textColor="@color/error_color"
                         android:text="@string/required_fields" />
 
-                    <RelativeLayout
-                        android:id="@+id/profilePhoneLlt"
-                        android:layout_below="@+id/reqfldsTtv"
-                        android:layout_width="270dp"
-                        android:layout_height="150dp"
+                    <TextView
+                        android:id="@+id/pickPetTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/reqfldsTtv"
+                        android:layout_marginBottom="7dp"
+                        android:textStyle="bold"
+                        android:text="@string/pick_pet_gr" />
+
+                    <LinearLayout
+                        android:id="@+id/pickPetLlt"
+                        android:layout_width="510dp"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
-                        android:visibility="@{add ? View.GONE : View.VISIBLE}">
-
-                        <TextView
-                            android:id="@+id/profileLblTtv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="7dp"
-                            android:layout_centerHorizontal="true"
-                            android:textStyle="bold"
-                            android:text="@string/photo_gr" />
-
-                        <RelativeLayout
-                            android:id="@+id/profRlt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/profileLblTtv"
-                            android:layout_centerHorizontal="true">
-
-                            <ImageView
-                                android:id="@+id/profileImgv"
-                                android:layout_width="85dp"
-                                android:layout_height="85dp"
-                                android:padding="1dp"
-                                android:layout_centerHorizontal="true"
-                                android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/ic_pets" />
-
-                            <FrameLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:background="@drawable/image_upload_background"
-                                android:visibility="@{processing ? View.VISIBLE : View.GONE}">
-
-                                <ProgressBar
-                                    android:layout_width="32dp"
-                                    android:layout_height="32dp"
-                                    android:layout_gravity="center"
-                                    android:theme="@style/ProcessingImageProgressBarStyle" />
-
-                            </FrameLayout>
-
-                        </RelativeLayout>
+                        android:background="@android:color/white"
+                        android:layout_below="@+id/pickPetTtv"
+                        android:gravity="center_vertical"
+                        android:elevation="2dp"
+                        android:weightSum="1">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/edit"
-                            android:layout_marginBottom="-10dp"
-                            android:layout_alignBottom="@+id/profRlt"
-                            android:padding="5dp"
-                            android:layout_centerHorizontal="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.08"
                             android:contentDescription="@string/image_cont_desc"
-                            android:background="@drawable/circle_image_small" />
+                            app:srcCompat="@drawable/ic_pets" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/profRlt"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentBottom="true"
-                            android:gravity="bottom"
-                            android:textColor="@color/error_color"
-                            android:textStyle="bold"
-                            android:text="@string/image_size_limit" />
+                        <Spinner
+                            android:id="@+id/mypetsSpnr"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="0.92"
+                            android:dropDownWidth="wrap_content"
+                            android:maxHeight="48dp"
+                            android:spinnerMode="dropdown"
+                            android:theme="@style/ThemeOverlay.AppCompat.Light"
+                            app:spn_arrowColor="@color/colorAccent" />
 
-                        <com.rey.material.widget.ImageButton
-                            android:id="@+id/clearImgv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/profRlt"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                            android:background="@null"
-                            android:visibility="@{imgstate != 0 &amp;&amp; !processing ? View.VISIBLE : View.GONE}"
-                            android:src="@drawable/ic_delete" />
-
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/dateLostTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/profilePhoneLlt"
+                        android:layout_below="@id/pickPetLlt"
                         android:layout_marginBottom="7dp"
                         android:textStyle="bold"
                         android:text="@string/date_lost_gr" />
 
                     <LinearLayout
                         android:id="@+id/dateLostLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -182,7 +122,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/date" />
 
@@ -190,7 +130,7 @@
                             android:id="@+id/dateLostEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:focusableInTouchMode="false"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
@@ -214,7 +154,7 @@
 
                     <LinearLayout
                         android:id="@+id/timeLostLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -227,7 +167,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/ic_time_black" />
 
@@ -235,7 +175,7 @@
                             android:id="@+id/timeLostEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:focusableInTouchMode="false"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
@@ -259,7 +199,7 @@
 
                     <LinearLayout
                         android:id="@+id/locationLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -272,7 +212,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/location" />
 
@@ -280,7 +220,7 @@
                             android:id="@+id/locationEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -303,7 +243,7 @@
 
                     <LinearLayout
                         android:id="@+id/contactPhoneLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -316,7 +256,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/phone" />
 
@@ -324,7 +264,7 @@
                             android:id="@+id/contactPhoneEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -347,7 +287,7 @@
 
                     <LinearLayout
                         android:id="@+id/moreInfoLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -358,7 +298,7 @@
 
                         <EditText
                             android:id="@+id/moreInfoEdt"
-                            android:layout_height="wrap_content"
+                            android:layout_height="210dp"
                             android:layout_width="match_parent"
                             android:inputType="textMultiLine"
                             android:minLines="6"

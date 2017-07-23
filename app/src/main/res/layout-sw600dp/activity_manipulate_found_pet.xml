@@ -61,7 +61,7 @@
 
                     <TextView
                         android:id="@+id/reqfldsTtv"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15dp"
                         android:layout_gravity="center_horizontal"
@@ -74,9 +74,10 @@
                     <RelativeLayout
                         android:id="@+id/profilePhoneLlt"
                         android:layout_below="@+id/reqfldsTtv"
-                        android:layout_width="270dp"
-                        android:layout_height="150dp"
+                        android:layout_width="510dp"
+                        android:layout_height="175dp"
                         android:layout_marginBottom="15dp"
+                        android:orientation="vertical"
                         android:visibility="@{add ? View.GONE : View.VISIBLE}">
 
                         <TextView
@@ -97,8 +98,8 @@
 
                             <ImageView
                                 android:id="@+id/profileImgv"
-                                android:layout_width="85dp"
-                                android:layout_height="85dp"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
                                 android:padding="1dp"
                                 android:layout_centerHorizontal="true"
                                 android:contentDescription="@string/image_cont_desc"
@@ -125,7 +126,7 @@
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:src="@drawable/edit"
-                            android:layout_marginBottom="-10dp"
+                            android:layout_marginBottom="-13dp"
                             android:layout_alignBottom="@+id/profRlt"
                             android:padding="5dp"
                             android:layout_centerHorizontal="true"
@@ -169,7 +170,7 @@
 
                     <LinearLayout
                         android:id="@+id/dateLostLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -182,7 +183,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/date" />
 
@@ -190,7 +191,7 @@
                             android:id="@+id/dateLostEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:focusableInTouchMode="false"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
@@ -214,7 +215,7 @@
 
                     <LinearLayout
                         android:id="@+id/timeLostLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -227,7 +228,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/ic_time_black" />
 
@@ -235,7 +236,7 @@
                             android:id="@+id/timeLostEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:focusableInTouchMode="false"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
@@ -259,7 +260,7 @@
 
                     <LinearLayout
                         android:id="@+id/locationLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -272,7 +273,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/location" />
 
@@ -280,7 +281,7 @@
                             android:id="@+id/locationEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -303,7 +304,7 @@
 
                     <LinearLayout
                         android:id="@+id/contactPhoneLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -316,7 +317,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/phone" />
 
@@ -324,7 +325,7 @@
                             android:id="@+id/contactPhoneEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -347,7 +348,7 @@
 
                     <LinearLayout
                         android:id="@+id/moreInfoLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -358,7 +359,7 @@
 
                         <EditText
                             android:id="@+id/moreInfoEdt"
-                            android:layout_height="wrap_content"
+                            android:layout_height="210dp"
                             android:layout_width="match_parent"
                             android:inputType="textMultiLine"
                             android:minLines="6"

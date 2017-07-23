@@ -8,8 +8,8 @@ import com.tsiro.dogvip.POJO.chat.FetchChatRoomsRequest;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomsResponse;
 import com.tsiro.dogvip.POJO.chat.SendMessageRequest;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
-import com.tsiro.dogvip.POJO.logout.LogoutRequest;
-import com.tsiro.dogvip.POJO.logout.LogoutResponse;
+import com.tsiro.dogvip.POJO.dashboard.DashboardRequest;
+import com.tsiro.dogvip.POJO.dashboard.DashboardResponse;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
 import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPet;
@@ -53,7 +53,7 @@ public interface ServiceAPI {
 
     //logout user
     @POST("actions.php")
-    Observable<LogoutResponse> logout(@Body LogoutRequest request);
+    Observable<DashboardResponse> logout(@Body DashboardRequest request);
 
     @POST("actions.php")
     Observable<FcmTokenUpload> uploadFcmToken(@Body FcmTokenUpload request);
@@ -104,6 +104,10 @@ public interface ServiceAPI {
 
     @POST("actions.php")
     Flowable<FetchChatRoomsResponse> getChatRooms(@Body FetchChatRoomsRequest request);
+
+    @POST("actions.php")
+    Flowable<DashboardResponse> genericDashboardRequest(@Body DashboardRequest request);
+
 //    @Multipart
 //    @POST("actions.php")
 //    Flowable<GetOwnerResponse> submitOwner(@Part("body") RequestBody body, @Part MultipartBody.Part image);
