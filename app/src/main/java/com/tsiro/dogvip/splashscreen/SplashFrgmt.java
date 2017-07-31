@@ -88,14 +88,13 @@ public class SplashFrgmt extends Fragment {
 //                                if(graphResponse!=null){
 //                                    FacebookRequestError error =graphResponse.getError();
 //                                    if(error!=null){
-//                                        Log.e("TAG", error.toString());
+//
 //                                    }else {
 ////                                        finish();
 //                                    }
 //                                }
 //                            }
 //                        });
-//                        Log.d("TAG","Executing revoke permissions with graph path" + delPermRequest.getGraphPath());
 //                        delPermRequest.executeAsync();
 //                        LoginManager.getInstance().logOut();
                         mFragmentManager

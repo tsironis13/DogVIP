@@ -91,7 +91,6 @@ public class LostFoundViewModel implements LostFoundContract.ViewModel {
 
         @Override
         public void onNext(LostFoundResponse response) {
-//            Log.e(debugTag, "ts");
             if (response.getCode() != AppConfig.STATUS_OK) {
                 onErrorAction(AppConfig.getCodes().get(response.getCode()));
             } else {
@@ -101,7 +100,6 @@ public class LostFoundViewModel implements LostFoundContract.ViewModel {
 
         @Override
         public void onError(Throwable t) {
-//            Log.e(debugTag, "t");
             onErrorAction(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 

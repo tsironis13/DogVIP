@@ -73,19 +73,19 @@
                         android:contentDescription="@string/image_cont_desc" />
 
                     <TextView
-                        android:id="@+id/ageTtv"
+                        android:id="@+id/customageTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/profileImgv"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
-                        android:text="@{owner.displayage}" />
+                        app:textPl="@{owner.displayage}" />
 
                     <TextView
                         android:id="@+id/cityTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/ageTtv"
+                        android:layout_below="@+id/customageTtv"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
                         android:text="@={owner.city}" />

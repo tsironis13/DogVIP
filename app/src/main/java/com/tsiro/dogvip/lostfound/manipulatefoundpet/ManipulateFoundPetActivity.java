@@ -67,7 +67,6 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class ManipulateFoundPetActivity extends BaseActivity implements ManipulateFoundPetContract.View {
 
-    private static final String debugTag = ManipulateFoundPetActivity.class.getSimpleName();
     private ActivityManipulateFoundPetBinding mBinding;
     private String mToken, action;
     private Bundle bundle;
@@ -137,11 +136,9 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-                    Log.e(debugTag, obj.getDisplay_date());
                     lostFoundObj.setDisplaydate(obj.getDisplay_date());
                     lostFoundObj.setDate_lost(obj.getDate());
                 } else if (obj.getAction().equals(getResources().getString(R.string.time_pick_action))) {
-//                    Log.e(debugTag, obj.getDisplay_date());
                     lostFoundObj.setTime_lost(obj.getDisplay_date());
                 } else if (obj.getAction().equals(getResources().getString(R.string.dialog_cancel_date_action))) {
                     lostFoundObj.setDisplaydate("");
@@ -182,7 +179,6 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(debugTag, "onDestroy");
     }
 
     @Override
@@ -241,7 +237,6 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                     uri = data.getData();
                     galleryURI = uri;
                 }
-//                Log.e(debugTag, uri+"");
                 isImageValid(uri, state);
             }
         }
@@ -325,7 +320,6 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                 lostFoundObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
             } else {
                 lostFoundObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
-//                Log.e(debugTag, lostFoundObj.getDisplaydate()+"sds");
             }
             if (lostFoundObj.getMain_image() != null && !lostFoundObj.getMain_image().equals("")) {
                 state = 3;
@@ -415,7 +409,6 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                         }
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                            Log.e(debugTag, state+"");
                             if (state == 3) return false;
                             if (state == 1 || state == 2) uploadImage();
                             if (state == 0) output = null;
@@ -453,7 +446,6 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-//                    Log.e(debugTag, output+"");
                             if (output != null) {
                                 photoURI = mCommonUtls.getUriForFile(output);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);

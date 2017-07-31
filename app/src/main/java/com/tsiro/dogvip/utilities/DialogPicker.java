@@ -61,7 +61,6 @@ public class DialogPicker extends DialogFragment implements DatePickerDialog.OnD
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//        Log.e(debugTag, year+"");
         int current_year = Calendar.getInstance().get(Calendar.YEAR);
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);

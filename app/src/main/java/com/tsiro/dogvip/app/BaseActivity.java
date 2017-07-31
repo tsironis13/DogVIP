@@ -89,7 +89,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
 //                    @Override
 //                    public void onPositiveActionClicked(DialogFragment fragment) {
 //                        DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
-////                        Log.e("aa", dialog.getDate()/1000+"");
 //                        subscriber.onNext(new DialogActions("", 1, dialog.getDate()/1000, dialog.getFormattedDate(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()))));
 //                        super.onPositiveActionClicked(fragment);
 //                    }
@@ -144,7 +143,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setCancelable(false);
-//        Log.e(debugTag, "SHOW DIALOG");
         mProgressDialog.show();
 
         return mProgressDialog;

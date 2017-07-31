@@ -2,6 +2,7 @@ package com.tsiro.dogvip.app;
 
 import android.util.SparseIntArray;
 
+import com.tsiro.dogvip.BuildConfig;
 import com.tsiro.dogvip.R;
 
 /**
@@ -10,7 +11,7 @@ import com.tsiro.dogvip.R;
 
 public class AppConfig {
 
-    public static final String BASE_URL = "http://dogvip.votingsystem.gr/api/";
+    public static final String BASE_URL = BuildConfig.BASE_URL;
     //TAGS
     public static final String FRAGMENT_CREATED = "fragment_created"; //login activity: check if fragments are created on button click
     //APP ACTIONS

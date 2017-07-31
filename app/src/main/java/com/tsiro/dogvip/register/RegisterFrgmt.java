@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -126,7 +127,6 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
             }
         });
         RxEventBus.add(this, disp);
-
         Disposable disp1 = RxView.clicks(mBinding.facebookBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -134,7 +134,6 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
             }
         });
         RxEventBus.add(this, disp1);
-
         Disposable disp2 = RxView.clicks(mBinding.googleBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -143,6 +142,15 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
             }
         });
         RxEventBus.add(this, disp2);
+        Disposable disp3 = RxView.clicks(mBinding.termsBtn).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                Uri uri = Uri.parse("http://dogvip.votingsystem.gr/terms.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+        RxEventBus.add(this, disp3);
     }
 
     @Override

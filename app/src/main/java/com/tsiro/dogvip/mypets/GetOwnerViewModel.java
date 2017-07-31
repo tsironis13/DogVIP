@@ -19,7 +19,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
 
-    private static final String debugTag = GetOwnerViewModel.class.getSimpleName();
     private GetOwnerContract.View mViewClback;
     private MyPetsRequestManager mMyPetsRequestManager;
     private AsyncProcessor<OwnerObj> mGetOwnerDetailsProcessor;
@@ -44,7 +43,6 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
 
     @Override
     public void onViewDetached() {
-//        Log.e(debugTag, "onViewDetached");
         mViewClback = null;
         if (mGetOwnerDetailsDisp != null) mGetOwnerDetailsDisp.dispose();
     }
@@ -66,7 +64,6 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
     }
 
     private void onGetOwnerSuccess(OwnerObj response) {
-//        Log.e(debugTag, "onGetOwnerSuccess");
         mGetOwnerDetailsDisp = null;
         mViewClback.onSuccess(response);
     }
@@ -90,13 +87,11 @@ public class GetOwnerViewModel implements GetOwnerContract.ViewModel {
 
         @Override
         public void onError(@NonNull Throwable e) {
-            Log.e(debugTag, e.toString());
             onGetOwnerError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

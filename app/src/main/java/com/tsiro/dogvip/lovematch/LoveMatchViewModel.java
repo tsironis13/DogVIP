@@ -21,7 +21,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
 
-    private static final String debugTag = LoveMatchViewModel.class.getSimpleName();
     private LoveMatchContract.View mViewClback;
     private LoveMatchRequestManager mLoveMatchRequestManager;
     private AsyncProcessor<LoveMatchResponse> mProcessor;
@@ -96,7 +95,6 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
 
         @Override
         public void onError(Throwable t) {
-            Log.e(debugTag, t.toString());
             onErrorGetPets(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 

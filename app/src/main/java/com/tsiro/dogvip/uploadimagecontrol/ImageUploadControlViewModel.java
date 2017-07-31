@@ -25,7 +25,6 @@ import okhttp3.RequestBody;
 
 public class ImageUploadControlViewModel implements ImageUploadControlContract.ViewModel, Lifecycle.ImageUploadModel {
 
-    private static final String debugTag = ImageUploadControlViewModel.class.getSimpleName();
     private ImageUploadControlRequestManager mImageUploadControlRequestManager;
     private ImageUploadControlContract.View mViewClback;
     private Disposable mDisp, mManipulatePetImageDisp;
@@ -43,7 +42,6 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onViewResumed() {
-        Log.e(debugTag, "onViewResumed");
         if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null){
             imageProcessor
                     .subscribeOn(Schedulers.io())
@@ -102,7 +100,6 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onSuccessImageAction(Image image) {
-        Log.e(debugTag, "onSuccessImageAction");
         mDisp = null;
         if (image.getCode() != AppConfig.STATUS_OK) {
             mViewClback.onError(AppConfig.getCodes().get(image.getCode()));
@@ -114,7 +111,6 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
     @Override
     public void onErrorImageAction() {
         mDisp = null;
-//        Log.e("aaa", AppConfig.getCodes().get(AppConfig.STATUS_ERROR)+"");
         mViewClback.onError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
@@ -148,7 +144,6 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

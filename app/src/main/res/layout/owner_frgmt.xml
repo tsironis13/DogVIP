@@ -313,6 +313,7 @@
                     android:hint="@string/city_plhldr"
                     android:dropDownAnchor="@+id/cityLlt"
                     android:dropDownWidth="270dp"
+                    android:completionThreshold="1"
                     android:background="@android:color/transparent"
                     android:text="@={owner.city}"
                     android:inputType="text" />

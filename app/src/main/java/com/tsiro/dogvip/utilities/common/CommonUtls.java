@@ -40,7 +40,6 @@ import static android.app.Notification.DEFAULT_VIBRATE;
 
 public class CommonUtls {
 
-    private static final String debugTag = CommonUtls.class.getSimpleName();
     private Context mContext;
 
     public CommonUtls(Context context) {
@@ -60,7 +59,6 @@ public class CommonUtls {
 
     //image size limit 6MB
     public Image isImageSizeValid(Uri uri, int state, File file) throws IllegalArgumentException {
-        Log.e(debugTag, uri.toString());
         File mFile;
         Image img = new Image();
         if (state == 1) {
@@ -74,7 +72,6 @@ public class CommonUtls {
                 cursor.close();
             }
             mFile = new File(path);
-//            Log.e("ss", mFile+"");
         } else {
             mFile = file;
         }
@@ -99,7 +96,6 @@ public class CommonUtls {
     public void deleteAppStorage(File file) {
         if (file != null) {
             boolean deleted = file.delete();
-//            Log.e(debugTag, deleted+"");
         }
     }
 
@@ -129,7 +125,6 @@ public class CommonUtls {
         request.setAction(mContext.getResources().getString(R.string.save_registration_token));
         request.setAuthtoken(mToken);
         request.setDeviceid(android.os.Build.SERIAL);
-//        Log.e(degbugTag, fcmToken +" FCM TOKEN");
         request.setFcmtoken(fcmToken);
         RetrofitFactory.getInstance().getServiceAPI().uploadFcmToken(request)
                 .subscribeOn(Schedulers.io())

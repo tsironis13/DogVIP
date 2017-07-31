@@ -12,7 +12,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class ImageUploadSubscriber extends DisposableSubscriber<Image> {
 
-    private static final String debugTag = ImageUploadSubscriber.class.getSimpleName();
     private Lifecycle.ImageUploadModel imageUploadModel;
 
     public ImageUploadSubscriber(Lifecycle.ImageUploadModel imageUploadModel) {
@@ -21,13 +20,11 @@ public class ImageUploadSubscriber extends DisposableSubscriber<Image> {
 
     @Override
     public void onNext(Image image) {
-        Log.e(debugTag, image.getCode()+"");
         imageUploadModel.onSuccessImageAction(image);
     }
 
     @Override
     public void onError(Throwable t) {
-        Log.e(debugTag, "onError"+t.toString());
         imageUploadModel.onErrorImageAction();
     }
 

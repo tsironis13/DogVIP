@@ -74,7 +74,6 @@ public class OwnerProfileViewModel implements OwnerProfileContract.ViewModel {
 
     private void onDeleteOwnerError(int resource) {
         mDisp = null;
-//        Log.e(debugTag, viewClback+" ");
         mViewClback.onError(resource);
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
@@ -97,7 +96,6 @@ public class OwnerProfileViewModel implements OwnerProfileContract.ViewModel {
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

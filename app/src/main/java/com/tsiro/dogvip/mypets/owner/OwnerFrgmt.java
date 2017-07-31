@@ -73,7 +73,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
 
-    private static final String debugTag = OwnerFrgmt.class.getSimpleName();
     private View mView;
     private OwnerFrgmtBinding mBinding;
     private OwnerContract.ViewModel mOwnerFrgmtViewModel;
@@ -137,7 +136,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                 if (savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
                     ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
                     mBinding.setOwner(ownerObj);
-//                    Log.e(debugTag, ownerObj.getImageurl() + "KDA");
                     if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
                         state = 3;
                         mBinding.setImgstate(state);
@@ -158,7 +156,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                     if (getArguments().getParcelable(getResources().getString(R.string.parcelable_obj)) != null) {
                         ownerObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
                         mBinding.setOwner(ownerObj);
-//                        Log.e(debugTag, ownerObj.getImageurl()+"");
                         if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
                             state = 3;
                             mBinding.setImgstate(state);
@@ -209,7 +206,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-//                    Log.e(debugTag, obj.getDisplay_date());
                     if (obj.getCode() == AppConfig.STATUS_OK) {
                         ownerObj.setDisplayage(obj.getDisplay_date());
                         ownerObj.setAge(obj.getDate());
@@ -237,7 +233,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(debugTag, "onDestroy");
     }
 
     @Override
@@ -282,7 +277,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                     uri = data.getData();
                     galleryURI = uri;
                 }
-//                Log.e(debugTag, uri+"");
                 isImageValid(uri, state);
             }
         }
@@ -313,7 +307,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
     @Override
     public void onSuccess(OwnerObj response) {
         ((MyPetsActivity) getActivity()).dismissDialog();
-//        Log.e(debugTag, response.getPets()+"");
         Intent intent = new Intent(getActivity(), OwnerProfileActivity.class);
         Bundle mBundle = new Bundle();
         mBundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
@@ -338,7 +331,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                 mBinding.setImgstate(state);
                 setOwnerProfileImg(null);
                 ((MyPetsActivity)getActivity()).setImageProfileUrl("");
-//                Log.e(debugTag, ownerObj.getImageurl()+"");
                 ownerObj.setImageurl("");
                 imageAction = "";
             } else {
@@ -427,7 +419,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                     } else {
                         if (!mBinding.getProcessing()) {
                             ownerObj.setAction(getResources().getString(R.string.edit_ownr));
-//                        Log.e(debugTag, "IMAGE SHJS"+ownerObj.getImageurl());
                             if (ownerObj.getImageurl() !=null && !ownerObj.getImageurl().equals("")) ownerObj.setImageurl(ownerObj.getImageurl());
                             if (((MyPetsActivity)getActivity()).getImageurl() != null && !((MyPetsActivity)getActivity()).getImageurl().equals("")) ownerObj.setImageurl(((MyPetsActivity)getActivity()).getImageurl());
 //                        ownerObj.setId(ownerObj.getId());
@@ -486,7 +477,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                         }
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                            Log.e(debugTag, state+"");
                             if (state == 3) return false;
                             if (state == 1 || state == 2) uploadImage();
                             if (state == 0) output = null;
@@ -514,7 +504,6 @@ public class OwnerFrgmt extends BaseFragment implements OwnerContract.View {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-//                    Log.e(debugTag, output+"");
                             if (output != null) {
                                 photoURI = mCommonUtls.getUriForFile(output);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);

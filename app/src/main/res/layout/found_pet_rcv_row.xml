@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.lostfound.LostFoundObj" />
+
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.lostfound.LostActivityPresenter" />
+
+    </data>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/baseRlt"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@color/rcv_background"
+            android:onClick="@{(v) -> presenter.onBaseViewClick(v)}">
+
+            <ImageView
+                android:id="@+id/petImgv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/image_cont_desc"
+                android:elevation="2dp"
+                app:imageUrl="@{obj.thumb_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/infoTtv"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{obj.info}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/petImgv" />
+
+            <TextView
+                android:id="@+id/foundPetLblTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:text="@string/found_pet_lbl"
+                android:textColor="@color/error_color"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/locationTtv"
+                app:layout_constraintLeft_toRightOf="@+id/petImgv" />
+
+            <TextView
+                android:id="@+id/locationTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                app:text1="@{obj.location}"
+                app:layout_constraintBottom_toTopOf="@+id/dateTimeLostTtv"
+                app:layout_constraintStart_toStartOf="@+id/infoTtv" />
+
+            <TextView
+                android:id="@+id/dateTimeLostTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                app:text1="@{obj.displaydate}"
+                app:text2="@{obj.time_lost}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/infoTtv" />
+
+            <ImageView
+                android:id="@+id/shareImgv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/image_cont_desc"
+                android:src="@drawable/ic_share"
+                android:onClick="@{() -> presenter.onShareIconClick(baseRlt)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+</layout>

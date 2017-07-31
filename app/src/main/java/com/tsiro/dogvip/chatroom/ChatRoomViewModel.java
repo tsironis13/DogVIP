@@ -22,7 +22,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class ChatRoomViewModel implements ChatRoomContract.ViewModel {
 
-    private static final String debugTag = LoveMatchViewModel.class.getSimpleName();
     private ChatRoomContract.View mViewClback;
     private ChatRequestManager mFcmRequestManager;
     private AsyncProcessor<FetchChatRoomResponse> mProcessor;
@@ -116,7 +115,6 @@ public class ChatRoomViewModel implements ChatRoomContract.ViewModel {
 
         @Override
         public void onError(Throwable t) {
-            Log.e(debugTag, t.toString());
             onErrorAction(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 

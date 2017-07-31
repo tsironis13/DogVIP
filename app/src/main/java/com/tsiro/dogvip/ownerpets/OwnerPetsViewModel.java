@@ -99,7 +99,6 @@ public class OwnerPetsViewModel implements OwnerPetsContract.ViewModel {
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

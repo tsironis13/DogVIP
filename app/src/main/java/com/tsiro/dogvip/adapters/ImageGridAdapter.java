@@ -38,12 +38,10 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class ImageGridAdapter extends ArrayAdapter {
 
-    private static final String debugTag = ImageGridAdapter.class.getSimpleName();
     private Context mContext;
     private int resource;
     private ImageUploadControlPresenter imageUploadControlPresenter;
     private LayoutInflater mInflater;
-    private CheckBox checkBox;
 
     public ImageGridAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Image> objects, ImageUploadControlPresenter imageUploadControlPresenter) {
         super(context, resource, objects);
@@ -62,7 +60,7 @@ public class ImageGridAdapter extends ArrayAdapter {
         mBinding.setVariable(BR.image, getItem(position));
         mBinding.setVariable(BR.presenter, imageUploadControlPresenter);
         mBinding.getRoot().setTag(position);
-        checkBox = (CheckBox) mBinding.getRoot().findViewById(R.id.checkBx);
+        CheckBox checkBox = (CheckBox) mBinding.getRoot().findViewById(R.id.checkBx);
         if (checkBox != null) checkBox.setChecked(false);
 
         return mBinding.getRoot();
@@ -80,7 +78,6 @@ public class ImageGridAdapter extends ArrayAdapter {
 
     //    @BindingAdapter("app:test")
 //    public boolean checkIsMain(View view) {
-//        Log.e(debugTag, "asdasa");
 //        //get main image index
 //        int index = (int)view.getTag();
 //        return items.get(index).isMain();

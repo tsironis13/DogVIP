@@ -29,7 +29,6 @@ import io.reactivex.functions.Consumer;
 
 public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String debugTag = LoginActivity.class.getSimpleName();
     private static boolean anmtionOnPrgrs;
     private static CompositeDisposable mCompDisp;
     private GoogleApiClient mGoogleApiClient;
@@ -57,7 +56,6 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
         Disposable disp = RxEventBus.createSubject(AppConfig.FRAGMENT_ANIMATION, AppConfig.PUBLISH_SUBJ).observeEvents(Boolean.class).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean animPrgrs) throws Exception {
-//                Log.e("anim", animPrgrs+"");
                 anmtionOnPrgrs = animPrgrs;
             }
         });

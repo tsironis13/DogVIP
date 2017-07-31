@@ -69,7 +69,6 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class OwnerProfileActivity extends BaseActivity implements OwnerProfileContract.View {
 
-    private static final String debugTag = OwnerProfileActivity.class.getSimpleName();
     private ActivityOwnerprofileBinding mBinding;
     private OwnerObj ownerObj;
     private Intent intent;
@@ -145,28 +144,26 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
                 imageurl = data.getExtras().getString(getResources().getString(R.string.imageurl));
                 setOwnerProfileImg(imageurl);
             } else if (requestCode == AppConfig.REFRESH_PET_INFO) {
-                PetObj petObj = data.getExtras().getParcelable(getResources().getString(R.string.pet_obj));
-                int indx = data.getExtras().getInt(getResources().getString(R.string.index));
-//                Log.e(debugTag, "INDEX HERS =? "+indx);
-//                Log.e(debugTag, "MAI IMAGE: "+petObj.getMain_url());
-//                Log.e(debugTag, "PREVIOUS MAIN IMAGE: "+ownerObj.getPets().get(obj.getId()).getMain_url());
-//                        Log.e(debugTag, "INDEX => "+obj.getId());
-//                        Log.e(debugTag, "URLS S => "+petObj.getUrls());
-                        if (petObj.getMain_url() != null) {
-                            Uri main = Uri.parse(petObj.getMain_url());
-//                            Log.e(debugTag, "PETS =>"+ ownerObj.getPets());
-                            if (ownerObj.getPets().get(indx).getMain_url() != null) {
-                                Uri previous = Uri.parse(ownerObj.getPets().get(indx).getMain_url());
-                                if (!main.equals(previous)) {
-                                    ownerObj.getPets().get(indx).setMain_url(petObj.getMain_url());
-                                    rcvAdapter.notifyItemChanged(indx);
-                                }
-                            } else {
+                if (data.getExtras().getBoolean(getResources().getString(R.string.canceled_on_add))) {
+
+                } else {
+                    PetObj petObj = data.getExtras().getParcelable(getResources().getString(R.string.pet_obj));
+                    int indx = data.getExtras().getInt(getResources().getString(R.string.index));
+                    if (petObj.getMain_url() != null) {
+                        Uri main = Uri.parse(petObj.getMain_url());
+                        if (ownerObj.getPets().get(indx).getMain_url() != null) {
+                            Uri previous = Uri.parse(ownerObj.getPets().get(indx).getMain_url());
+                            if (!main.equals(previous)) {
                                 ownerObj.getPets().get(indx).setMain_url(petObj.getMain_url());
                                 rcvAdapter.notifyItemChanged(indx);
                             }
+                        } else {
+                            ownerObj.getPets().get(indx).setMain_url(petObj.getMain_url());
+                            rcvAdapter.notifyItemChanged(indx);
                         }
-                        if (petObj.getUrls() != null) ownerObj.getPets().get(indx).setUrls(petObj.getUrls());
+                    }
+                    if (petObj.getUrls() != null) ownerObj.getPets().get(indx).setUrls(petObj.getUrls());
+                }
             }
         }
     }
@@ -203,8 +200,6 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         if (ownerObj.getPets().get(ps).getStrurls() != null) urls = ownerObj.getPets().get(ps).getStrurls().replace("[", "").replace("]", "").split(",");
         Intent intent = new Intent(this, PetProfileActivity.class);
         Bundle bundle = new Bundle();
-//        Log.e(debugTag, data.get(position).getUser_role_id()+"");
-        Log.e(debugTag, ownerObj.getPets().get(ps).getStrurls() +"");
         bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(ps));
         bundle.putStringArray(getResources().getString(R.string.urls), urls);
         bundle.putInt(getResources().getString(R.string.view_from), 2020);
@@ -220,7 +215,6 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         Bundle bundle = new Bundle();
 //        bundle.putParcelableArrayList(getResources().getString(R.string.urls), ownerObj.getPets().get(position).getUrls());
 //        bundle.putInt(getResources().getString(R.string.pet_id), ownerObj.getPets().get(position).getId());
-//        Log.e(debugTag, ownerObj.getPets().get(0).getMain_url());
         bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(position));
         bundle.putInt(getResources().getString(R.string.index), position);
         bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
@@ -287,8 +281,6 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
             rcvAdapter = new RecyclerViewAdapter(R.layout.owner_pet_rcv_row) {
                 @Override
                 protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
-//                        Log.e(debugTag, ownerObj.getPets().get(position).getName()+"");
-
                     return ownerObj.getPets().get(position);
                 }
                 @Override
@@ -358,7 +350,6 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
             bundle.putInt(getResources().getString(R.string.user_role_id), ownerObj.getId());
         }
         bundle.putBoolean(getResources().getString(R.string.add_pet), addpet);
-        Log.e(debugTag, position+ "POSITION");
         bundle.putInt(getResources().getString(R.string.index), position);
         startActivityForResult(intent.putExtras(bundle), AppConfig.REFRESH_PET_INFO);
     }
@@ -387,7 +378,6 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     }
 
     private void setOwnerProfileImg(final String url) {
-//        Log.e(debugTag, uri+"");
         if (url != null) {
             Glide.with(this)
                     .load(url)
@@ -456,55 +446,48 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     }
 
 
-    private static class CircleTransform extends BitmapTransformation {
-        public CircleTransform(Context context) {
-            super(context);
-        }
-
-        @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            return circleCrop(pool, toTransform);
-        }
-
-        private Bitmap circleCrop(BitmapPool pool, Bitmap source) {
-            if (source == null) return null;
-
-            Log.e(debugTag, source.getWidth() +" WIDTH");
-            Log.e(debugTag, source.getHeight() + " HEIGHT");
-
-            int size = Math.min(source.getWidth(), source.getHeight());
-
-            Log.e(debugTag, size + " SIZE");
-
-            int x = (source.getWidth() - size) / 2;
-            int y = (source.getHeight() - size) / 2;
-
-            Log.e(debugTag, x + " X cord");
-            Log.e(debugTag, y + " Y cord");
-
-            // TODO this could be acquired from the pool too
-            Bitmap squared = Bitmap.createBitmap(source, 0, 70, 144, 170);
-
-            Bitmap result = pool.get(size, size, Bitmap.Config.ARGB_8888);
-            if (result == null) {
-                result = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(result);
-            Paint paint = new Paint();
-            paint.setShader(new BitmapShader(squared, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
-            paint.setAntiAlias(true);
-            float r = size / 2f;
-            final Rect rect = new Rect(0, 0, result.getWidth(), result.getHeight());
-            final RectF rectF = new RectF(rect);
-//            final float roundPx = pixels;
-            canvas.drawRoundRect(rectF, 50, 50, paint);
-//            canvas.drawCircle(r, r, r, paint);
-            return result;
-        }
-
-        @Override
-        public void updateDiskCacheKey(MessageDigest messageDigest) {
-
-        }
-    }
+//    private static class CircleTransform extends BitmapTransformation {
+//        public CircleTransform(Context context) {
+//            super(context);
+//        }
+//
+//        @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+//            return circleCrop(pool, toTransform);
+//        }
+//
+//        private Bitmap circleCrop(BitmapPool pool, Bitmap source) {
+//            if (source == null) return null;
+//
+//
+//            int size = Math.min(source.getWidth(), source.getHeight());
+//
+//            int x = (source.getWidth() - size) / 2;
+//            int y = (source.getHeight() - size) / 2;
+//
+//            // TODO this could be acquired from the pool too
+//            Bitmap squared = Bitmap.createBitmap(source, 0, 70, 144, 170);
+//
+//            Bitmap result = pool.get(size, size, Bitmap.Config.ARGB_8888);
+//            if (result == null) {
+//                result = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+//            }
+//
+//            Canvas canvas = new Canvas(result);
+//            Paint paint = new Paint();
+//            paint.setShader(new BitmapShader(squared, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
+//            paint.setAntiAlias(true);
+//            float r = size / 2f;
+//            final Rect rect = new Rect(0, 0, result.getWidth(), result.getHeight());
+//            final RectF rectF = new RectF(rect);
+////            final float roundPx = pixels;
+//            canvas.drawRoundRect(rectF, 50, 50, paint);
+////            canvas.drawCircle(r, r, r, paint);
+//            return result;
+//        }
+//
+//        @Override
+//        public void updateDiskCacheKey(MessageDigest messageDigest) {
+//
+//        }
+//    }
 }

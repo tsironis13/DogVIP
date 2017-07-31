@@ -89,7 +89,6 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 

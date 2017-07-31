@@ -60,6 +60,7 @@ public class MyLostEntriesFrgmt extends Fragment {
     private RecyclerTouchListener listener;
     private RecyclerViewAdapter rcvAdapter;
     private int id, index;//id->user role id
+    private LostFoundContract.View viewContract;
 
     public static MyLostEntriesFrgmt newInstance(ArrayList<LostFoundObj> list, int id, ArrayList<PetObj> mypets) {
         Bundle bundle = new Bundle();
@@ -69,6 +70,12 @@ public class MyLostEntriesFrgmt extends Fragment {
         MyLostEntriesFrgmt frgmt = new MyLostEntriesFrgmt();
         frgmt.setArguments(bundle);
         return frgmt;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if ( context instanceof Activity) this.viewContract = (LostFoundContract.View) context;
     }
 
     @Nullable
@@ -108,6 +115,7 @@ public class MyLostEntriesFrgmt extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mBinding.rcv.addOnItemTouchListener(listener);
         Disposable disp = RxView.clicks(mBinding.addLostPetFlbtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -167,7 +175,7 @@ public class MyLostEntriesFrgmt extends Fragment {
         mBinding.rcv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mBinding.rcv.setAdapter(rcvAdapter);
         listener = new RecyclerTouchListener(getActivity(), mBinding.rcv)
-                .setSwipeOptionViews(R.id.edit, R.id.delete)
+                .setSwipeOptionViews(R.id.share, R.id.edit, R.id.delete)
                 .setSwipeable(R.id.baseRlt, R.id.revealRowLlt, new RecyclerTouchListener.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
@@ -178,6 +186,8 @@ public class MyLostEntriesFrgmt extends Fragment {
                             bundle.putInt(getResources().getString(R.string.id), id);
                             bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.edit_ownr));
                             startActivity(new Intent(getActivity(), ManipulateLostPetActivity.class).putExtras(bundle));
+                        } else if (viewID == R.id.share){
+                            viewContract.onShareIconClick(mydata.get(position));
                         } else {
                             deleteLostPet(mydata.get(position).getId());
                             index = position;

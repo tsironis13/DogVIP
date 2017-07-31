@@ -1,5 +1,7 @@
 package com.tsiro.dogvip.lostfound;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -50,6 +52,7 @@ public class MyFoundEntriesFrgmt extends Fragment {
     private RecyclerTouchListener listener;
     private RecyclerViewAdapter rcvAdapter;
     private int index;
+    private LostFoundContract.View viewContract;
 
     public static MyFoundEntriesFrgmt newInstance(ArrayList<LostFoundObj> list) {
         Bundle bundle = new Bundle();
@@ -57,6 +60,12 @@ public class MyFoundEntriesFrgmt extends Fragment {
         MyFoundEntriesFrgmt frgmt = new MyFoundEntriesFrgmt();
         frgmt.setArguments(bundle);
         return frgmt;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if ( context instanceof Activity) this.viewContract = (LostFoundContract.View) context;
     }
 
     @Nullable
@@ -92,6 +101,7 @@ public class MyFoundEntriesFrgmt extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mBinding.rcv.addOnItemTouchListener(listener);
         Disposable disp = RxView.clicks(mBinding.addLostPetFlbtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -107,7 +117,7 @@ public class MyFoundEntriesFrgmt extends Fragment {
     public void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
-//        if (listener != null) mBinding.rcv.removeOnItemTouchListener(listener);
+        if (listener != null) mBinding.rcv.removeOnItemTouchListener(listener);
     }
 
     @Override
@@ -142,7 +152,7 @@ public class MyFoundEntriesFrgmt extends Fragment {
         mBinding.rcv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mBinding.rcv.setAdapter(rcvAdapter);
         listener = new RecyclerTouchListener(getActivity(), mBinding.rcv)
-                .setSwipeOptionViews(R.id.edit, R.id.delete)
+                .setSwipeOptionViews(R.id.share, R.id.edit, R.id.delete)
                 .setSwipeable(R.id.baseRlt, R.id.revealRowLlt, new RecyclerTouchListener.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
@@ -151,6 +161,8 @@ public class MyFoundEntriesFrgmt extends Fragment {
                             bundle.putParcelable(getResources().getString(R.string.parcelable_obj), mydata.get(position));
                             bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.edit_ownr));
                             startActivity(new Intent(getActivity(), ManipulateFoundPetActivity.class).putExtras(bundle));
+                        } else if (viewID == R.id.share) {
+                            viewContract.onShareIconClick(mydata.get(position));
                         } else {
                             deleteLostPet(mydata.get(position).getId());
                             index = position;

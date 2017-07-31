@@ -50,7 +50,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DashboardActivity extends BaseActivity implements DashboardContract.View{
 
-    private static final String degbugTag = DashboardActivity.class.getSimpleName();
     private ActivityDashboardBinding mBinding;
     private ActionBarDrawerToggle mToggle;
     Disposable disp;
@@ -143,14 +142,46 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
             }
         });
         RxEventBus.add(this, disp4);
-        Log.e(degbugTag, userLoggedInFirstTime +" FIRST TIME " + android.os.Build.SERIAL);
+        Disposable disp5 = RxView.clicks(mBinding.sittersLlt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                sectionNotAvailableYet();
+            }
+        });
+        RxEventBus.add(this, disp5);
+        Disposable disp6 = RxView.clicks(mBinding.vetLlt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                sectionNotAvailableYet();
+            }
+        });
+        RxEventBus.add(this, disp6);
+        Disposable disp7 = RxView.clicks(mBinding.profsLlt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                sectionNotAvailableYet();
+            }
+        });
+        RxEventBus.add(this, disp7);
+        Disposable disp8 = RxView.clicks(mBinding.offersLlt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                sectionNotAvailableYet();
+            }
+        });
+        RxEventBus.add(this, disp8);
+        Disposable disp9 = RxView.clicks(mBinding.moreLlt).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                sectionNotAvailableYet();
+            }
+        });
+        RxEventBus.add(this, disp9);
         String fcmToken = mCommonUtls.getSharedPrefs().getString(getResources().getString(R.string.fcmtoken), null);
         if (userLoggedInFirstTime) {
-            Log.e(degbugTag, fcmToken +" FCM TOKEN");
             if (fcmToken != null && isNetworkAvailable()) mCommonUtls.uploadTokenToServer(mToken, fcmToken);
         } else {
             if (!mCommonUtls.getSharedPrefs().getBoolean(getResources().getString(R.string.fcmtoken_uploaded), false)) {
-                Log.e(degbugTag, "token not uploaded: " + fcmToken);
                 if (fcmToken != null && isNetworkAvailable()) mCommonUtls.uploadTokenToServer(mToken, fcmToken);
             }
         }
@@ -230,6 +261,10 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         mToggle.syncState();
     }
 
+    private void sectionNotAvailableYet() {
+        showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.section_not_available_yet));
+    }
+
     private void getTotalUnreadMsgs() {
         if (isNetworkAvailable()) {
             DashboardRequest request = new DashboardRequest();
@@ -285,7 +320,6 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
                 unreadMsgsBadgeTtv.setVisibility(View.VISIBLE);
                 unreadMsgsBadgeTtv.setText(String.valueOf(response.getTotalunread()));
             }
-//            Log.e(degbugTag, "here" + response.getTotalunread());
         }
     }
 

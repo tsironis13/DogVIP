@@ -21,4 +21,9 @@ public class LostActivityPresenter implements LostFoundContract.Presenter {
         viewcntr.onBaseViewClick(view);
     }
 
+    @Override
+    public void onShareIconClick(View view) {
+        viewcntr.onShareIconClick(view);
+    }
+
 }

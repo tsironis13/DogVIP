@@ -42,7 +42,6 @@ import io.reactivex.functions.Consumer;
 
 public class LoveMatchActivity extends BaseActivity implements LoveMatchContract.View {
 
-    private static final String debugTag = LoveMatchActivity.class.getSimpleName();
     private ActivityLoveMatchBinding mBinding;
     private LoveMatchContract.ViewModel mViewModel;
     private String mToken, city, race;
@@ -115,7 +114,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                         city = mBinding.locationEdt.getText().toString();
                         race = "";
                         search();
-//                        Log.e(debugTag, "search with city only");
                     }
                 } else if (mBinding.locationEdt.getText().toString().isEmpty() && !mBinding.raceEdt.getText().toString().isEmpty()) {
                     if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
@@ -124,7 +122,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                         race = mBinding.raceEdt.getText().toString();
                         city = "";
                         search();
-//                        Log.e(debugTag, "search with race only");
                     }
                 } else {
                     if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString()) || !Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
@@ -133,7 +130,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                         city = mBinding.locationEdt.getText().toString();
                         race = mBinding.raceEdt.getText().toString();
                         search();
-//                        Log.e(debugTag, "search with both");
                     }
                 }
 
@@ -314,7 +310,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         if (data.get(position).getStrurls() != null) urls = data.get(position).getStrurls().replace("[", "").replace("]", "").split(",");
         Intent intent = new Intent(this, PetProfileActivity.class);
         Bundle bundle = new Bundle();
-        Log.e(debugTag, data.get(position).getUser_role_id()+"");
         bundle.putParcelable(getResources().getString(R.string.pet_obj), data.get(position));
         bundle.putStringArray(getResources().getString(R.string.urls), urls);
         intent.putExtras(bundle);
@@ -339,12 +334,10 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         rcvAdapter = new RecyclerViewAdapter(R.layout.love_match_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
-//                Log.e(debugTag, data.get(0).isGenre()+"");
                 return data.get(position);
             }
             @Override
             protected int getLayoutIdForPosition(int position) {
-//                Log.e(debugTag, "here HERE" + position);
                 return R.layout.love_match_rcv_row;
 
             }
@@ -365,24 +358,19 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = linearLayoutManager.getChildCount();
-//                Log.e(debugTag, visibleItemCount+" VISIBLE ITEM COUNT");
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItem =   linearLayoutManager.findLastVisibleItemPosition();
                 if (totalItemCount <= lastVisibleItem + AppConfig.VISIBLE_THRESHOLD) {
-//                    Log.e(debugTag, availableData + " " + isLoading );
                     if (!isLoading && availableData && !error) {
                         page++;
                         fetchData(page);
                     }
                 }
-//                Log.e(debugTag, totalItemCount + "ttpa ");
             }
         });
     }
 
     private void fetchData(int page) {
-//        Log.e(debugTag, page +" PAGE");
         if (isNetworkAvailable()) {
             if (page ==1 )initializeProgressDialog(getResources().getString(R.string.please_wait));
             LoveMatchRequest request = new LoveMatchRequest();
@@ -398,7 +386,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             }
             mViewModel.getPetsByFilter(request);
         } else {
-            Log.e(debugTag, "PAGE HERE" + page);
             if (page > 1) {
                 error = true;
                 showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE);

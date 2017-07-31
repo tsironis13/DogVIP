@@ -98,12 +98,12 @@
                                 android:layout_height="65dp"
                                 android:layout_marginBottom="10dp"
                                 android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/sitters_dashboard" />
+                                android:src="@drawable/sitters_dashboard_disable" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorPrimaryOpaque"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:text="@string/sitters" />
@@ -179,12 +179,12 @@
                                 android:layout_height="65dp"
                                 android:layout_marginBottom="10dp"
                                 android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/profs_dashboard" />
+                                android:src="@drawable/profs_dashboard_disable" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorPrimaryOpaque"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:text="@string/profs" />
@@ -260,12 +260,12 @@
                                 android:layout_height="65dp"
                                 android:layout_marginBottom="10dp"
                                 android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/vet_dashboard" />
+                                android:src="@drawable/vet_dashboard_disable" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorPrimaryOpaque"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:text="@string/vets" />
@@ -302,12 +302,12 @@
                                 android:layout_height="65dp"
                                 android:layout_marginBottom="10dp"
                                 android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/offers_dashboard" />
+                                android:src="@drawable/offers_dashboard_disable" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorPrimaryOpaque"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:text="@string/offers" />
@@ -341,12 +341,12 @@
                                 android:layout_height="65dp"
                                 android:layout_marginBottom="10dp"
                                 android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/more_dashboard" />
+                                android:src="@drawable/more_dashboard_disable" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorPrimaryOpaque"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:text="@string/more" />

@@ -21,17 +21,9 @@ import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String debugTag = MyFirebaseMessagingService.class.getSimpleName();
-
-    private NotificationUtls notificationUtils;
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e(debugTag, remoteMessage +" MESSAGE RECEIVED");
-
-//        Log.e(debugTag, "APP IS IN BACKGROUND: " + NotificationUtls.isAppIsInBackground(getApplicationContext()));
         if (remoteMessage.getData().size() > 0) {
-//            Log.e(debugTag, "Message data payload: " + remoteMessage.getData());
             String title = remoteMessage.getData().get(getResources().getString(R.string.title));
             String message = remoteMessage.getData().get(getResources().getString(R.string.message));
             String image = remoteMessage.getData().get(getResources().getString(R.string.imageurl));
@@ -57,7 +49,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             showNotificationMessage(getApplicationContext(), title, message, resultIntent, image);
 
             if (MyLifecycleHandler.isApplicationInForeground()) {
-                Log.e(debugTag, "APPLICATION IN FOREGROUND");
                 Message mesgobj = new Message();
                 mesgobj.setId(mesgId);
                 mesgobj.setMessage(message);
@@ -66,8 +57,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mesgobj.setChat_room_id(chatRoomId);
                 mesgobj.setCreated_at(timestamp);
                 RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).post(mesgobj);
-            } else {
-                Log.e(debugTag, "APPLICATION IN BACKGROUND");
             }
         }
 
@@ -77,11 +66,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        String message = bundle.getString("message");
 //        String image = bundle.getString("image");
 //        String timestamp = bundle.getString("created_at");
-//        Log.e(TAG, "From: " + from);
-//        Log.e(TAG, "Title: " + title);
-//        Log.e(TAG, "message: " + message);
-//        Log.e(TAG, "image: " + image);
-//        Log.e(TAG, "timestamp: " + timestamp);
 
 //        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
 //
@@ -107,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotificationMessage(Context context, String title, String message, Intent intent, String imageUrl) {
-        notificationUtils = new NotificationUtls(context);
+        NotificationUtls notificationUtils = new NotificationUtls(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(title, message, intent, imageUrl);
     }

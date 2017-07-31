@@ -286,7 +286,7 @@
                                 android:paddingRight="8dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
-                                android:hint="@string/age_plhldr"
+                                android:hint="@string/age_notreq_plhldr"
                                 android:text="@{obj.p_displayage}"
                                 android:background="@android:color/transparent"
                                 android:inputType="number" />

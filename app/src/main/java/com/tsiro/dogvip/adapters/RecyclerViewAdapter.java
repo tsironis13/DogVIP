@@ -37,6 +37,7 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
+    private static final String debugTag = RecyclerViewAdapter.class.getSimpleName();
     private int layoutid;
     private ViewDataBinding mBinding;
 
@@ -103,17 +104,27 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
                 String str;
                 if (age > 0) {
                     str = String.valueOf(age);
-                    if (textView.getId() == R.id.customageTtv) str = str + " ετών";
+                    if (textView.getId() == R.id.customageTtv || textView.getId() == R.id.pageTtv) {
+                        if (age == 1) {
+                            str += " έτους";
+                        } else {
+                            str += " ετών";
+                        }
+                    }
                 } else {
                     int month = current_month - Integer.valueOf(holder[1]);
-                    if (month == 0) month = 1;
+//                    Log.e(debugTag, " CURRENT MONTH: " + current_month + " PET MONTH: " + Integer.valueOf(holder[1]));
+                    if (month == 0) {
+                        month = 1;
+                    } else {
+                        month++;
+                    }
                     str = String.valueOf(month);
-                    if (textView.getId() == R.id.customageTtv) str = str + " μηνών";
+                    if (textView.getId() == R.id.customageTtv || textView.getId() == R.id.pageTtv) str += " μηνών";
                 }
                 textView.setText(str);
             }
         }
-//        Log.e("asa", text.split("/").toString());
     }
 
     @BindingAdapter(value={"bind:text1", "bind:text2"}, requireAll=false)

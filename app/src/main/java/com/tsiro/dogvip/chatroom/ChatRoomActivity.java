@@ -43,7 +43,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.View {
 
-    private static final String debugTag = ChatRoomActivity.class.getSimpleName();
     private ActivityChatRoomBinding mBinding;
     private int role, toId, fromId, petId, chatRoomId;
     private String title, receiverName, receiverSurname, petName, action, mToken;
@@ -124,7 +123,6 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
                     setToolbarTitle(receiverName, receiverSurname, petName);
                 } else {
                     chatRoomId = getIntent().getExtras().getInt(getResources().getString(R.string.chat_room_id));
-                    Log.e(debugTag, chatRoomId +" CHAT ROOM ID");
                     fromId = getIntent().getExtras().getInt(getResources().getString(R.string.from_id));
                     title = getIntent().getExtras().getString(getResources().getString(R.string.title));
                     setTitle(title);
@@ -147,10 +145,7 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
         Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
             @Override
             public void accept(@NonNull Message message) throws Exception {
-//                Log.e(debugTag, message.getChat_room_id() +" MESSAGE CHAT ROOM ID");
-//                Log.e(debugTag, chatRoomId +" chat room id");
                 if (message.getChat_room_id() == chatRoomId) {
-//                    Log.e(debugTag, message.getUser_role_id()+" RECCCCCC");
                     SendMessageRequest request = new SendMessageRequest();
                     request.setAuthtoken(mToken);
                     request.setAction(getResources().getString(R.string.update_read_msgs));
@@ -165,27 +160,6 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
             }
         });
         RxEventBus.add(this, disp1);
-//        Disposable disp2 = RxView.clicks(mBinding.msgEdt).subscribe(new Consumer<Object>() {
-//            @Override
-//            public void accept(@NonNull Object o) throws Exception {
-////                mBinding.rcv.getLayoutManager().scrollToPosition(rcvAdapter.getItemCount() - 1);
-//                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-//                    Log.e(debugTag, "haaa");
-//                    if (rcvAdapter.getItemCount() > 1) {
-//                        Log.e(debugTag, "ert");
-//
-//                    }
-//                }
-//            }
-//        });
-//        RxEventBus.add(this, disp2);
-//        Disposable disp3 = RxView.focusChanges(mBinding.msgEdt).subscribe(new Consumer<Boolean>() {
-//            @Override
-//            public void accept(@NonNull Boolean hasFocus) throws Exception {
-//                if (hasFocus && rcvAdapter != null && rcvAdapter.getItemCount() > 1) mBinding.rcv.getLayoutManager().scrollToPosition(rcvAdapter.getItemCount() - 1);
-//            }
-//        });
-//        RxEventBus.add(this, disp3);
     }
 
     @Override
@@ -234,9 +208,7 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
     public void onSuccess(FetchChatRoomResponse response) {
         dismissDialog();
         mBinding.setHasError(false);
-//        Log.e(debugTag, " ON RESPONSE CHAT ROOM ID => " + response.getChat_room_id());
         chatRoomId = response.getChat_room_id();
-//        Log.e(debugTag, response.getMy_user_id() +" FROM _ID ");
         if (response.getAction().equals(getResources().getString(R.string.send_msg))) {
             mBinding.setSendingMsg(false);
             mBinding.msgEdt.setText("");
@@ -275,7 +247,6 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
             request.setPet_id(petId);
             request.setTo_id(toId);
             request.setFrom_id(fromId);
-//            Log.e(debugTag, "BEFORE SENDED CHAT ROOM ID => " + chatRoomId);
             request.setChat_room_id(chatRoomId);
 //            request.setRole(role);
             request.setPet_name(petName);

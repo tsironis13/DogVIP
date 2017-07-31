@@ -15,16 +15,19 @@ public interface LostFoundContract {
 
     interface Presenter {
         void onBaseViewClick(android.view.View view);
+        void onShareIconClick(android.view.View view);
     }
 
     interface FrgmtView {
         void onBaseViewClick(android.view.View view);
+        void onShareIconClick(android.view.View view);
     }
 
     interface View extends Lifecycle.View {
         void onSuccess(LostFoundResponse response);
         void onError(int resource);
         void onBaseViewClick(LostFoundObj lostFoundObj, int type); //type=>0->lost, 1->found
+        void onShareIconClick(LostFoundObj lostFoundObj);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {

@@ -186,7 +186,7 @@
                     android:background="@drawable/ripple_drawable" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/termsBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="@string/terms_label"

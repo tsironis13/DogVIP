@@ -65,6 +65,13 @@
         <item name="sb_duration">2000</item>
         <item name="sb_singleLine">false</item>
     </style>
+
+    <style name="SnackBarLongDuration" parent="BaseSnackBar">
+        <item name="sb_height">80dp</item>
+        <item name="sb_actionText">@string/close</item>
+        <item name="sb_duration">4000</item>
+        <item name="sb_singleLine">false</item>
+    </style>
     <!-- SPINNER -->
     <!--<style name="Spinner" parent="Material.Widget.Spinner.Light">-->
         <!--<item name="rd_style">@style/Material.Drawable.Ripple.Wave.Light</item>-->

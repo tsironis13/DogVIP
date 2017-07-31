@@ -89,7 +89,6 @@ public class SignInViewModel implements SignInContract.ViewModel {
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

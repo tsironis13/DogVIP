@@ -42,7 +42,6 @@ public class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListen
 
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//        Log.e(debguTag, rv.toString());
     }
 
     @Override

@@ -53,7 +53,6 @@ import okhttp3.RequestBody;
 
 public class ImageUploadControlActivity extends BaseActivity implements ImageUploadControlContract.View{
 
-    private static final String debugTag = ImageUploadControlActivity.class.getSimpleName();
     private ActivityImageUploadControlBinding mBinding;
     private ArrayList<Image> urls;
     //index of recycler view row clicked
@@ -90,7 +89,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
             index = savedInstanceState.getInt(getResources().getString(R.string.index));
             state = savedInstanceState.getInt(getResources().getString(R.string.imageview_state));
             mainImageUrl = savedInstanceState.getString(getResources().getString(R.string.main_image));
-//            Log.e(debugTag, mainImageUrl +" UP HERE");
             if (state == 1) {
                 String strUri = savedInstanceState.getString(getResources().getString(R.string.gallery_uri));
                 if (strUri != null) {
@@ -159,12 +157,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.e(debugTag, "activityDESTROYED");
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
@@ -172,7 +164,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
 
     @Override
     public void onBackPressed() {
-        Log.e(debugTag, "MAIN IMAGE ON BACK PRESSED => "+ mainImageUrl);
         petObj.setMain_url(mainImageUrl);
         petObj.setUrls(urls);
         Bundle bundle = new Bundle();
@@ -198,9 +189,7 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
 
     @Override
     public void onCheckBoxClick(View view, boolean isChecked) {
-//        Log.e(debugTag, isChecked+"");
         selectedIndex = (int) view.getTag();
-//        Log.e(debugTag, index+" INDEX");
         if (!isChecked) {
             ImagePathIndex imagePathIndex = new ImagePathIndex();
             imagePathIndex.setPath(urls.get(selectedIndex).getImageurl());
@@ -214,9 +203,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
             }
             urls.get(selectedIndex).setChecked(false);
         }
-//        for (int i = 0; i < checkedUrls.size(); i++) {
-//            Log.e(debugTag, checkedUrls.get(i).getIndex()+"");
-//        }
         if (checkedUrls.size() == 1) {
             if (!urls.get(selectedIndex).isMain()) mainImageItem.setVisible(true);
             deleteImageItem.setVisible(true);
@@ -234,7 +220,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     public void onSuccess(Image image) {
         dismissDialog();
         mainImageUrl = image.getMainurl();
-//        Log.e(debugTag, "dfdksllkslsd => "+mainImageUrl);
         if (image.getAction().equals(getResources().getString(R.string.delete_pet_image))) {
             Iterator<Image> iter = urls.iterator();
             while (iter.hasNext()) {
@@ -326,7 +311,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                     uri = data.getData();
                     galleryURI = uri;
                 }
-//                Log.e(debugTag, uri+"");
                 isImageValid(uri, state);
             }
         }
@@ -370,10 +354,8 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     private void configureActivity(PetObj petObj) {
         if (petObj != null) {
             urls = petObj.getUrls();
-            Log.e(debugTag, urls +"");
             petid = petObj.getId();
         }
-//        Log.e(debugTag, "urls => "+ urls);
         if (urls != null) {
             if (urls.isEmpty()) {
                 mBinding.setImagelimit(0);
@@ -399,15 +381,12 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     }
 
     private void setMainPetImage() {
-//        Log.e(debugTag, mainImage+"");
         for (int i = 0; i <urls.size(); i++) {
             if (urls.get(i).isMain()) oldMainImageIndex = i;
         }
         for (int i = 0; i <checkedUrls.size(); i++) {
             setMainImageIndex = checkedUrls.get(i).getIndex();
-//            Log.e(debugTag, checkedUrls.get(i).getIndex()+" INDEX");
         }
-//        Log.e(debugTag, "MY SELECTED INDEX: "+selectedIndex);
         image = new Image();
         image.setAction(getResources().getString(R.string.set_pet_main_image));
         image.setAuthtoken(mToken);
@@ -423,7 +402,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
     }
 
     private void deletePetImage() {
-//        Log.e(debugTag, urls.get(selectedIndex).isMain()+"sdssd");
         Disposable disp = initializeGenericDialog("", getResources().getString(R.string.clear_images_desc), getResources().getString(R.string.clear_image_title), getResources().getString(R.string.cancel), getResources().getString(R.string.confirm)).subscribe(new Consumer<DialogActions>() {
             @Override
             public void accept(@NonNull DialogActions obj) throws Exception {
@@ -452,7 +430,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         filetToUpload = img.getImage();
         if (img.getSize()) {
             if (isNetworkAvailable()) {
-                Log.e(debugTag, "jklKALASE");
                 initializeProgressDialog(getResources().getString(R.string.please_wait));
                 uploadImage();
             } else {
@@ -494,7 +471,6 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-//                    Log.e(debugTag, output+"");
                             if (output != null) {
                                 photoURI = getCommonUtls().getUriForFile(output);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);

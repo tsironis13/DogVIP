@@ -95,13 +95,11 @@ public class PetViewModel implements PetContract.ViewModel {
 
         @Override
         public void onError(@NonNull Throwable e) {
-//            Log.e(debugTag, e.toString());
             onGetPetError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR), false);
         }
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

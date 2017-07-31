@@ -32,22 +32,16 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-//        Log.e(debugTag, "onViewAttched ViewModel");
         this.mViewClback = (RegistrationContract.View) viewCallback;
     }
 
     @Override
     public void onViewResumed() {
-//        Log.e(debugTag, "onResume ViewModel");
-//        Log.e(debugTag, requestState+"");
-//        Log.e(debugTag, mRegstrDisp+ " onResume ViewModel");
         if (mRegstrDisp != null && requestState != AppConfig.REQUEST_RUNNING) mRegstrProcessor.subscribe(new RegistrationObserver());
     }
 
     @Override
     public void onViewDetached() {
-//        Log.e(debugTag, "onStop ViewModel");
-//        Log.e(debugTag, mRegstrDisp+ " onStop ViewModel");
         mViewClback = null;
         if (mRegstrDisp != null) mRegstrDisp.dispose();
     }
@@ -74,7 +68,6 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
     private void onRegistrationError(int resource, boolean msglength) {
         mRegstrDisp = null;
-//        Log.e(debugTag, viewClback+" ");
         mViewClback.onError(resource, msglength);
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
@@ -97,7 +90,6 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorAccent">#006666</color>
 
+    <color name="colorPrimaryOpaque">#80EEA337</color>
     <color name="colorAccentOpaque">#00897B</color>
 
     <color name="rippleColor">#F2F57C00</color>

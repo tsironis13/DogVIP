@@ -44,7 +44,6 @@ public class SignInAPIService {
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.e("onError", throwable.toString());
                         signInViewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
@@ -55,5 +54,4 @@ public class SignInAPIService {
                     }
                 });
     }
-
 }

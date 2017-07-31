@@ -1,7 +1,5 @@
 package com.tsiro.dogvip.mypets.owner;
 
-import android.util.Log;
-
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.app.AppConfig;
@@ -105,14 +103,12 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
     }
 
     private void onGetOwnerSuccess(OwnerObj response) {
-        Log.e("onGetOwnerSuccess", "onGetOwnerSuccess");
         mDisp = null;
         mViewClback.onSuccess(response);
     }
 
     private void onGetOwnerError(int resource, boolean msglength) {
         mDisp = null;
-//        Log.e(debugTag, viewClback+" ");
         mViewClback.onError(resource, msglength);
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
@@ -135,7 +131,6 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
 
         @Override
         public void onComplete() {
-//            Log.e(debugTag, "onComplete");
         }
     }
 }

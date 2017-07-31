@@ -78,7 +78,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
             if (getIntent() != null) {
                 addPet = getIntent().getExtras().getBoolean(getResources().getString(R.string.add_pet));
                 userRoleId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
-//                Log.e(debugTag, addPet+"");
                 configureActivity(null);
             }
         }
@@ -115,7 +114,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-//                    Log.e(debugTag, obj.getDisplay_date());
                     if (obj.getCode() == AppConfig.STATUS_OK) {
                         petObj.setP_displayage(obj.getDisplay_date());
                         petObj.setAge(obj.getDate());
@@ -160,7 +158,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         if (resultCode == RESULT_OK) {
            if (requestCode == AppConfig.REFRESH_PET_INFO) {
                 PetObj obj = data.getParcelableExtra(getResources().getString(R.string.pet_obj));
-//               Log.e(debugTag, "KALASE=>"+ obj.getMain_url()+ " "+obj.getUrls());
                 if (obj.getMain_url() != null && !obj.getMain_url().equals("")) {
                     petObj.setMain_url(obj.getMain_url());
                     mainImageUrl = obj.getMain_url();
@@ -188,12 +185,17 @@ public class PetActivity extends BaseActivity implements PetContract.View {
 
     @Override
     public void onBackPressed() {
-        petObj.setMain_url(mainImageUrl);
-        petObj.setUrls(urls);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getResources().getString(R.string.pet_obj), petObj);
-        bundle.putInt(getResources().getString(R.string.index), index);
-        setResult(RESULT_OK, new Intent().putExtras(bundle));
+        if (addPet) {
+            bundle.putBoolean(getResources().getString(R.string.canceled_on_add), true);
+            setResult(RESULT_OK, new Intent().putExtras(bundle));
+        } else {
+            petObj.setMain_url(mainImageUrl);
+            petObj.setUrls(urls);
+            bundle.putParcelable(getResources().getString(R.string.pet_obj), petObj);
+            bundle.putInt(getResources().getString(R.string.index), index);
+            setResult(RESULT_OK, new Intent().putExtras(bundle));
+        }
         finish();
         super.onBackPressed();
     }
@@ -245,7 +247,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
             } else {
                 petObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.pet_obj));
                 index = getIntent().getExtras().getInt(getResources().getString(R.string.index));
-//                Log.e(debugTag, "INDEX => "+petObj.getAge());
             }
             mainImageUrl = petObj.getMain_url();
             urls = petObj.getUrls();
@@ -261,15 +262,18 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         AwesomeValidation mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.nameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.raceEdt, ".*\\S.*", getResources().getString(R.string.required_field));
-        mAwesomeValidation.addValidation(mBinding.microchipEdt, "^\\d{15}$", getResources().getString(R.string.not_valid_microchip));
-        mAwesomeValidation.addValidation(mBinding.ageEdt, ".*\\S.*", getResources().getString(R.string.required_field));
+//        mAwesomeValidation.addValidation(mBinding.microchipEdt, "^\\d{15}$", getResources().getString(R.string.not_valid_microchip));
+//        mAwesomeValidation.addValidation(mBinding.ageEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         if (mAwesomeValidation.validate()) {
             if (isNetworkAvailable()) {
                 if (!Arrays.asList(AppConfig.cities).contains(mBinding.cityEdt.getText().toString())) {
                     showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.city_no_match), getResources().getString(R.string.close));
                 } else if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
-                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.race_not_match), getResources().getString(R.string.close));
-                } else {
+                    showSnackBar(R.style.SnackBarLongDuration, getResources().getString(R.string.race_not_match), getResources().getString(R.string.close));
+                } else if (!mBinding.microchipEdt.getText().toString().isEmpty() && !mBinding.microchipEdt.getText().toString().matches("^\\d{15}$")) {
+                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.not_valid_microchip), getResources().getString(R.string.close));
+                }
+                else {
                     petObj.setAuthtoken(mToken);
                     petObj.setP_name(mBinding.nameEdt.getText().toString());
                     petObj.setUser_role_id(userRoleId);
@@ -288,7 +292,6 @@ public class PetActivity extends BaseActivity implements PetContract.View {
                         petObj.setAction(getResources().getString(R.string.edit_pet));
 //                    petObj.setId();
                     }
-//                    Log.e(debugTag, "submit");
                     initializeProgressDialog(getResources().getString(R.string.please_wait));
                     mPetViewModel.submitPet(petObj);
                 }

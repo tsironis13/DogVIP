@@ -61,8 +61,6 @@ public class PetLikesActivity extends BaseActivity implements PetLikesContract.V
         } else {
             if (getIntent() != null) {
                 petObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.pet_obj));
-//                Log.e(debugTag, petObj.getUser_role_id()+"");
-//                Log.e(debugTag, petObj.getP_name()+"");
             }
         }
         if (getSupportActionBar()!= null && !mBinding.getHaserror()) {
@@ -104,7 +102,6 @@ public class PetLikesActivity extends BaseActivity implements PetLikesContract.V
     @Override
     public void onPetImageClick(View view) {
         int position = (int) view.getTag();
-//        Log.e(debugTag, petObj.getUser_role_id()+"");
         Intent intent = new Intent(PetLikesActivity.this, OwnerPetsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(getResources().getString(R.string.user_role_id), ownerObjs.get(position).getId());

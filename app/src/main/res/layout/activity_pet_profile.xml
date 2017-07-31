@@ -258,19 +258,19 @@
                     android:id="@+id/pageTtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/genreLblTtv"
                     android:layout_toRightOf="@+id/pageLblTtv"
                     android:paddingBottom="8dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
-                    android:layout_below="@id/genreTtv"
                     app:textPl="@{petobj.p_displayage}" />
 
                 <TextView
                     android:id="@+id/weightLblTtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/pageLblTtv"
+                    android:layout_below="@id/pageTtv"
                     android:textSize="16sp"
                     android:paddingRight="4dp"
                     android:paddingBottom="8dp"

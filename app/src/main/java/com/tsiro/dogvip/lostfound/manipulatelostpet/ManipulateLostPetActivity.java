@@ -41,7 +41,6 @@ import io.reactivex.functions.Consumer;
 
 public class ManipulateLostPetActivity extends BaseActivity implements ManipulateLostPetContract.View, AdapterView.OnItemSelectedListener {
 
-    private static final String debugTag = ManipulateLostPetActivity.class.getSimpleName();
     private ActivityManipulateLostPetBinding mBinding;
     private ManipulateLostPetContract.ViewModel mViewModel;
     private String mToken, action;
@@ -72,7 +71,6 @@ public class ManipulateLostPetActivity extends BaseActivity implements Manipulat
         }
         if (getSupportActionBar()!= null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         configureActivity(savedInstanceState);
-//        Log.e(debugTag, petObjs.toString());
     }
 
     @Override
@@ -103,11 +101,9 @@ public class ManipulateLostPetActivity extends BaseActivity implements Manipulat
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-                    Log.e(debugTag, obj.getDisplay_date());
                     lostFoundObj.setDisplaydate(obj.getDisplay_date());
                     lostFoundObj.setDate_lost(obj.getDate());
                 } else if (obj.getAction().equals(getResources().getString(R.string.time_pick_action))) {
-//                    Log.e(debugTag, obj.getDisplay_date());
                     lostFoundObj.setTime_lost(obj.getDisplay_date());
                 } else if (obj.getAction().equals(getResources().getString(R.string.dialog_cancel_date_action))) {
                     lostFoundObj.setDisplaydate("");
@@ -192,7 +188,6 @@ public class ManipulateLostPetActivity extends BaseActivity implements Manipulat
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        Log.e(debugTag, petObjs.get(position).getId() +" SDKJSDJK");
         pet_id = petObjs.get(position).getId();
     }
 
@@ -218,13 +213,11 @@ public class ManipulateLostPetActivity extends BaseActivity implements Manipulat
                 lostFoundObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
             } else {
                 lostFoundObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
-//                Log.e(debugTag, lostFoundObj.getDisplaydate()+"sds");
             }
             int index = -1;
             for (PetObj obj : petObjs) {
                 if (obj.getId() == lostFoundObj.getP_id()) index = petObjs.indexOf(obj);
             }
-//            Log.e(debugTag, index+" a");
             if (index != -1)mBinding.mypetsSpnr.setSelection(index);
             baseObj.setLostfoundobj(lostFoundObj);
         }

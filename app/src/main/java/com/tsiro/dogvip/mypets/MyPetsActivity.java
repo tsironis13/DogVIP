@@ -34,7 +34,6 @@ import io.reactivex.functions.Consumer;
 
 public class MyPetsActivity extends BaseActivity implements GetOwnerContract.View {
 
-    private static final String debugTag = MyPetsActivity.class.getSimpleName();
     private GetOwnerContract.ViewModel mGetOwnerViewModel;
     private OwnerRequest mGetOwnerRequest;
     private ActivityMypetsBinding mBinding;
@@ -135,14 +134,12 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
             Intent intent = new Intent(this, OwnerProfileActivity.class);
             Bundle mBundle = new Bundle();
             mBundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
-//            Log.e(debugTag, response.getId()+"");
             startActivity(intent.putExtras(mBundle));
         }
     }
 
     @Override
     public void onError(int code) {
-        Log.e(debugTag, code+"");
         if (mProgressDialog != null && mProgressDialog.isShowing()) dismissDialog();
         mBinding.setIsVisible(true);
         mBinding.setErrorText(getResources().getString(R.string.error));
@@ -178,7 +175,6 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
     }
 
     private void checkOwnerExists(String token) {
-        Log.e(debugTag, token+"");
         if (isNetworkAvailable()) {
             mProgressDialog = initializeProgressDialog(getResources().getString(R.string.please_wait));
             mGetOwnerRequest = new OwnerRequest();

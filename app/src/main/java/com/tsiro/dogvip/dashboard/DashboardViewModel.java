@@ -25,7 +25,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class DashboardViewModel implements DashboardContract.ViewModel {
 
-    private static final String debugTag = DashboardViewModel.class.getSimpleName();
     private DashboardContract.View mViewClback;
     private DashboardRequestManager mDashboardRequestManager;
     private AsyncProcessor<DashboardResponse> mProcessor;
@@ -114,7 +113,6 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
 
         @Override
         public void onError(Throwable t) {
-            Log.e(debugTag, t.toString());
             onErrorAction(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 

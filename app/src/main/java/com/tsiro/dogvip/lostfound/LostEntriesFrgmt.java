@@ -30,7 +30,6 @@ import java.util.ArrayList;
 
 public class LostEntriesFrgmt extends Fragment implements LostFoundContract.FrgmtView {
 
-    private static final String debugTag = LostEntriesFrgmt.class.getSimpleName();
     private View mView;
     private LostEntriesFrgmtBinding mBinding;
     private ArrayList<LostFoundObj> data;
@@ -71,7 +70,6 @@ public class LostEntriesFrgmt extends Fragment implements LostFoundContract.Frgm
                 data = getArguments().getParcelableArrayList(getResources().getString(R.string.data));
             }
         }
-        Log.e(debugTag, data+"");
         if (data != null) {
             if (data.isEmpty()) {
                 mBinding.setHaserror(true);
@@ -94,12 +92,18 @@ public class LostEntriesFrgmt extends Fragment implements LostFoundContract.Frgm
         viewContract.onBaseViewClick(data.get(position), 0);
     }
 
+    @Override
+    public void onShareIconClick(View view) {
+        int position = (int) view.getTag();
+        viewContract.onShareIconClick(data.get(position));
+    }
+
     private void initializeRcV() {
         presenter = new LostActivityPresenter(this);
         mBinding.rcv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.rcv.setNestedScrollingEnabled(false);
         mBinding.rcv.setHasFixedSize(true);
-        RecyclerViewAdapter rcvAdapter = new RecyclerViewAdapter(R.layout.my_lost_pet_rcv_row) {
+        RecyclerViewAdapter rcvAdapter = new RecyclerViewAdapter(R.layout.lost_pet_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
                 return data.get(position);
@@ -107,7 +111,7 @@ public class LostEntriesFrgmt extends Fragment implements LostFoundContract.Frgm
 
             @Override
             protected int getLayoutIdForPosition(int position) {
-                return R.layout.my_lost_pet_rcv_row;
+                return R.layout.lost_pet_rcv_row;
             }
 
             @Override

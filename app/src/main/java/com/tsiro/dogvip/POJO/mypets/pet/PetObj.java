@@ -112,6 +112,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         neutered = in.readInt();
         main_image = in.readString();
         total_likes = in.readInt();
+        liked = in.readInt();
         genre = in.readInt();
         halfblood = in.readInt();
         chtr = in.readString();
@@ -218,10 +219,13 @@ public class PetObj extends BaseObservable implements Parcelable {
     public int isLiked() { return liked; }
 
     public void setLiked(int liked) { this.liked = liked; }
-
+    @Bindable
     public int getTotal_likes() { return total_likes; }
 
-    public void setTotal_likes(int total_likes) { this.total_likes = total_likes; }
+    public void setTotal_likes(int total_likes) {
+        this.total_likes = total_likes;
+        notifyPropertyChanged(BR.total_likes);
+    }
 
     public String getStrurls() { return strurls; }
 
@@ -274,6 +278,7 @@ public class PetObj extends BaseObservable implements Parcelable {
         dest.writeInt(neutered);
         dest.writeString(main_image);
         dest.writeInt(total_likes);
+        dest.writeInt(liked);
         dest.writeInt(genre);
         dest.writeInt(halfblood);
         dest.writeString(chtr);

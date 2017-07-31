@@ -49,6 +49,18 @@
                     android:padding="16dp"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/lblTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@{type == 0 ? @string/lost_pet_lbl : @string/found_pet_lbl}"
+                        android:textSize="17sp"
+                        android:textColor="@color/error_color"
+                        android:textStyle="bold"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentTop="true" />
+
                     <ImageView
                         android:id="@+id/petImgv"
                         android:layout_width="90dp"
@@ -57,7 +69,7 @@
                         android:layout_marginRight="12dp"
                         android:layout_marginEnd="12dp"
                         android:layout_centerInParent="true"
-                        android:layout_alignParentTop="true"
+                        android:layout_below="@+id/lblTtv"
                         android:elevation="2dp"
                         android:contentDescription="@string/image_cont_desc"
                         app:imageUrl="@{obj.thumb_image}" />
@@ -237,6 +249,13 @@
             </ScrollView>
 
         </LinearLayout>
+
+        <com.rey.material.widget.SnackBar
+            android:id="@+id/mypetsSnckBr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="bottom" />
 
     </FrameLayout>
 

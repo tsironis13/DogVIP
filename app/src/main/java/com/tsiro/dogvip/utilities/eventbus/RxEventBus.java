@@ -25,7 +25,6 @@ import io.reactivex.subjects.Subject;
 
 public class RxEventBus<T> {
 
-    private static final String debugTag = RxEventBus.class.getSimpleName();
     private Subject<T> subject;
     private static SparseArray<RxEventBus> mInstanceMap = new SparseArray<>();
     private static SparseArray<Subject> sSubjectMap = new SparseArray<>();
@@ -34,7 +33,6 @@ public class RxEventBus<T> {
     private static Map<Object, CompositeDisposable> sSubscriptionsMap = new HashMap<>();
 
     private RxEventBus(int subjectCode, int subjectType) {
-//        Log.e(debugTag, "constructor subject is : "+subject);
         if (subject == null) {
             switch (subjectType) {
                 case 0:
@@ -55,7 +53,6 @@ public class RxEventBus<T> {
 
     @SuppressWarnings("unchecked")
     public static <T> RxEventBus<T> createSubject(int subjectCode, int subjectType) {
-//        Log.e(debugTag, sSubjectMap.get(subjectCode)+" here");
         if (sSubjectMap.get(subjectCode) == null) {
             RxEventBus mInstance = new RxEventBus<T>(subjectCode, subjectType);
             mInstanceMap.put(subjectCode, mInstance);
@@ -94,7 +91,6 @@ public class RxEventBus<T> {
     public static void unregister(Object lifecycle) {
 //        //We have to remove the composition from the map, because once you unsubscribe it can't be used anymore
         CompositeDisposable compositeSubscription = sSubscriptionsMap.remove(lifecycle);
-//        Log.e(debugTag, compositeSubscription+" "+ compositeSubscription.isDisposed()+" ");
         if (compositeSubscription != null) if (!compositeSubscription.isDisposed()) compositeSubscription.dispose();
     }
 }

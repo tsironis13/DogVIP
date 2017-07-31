@@ -43,7 +43,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsContract.View {
 
-    private static final String debugTag = MyChatRoomsActivity.class.getSimpleName();
     private ActivityMyChatRoomsBinding mBinding;
     private MyChatRoomsContract.ViewModel mViewModel;
     private String mToken;
@@ -79,7 +78,6 @@ public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsCont
         Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
             @Override
             public void accept(@NonNull Message message) throws Exception {
-//                Log.e(debugTag, message.getChat_room_id() +" MESSAGE CHAT ROOM ID");
                 if (!data.isEmpty() && rcvAdapter != null) {
                     for(int i = 0; i < data.size(); i++) {
                         if(data.get(i).getId() == message.getChat_room_id()) {
@@ -116,7 +114,6 @@ public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsCont
 
     @Override
     public void onBaseViewClick(View view) {
-        Log.e(debugTag, view.getTag()+"");
         int position = (int) view.getTag();
         Bundle bundle = new Bundle();
         bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.get_chat_rooom_msgs_by_chatid));
