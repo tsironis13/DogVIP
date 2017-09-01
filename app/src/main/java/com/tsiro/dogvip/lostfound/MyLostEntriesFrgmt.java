@@ -52,7 +52,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MyLostEntriesFrgmt extends Fragment {
 
-    private static final String debugTag = MyLostEntriesFrgmt.class.getSimpleName();
     private View mView;
     private MyLostEntriesFrgmtBinding mBinding;
     private ArrayList<LostFoundObj> mydata;

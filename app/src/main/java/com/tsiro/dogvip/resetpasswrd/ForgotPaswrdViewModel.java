@@ -18,7 +18,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
-    private static final String debugTag = ForgotPaswrdViewModel.class.getSimpleName();
     private ForgotPaswrdRequestManager mForgotPaswrdRequestManager;
     private ForgotPaswrdContract.View mViewClback;
     private AsyncProcessor<ForgotPaswrdObj> mForgotPaswrdProcessor;

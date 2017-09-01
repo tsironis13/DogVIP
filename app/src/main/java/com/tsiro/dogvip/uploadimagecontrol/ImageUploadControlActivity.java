@@ -32,6 +32,7 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityImageUploadControlBinding;
+import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.requestmngrlayer.ImageUploadControlRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
@@ -303,6 +304,7 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         if (requestCode == AppConfig.EXTERNAL_CONTENT_URI || requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
                 Uri uri = null;
+                int saveinstance_state = state;
                 if (requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
                     uri = getCommonUtls().getUriForFile(output);
                     state = 2;
@@ -311,7 +313,8 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                     uri = data.getData();
                     galleryURI = uri;
                 }
-                isImageValid(uri, state);
+                boolean isinvalid = isImageValid(uri, state);
+                if (isinvalid && saveinstance_state == 3) state = 3;
             }
         }
     }
@@ -425,20 +428,26 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         RxEventBus.add(this, disp);
     }
 
-    private void isImageValid(Uri uri, int state) {
+    private boolean isImageValid(Uri uri, int state) {
         Image img = getCommonUtls().isImageSizeValid(uri, state, output);
         filetToUpload = img.getImage();
-        if (img.getSize()) {
-            if (isNetworkAvailable()) {
-                initializeProgressDialog(getResources().getString(R.string.please_wait));
-                uploadImage();
+        if (!img.isInvalid_filetype()) {
+            if (img.getSize()) {
+                if (img.isDeleteLocalFile()) output = img.getImage();
+                if (isNetworkAvailable()) {
+                    initializeProgressDialog(getResources().getString(R.string.please_wait));
+                    uploadImage();
+                } else {
+                    showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.close));
+                }
             } else {
-                showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.close));
+                showSnackBar(getResources().getString(R.string.invalid_image_size), getResources().getString(R.string.close));
+                output = null;
             }
         } else {
-            showSnackBar(getResources().getString(R.string.invalid_image_size), getResources().getString(R.string.close));
-            output = null;
+            showSnackBar(getResources().getString(R.string.invalid_file_type), getResources().getString(R.string.close));
         }
+        return img.isInvalid_filetype();
     }
 
     private void uploadImage() {
@@ -467,7 +476,7 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                         // Ensure that there's a camera activity to handle the intent
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             try {
-                                output = getCommonUtls().createImageFile();
+                                output = getCommonUtls().createImageFile(".jpg");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -495,8 +504,11 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
                         }
                     } else {//negative action
                         state = 1;
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, AppConfig.EXTERNAL_CONTENT_URI);
+//                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.image_choose_label)), AppConfig.EXTERNAL_CONTENT_URI);
                     }
                 }
             }

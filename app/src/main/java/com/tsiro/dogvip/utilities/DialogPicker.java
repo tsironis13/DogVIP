@@ -31,7 +31,6 @@ import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 public class DialogPicker extends DialogFragment implements DatePickerDialog.OnDateSetListener, DatePickerDialog.OnCancelListener, TimePickerDialog.OnTimeSetListener {
 
-    private static final String debugTag = DialogPicker.class.getSimpleName();
     private DialogActions dialogActions;
     private int dialogType;
 

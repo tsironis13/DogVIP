@@ -26,7 +26,6 @@ import okhttp3.RequestBody;
 
 public class ManipulateFoundPetViewModel implements ManipulateFoundPetContract.ViewModel, Lifecycle.ImageUploadModel {
 
-    private static final String debugTag = LostFoundViewModel.class.getSimpleName();
     private ManipulateFoundPetContract.View mViewClback, mViewImageUploadClback;
     private ManipulateLostFoundRequestManager mManipulateLostFoundRequestManager;
     private AsyncProcessor<ManipulateLostFoundPetResponse> mProcessor;

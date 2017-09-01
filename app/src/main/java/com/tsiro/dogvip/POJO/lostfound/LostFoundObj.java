@@ -36,6 +36,9 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
     @SerializedName("half_blood")
     @Expose
     private int halfblood;
+    @SerializedName("microchip")
+    @Expose
+    private String microchip;
     @SerializedName("p_displayage")
     @Expose
     private String p_displayage;
@@ -73,6 +76,7 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
         p_name = in.readString();
         race = in.readString();
         halfblood = in.readInt();
+        microchip = in.readString();
         main_image = in.readString();
         thumb_image = in.readString();
         genre = in.readInt();
@@ -128,6 +132,10 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
     public int getHalfblood() { return halfblood; }
 
     public void setHalfblood(int halfblood) { this.halfblood = halfblood; }
+
+    public String getMicroship() { return microchip; }
+
+    public void setMicroship(String microchip) { this.microchip = microchip; }
 
     public String getP_displayage() { return p_displayage; }
 
@@ -202,6 +210,7 @@ public class LostFoundObj extends BaseObservable implements Parcelable {
         dest.writeString(p_name);
         dest.writeString(race);
         dest.writeInt(halfblood);
+        dest.writeString(microchip);
         dest.writeString(main_image);
         dest.writeString(thumb_image);
         dest.writeInt(genre);

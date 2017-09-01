@@ -22,7 +22,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class ManipulateLostPetViewModel implements ManipulateLostPetContract.ViewModel {
 
-    private static final String debugTag = LostFoundViewModel.class.getSimpleName();
     private ManipulateLostPetContract.View mViewClback;
     private ManipulateLostFoundRequestManager mManipulateLostFoundRequestManager;
     private AsyncProcessor<ManipulateLostFoundPetResponse> mProcessor;

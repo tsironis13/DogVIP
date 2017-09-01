@@ -73,7 +73,7 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
     private ManipulateLostFoundPet baseObj;
     private LostFoundObj lostFoundObj;
     private ManipulateFoundPetContract.ViewModel mViewModel;
-    private File output, filetToUpload;
+    private File output, fileToUpload;
     private Uri photoURI, galleryURI;
     private int state;
     private CommonUtls mCommonUtls;
@@ -100,9 +100,7 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                 output=(File) savedInstanceState.getSerializable(getResources().getString(R.string.image_output));
             }
         } else {
-            if (getIntent() != null) {
-                action = getIntent().getExtras().getString(getResources().getString(R.string.action));
-            }
+            if (getIntent() != null) action = getIntent().getExtras().getString(getResources().getString(R.string.action));
         }
         if (getSupportActionBar()!= null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         configureActivity(savedInstanceState);
@@ -168,6 +166,10 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
             }
         });
         RxEventBus.add(this, disp4);
+        if (initializeImagePickerDialog) {
+            initializeDialog(getResources().getString(R.string.pick_image_dialog), getResources().getString(R.string.new_image_desc), getResources().getString(R.string.new_image_title), getResources().getString(R.string.gallery), getResources().getString(R.string.camera));
+            initializeImagePickerDialog = false;
+        }
     }
 
     @Override
@@ -229,6 +231,7 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
         if (requestCode == AppConfig.EXTERNAL_CONTENT_URI || requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
                 Uri uri = null;
+                int saveinstance_state = state;
                 if (requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
                     uri = mCommonUtls.getUriForFile(output);
                     state = 2;
@@ -237,7 +240,8 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                     uri = data.getData();
                     galleryURI = uri;
                 }
-                isImageValid(uri, state);
+                boolean isinvalid = isImageValid(uri, state);
+                if (isinvalid && saveinstance_state == 3) state = 3;
             }
         }
     }
@@ -340,12 +344,17 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
         mAwesomeValidation.addValidation(mBinding.contactPhoneEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         if (mAwesomeValidation.validate()) {
             if (isNetworkAvailable()) {
-                baseObj.setAuthtoken(mToken);
-                lostFoundObj.setLocation(mBinding.locationEdt.getText().toString());
-                lostFoundObj.setPhone(mBinding.contactPhoneEdt.getText().toString());
-                lostFoundObj.setInfo(mBinding.moreInfoEdt.getText().toString());
-                mViewModel.manipulateFoundPet(baseObj);
-                initializeProgressDialog(getResources().getString(R.string.please_wait));
+                if (!mBinding.microchipEdt.getText().toString().isEmpty() && !mBinding.microchipEdt.getText().toString().equals("0") && !mBinding.microchipEdt.getText().toString().matches("^\\d{15}$")) {
+                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.not_valid_microchip), getResources().getString(R.string.close));
+                } else {
+                    baseObj.setAuthtoken(mToken);
+                    lostFoundObj.setLocation(mBinding.locationEdt.getText().toString());
+                    lostFoundObj.setMicroship(mBinding.microchipEdt.getText().toString());
+                    lostFoundObj.setPhone(mBinding.contactPhoneEdt.getText().toString());
+                    lostFoundObj.setInfo(mBinding.moreInfoEdt.getText().toString());
+                    mViewModel.manipulateFoundPet(baseObj);
+                    initializeProgressDialog(getResources().getString(R.string.please_wait));
+                }
             } else {
                 showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection), "");
             }
@@ -365,25 +374,31 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
         }
     }
 
-    private void isImageValid(Uri uri, int state) {
+    private boolean isImageValid(Uri uri, int state) {
         Image img = mCommonUtls.isImageSizeValid(uri, state, output);
-        filetToUpload = img.getImage();
-        if (img.getSize()) {
-            if (isNetworkAvailable()) {
-                setOwnerProfileImg(uri);
+        fileToUpload = img.getImage();
+        if (!img.isInvalid_filetype()) {
+            if (img.getSize()) {
+                if (img.isDeleteLocalFile()) output = img.getImage();
+                if (isNetworkAvailable()) {
+                    setOwnerProfileImg(uri);
+                } else {
+                    showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection), "");
+                }
             } else {
-                showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection), "");
+                showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_image_size), "");
+                output = null;
             }
         } else {
-            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_image_size), "");
-            output = null;
+            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_file_type), "");
         }
+        return img.isInvalid_filetype();
     }
 
     private void uploadImage() {
         MultipartBody.Part mfile;
         try {
-            mfile = mCommonUtls.getRequestFileBody(filetToUpload);
+            mfile = mCommonUtls.getRequestFileBody(fileToUpload);
             RequestBody action = RequestBody.create(okhttp3.MultipartBody.FORM, getResources().getString(R.string.upload_found_pet_img));
             RequestBody token = RequestBody.create(okhttp3.MultipartBody.FORM, mToken);
             RequestBody id = RequestBody.create(okhttp3.MultipartBody.FORM, lostFoundObj.getId()+"");
@@ -442,7 +457,7 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                         // Ensure that there's a camera activity to handle the intent
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             try {
-                                output = mCommonUtls.createImageFile();
+                                output = mCommonUtls.createImageFile(".jpg");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -472,8 +487,10 @@ public class ManipulateFoundPetActivity extends BaseActivity implements Manipula
                         }
                     } else {//negative action
                         state = 1;
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent , AppConfig.EXTERNAL_CONTENT_URI);
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.image_choose_label)), AppConfig.EXTERNAL_CONTENT_URI);
                     }
                 } else if (obj.getAction().equals(getResources().getString(R.string.clear_image_dialog))) {
                     if (obj.getSelected_action() == 1) {//positive action

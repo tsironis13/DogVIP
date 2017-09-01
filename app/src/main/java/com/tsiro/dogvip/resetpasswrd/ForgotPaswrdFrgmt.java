@@ -48,7 +48,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContract.View{
 
-    private static final String debugTag = ForgotPaswrdFrgmt.class.getSimpleName();
     private View mView;
     private ForgotpaswrdFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;

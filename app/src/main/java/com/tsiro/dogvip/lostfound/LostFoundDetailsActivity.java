@@ -42,7 +42,6 @@ import io.reactivex.functions.Consumer;
 
 public class LostFoundDetailsActivity extends AppCompatActivity {
 
-    private static final String debugTag = LostFoundDetailsActivity.class.getSimpleName();
     private ActivityLostFoundDetailsBinding mBinding;
     private LostFoundObj lostFoundObj;
     private int type;

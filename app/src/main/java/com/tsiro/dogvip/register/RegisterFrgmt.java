@@ -64,7 +64,6 @@ import io.reactivex.functions.Consumer;
 
 public class RegisterFrgmt extends BaseFragment implements RegistrationContract.View {
 
-    private static final String debugTag = RegisterFrgmt.class.getSimpleName();
     private View mView;
     private RegisterFrgmtBinding mBinding;
     private RegistrationContract.ViewModel mRegstrViewModel;

@@ -41,8 +41,6 @@ import java.util.List;
 
 public class NotificationUtls {
 
-    private static final String debugTag = NotificationUtls.class.getSimpleName();
-
     private Context mContext;
 
     public NotificationUtls() {}

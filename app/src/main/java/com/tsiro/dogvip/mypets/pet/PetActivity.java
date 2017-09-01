@@ -42,7 +42,6 @@ import io.reactivex.functions.Consumer;
 
 public class PetActivity extends BaseActivity implements PetContract.View {
 
-    private static final String debugTag = PetActivity.class.getSimpleName();
     private PetContract.ViewModel mPetViewModel;
     private ActivityPetBinding mBinding;
     private boolean addPet; //genre false -> male
@@ -270,7 +269,7 @@ public class PetActivity extends BaseActivity implements PetContract.View {
                     showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.city_no_match), getResources().getString(R.string.close));
                 } else if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
                     showSnackBar(R.style.SnackBarLongDuration, getResources().getString(R.string.race_not_match), getResources().getString(R.string.close));
-                } else if (!mBinding.microchipEdt.getText().toString().isEmpty() && !mBinding.microchipEdt.getText().toString().matches("^\\d{15}$")) {
+                } else if (!mBinding.microchipEdt.getText().toString().isEmpty() && !mBinding.microchipEdt.getText().toString().equals("0") && !mBinding.microchipEdt.getText().toString().matches("^\\d{15}$")) {
                     showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.not_valid_microchip), getResources().getString(R.string.close));
                 }
                 else {

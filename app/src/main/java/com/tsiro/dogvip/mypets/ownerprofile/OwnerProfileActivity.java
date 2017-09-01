@@ -36,8 +36,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+import com.tsiro.dogvip.mypets.owner.OwnerActivity;
 import com.tsiro.dogvip.petlikes.PetLikesActivity;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
@@ -108,7 +110,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     @Override
     protected void onResume() {
         super.onResume();
-        intent = new Intent(this, MyPetsActivity.class);
+        intent = new Intent(this, OwnerActivity.class);
         Disposable disp1 = RxView.clicks(mBinding.profileImgv).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -142,6 +144,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         if (resultCode == RESULT_OK) {
             if (requestCode == AppConfig.OWNER_ACTIVITY_FOR_RESULT) {
                 imageurl = data.getExtras().getString(getResources().getString(R.string.imageurl));
+                ownerObj.setImageurl(imageurl);
                 setOwnerProfileImg(imageurl);
             } else if (requestCode == AppConfig.REFRESH_PET_INFO) {
                 if (data.getExtras().getBoolean(getResources().getString(R.string.canceled_on_add))) {
@@ -196,10 +199,16 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
     @Override
     public void onBaseViewClick(View view) {
         int ps =(int)view.getTag();
-        String[] urls = {};
-        if (ownerObj.getPets().get(ps).getStrurls() != null) urls = ownerObj.getPets().get(ps).getStrurls().replace("[", "").replace("]", "").split(",");
+        String[] urls = new String[ownerObj.getPets().get(ps).getUrls().size()];
+        if (urls.length != 0) {
+            for (int i =0; i < ownerObj.getPets().get(ps).getUrls().size(); i++) {
+                urls[i] = ownerObj.getPets().get(ps).getUrls().get(i).getImageurl();
+            }
+        }
+//        if (ownerObj.getPets().get(ps).getStrurls() != null) urls = ownerObj.getPets().get(ps).getStrurls().replace("[", "").replace("]", "").split(",");
         Intent intent = new Intent(this, PetProfileActivity.class);
         Bundle bundle = new Bundle();
+        ownerObj.getPets().get(ps).setImage_url(ownerObj.getImageurl());
         bundle.putParcelable(getResources().getString(R.string.pet_obj), ownerObj.getPets().get(ps));
         bundle.putStringArray(getResources().getString(R.string.urls), urls);
         bundle.putInt(getResources().getString(R.string.view_from), 2020);
@@ -392,7 +401,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
                         }
                     })
                     .transition(withCrossFade())
-                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person))
                     .into(mBinding.profileImgv);
         }
     }

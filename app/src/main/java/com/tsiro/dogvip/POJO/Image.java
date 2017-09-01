@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Image extends BaseObservable implements Parcelable{
 
     private transient File image;
-    private transient boolean issize_valid;
+    private transient boolean issize_valid, delete_local_file, isinvalid_filetype;
     @SerializedName("code")
     @Expose
     private int code;
@@ -138,6 +138,14 @@ public class Image extends BaseObservable implements Parcelable{
     public ArrayList<ImagePathIndex> getChecked_urls() { return checked_urls; }
 
     public void setChecked_urls(ArrayList<ImagePathIndex> checked_urls) { this.checked_urls = checked_urls; }
+
+    public boolean isDeleteLocalFile() { return delete_local_file; }
+
+    public void setDeleteLocalFile(boolean delete_local_file) { this.delete_local_file = delete_local_file; }
+
+    public boolean isInvalid_filetype() { return isinvalid_filetype; }
+
+    public void setIsInvalid_filetype(boolean isinvalid_filetype) { this.isinvalid_filetype = isinvalid_filetype; }
 
     @Bindable
     public boolean isChecked() { return isChecked; }

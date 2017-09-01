@@ -21,7 +21,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class PetLikesViewModel implements PetLikesContract.ViewModel {
 
-    private static final String debugTag = PetLikesViewModel.class.getSimpleName();
     private PetLikesContract.View mViewClback;
     private PetLikesRequestManager mPetLikesRequestManager;
     private AsyncProcessor<PetLikesResponse> mProcessor;

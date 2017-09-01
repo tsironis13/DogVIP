@@ -37,7 +37,6 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
-    private static final String debugTag = RecyclerViewAdapter.class.getSimpleName();
     private int layoutid;
     private ViewDataBinding mBinding;
 
@@ -113,7 +112,6 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
                     }
                 } else {
                     int month = current_month - Integer.valueOf(holder[1]);
-//                    Log.e(debugTag, " CURRENT MONTH: " + current_month + " PET MONTH: " + Integer.valueOf(holder[1]));
                     if (month == 0) {
                         month = 1;
                     } else {

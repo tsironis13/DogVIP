@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.ImageViewPagerActivity;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
@@ -34,13 +35,11 @@ import io.reactivex.functions.Consumer;
 
 public class OwnerPetsActivity extends BaseActivity implements OwnerPetsContract.View {
 
-    private static final String debugTag = OwnerPetsActivity.class.getSimpleName();
     private OwnerPetsContract.ViewModel mViewModel;
     private ActivityOwnerPetsBinding mBinding;
     private String mToken;
     private OwnerPetsPresenter mPresenter;
     private OwnerObj ownerObj;
-    private LinearLayoutManager linearLayoutManager;
     private int userRoleId;
 
     @Override
@@ -60,7 +59,6 @@ public class OwnerPetsActivity extends BaseActivity implements OwnerPetsContract
             }
         }
         fetchData(userRoleId);
-
     }
 
     @Override
@@ -73,6 +71,19 @@ public class OwnerPetsActivity extends BaseActivity implements OwnerPetsContract
             }
         });
         RxEventBus.add(this, disp);
+        Disposable disp1 = RxView.clicks(mBinding.profileImgv).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals(getResources().getString(R.string.empty))) {
+                    Intent intent = new Intent(OwnerPetsActivity.this, ImageViewPagerActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray(getResources().getString(R.string.urls), new String[] {ownerObj.getImageurl()});
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            }
+        });
+        RxEventBus.add(this, disp1);
     }
 
     @Override
@@ -117,7 +128,7 @@ public class OwnerPetsActivity extends BaseActivity implements OwnerPetsContract
         mBinding.setProcessing(false);
         mBinding.setOwner(response);
         ownerObj = response;
-        linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         RecyclerViewAdapter rcvAdapter = new RecyclerViewAdapter(R.layout.owner_pets_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {

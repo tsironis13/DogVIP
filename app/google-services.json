@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "316894629037",
-    "project_id": "dogvip-169012"
+    "firebase_url": "https://dogvip-169012.firebaseio.com",
+    "project_id": "dogvip-169012",
+    "storage_bucket": "dogvip-169012.appspot.com"
   },
   "client": [
     {
@@ -13,16 +15,20 @@
       },
       "oauth_client": [
         {
-          "client_id": "316894629037-1hm0i56lm9gejod697r4tqsihb7cqju8.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "316894629037-46t1daujii4e82n4ddve7n3qm8pakqkl.apps.googleusercontent.com",
+          "client_id": "316894629037-lk3vo8rlumu8a19adajie58rs1f2kei2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tsiro.dogvip",
-            "certificate_hash": "60f19cea9dc7eda079e97951488389969dfd2aa5"
+            "certificate_hash": "661eb9448605259eb16535c562407e2d40ea1aff"
           }
+        },
+        {
+          "client_id": "316894629037-a3n1eojuglce7k2gk9p53pe099fbjckb.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "316894629037-1hm0i56lm9gejod697r4tqsihb7cqju8.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316894629037-a3n1eojuglce7k2gk9p53pe099fbjckb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

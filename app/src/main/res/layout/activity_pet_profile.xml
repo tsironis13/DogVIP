@@ -297,7 +297,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
-                    android:text="@{petobj.neutered == 0 ? @string/neutered_plhldr : @string/no_neutered}" />
+                    android:text="@{petobj.neutered == 1 ? @string/neutered_plhldr : @string/no_neutered}" />
 
                 <TextView
                     android:id="@+id/chartrLblTtv"

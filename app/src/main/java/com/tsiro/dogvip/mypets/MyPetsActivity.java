@@ -16,7 +16,8 @@ import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityMypetsBinding;
-import com.tsiro.dogvip.mypets.owner.OwnerFrgmt;
+import com.tsiro.dogvip.mypets.owner.OwnerActivity;
+//import com.tsiro.dogvip.mypets.owner.OwnerFrgmt;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
@@ -35,13 +36,12 @@ import io.reactivex.functions.Consumer;
 public class MyPetsActivity extends BaseActivity implements GetOwnerContract.View {
 
     private GetOwnerContract.ViewModel mGetOwnerViewModel;
-    private OwnerRequest mGetOwnerRequest;
     private ActivityMypetsBinding mBinding;
     private ProgressDialog mProgressDialog;
-    private SnackBar mSnackBar;
-    private String mToken, imageurl;
-    private boolean imageuploading, editOwner;
+    private String mToken;
+    private boolean editOwner;
     private OwnerObj ownerObj;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,6 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         if (getSupportActionBar()!= null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mSnackBar = mBinding.mypetsSnckBr;
         mGetOwnerViewModel = new GetOwnerViewModel(MyPetsRequestManager.getInstance());
         mToken = getMyAccountManager().getAccountDetails().getToken();
         if (savedInstanceState != null) {
@@ -85,21 +84,6 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
     }
 
     @Override
-    public void onBackPressed() {
-        if (imageuploading) {
-            showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.image_uploading_on_progress), "").subscribe();
-        } else {
-            if (getIntent().getExtras().getBoolean(getResources().getString(R.string.edit_ownr)) && imageurl != null) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(getResources().getString(R.string.imageurl), imageurl);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
@@ -123,13 +107,9 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
         if (mProgressDialog != null && mProgressDialog.isShowing()) dismissDialog();
         if (mBinding.getIsVisible()) mBinding.setIsVisible(false);
         if (!response.isExists()) { //Owner does not exist
-            if (getSupportFragmentManager() != null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .replace(R.id.myPetsContainer, OwnerFrgmt.newInstance(true, mToken, null), getResources().getString(R.string.owner_fgmt))
-                        .commit();
-            }
+            bundle = new Bundle();
+            bundle.putBoolean(getResources().getString(R.string.add_ownr), true);
+            startActivity(new Intent(this, OwnerActivity.class).putExtras(bundle));
         } else { //Owner exists
             Intent intent = new Intent(this, OwnerProfileActivity.class);
             Bundle mBundle = new Bundle();
@@ -152,32 +132,19 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
             } else {
                 ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
             }
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .replace(R.id.myPetsContainer, OwnerFrgmt.newInstance(false, mToken, ownerObj), getResources().getString(R.string.owner_fgmt))
-                    .commit();
+            bundle = new Bundle();
+            bundle.putBoolean(getResources().getString(R.string.add_ownr), false);
+            bundle.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
+            startActivity(new Intent(this, OwnerActivity.class).putExtras(bundle));
         } else {
             checkOwnerExists(mToken);
         }
     }
 
-    public void setImageProfileUrl(String url) {
-        this.imageurl = url;
-    }
-
-    public String getImageurl() {
-        return this.imageurl;
-    }
-
-    public void setImageuploading(boolean imageuploading) {
-        this.imageuploading = imageuploading;
-    }
-
     private void checkOwnerExists(String token) {
         if (isNetworkAvailable()) {
             mProgressDialog = initializeProgressDialog(getResources().getString(R.string.please_wait));
-            mGetOwnerRequest = new OwnerRequest();
+            OwnerRequest mGetOwnerRequest = new OwnerRequest();
             mGetOwnerRequest.setAction(getResources().getString(R.string.get_owner_details));
             mGetOwnerRequest.setAuthtoken(token);
 
@@ -186,29 +153,6 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
             mBinding.setIsVisible(true);
             mBinding.setErrorText(getResources().getString(R.string.no_internet_connection));
         }
-    }
-
-    public io.reactivex.Observable<String> showSnackBar(final int style, final String msg, final String action) {
-        return io.reactivex.Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(@NonNull final ObservableEmitter<String> subscriber) throws Exception {
-                if (mSnackBar != null) {
-                    mSnackBar.applyStyle(style);
-                    mSnackBar.text(msg);
-                    mSnackBar.actionClickListener(new SnackBar.OnActionClickListener() {
-                        @Override
-                        public void onActionClick(SnackBar sb, int actionId) {
-                            subscriber.onNext(action);
-                        }
-                    });
-                    mSnackBar.show();
-                }
-            }
-        });
-    }
-
-    public void dismissSnackBar() {
-        if (mSnackBar != null && mSnackBar.isShown()) mSnackBar.dismiss();
     }
 
 }

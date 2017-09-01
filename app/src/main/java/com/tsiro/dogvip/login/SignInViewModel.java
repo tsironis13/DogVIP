@@ -19,7 +19,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class SignInViewModel implements SignInContract.ViewModel {
 
-    private static final String debugTag = SignInViewModel.class.getSimpleName();
     private SignInRequestManager mSignInRequestManager;
     private SignInContract.View mViewClback;
     private int requestState;

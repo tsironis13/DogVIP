@@ -44,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PetProfileActivity extends BaseActivity implements PetProfileContract.View {
 
-    private static final String debugTag = PetProfileActivity.class.getSimpleName();
+//    private static final String debugTag = PetProfileActivity.class.getSimpleName();
     private ActivityPetProfileBinding mBinding;
     private String[] petUrls;
     private PetObj petObj;

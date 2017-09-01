@@ -64,7 +64,6 @@ import io.reactivex.functions.Consumer;
 
 public class SignInFrgmt extends BaseFragment implements SignInContract.View, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String debugTag = SignInFrgmt.class.getSimpleName();
     private View mView;
     private SigninFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;

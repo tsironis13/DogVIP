@@ -39,7 +39,6 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class BaseActivity extends AppCompatActivity implements Lifecycle.View {
 
-    private static final String debugTag = BaseActivity.class.getSimpleName();
     public abstract Lifecycle.ViewModel getViewModel();
     private Dialog.Builder mBuilder;
     private ProgressDialog mProgressDialog;

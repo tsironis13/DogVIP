@@ -45,7 +45,6 @@ import io.reactivex.functions.Consumer;
 
 public class LostActivity extends BaseActivity implements LostFoundContract.View {
 
-    private static final String debugTag = LostActivity.class.getSimpleName();
     private ActivityLostBinding mBinding;
     private String mToken, subaction;
     private LostFoundContract.ViewModel mViewModel;
@@ -69,7 +68,6 @@ public class LostActivity extends BaseActivity implements LostFoundContract.View
 
             @Override
             public void onError(FacebookException error) {
-                Log.e(debugTag, error.getMessage() + error.getCause() + error.getLocalizedMessage());
                 showSnackBar(getResources().getString(R.string.error), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
             }
 

@@ -19,7 +19,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class RegistrationViewModel implements RegistrationContract.ViewModel {
 
-    private static final String debugTag = RegistrationViewModel.class.getSimpleName();
     private AuthenticationRequestManager mAuthenticationRequestManager;
     private RegistrationContract.View mViewClback;
     private AsyncProcessor<AuthenticationResponse> mRegstrProcessor;

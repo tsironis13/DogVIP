@@ -38,7 +38,6 @@ import io.reactivex.functions.Consumer;
 
 public class PetLikesActivity extends BaseActivity implements PetLikesContract.View {
 
-    private static final String debugTag = PetLikesActivity.class.getSimpleName();
     private PetObj petObj;
     private PetLikesContract.ViewModel mViewModel;
     private ActivityPetLikesBinding mBinding;

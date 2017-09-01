@@ -223,10 +223,34 @@
                         android:text="@{obj.phone}" />
 
                     <TextView
-                        android:id="@+id/infoLblTtv"
+                        android:id="@+id/microchipLblTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/phoneLblTtv"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/microchip_label" />
+
+                    <TextView
+                        android:id="@+id/microchipTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/microchipLblTtv"
+                        android:layout_toEndOf="@+id/microchipLblTtv"
+                        android:paddingBottom="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/phoneTtv"
+                        android:text="@{obj.microship}" />
+
+                    <TextView
+                        android:id="@+id/infoLblTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/microchipLblTtv"
                         android:textSize="15sp"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"

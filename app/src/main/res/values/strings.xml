@@ -85,6 +85,7 @@
     <string name="grant_permission">Ενεργοποίησε την κατάλληλη άδεια μέσα από τις ρυθμίσεις της εφαρμογής.</string>
     <string name="image_size_limit">Όριο εικόνας: 6MB</string>
     <string name="invalid_image_size">Μη έγκυρο μέγεθος εικόνας.</string>
+    <string name="invalid_file_type">Μη έγκυρος τύπος αρχείου.</string>
     <string name="no_camera_available">Απαιτείται κάμερα για τη συγκεκριμένη λειτουργία.</string>
     <string name="add_owner">Δημιουργία νέου</string>
     <string name="edit_owner">Επεξεργασία προφίλ</string>
@@ -112,6 +113,7 @@
     <string name="new_image_desc">Βγάλε νέα φωτογραφία ή επίλεξε μία υπάρχουσα από τη βιβλιοθήκη.</string>
     <string name="gallery">GALLERY</string>
     <string name="camera">ΚΑΜΕΡΑ</string>
+    <string name="image_choose_label">Επιλογή φωτογραφίας</string>
 
     <string name="clear_image_title">Διαγραφή Φωτογραφίας</string>
     <string name="clear_image_desc">Η συγκεκριμένη φωτογραφία θα διαγραφεί.</string>
@@ -212,8 +214,8 @@
     <string name="signin_label">Για ήδη εγγεγραμένους χρήστες.</string>
     <string name="terms_label">Όροι χρήσης.</string>
     <string name="forgot_password_label">Ξέχασα τον κωδικό μου!</string>
-    <string name="not_member_label">Δεν είστε μέλος. Δημιουργία λογαριασμού.</string>
-    <string name="member_label">Είστε μέλος. Είσοδος εδώ.</string>
+    <string name="not_member_label">Δεν είστε μέλος; Εγγραφή.</string>
+    <string name="member_label">Είστε μέλος; Είσοδος εδώ.</string>
 
     <string name="facebook_regstr_label">Εγγραφη μεσω facebook</string>
     <string name="google_regstr_label">Εγγραφη μεσω google</string>
@@ -260,6 +262,7 @@
     <string name="place_label">Μέρος: </string>
     <string name="date_time_label">Ημερομηνία &amp; ώρα: </string>
     <string name="phone_label">Τηλέφωνο επικοινωνίας: </string>
+    <string name="microchip_label">Microchip: </string>
     <string name="info_label">Πληροφορίες: </string>
     <string name="date_time">%1$s %2$s</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
@@ -281,6 +284,7 @@
     <string name="name_plhldr">*<u>Όνομα</u></string>
     <string name="surname_plhldr">*<u>Επίθετο</u></string>
     <string name="birth_date_plhldr">*<u>Ημ. γέννησης</u></string>
+    <string name="birth_date_notreq_plhldr">Ημ. γέννησης</string>
     <string name="age_plhldr">*<u>Ηλικία</u></string>
     <string name="age_notreq_plhldr"><u>Ηλικία</u></string>
     <string name="city_plhldr"><u>Πόλη</u></string>

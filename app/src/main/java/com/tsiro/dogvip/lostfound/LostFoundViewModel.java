@@ -20,7 +20,6 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class LostFoundViewModel implements LostFoundContract.ViewModel {
 
-    private static final String debugTag = LostFoundViewModel.class.getSimpleName();
     private LostFoundContract.View mViewClback;
     private LostFoundRequestManager mLostFoundRequestManager;
     private AsyncProcessor<LostFoundResponse> mProcessor;
