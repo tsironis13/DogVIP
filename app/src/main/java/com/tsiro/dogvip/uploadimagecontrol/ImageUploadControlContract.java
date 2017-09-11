@@ -31,6 +31,7 @@ public interface ImageUploadControlContract {
     interface ViewModel extends Lifecycle.ViewModel {
         void uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image);
         void uploadPetImage(RequestBody action, RequestBody token, RequestBody user_role_id, RequestBody pet_id, MultipartBody.Part image, RequestBody index);
+        void uploadPetSitterPlaceImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image, RequestBody index);
         void manipulatePetImage(Image image);
         void setRequestState(int state);
     }

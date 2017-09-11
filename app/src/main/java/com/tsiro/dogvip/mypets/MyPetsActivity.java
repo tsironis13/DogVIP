@@ -90,6 +90,12 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(getResources().getString(R.string.frgmnt_created), 1);

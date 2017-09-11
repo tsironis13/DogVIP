@@ -491,7 +491,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
                         }
                     })
                     .transition(withCrossFade())
-                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person))
                     .into(mBinding.profileImgv);
         }
     }

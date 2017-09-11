@@ -36,6 +36,10 @@ public class ImageUploadControlRequestManager {
         return mImageUploadControlAPIService.uploadPetImage(action, token, user_role_id, pet_id, file, index, imageUploadControlViewModel);
     }
 
+    public Flowable<Image> uploadPetSitterPlaceImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part file, RequestBody index, ImageUploadControlViewModel imageUploadControlViewModel) {
+        return mImageUploadControlAPIService.uploadPetSitterPlaceImage(action, token, id, file, index, imageUploadControlViewModel);
+    }
+
     public Flowable<Image> deletePetImage(Image image, ImageUploadControlViewModel imageUploadControlViewModel) {
         return mImageUploadControlAPIService.deletePetImage(image, imageUploadControlViewModel).delay(500, TimeUnit.MILLISECONDS);
     }

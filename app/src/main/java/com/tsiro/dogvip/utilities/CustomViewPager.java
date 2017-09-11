@@ -22,6 +22,11 @@ public class CustomViewPager extends ViewPager {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return this.paging && super.onTouchEvent(event);
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return paging && super.onInterceptTouchEvent(ev);
     }

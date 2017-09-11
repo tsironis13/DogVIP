@@ -107,6 +107,12 @@
             android:label="@string/app_name"/>
 
         <activity
+            android:name=".uploadimagecontrol.petsitter_place.PetSitterPlaceUploadControlActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name"/>
+
+        <activity
             android:name=".petprofile.PetProfileActivity"
             android:theme="@style/UserProfileAppTheme"
             android:screenOrientation="portrait"
@@ -197,6 +203,35 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".petsitters.PetSittersActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".petsitters.petsitter.PetSitterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".petsitters.PetSittersActivity" />
+        </activity>
+
+        <activity
+            android:name=".petsitters.petsitter.other_details.PetSitterOtherDtlsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".petsitters.petsitter.PetSitterActivity" />
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

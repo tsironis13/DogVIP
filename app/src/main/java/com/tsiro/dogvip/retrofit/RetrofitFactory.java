@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient;
 //import okhttp3.logging.HttpLoggingInterceptor;
 //import okhttp3.logging.HttpLoggingInterceptor;
 //import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -34,15 +35,15 @@ public class RetrofitFactory {
     public ServiceAPI getServiceAPI() { return  serviceAPI; }
 
     private static Retrofit getAdapter() {
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)
                 .writeTimeout(5, TimeUnit.MINUTES)
-//                .addInterceptor(interceptor)
+                .addInterceptor(interceptor)
 //                .addInterceptor(new MOck())
                 .build();
 

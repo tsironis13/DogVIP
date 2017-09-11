@@ -29,6 +29,7 @@ import com.tsiro.dogvip.databinding.NavigationHeaderBinding;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.mychatrooms.MyChatRoomsActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
+import com.tsiro.dogvip.petsitters.PetSittersActivity;
 import com.tsiro.dogvip.requestmngrlayer.DashboardRequestManager;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
@@ -146,7 +147,8 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         Disposable disp5 = RxView.clicks(mBinding.sittersLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                sectionNotAvailableYet();
+//                sectionNotAvailableYet();
+                startActivity(new Intent(DashboardActivity.this, PetSittersActivity.class));
             }
         });
         RxEventBus.add(this, disp5);

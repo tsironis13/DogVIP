@@ -77,6 +77,30 @@ public class ImageUploadControlAPIService {
                 });
     }
 
+    public Flowable<Image> uploadPetSitterPlaceImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image, RequestBody index, final ImageUploadControlViewModel imageUploadControlViewModel) {
+        return serviceAPI.uploadPetSitterPlaceImage(action, token, id, image, index)
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        imageUploadControlViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        imageUploadControlViewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                    }
+                })
+                .doOnNext(new Consumer<Image>() {
+                    @Override
+                    public void accept(@NonNull Image response) throws Exception {
+                        imageUploadControlViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                    }
+                });
+    }
+
     public Flowable<Image> deletePetImage(Image image, final ImageUploadControlViewModel imageUploadControlViewModel) {
         return serviceAPI.deletePetImage(image)
                 .doOnSubscribe(new Consumer<Subscription>() {

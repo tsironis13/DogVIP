@@ -25,6 +25,7 @@ import okhttp3.RequestBody;
 
 public class ImageUploadControlViewModel implements ImageUploadControlContract.ViewModel, Lifecycle.ImageUploadModel {
 
+    private static final String debugTag = ImageUploadControlViewModel.class.getSimpleName();
     private ImageUploadControlRequestManager mImageUploadControlRequestManager;
     private ImageUploadControlContract.View mViewClback;
     private Disposable mDisp, mManipulatePetImageDisp;
@@ -42,6 +43,7 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onViewResumed() {
+//        Log.e(debugTag, "DISP => "+mDisp + " REQUEST STATE => "+requestState+ " PROCESSOR => "+imageProcessor);
         if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null){
             imageProcessor
                     .subscribeOn(Schedulers.io())
@@ -57,13 +59,29 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onViewDetached() {
-        mViewClback = null;
-        if (mDisp != null) mDisp.dispose();
+        if (requestState != AppConfig.REQUEST_RUNNING) {
+            if (mDisp != null) mDisp.dispose();
+            mViewClback = null;
+        }
         if (mManipulatePetImageDisp != null) mManipulatePetImageDisp.dispose();
     }
 
     @Override
     public void uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image) {}
+
+    @Override
+    public void uploadPetSitterPlaceImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image, RequestBody index) {
+        if (requestState != AppConfig.REQUEST_RUNNING) {
+            requestState = AppConfig.REQUEST_RUNNING;
+            imageProcessor = AsyncProcessor.create();
+            mDisp = imageProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new ImageUploadSubscriber(this));
+
+            mImageUploadControlRequestManager.uploadPetSitterPlaceImage(action, token, id, image, index, this).subscribe(imageProcessor);
+        }
+    }
 
     @Override
     public void uploadPetImage(RequestBody action, RequestBody token, RequestBody user_role_id, RequestBody pet_id, MultipartBody.Part image, RequestBody index) {

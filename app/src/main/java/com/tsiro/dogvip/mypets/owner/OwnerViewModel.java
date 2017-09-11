@@ -9,9 +9,11 @@ import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.ImageUploadSubscriber;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -41,7 +43,11 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
 
     @Override
     public void onViewResumed() {
-        if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && mProcessor != null) mProcessor.subscribe(new OwnerObserver());
+        if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && mProcessor != null)
+            mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new OwnerObserver());
         if (mUploadDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null) imageProcessor.subscribe(new ImageUploadSubscriber(this));
     }
 
@@ -59,7 +65,10 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
     public void submitOwner(OwnerObj request) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mProcessor = AsyncProcessor.create();
-            mDisp = mProcessor.subscribeWith(new OwnerObserver());
+            mDisp = mProcessor
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new OwnerObserver());
 
             mMyPetsRequestManager.submitOwner(request, this).subscribe(mProcessor);
         }

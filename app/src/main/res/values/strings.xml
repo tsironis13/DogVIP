@@ -13,6 +13,7 @@
     <!-- ACTIONS -->
     <string name="action">action</string>
     <string name="view_from">view_from</string>
+    <string name="view_loaded_first_time">view_loaded_first_time</string>
     <string name="register_user">register_user</string>
     <string name="signin_user">signin_user</string>
     <string name="forgot_paswrd">forgot_password</string>
@@ -24,12 +25,16 @@
     <string name="edit_ownr">edit_owner</string>
     <string name="upload_ownr_img">upload_ownr_img</string>
     <string name="upload_pet_img">upload_pet_img</string>
+    <string name="upload_petsitter_img">upload_petsitter_img</string>
+    <string name="upload_petsitter_place_img">upload_petsitter_place_img</string>
     <string name="delete_owner_image">delete_owner_image</string>
+    <string name="delete_petsitter_image">delete_petsitter_image</string>
     <string name="delete_owner">delete_owner</string>
     <string name="add_pet">add_pet</string>
     <string name="edit_pet">edit_pet</string>
     <string name="delete_pet">delete_pet</string>
     <string name="delete_pet_image">delete_pet_image</string>
+    <string name="delete_petsitter_place_image">delete_petsitter_place_image</string>
     <string name="set_pet_main_image">set_pet_main_image</string>
     <string name="get_all_pets_by_filter">get_all_pets_by_filter</string>
     <string name="like_dislike_pet">like_dislike_pet</string>
@@ -55,6 +60,11 @@
     <string name="update_read_msgs">update_read_msgs</string>
     <string name="get_chat_rooms">get_chat_rooms</string>
     <string name="get_user_total_unread_msgs">get_user_total_unread_msgs</string>
+    <string name="get_petsitter_details">get_petsitter_details</string>
+    <string name="add_petsitter">add_petsitter</string>
+    <string name="edit_petsitter">edit_petsitter</string>
+    <string name="edit_base_details">edit_base_details</string>
+    <string name="edit_other_details">edit_other_details</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -93,6 +103,7 @@
     <string name="delete">Διαγραφή</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
     <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
+    <string name="required_fields_petsitter">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν pet sitter στην εφαρμογή.</string>
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
     <string name="swipe_to_edit_delete">Σύρετε αριστερά για επεξεργασία/διαγραφή.</string>
     <string name="image_uploading_on_progress">Ανέβασμα φωτογραφίας σε εξέλιξη. Παρακαλώ περιμένετε.</string>
@@ -167,6 +178,7 @@
     <string name="race_gr">ΡΑΤΣΑ-ΦΥΛΗ</string>
     <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
     <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
+    <string name="small_size_gr">ΜΙΚΡΟ</string>
     <string name="half_blood_gr">ΗΜΙΑΙΜΟ</string>
     <string name="chrctr_gr">ΧΑΡΑΚΤΗΡΑΣ</string>
     <string name="genre_gr">ΦΥΛΛΟ</string>
@@ -177,7 +189,13 @@
     <string name="location_gr">ΠΕΡΙΟΧΗ</string>
     <string name="contact_phone_gr">ΤΗΛ. ΕΠΙΚΟΙΝΩΝΙΑΣ</string>
     <string name="more_info_gr">ΠΕΡΙΣ. ΠΛΗΡΟΦΟΡΙΕΣ</string>
+    <string name="pet_size_gr">ΜΕΓΕΘΟΣ ΠΟΥ ΑΝΑΛΑΜΒΑΝΩ</string>
+    <string name="years_exp_gr">ΕΤΗ ΕΜΠΕΙΡΙΑΣ ΣΤΗΝ ΚΑΤΟΧΗ/ΦΥΛΑΞΗ \nΣΚΥΛΟΥ</string>
+    <string name="pet_place_gr">ΔΙΑΜΟΝΗ ΚΑΤΟΙΚΙΔΙΟΥ</string>
+    <string name="place_type_gr">ΕΙΔΟΣ ΚΑΤΟΙΚΙΑΣ</string>
+    <string name="address_gr">ΔΙΕΥΘΥΝΣΗ</string>
     <string name="msg_item">Μηνύματα</string>
+    <string name="search_item">Αναζήτηση</string>
     <string name="sitter_item">Sitter</string>
     <string name="image_output">image_output</string>
     <string name="gallery_uri">gallery_uri</string>
@@ -265,6 +283,9 @@
     <string name="microchip_label">Microchip: </string>
     <string name="info_label">Πληροφορίες: </string>
     <string name="date_time">%1$s %2$s</string>
+    <!-- PET SITTERS ACTIVITY -->
+    <string name="pet_sitters_title">Pet Sitters</string>
+    <string name="show_place_images">φωτογραφιες χωρου</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>
@@ -303,7 +324,9 @@
     <string name="location_lost_plhldr">*<u>Περιοχή</u></string>
     <string name="contact_phone_plhldr">*<u>Τηλ. επικοινωνίας</u></string>
     <string name="more_info_plhldr"><u>Περισσότερες πληροφορίες</u></string>
+    <string name="years_exp_plhldr"><u>Ετη εμπειρίας</u></string>
     <string name="enter_message_plhldr">Στείλε μήνυμα&#8230;</string>
+    <string name="address_plhldr"><u>Διεύθυνση</u></string>
     <!-- FORM VALIDATION MSG -->
     <string name="required_field">Υποχρεωτικό πεδίο</string>
     <string name="not_valid_email">Μη έγκυρο email</string>
@@ -311,7 +334,13 @@
     <string name="passwrds_not_match">Ασυμφωνία κωδικών</string>
     <string name="not_valid_name_fld">Απαιτούνται μόνο χαρακτήρες</string>
     <string name="not_valid_microchip">Ο αριθμός microchip αποτελείται από 15 αριθμούς.</string>
-
+    <!-- PET SITTER SERVICES -->
+    <string name="service1">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟΝ ΧΩΡΟ ΜΟΥ)</string>
+    <string name="service2">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟΝ ΧΩΡΟ ΣΑΣ)</string>
+    <string name="service3">ΤΑΚΤΙΚΕΣ ΕΠΙΣΚΕΨΕΙΣ \n(ΣΤΟΝ ΧΩΡΟ ΣΑΣ)</string>
+    <string name="service4">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟΝ ΧΩΡΟ ΜΟΥ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
+    <string name="service5">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟΝ ΧΩΡΟ ΣΑΣ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
+    <string name="service6">ΒΟΛΤΑ ΣΚΥΛΟΥ</string>
     <string name="image_cont_desc">cont_desc</string>
 
     <string-array name="pet_genres">
@@ -319,8 +348,29 @@
         <item name="female">Θηλυκό</item>
     </string-array>
 
+    <string-array name="pet_place">
+        <item name="in">Εντός οικίας</item>
+        <item name="out">Εκτός οικίας</item>
+    </string-array>
+
+    <string-array name="place_type">
+        <item name="mono">Μονοκατοικία</item>
+        <item name="apprtmnt">Διαμέρισμα</item>
+    </string-array>
+
     <string-array name="lost_found_tabs">
         <item name="all">Ολες</item>
         <item name="my">Οι καταχωρησεις μου</item>
+    </string-array>
+
+    <string-array name="petsitter_other_details_tabs">
+        <item name="basic_info">1. Βασικές πληροφορίες</item>
+        <item name="services">2. Υπηρεσίες</item>
+        <item name="place_info">3. Χαρακτηριστικά χώρου</item>
+    </string-array>
+
+    <string-array name="pet_sitters_tabs">
+        <item name="sitter_assignments">Αναθεσεις για αλλους</item>
+        <item name="my_pet_assignments">Αναθεσεις προς εμενα</item>
     </string-array>
 </resources>

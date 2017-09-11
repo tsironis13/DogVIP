@@ -21,6 +21,7 @@ import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.POJO.petlikes.PetLikesRequest;
 import com.tsiro.dogvip.POJO.petlikes.PetLikesResponse;
+import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -62,6 +63,9 @@ public interface ServiceAPI {
     Flowable<OwnerObj> getOwnerDetails(@Body OwnerRequest request);
 
     @POST("actions.php")
+    Flowable<PetSitterObj> petSitterRelatedActions(@Body PetSitterObj request);
+
+    @POST("actions.php")
     Flowable<OwnerObj> submitOwner(@Body OwnerObj request);
 
     @Multipart
@@ -71,6 +75,10 @@ public interface ServiceAPI {
     @Multipart
     @POST("upload.php")
     Flowable<Image> uploadPetImage(@Part("action") RequestBody action, @Part("token") RequestBody token, @Part("user_role_id") RequestBody user_role_id, @Part("pet_id") RequestBody pet_id, @Part MultipartBody.Part image, @Part("index") RequestBody index);
+
+    @Multipart
+    @POST("upload.php")
+    Flowable<Image> uploadPetSitterPlaceImage(@Part("action") RequestBody action, @Part("token") RequestBody token, @Part("id") RequestBody id, @Part MultipartBody.Part image, @Part("index") RequestBody index);
 
     @POST("actions.php")
     Flowable<Image> deleteImage(@Body Image image);

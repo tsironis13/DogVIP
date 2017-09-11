@@ -98,12 +98,12 @@
                                 android:layout_height="65dp"
                                 android:layout_marginBottom="10dp"
                                 android:contentDescription="@string/image_cont_desc"
-                                android:src="@drawable/sitters_dashboard_disable" />
+                                android:src="@drawable/sitters_dashboard" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorPrimaryOpaque"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:text="@string/sitters" />

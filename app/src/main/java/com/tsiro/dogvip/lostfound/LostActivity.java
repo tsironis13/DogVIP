@@ -115,6 +115,12 @@ public class LostActivity extends BaseActivity implements LostFoundContract.View
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(getResources().getString(R.string.type), type);

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="pageIndex"
+            type="Integer" />
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/cntFrml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@color/colorPrimary">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/coordlt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.tsiro.dogvip.utilities.CustomViewPager
+                    android:id="@+id/viewPgr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--<android.support.design.widget.FloatingActionButton-->
+                    <!--android:id="@+id/nextBtn"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="16dp"-->
+                    <!--android:layout_gravity="bottom|end"-->
+                    <!--android:src="@{pageIndex != 2 ? @drawable/ic_navigate_next_white : @drawable/ic_navigate_before_white}" />-->
+
+                <!--<android.support.design.widget.FloatingActionButton-->
+                    <!--android:id="@+id/previousBtn"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="16dp"-->
+                    <!--android:layout_gravity="bottom|start"-->
+                    <!--android:visibility="@{pageIndex == 1 ? View.VISIBLE : View.GONE}"-->
+                    <!--android:src="@drawable/ic_navigate_before_white" />-->
+
+            </android.support.design.widget.CoordinatorLayout>
+
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

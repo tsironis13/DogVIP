@@ -182,6 +182,12 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    @Override
     public Lifecycle.ViewModel getViewModel() {
         return mViewModel;
     }

@@ -52,7 +52,7 @@ import okhttp3.RequestBody;
  * Created by giannis on 25/6/2017.
  */
 
-public class ImageUploadControlActivity extends BaseActivity implements ImageUploadControlContract.View{
+public class ImageUploadControlActivity extends BaseActivity implements ImageUploadControlContract.View {
 
     private ActivityImageUploadControlBinding mBinding;
     private ArrayList<Image> urls;
@@ -149,6 +149,12 @@ public class ImageUploadControlActivity extends BaseActivity implements ImageUpl
         outState.putInt(getResources().getString(R.string.index), index);
         outState.putString(getResources().getString(R.string.main_image), mainImageUrl);
         outState.putInt(getResources().getString(R.string.imageview_state), state);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
     }
 
     @Override
