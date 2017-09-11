@@ -84,6 +84,11 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     @SerializedName("placetype")
     @Expose
     private int placetype;
+    //update SitterServices table rows if has_services is true
+    //otherwise insert new rows in the table
+    @SerializedName("has_services")
+    @Expose
+    private boolean has_services;
 
     public PetSitterObj() {}
 
@@ -110,6 +115,7 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         address = in.readString();
         petplace = in.readInt();
         placetype = in.readInt();
+        has_services = in.readByte() != 0;
     }
 
     public static final Creator<PetSitterObj> CREATOR = new Creator<PetSitterObj>() {
@@ -208,25 +214,45 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.yearsexpr);
     }
 
+    @Bindable
     public ArrayList<Integer> getServices() { return services; }
 
-    public void setServices(ArrayList<Integer> services) { this.services = services; }
+    public void setServices(ArrayList<Integer> services) {
+        this.services = services;
+        notifyPropertyChanged(BR.services);
+    }
 
     public ArrayList<Image> getUrls() { return urls; }
 
     public void setUrls(ArrayList<Image> urls) { this.urls = urls; }
 
+    @Bindable
     public String getAddress() { return address; }
 
-    public void setAddress(String address) { this.address = address; }
+    public void setAddress(String address) {
+        this.address = address;
+        notifyPropertyChanged(BR.address);
+    }
 
+    @Bindable
     public int getPetplace() { return petplace; }
 
-    public void setPetplace(int petplace) { this.petplace = petplace; }
+    public void setPetplace(int petplace) {
+        this.petplace = petplace;
+        notifyPropertyChanged(BR.petplace);
+    }
 
+    @Bindable
     public int getPlacetype() { return placetype; }
 
-    public void setPlacetype(int placetype) { this.placetype = placetype; }
+    public void setPlacetype(int placetype) {
+        this.placetype = placetype;
+        notifyPropertyChanged(BR.placetype);
+    }
+
+    public boolean isHas_services() { return has_services; }
+
+    public void setHas_services(boolean has_services) { this.has_services = has_services; }
 
     @Override
     public int describeContents() { return 0; }
@@ -253,5 +279,6 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         dest.writeString(address);
         dest.writeInt(petplace);
         dest.writeInt(placetype);
+        dest.writeByte((byte) (has_services ? 1 : 0));
     }
 }

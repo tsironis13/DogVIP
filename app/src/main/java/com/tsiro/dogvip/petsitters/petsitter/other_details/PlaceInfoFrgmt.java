@@ -74,14 +74,24 @@ public class PlaceInfoFrgmt extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments() != null) {
-            petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
-        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_row, getResources().getStringArray(R.array.pet_place));
         mBinding.petplaceSpnr.setAdapter(adapter);
 
         ArrayAdapter<String> cadapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_row, getResources().getStringArray(R.array.place_type));
         mBinding.placetypeSpnr.setAdapter(cadapter);
+        if (savedInstanceState != null) {
+            petSitterObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
+            mBinding.setObj(petSitterObj);
+            if (mBinding.getObj().getPetplace() == 1) mBinding.petplaceSpnr.setSelection(1);
+            if (mBinding.getObj().getPlacetype() == 1) mBinding.placetypeSpnr.setSelection(1);
+        } else {
+            if (getArguments() != null) {
+                petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
+                mBinding.setObj(petSitterObj);
+                if (mBinding.getObj().getPetplace() == 1) mBinding.petplaceSpnr.setSelection(1);
+                if (mBinding.getObj().getPlacetype() == 1) mBinding.placetypeSpnr.setSelection(1);
+            }
+        }
     }
 
     @Override
@@ -112,6 +122,12 @@ public class PlaceInfoFrgmt extends Fragment {
     public void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
     }
 
     @Override
@@ -151,6 +167,7 @@ public class PlaceInfoFrgmt extends Fragment {
         petSitterObj.setPetplace(mBinding.petplaceSpnr.getSelectedItemPosition());
         petSitterObj.setPlacetype(mBinding.placetypeSpnr.getSelectedItemPosition());
         petSitterObj.setAddress(mBinding.placeaddressEdt.getText().toString());
+        Log.e(debugTag, "CALPRIT HERE???? "+petSitterObj.getServices());
         viewContract.onOtherDetailsSubmit(petSitterObj);
     }
 

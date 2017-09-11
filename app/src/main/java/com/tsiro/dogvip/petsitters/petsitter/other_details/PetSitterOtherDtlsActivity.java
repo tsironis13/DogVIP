@@ -89,6 +89,13 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
+        Log.e(debugTag, "SERVICES ON SAVE INSTANCE STATE: "+petSitterObj.getServices());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
     }
 
     @Override
@@ -115,10 +122,8 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
 
     @Override
     public void onOtherDetailsSubmit(PetSitterObj petSitterObj) {
-        Log.e(debugTag,  "PET SIZE => " + petSitterObj.getPetsize() +"\n"+ "YEARS => " + petSitterObj.getYearsexpr() +"\n"+ " SERVICES" + petSitterObj.getServices() + "\n ADDRESS" +
-                petSitterObj.getAddress()+ " PET PLACE =>"+petSitterObj.getPetplace() + " PLACE TYPE => "+petSitterObj.getPlacetype());
+        Log.e(debugTag,  "PET SIZE => " + petSitterObj.getPetsize() +"\n"+ "YEARS => " + petSitterObj.getYearsexpr() +"\n"+ " SERVICES" + petSitterObj.getServices());
         if (isNetworkAvailable()) {
-            Log.e(debugTag, petSitterObj + "");
             petSitterObj.setAuthtoken(mToken);
             petSitterObj.setAction(getResources().getString(R.string.edit_petsitter));
             petSitterObj.setSubaction(getResources().getString(R.string.edit_other_details));
@@ -136,7 +141,7 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
 //        Log.e(debugTag, petSitterObj.getPetsize()+ " PET SIZE");
 //        Log.e(debugTag, petSitterObj.getYearsexpr() + " YEAR EXPRS");
 //        Log.e(debugTag, petSitterObj.getId() + " ID");
-//        Log.e(debugTag, petSitterObj.getServices() + " SERVICES");
+        Log.e(debugTag, petSitterObj.getServices() + " SERVICES G");
     }
 
     @Override

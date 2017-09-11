@@ -66,14 +66,16 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
         super.onActivityCreated(savedInstanceState);
         PetSitterOtherDtlsPresenter petSitterOtherDtlsPresenter = new PetSitterOtherDtlsPresenter(this);
         mBinding.setPresenter(petSitterOtherDtlsPresenter);
-        if (getArguments() != null) {
-            petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
-            services.add(1);
-            services.add(6);
-            petSitterObj.setServices(services);
-            fetchPetSitterServices();
+        if (savedInstanceState != null) {
+            petSitterObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
+            configureFramgnet(petSitterObj);
+        } else {
+            if (getArguments() != null) {
+                petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
+                configureFramgnet(petSitterObj);
 //            mBinding.setObj(petSitterObj);
 //            Log.e(debugTag, petSitterObj.getId() + " ID, NAME: " + petSitterObj.getName());
+            }
         }
     }
 
@@ -103,6 +105,13 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
+//        Log.e(debugTag, "SERVICES")
+    }
+
+    @Override
     public void onServiceCheckBoxClick(View view) {
         if (view instanceof CheckBox) {
             CheckBox checkBox = (CheckBox) view;
@@ -115,7 +124,22 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
         }
     }
 
-    private void fetchPetSitterServices() {
+    private void configureFramgnet(PetSitterObj petSitterObj) {
+        if (petSitterObj != null) {
+            Log.e(debugTag, petSitterObj.getServices() + " SERVICES");
+            if (petSitterObj.getServices() != null) {
+                if (petSitterObj.getServices().isEmpty()) {
+                    petSitterObj.setHas_services(false);
+                } else {
+                    fetchPetSitterServices(petSitterObj.getServices());
+                    services = petSitterObj.getServices();
+                    petSitterObj.setHas_services(true);
+                }
+            }
+        }
+    }
+
+    private void fetchPetSitterServices(ArrayList<Integer> services) {
         for (Integer service: services) {
             View view = mBinding.containerRlt.findViewWithTag(String.valueOf(service));
             if (view instanceof CheckBox) ((CheckBox) view).setChecked(true);
@@ -123,6 +147,7 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
     }
 
     private void saveDetails() {
+        Log.e(debugTag, services + " SERVICES On NEXT");
         petSitterObj.setServices(services);
         viewContract.onNextClick(2, petSitterObj);
     }
