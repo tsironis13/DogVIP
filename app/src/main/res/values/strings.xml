@@ -102,6 +102,7 @@
     <string name="edit">Επεξεργασία</string>
     <string name="delete">Διαγραφή</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
+    <string name="clear">ΚΑΘΑΡΙΣΜΟΣ</string>
     <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
     <string name="required_fields_petsitter">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν pet sitter στην εφαρμογή.</string>
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
@@ -115,6 +116,7 @@
     <string name="race_not_match">Η συγκεκριμένη ράτσα δεν είναι διαθέσιμη. Επιλέξτε μία από τις προτεινόμενες κατά την πληκτρολόγηση.</string>
     <string name="city_race_not_match">Η συγκεκριμένη πόλη ή ράτσα δεν είναι διαθέσιμη.</string>
     <string name="no_owner_exists">Δεν βρέθηκε ιδιοκτήτης για το συγκεκριμένο λογαριασμό.</string>
+    <string name="not_valid_age">Μη έγκυρος αριθμός ηλικίας</string>
     <string name="invalid_date">Μη έγκυρη ημερομηνία.</string>
     <string name="no_data">Δεν βρέθηκαν αποτελέσματα.</string>
     <!-- DIALOS -->
@@ -162,6 +164,7 @@
     <string name="receiver_surname">receiver_surname</string>
     <string name="new_chat">new_chat</string>
     <string name="fcmtoken_uploaded">fcmtoken_uploaded</string>
+    <string name="picker_selected">picker_selected</string>
     <!--<string name="name">name</string>-->
     <!--<string name="surname">surname</string>-->
     <!--<string name="birth_date">birth_date</string>-->
@@ -286,6 +289,11 @@
     <!-- PET SITTERS ACTIVITY -->
     <string name="pet_sitters_title">Pet Sitters</string>
     <string name="show_place_images">φωτογραφιες χωρου</string>
+    <string name="search_sitter_title">Αναζήτηση Sitter</string>
+    <string name="services_filter_lbl">Ενδιαφέρομαι για</string>
+    <string name="location_filter_lbl">Τοποθεσία</string>
+    <string name="startdate_filter_lbl">Από</string>
+    <string name="enddate_filter_lbl">Έως</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>
@@ -327,6 +335,8 @@
     <string name="years_exp_plhldr"><u>Ετη εμπειρίας</u></string>
     <string name="enter_message_plhldr">Στείλε μήνυμα&#8230;</string>
     <string name="address_plhldr"><u>Διεύθυνση</u></string>
+    <string name="from_date_plhldr"><u>Από</u></string>
+    <string name="end_date_plhldr"><u>Έως</u></string>
     <!-- FORM VALIDATION MSG -->
     <string name="required_field">Υποχρεωτικό πεδίο</string>
     <string name="not_valid_email">Μη έγκυρο email</string>

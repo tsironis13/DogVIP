@@ -58,6 +58,7 @@ public class AppConfig {
     private static final int ERROR_NEW_PASSWORD_IS_SAME = -300;
     private static final int ERROR_INVALID_IMAGE_SIZE = -310;
     private static final int ERROR_NO_OWNER_EXISTS = -320;
+    private static final int ERROR_AGE_NOT_VALID = -330;
 
     public static final int VISIBLE_THRESHOLD = 8;
 
@@ -334,6 +335,7 @@ public class AppConfig {
         inputValidationCodes.put(ERROR_NEW_PASSWORD_IS_SAME, R.string.new_password_is_same);
         inputValidationCodes.put(ERROR_INVALID_IMAGE_SIZE, R.string.invalid_image_size);
         inputValidationCodes.put(ERROR_NO_OWNER_EXISTS, R.string.no_owner_exists);
+        inputValidationCodes.put(ERROR_AGE_NOT_VALID, R.string.not_valid_age);
 
         return inputValidationCodes;
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,6 +15,7 @@ import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityPetSittersBinding;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
+import com.tsiro.dogvip.petsitters.sitter_assignment.SearchSitterFiltersActivity;
 
 /**
  * Created by giannis on 3/9/2017.
@@ -21,6 +23,7 @@ import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 
 public class PetSittersActivity extends BaseActivity {
 
+    private static final String debugTag = PetSittersActivity.class.getSimpleName();
     private ActivityPetSittersBinding mBinding;
 
     @Override
@@ -55,10 +58,13 @@ public class PetSittersActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_item:
-
+                startActivity(new Intent(this, SearchSitterFiltersActivity.class));
+//                finish();
+                return true;
             case R.id.sitter_item:
                 startActivity(new Intent(this, PetSitterActivity.class));
                 finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

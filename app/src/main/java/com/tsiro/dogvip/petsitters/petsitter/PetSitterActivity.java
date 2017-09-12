@@ -153,6 +153,7 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
                     Intent intent = new Intent(PetSitterActivity.this, PetSitterOtherDtlsActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -230,6 +231,7 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
             showSnackBar(getResources().getString(R.string.image_uploading_on_progress), "", Snackbar.LENGTH_LONG,  getResources().getString(R.string.close)).subscribe();
         } else {
             startActivity(new Intent(this, PetSittersActivity.class));
+            finish();
             super.onBackPressed();
         }
     }

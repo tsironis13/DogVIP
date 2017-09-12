@@ -234,6 +234,16 @@
                 android:value=".petsitters.petsitter.PetSitterActivity" />
         </activity>
 
+        <activity
+            android:name=".petsitters.sitter_assignment.SearchSitterFiltersActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".petsitters.PetSittersActivity" />
+        </activity>
+
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         

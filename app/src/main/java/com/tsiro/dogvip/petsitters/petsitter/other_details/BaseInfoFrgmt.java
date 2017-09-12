@@ -85,6 +85,7 @@ public class BaseInfoFrgmt extends Fragment {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 startActivity(new Intent(getActivity(), PetSitterActivity.class));
+                getActivity().finish();
             }
         });
         RxEventBus.add(this, disp1);

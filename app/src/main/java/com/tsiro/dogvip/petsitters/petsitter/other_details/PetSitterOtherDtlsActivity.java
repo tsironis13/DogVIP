@@ -99,6 +99,19 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, PetSitterActivity.class));
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
     public Lifecycle.ViewModel getViewModel() {
         return mViewModel;
     }
@@ -122,11 +135,12 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
 
     @Override
     public void onOtherDetailsSubmit(PetSitterObj petSitterObj) {
-        Log.e(debugTag,  "PET SIZE => " + petSitterObj.getPetsize() +"\n"+ "YEARS => " + petSitterObj.getYearsexpr() +"\n"+ " SERVICES" + petSitterObj.getServices());
+        Log.e(debugTag,  "PET SIZE => " + petSitterObj.getPetsize() +"\n"+ "YEARS => " + petSitterObj.getYearsexpr() +"\n"+ " SERVICES" + this.petSitterObj.getServices());
         if (isNetworkAvailable()) {
             petSitterObj.setAuthtoken(mToken);
             petSitterObj.setAction(getResources().getString(R.string.edit_petsitter));
             petSitterObj.setSubaction(getResources().getString(R.string.edit_other_details));
+            petSitterObj.setServices(this.petSitterObj.getServices());
             mViewModel.petSitterRelatedActions(petSitterObj);
             initializeProgressDialog(getResources().getString(R.string.please_wait));
         } else {
@@ -152,11 +166,13 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     @Override
     public void onSuccess(PetSitterObj response) {
         dismissDialog();
+        showSnackBar(getResources().getString(R.string.success_action), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
     }
 
     @Override
     public void onError(int resource, boolean msglength) {
         dismissDialog();
+        showSnackBar(getResources().getString(resource), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
     }
 
     @Override
