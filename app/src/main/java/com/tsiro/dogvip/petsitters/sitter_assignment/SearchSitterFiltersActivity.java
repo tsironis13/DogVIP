@@ -1,10 +1,12 @@
 package com.tsiro.dogvip.petsitters.sitter_assignment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
@@ -12,22 +14,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.DialogActions;
+import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
+import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivitySearchSitterFiltersBinding;
+import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
+import com.tsiro.dogvip.requestmngrlayer.SitterAssignmentRequestManager;
 import com.tsiro.dogvip.utilities.DialogPicker;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -42,8 +53,13 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
     private ActivitySearchSitterFiltersBinding mBinding;
     private int pickerSelected;
     private SitterAssignmentPresenter sitterAssignmentPresenter;
-    private List<Integer> services = new ArrayList<>();
+    private ArrayList<Integer> services;
     private SparseArray<CheckBox> servicesCheckBoxList = new SparseArray<>();
+    private Snackbar mSnackBar;
+    private PetSitterObj petSitterObj;
+    private SitterAssignmentContract.ViewModel mViewModel;
+    private long startDate, endDate;
+    private String mToken;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,12 +74,20 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         mBinding.scrollView.smoothScrollTo(0, 0);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.cityEdt.setAdapter(adapter);
+        mViewModel = new SitterAssignmentViewModel(SitterAssignmentRequestManager.getInstance());
         sitterAssignmentPresenter = new SitterAssignmentPresenter(this);
         mBinding.setPresenter(sitterAssignmentPresenter);
+        mToken = getMyAccountManager().getAccountDetails().getToken();
 
         if (savedInstanceState != null) {
             pickerSelected = savedInstanceState.getInt(getResources().getString(R.string.picker_selected));
+            startDate = savedInstanceState.getLong(getResources().getString(R.string.start_date));
+            endDate = savedInstanceState.getLong(getResources().getString(R.string.end_date));
+            services = savedInstanceState.getIntegerArrayList(getResources().getString(R.string.parcelable_list));
+        } else {
+            services = new ArrayList<>();
         }
+        petSitterObj = new PetSitterObj();
         servicesCheckBoxList.append(1, mBinding.service1ChckBx);
         servicesCheckBoxList.append(2, mBinding.service2ChckBx);
         servicesCheckBoxList.append(3, mBinding.service3ChckBx);
@@ -107,21 +131,15 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
                     if (obj.getCode() == AppConfig.STATUS_OK) {
                         if (pickerSelected == 1) {//start date picker
                             mBinding.startDateEdt.setText(obj.getDisplay_date());
-                            Log.e(debugTag, "1");
+                            startDate = obj.getDate();
+//                            petSitterObj.setStart_date(obj.getDate());
                         } else if (pickerSelected == 2) {//end date picker
-                            Log.e(debugTag, "2");
                             mBinding.endDateEdt.setText(obj.getDisplay_date());
+                            endDate = obj.getDate();
+//                            petSitterObj.setEnd_date(obj.getDate());
                         }
-//                        Log.e(debugTag, obj.getDisplay_date() + " DATE");
-//                        mBinding.getPetsitter().setDisplayage(obj.getDisplay_date());
-//                        mBinding.getPetsitter().setAge(obj.getDate());
                     } else {
-                        if (pickerSelected == 1) {//start date picker
-                            Log.e(debugTag, "1");
-                        } else if (pickerSelected == 2) {//end date picker
-                            Log.e(debugTag, "2");
-                        }
-//                        showSnackBar(getResources().getString(R.string.invalid_date), "", Snackbar.LENGTH_LONG,  getResources().getString(R.string.close)).subscribe();
+                        showSnackBar(getResources().getString(R.string.invalid_date), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
                     }
                 } else {
 //                    petSitterObj.setDisplayage("");
@@ -129,6 +147,13 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             }
         });
         RxEventBus.add(this, disp2);
+        Disposable disp3 = RxView.clicks(mBinding.searchSitterBtn).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                searchSitters();
+            }
+        });
+        RxEventBus.add(this, disp3);
     }
 
     @Override
@@ -141,6 +166,15 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(getResources().getString(R.string.picker_selected), pickerSelected);
+        outState.putIntegerArrayList(getResources().getString(R.string.parcelable_list), services);
+        outState.putLong(getResources().getString(R.string.start_date), startDate);
+        outState.putLong(getResources().getString(R.string.end_date), endDate);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissSnackBar();
     }
 
     @Override
@@ -162,7 +196,7 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return null;
+        return mViewModel;
     }
 
     @Override
@@ -179,7 +213,49 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         }
     }
 
+    @Override
+    public void onSuccess(SearchedSittersResponse response) {
+        dismissDialog();
+        Log.e(debugTag, response.getData() + " sfsd");
+    }
+
+    @Override
+    public void onError(int resource) {
+        dismissDialog();
+        showSnackBar(getResources().getString(resource), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+    }
+
+    private void searchSitters() {
+        hideSoftKeyboard();
+        petSitterObj.setStart_date(startDate);
+        petSitterObj.setEnd_date(endDate);
+        Log.e(debugTag, petSitterObj.getStart_date() + " START DATE");
+        Log.e(debugTag, petSitterObj.getEnd_date() + " END DATE");
+        if (petSitterObj.getStart_date() == 0 || petSitterObj.getEnd_date() == 0) {
+            showSnackBar(getResources().getString(R.string.dates_filter_required), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+        } else if (petSitterObj.getEnd_date() < petSitterObj.getStart_date()) {
+            showSnackBar(getResources().getString(R.string.end_date_smaller_than_start_date), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+        } else if (!Arrays.asList(AppConfig.cities).contains(mBinding.cityEdt.getText().toString())) {
+            showSnackBar(getResources().getString(R.string.city_no_match), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+        } else {
+            if (isNetworkAvailable()) {
+                Log.e(debugTag, services + " SERVICES");
+                Log.e(debugTag, mBinding.cityEdt.getText().toString() + " LOCATION");
+                petSitterObj.setAuthtoken(mToken);
+                petSitterObj.setAction(getResources().getString(R.string.search_pet_sitters));
+                petSitterObj.setServices(services);
+                String location = mBinding.cityEdt.getText().toString().isEmpty() ? "" : mBinding.cityEdt.getText().toString();
+                petSitterObj.setCity(location);
+                initializeProgressDialog(getResources().getString(R.string.please_wait));
+                mViewModel.searchSitter(petSitterObj);
+            } else {
+                showSnackBar(getResources().getString(R.string.no_internet_connection), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+            }
+        }
+    }
+
     private void clearFilters() {
+        hideSoftKeyboard();
         //dummy clear out
         ViewGroup innerConstrntLlt = mBinding.innerConstrntLlt;
         for (Integer service: services) {
@@ -191,8 +267,42 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
 //            checkBox.setChecked(false);
         }
         if (!mBinding.locationFilterTtv.getText().toString().isEmpty()) mBinding.cityEdt.setText("");
-        if (!mBinding.startDateEdt.getText().toString().isEmpty()) mBinding.startDateEdt.setText("");
-        if (!mBinding.endDateEdt.getText().toString().isEmpty()) mBinding.endDateEdt.setText("");
+        if (!mBinding.startDateEdt.getText().toString().isEmpty()) {
+            mBinding.startDateEdt.setText("");
+            startDate = 0;
+        }
+        if (!mBinding.endDateEdt.getText().toString().isEmpty()) {
+            mBinding.endDateEdt.setText("");
+            endDate = 0;
+        }
+    }
+
+    public void hideSoftKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private void showSnackBar(final String msg, final String action, final int length, final String actionText) {
+        mSnackBar = Snackbar
+                        .make(mBinding.coordlt, msg, length)
+                        .setAction(actionText, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {}
+                        });
+        mSnackBar.setActionTextColor(ContextCompat.getColor(this, android.R.color.black));
+        View sbView = mSnackBar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        sbView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white));
+        textView.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
+        mSnackBar.show();
+
+    }
+
+    private void dismissSnackBar() {
+        if (mSnackBar != null && mSnackBar.isShown()) mSnackBar.dismiss();
     }
 
 }

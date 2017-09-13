@@ -89,6 +89,12 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     @SerializedName("has_services")
     @Expose
     private boolean has_services;
+    @SerializedName("start_date")
+    @Expose
+    private long start_date;
+    @SerializedName("end_date")
+    @Expose
+    private long end_date;
 
     public PetSitterObj() {}
 
@@ -116,6 +122,8 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         petplace = in.readInt();
         placetype = in.readInt();
         has_services = in.readByte() != 0;
+        start_date = in.readLong();
+        end_date = in.readLong();
     }
 
     public static final Creator<PetSitterObj> CREATOR = new Creator<PetSitterObj>() {
@@ -254,6 +262,14 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
 
     public void setHas_services(boolean has_services) { this.has_services = has_services; }
 
+    public long getStart_date() { return start_date; }
+
+    public void setStart_date(long start_date) { this.start_date = start_date; }
+
+    public long getEnd_date() { return end_date; }
+
+    public void setEnd_date(long end_date) { this.end_date = end_date; }
+
     @Override
     public int describeContents() { return 0; }
 
@@ -280,5 +296,7 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         dest.writeInt(petplace);
         dest.writeInt(placetype);
         dest.writeByte((byte) (has_services ? 1 : 0));
+        dest.writeLong(start_date);
+        dest.writeLong(end_date);
     }
 }

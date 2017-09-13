@@ -65,6 +65,7 @@
     <string name="edit_petsitter">edit_petsitter</string>
     <string name="edit_base_details">edit_base_details</string>
     <string name="edit_other_details">edit_other_details</string>
+    <string name="search_pet_sitters">search_pet_sitters</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -119,6 +120,8 @@
     <string name="not_valid_age">Μη έγκυρος αριθμός ηλικίας</string>
     <string name="invalid_date">Μη έγκυρη ημερομηνία.</string>
     <string name="no_data">Δεν βρέθηκαν αποτελέσματα.</string>
+    <string name="dates_filter_required">Παρακαλώ συμπλήρωσε τις ημερομηνίες αναζήτησης.</string>
+    <string name="end_date_smaller_than_start_date">Το φίλτρο έως πρέπει να είναι μικρότερο από το από.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
@@ -165,6 +168,9 @@
     <string name="new_chat">new_chat</string>
     <string name="fcmtoken_uploaded">fcmtoken_uploaded</string>
     <string name="picker_selected">picker_selected</string>
+    <string name="start_date">start_date</string>
+    <string name="end_date">end_date</string>
+    <string name="parcelable_list">parcelable_list</string>
     <!--<string name="name">name</string>-->
     <!--<string name="surname">surname</string>-->
     <!--<string name="birth_date">birth_date</string>-->

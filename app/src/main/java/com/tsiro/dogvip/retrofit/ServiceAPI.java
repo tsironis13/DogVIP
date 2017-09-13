@@ -22,6 +22,7 @@ import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.POJO.petlikes.PetLikesRequest;
 import com.tsiro.dogvip.POJO.petlikes.PetLikesResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
+import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -64,6 +65,9 @@ public interface ServiceAPI {
 
     @POST("actions.php")
     Flowable<PetSitterObj> petSitterRelatedActions(@Body PetSitterObj request);
+
+    @POST("actions.php")
+    Flowable<SearchedSittersResponse> searchSitter(@Body PetSitterObj request);
 
     @POST("actions.php")
     Flowable<OwnerObj> submitOwner(@Body OwnerObj request);
