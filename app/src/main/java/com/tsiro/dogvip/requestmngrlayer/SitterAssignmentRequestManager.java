@@ -1,9 +1,12 @@
 package com.tsiro.dogvip.requestmngrlayer;
 
+import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
+import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.networklayer.PetSitterAPIService;
 import com.tsiro.dogvip.networklayer.SitterAssignmentAPIService;
+import com.tsiro.dogvip.petsitters.PetSittersViewModel;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterViewModel;
 import com.tsiro.dogvip.petsitters.sitter_assignment.SitterAssignmentViewModel;
 
@@ -33,5 +36,4 @@ public class SitterAssignmentRequestManager {
         //in case server response is faster than activity lifecycle callback methods
         return mSitterAssignmentAPIService.searchSitter(request, sitterAssignmentViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
-
 }

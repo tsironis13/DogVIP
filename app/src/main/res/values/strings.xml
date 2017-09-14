@@ -66,6 +66,7 @@
     <string name="edit_base_details">edit_base_details</string>
     <string name="edit_other_details">edit_other_details</string>
     <string name="search_pet_sitters">search_pet_sitters</string>
+    <string name="get_owner_sitter_bookings">get_owner_sitter_bookings</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -117,6 +118,7 @@
     <string name="race_not_match">Η συγκεκριμένη ράτσα δεν είναι διαθέσιμη. Επιλέξτε μία από τις προτεινόμενες κατά την πληκτρολόγηση.</string>
     <string name="city_race_not_match">Η συγκεκριμένη πόλη ή ράτσα δεν είναι διαθέσιμη.</string>
     <string name="no_owner_exists">Δεν βρέθηκε ιδιοκτήτης για το συγκεκριμένο λογαριασμό.</string>
+    <string name="no_petsitter_exists">Δεν βρέθηκε pet sitter για το συγκεκριμένο λογαριασμό.</string>
     <string name="not_valid_age">Μη έγκυρος αριθμός ηλικίας</string>
     <string name="invalid_date">Μη έγκυρη ημερομηνία.</string>
     <string name="no_data">Δεν βρέθηκαν αποτελέσματα.</string>

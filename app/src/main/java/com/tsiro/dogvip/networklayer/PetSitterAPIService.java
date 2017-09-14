@@ -1,12 +1,17 @@
 package com.tsiro.dogvip.networklayer;
 
+import android.util.Log;
+
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
+import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
+import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.mypets.GetOwnerViewModel;
 import com.tsiro.dogvip.mypets.owner.OwnerViewModel;
+import com.tsiro.dogvip.petsitters.PetSittersViewModel;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterViewModel;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
@@ -100,6 +105,30 @@ public class PetSitterAPIService {
                 .doOnNext(new Consumer<Image>() {
                     @Override
                     public void accept(@NonNull Image response) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                    }
+                });
+    }
+
+    public Flowable<OwnerSitterBookingsResponse> getOwnerSitterBookings(OwnerSitterBookingsRequest request, final PetSittersViewModel viewModel) {
+        return serviceAPI.getOwnerSitterBookings(request)
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                    }
+                })
+                .doOnNext(new Consumer<OwnerSitterBookingsResponse>() {
+                    @Override
+                    public void accept(@NonNull OwnerSitterBookingsResponse response) throws Exception {
                         viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });

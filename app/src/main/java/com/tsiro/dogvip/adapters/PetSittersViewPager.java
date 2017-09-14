@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
+import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.lostfound.FoundEntriesFrgmt;
 import com.tsiro.dogvip.lostfound.LostEntriesFrgmt;
 import com.tsiro.dogvip.lostfound.MyFoundEntriesFrgmt;
@@ -21,9 +22,9 @@ public class PetSittersViewPager extends FragmentStatePagerAdapter {
     private Fragment[] pages = new Fragment[getCount()];
     private String[] tabText;
     private Fragment mFragment;
-    private LostFoundResponse data;
+    private OwnerSitterBookingsResponse data;
 
-    public PetSittersViewPager(FragmentManager fm, String[] tabText) {
+    public PetSittersViewPager(FragmentManager fm, String[] tabText, OwnerSitterBookingsResponse data) {
         super(fm);
         this.tabText = tabText;
         this.data = data;
@@ -33,11 +34,11 @@ public class PetSittersViewPager extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                mFragment = SitterAssignmentsFrgmt.newInstance();
+                mFragment = SitterAssignmentsFrgmt.newInstance(data);
                 if (pages[position] == null) pages[position] = mFragment;
                 return pages[position];
             case 1:
-                mFragment = MyPetAssignmentsFrgmt.newInstance();
+                mFragment = MyPetAssignmentsFrgmt.newInstance(data);
                 if (pages[position] == null) pages[position] = mFragment;
                 return pages[position];
             default:

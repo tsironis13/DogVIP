@@ -57,8 +57,10 @@ public class AppConfig {
     private static final int ERROR_EMAIL_NOT_FOUND = -290;
     private static final int ERROR_NEW_PASSWORD_IS_SAME = -300;
     private static final int ERROR_INVALID_IMAGE_SIZE = -310;
-    private static final int ERROR_NO_OWNER_EXISTS = -320;
+    public static final int ERROR_NO_OWNER_EXISTS = -320;
     private static final int ERROR_AGE_NOT_VALID = -330;
+    public static final int ERROR_NO_OWNER_AND_SITTER_EXIST = -340;
+    public static final int ERROR_NO_SITTER_EXISTS = -350;
 
     public static final int VISIBLE_THRESHOLD = 8;
 

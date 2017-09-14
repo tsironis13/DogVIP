@@ -1,0 +1,86 @@
+package com.tsiro.dogvip.POJO.petsitter;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.tsiro.dogvip.POJO.lostfound.LostFoundObj;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+
+import java.util.ArrayList;
+
+/**
+ * Created by giannis on 14/9/2017.
+ */
+
+public class OwnerSitterBookingsResponse implements Parcelable{
+
+    @SerializedName("code")
+    @Expose
+    private int code;
+    @SerializedName("id") //user role id
+    @Expose
+    private int id;
+    @SerializedName("sitter_booking")
+    @Expose
+    private ArrayList<BookingObj> sitter_bookings;
+    @SerializedName("owner_booking")
+    @Expose
+    private ArrayList<BookingObj> owner_bookings;
+    @SerializedName("owner_pets")
+    @Expose
+    private ArrayList<PetObj> owner_pets;
+
+    public OwnerSitterBookingsResponse() {}
+
+    protected OwnerSitterBookingsResponse(Parcel in) {
+        code = in.readInt();
+        id = in.readInt();
+        owner_pets = in.createTypedArrayList(PetObj.CREATOR);
+    }
+
+    public static final Creator<OwnerSitterBookingsResponse> CREATOR = new Creator<OwnerSitterBookingsResponse>() {
+        @Override
+        public OwnerSitterBookingsResponse createFromParcel(Parcel in) {
+            return new OwnerSitterBookingsResponse(in);
+        }
+
+        @Override
+        public OwnerSitterBookingsResponse[] newArray(int size) {
+            return new OwnerSitterBookingsResponse[size];
+        }
+    };
+
+    public int getCode() { return code; }
+
+    public void setCode(int code) { this.code = code; }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public ArrayList<BookingObj> getSitter_bookings() { return sitter_bookings; }
+
+    public void setSitter_bookings(ArrayList<BookingObj> sitter_bookings) { this.sitter_bookings = sitter_bookings; }
+
+    public ArrayList<BookingObj> getOwner_bookings() { return owner_bookings; }
+
+    public void setOwner_bookings(ArrayList<BookingObj> owner_bookings) { this.owner_bookings = owner_bookings; }
+
+    public ArrayList<PetObj> getOwner_pets() { return owner_pets; }
+
+    public void setOwner_pets(ArrayList<PetObj> owner_pets) { this.owner_pets = owner_pets; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(code);
+        dest.writeInt(id);
+        dest.writeTypedList(owner_pets);
+    }
+}
