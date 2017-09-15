@@ -1,6 +1,7 @@
 package com.tsiro.dogvip.petsitters.sitter_assignment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -216,7 +217,15 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
     @Override
     public void onSuccess(SearchedSittersResponse response) {
         dismissDialog();
-        Log.e(debugTag, response.getData() + " sfsd");
+        if (response.getData().isEmpty()) {
+            showSnackBar(getResources().getString(R.string.no_items), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+        } else {
+            Log.e(debugTag, response.getData() + " sfsd");
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
+            Intent intent = new Intent(this, SearchedSittersListActivity.class);
+            startActivity(intent.putExtras(bundle));
+        }
     }
 
     @Override

@@ -326,6 +326,7 @@
     <string name="age_notreq_plhldr"><u>Ηλικία</u></string>
     <string name="city_plhldr"><u>Πόλη</u></string>
     <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
+    <string name="phone_req_plhldr">*<u>Τηλέφωνο</u></string>
     <string name="race_plhldr">*<u>Ράτσα-Φυλή</u></string>
     <string name="microchip_plhldr"><u>Αριθμός Microchip</u></string>
     <string name="genre_plhldr">*<u>Φύλλο</u></string>

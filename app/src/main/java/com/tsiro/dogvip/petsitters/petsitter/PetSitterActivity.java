@@ -403,6 +403,7 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
         mAwesomeValidation.addValidation(mBinding.nameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.surnameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.ageEdt, ".*\\S.*", getResources().getString(R.string.required_field));
+        mAwesomeValidation.addValidation(mBinding.phoneEdt, ".*\\S.*", getResources().getString(R.string.required_field));
 //        mAwesomeValidation.addValidation(mBinding.ageEdt, "^(0?[1-9]|[1-9][0-9])$", getResources().getString(R.string.required_field));
         if (mAwesomeValidation.validate()) {
             if (isNetworkAvailable()) {

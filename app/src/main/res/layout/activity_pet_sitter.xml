@@ -424,7 +424,7 @@
                                 android:paddingRight="8dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
-                                android:hint="@string/phone_plhldr"
+                                android:hint="@string/phone_req_plhldr"
                                 android:background="@android:color/transparent"
                                 android:text="@{petsitter.phone}"
                                 android:inputType="phone" />
