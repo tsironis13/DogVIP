@@ -28,8 +28,8 @@ public class SitterAssignmentAPIService {
         serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
     }
 
-    public Flowable<SearchedSittersResponse> searchSitter(final PetSitterObj request, final SitterAssignmentViewModel sitterAssignmentViewModel) {
-        return serviceAPI.searchSitter(request)
+    public Flowable<SearchedSittersResponse> searchSitters(final PetSitterObj request, final SitterAssignmentViewModel sitterAssignmentViewModel) {
+        return serviceAPI.searchSitters(request)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {

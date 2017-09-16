@@ -21,4 +21,9 @@ public class SitterAssignmentPresenter implements SitterAssignmentContract.Prese
         mView.onServiceCheckBoxClick(view);
     }
 
+    @Override
+    public void onBaseViewClick(View view) { mView.onBaseViewClick(view); }
+
+    @Override
+    public void onPhoneImageViewClick(View view) { mView.onPhoneImageViewClick(view); }
 }

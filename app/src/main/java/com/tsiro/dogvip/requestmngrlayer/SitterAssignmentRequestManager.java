@@ -32,8 +32,8 @@ public class SitterAssignmentRequestManager {
         return mInstance;
     }
 
-    public Flowable<SearchedSittersResponse> searchSitter(PetSitterObj request, SitterAssignmentViewModel sitterAssignmentViewModel) {
+    public Flowable<SearchedSittersResponse> searchSitters(PetSitterObj request, SitterAssignmentViewModel sitterAssignmentViewModel) {
         //in case server response is faster than activity lifecycle callback methods
-        return mSitterAssignmentAPIService.searchSitter(request, sitterAssignmentViewModel).delay(500, TimeUnit.MILLISECONDS);
+        return mSitterAssignmentAPIService.searchSitters(request, sitterAssignmentViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 }

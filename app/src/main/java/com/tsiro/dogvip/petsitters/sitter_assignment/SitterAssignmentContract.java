@@ -17,10 +17,12 @@ public interface SitterAssignmentContract {
 
     interface Presenter {
         void onServiceCheckBoxClick(android.view.View view);
+        void onPhoneImageViewClick(android.view.View view);
+        void onBaseViewClick(android.view.View view);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
-        void searchSitter(PetSitterObj petSitterObj);
+        void searchSitters(PetSitterObj petSitterObj);
         void setRequestState(int state);
     }
 
@@ -28,6 +30,8 @@ public interface SitterAssignmentContract {
         void onSuccess(SearchedSittersResponse response);
         void onError(int resource);
         void onServiceCheckBoxClick(android.view.View view);
+        void onPhoneImageViewClick(android.view.View view);
+        void onBaseViewClick(android.view.View view);
     }
 
 }

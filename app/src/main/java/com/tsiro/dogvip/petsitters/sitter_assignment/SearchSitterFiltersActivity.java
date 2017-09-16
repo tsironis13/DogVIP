@@ -215,12 +215,18 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
     }
 
     @Override
+    public void onBaseViewClick(View view) {}
+
+    @Override
+    public void onPhoneImageViewClick(View view) {}
+
+    @Override
     public void onSuccess(SearchedSittersResponse response) {
         dismissDialog();
         if (response.getData().isEmpty()) {
             showSnackBar(getResources().getString(R.string.no_items), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
         } else {
-            Log.e(debugTag, response.getData() + " sfsd");
+//            Log.e(debugTag, response.getData().get(0).getYearsexpr() + " sfsd" + response.getData().get(1).getYearsexpr());
             Bundle bundle = new Bundle();
             bundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
             Intent intent = new Intent(this, SearchedSittersListActivity.class);
@@ -256,7 +262,7 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
                 String location = mBinding.cityEdt.getText().toString().isEmpty() ? "" : mBinding.cityEdt.getText().toString();
                 petSitterObj.setCity(location);
                 initializeProgressDialog(getResources().getString(R.string.please_wait));
-                mViewModel.searchSitter(petSitterObj);
+                mViewModel.searchSitters(petSitterObj);
             } else {
                 showSnackBar(getResources().getString(R.string.no_internet_connection), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
             }

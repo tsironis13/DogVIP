@@ -69,7 +69,7 @@ public interface ServiceAPI {
     Flowable<PetSitterObj> petSitterRelatedActions(@Body PetSitterObj request);
 
     @POST("actions.php")
-    Flowable<SearchedSittersResponse> searchSitter(@Body PetSitterObj request);
+    Flowable<SearchedSittersResponse> searchSitters(@Body PetSitterObj request);
 
     @POST("actions.php")
     Flowable<OwnerObj> submitOwner(@Body OwnerObj request);

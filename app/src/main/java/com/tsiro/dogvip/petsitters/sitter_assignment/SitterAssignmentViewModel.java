@@ -52,7 +52,7 @@ public class SitterAssignmentViewModel implements SitterAssignmentContract.ViewM
     }
 
     @Override
-    public void searchSitter(PetSitterObj petSitterObj) {
+    public void searchSitters(PetSitterObj petSitterObj) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mProcessor = AsyncProcessor.create();
             mDisp = mProcessor
@@ -60,7 +60,7 @@ public class SitterAssignmentViewModel implements SitterAssignmentContract.ViewM
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new SitterAssignmentObserver());
 
-            mSitterAssignmentRequestManager.searchSitter(petSitterObj, this).subscribe(mProcessor);
+            mSitterAssignmentRequestManager.searchSitters(petSitterObj, this).subscribe(mProcessor);
         }
     }
 

@@ -32,8 +32,7 @@
                 android:layout_height="48dp"
                 android:layout_below="@+id/petsizeTtv"
                 android:textSize="13sp"
-                android:text="@string/small_size_gr"
-                android:checked="@={obj.petsize}" />
+                android:text="@string/small_size_gr" />
 
             <TextView
                 android:id="@+id/yearexpTtv"

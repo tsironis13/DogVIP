@@ -109,7 +109,7 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     @Override
     public void onSuccess(OwnerSitterBookingsResponse response) {
         dismissDialog();
-        Log.e(debugTag, "onSuccess");
+        Log.e(debugTag, "onSuccess" + response.getId() + " USER ROLE ID");
         if (response.getCode() == AppConfig.STATUS_OK) {
             mBinding.setHaserror(false);
         } else if (response.getCode() == AppConfig.ERROR_NO_OWNER_EXISTS || response.getCode() == AppConfig.ERROR_NO_SITTER_EXISTS || response.getCode() == AppConfig.ERROR_NO_OWNER_AND_SITTER_EXIST){

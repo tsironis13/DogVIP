@@ -44,6 +44,7 @@ public class AppConfig {
     public static final int NOTIFICATION_ID = 1001;
     //STATUS CODES
     public static final int READ_EXTERNAL_STORAGE_PERMISSION_RESULT_CODE = 10;
+    public static final int CALL_PHONE_PERMISSION_RESULT_CODE = 20;
     public static final int STATUS_OK = 200;
     public static final int STATUS_ERROR = -200;
     private static final int ERROR_EMPTY_REQUIRED_FLDS = -210;

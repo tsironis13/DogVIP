@@ -43,6 +43,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.View {
 
+    private static final String debugTag = ChatRoomActivity.class.getSimpleName();
     private ActivityChatRoomBinding mBinding;
     private int role, toId, fromId, petId, chatRoomId;
     private String title, receiverName, receiverSurname, petName, action, mToken;
@@ -113,11 +114,14 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
         } else {
             if (getIntent() != null) {
                 action = getIntent().getExtras().getString(getResources().getString(R.string.action));
+                Log.e(debugTag, action + "ACTION");
                 toId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
+                Log.e(debugTag, toId + " toid");
                 if (getIntent().getExtras().getString(getResources().getString(R.string.pet_name)) != null) petName = getIntent().getExtras().getString(getResources().getString(R.string.pet_name));
                 if (action.equals(getResources().getString(R.string.get_chat_rooom_msgs_by_participants))) {
                     role = getIntent().getExtras().getInt(getResources().getString(R.string.role));
                     receiverName = getIntent().getExtras().getString(getResources().getString(R.string.receiver));
+                    Log.e(debugTag, role + "ROLE" + receiverName + "dsdsdf");
                     if (getIntent().getExtras().getString(getResources().getString(R.string.receiver_surname)) != null) receiverSurname = getIntent().getExtras().getString(getResources().getString(R.string.receiver_surname));
                     if (getIntent().getExtras().getInt(getResources().getString(R.string.pet_id)) != 0) petId = getIntent().getExtras().getInt(getResources().getString(R.string.pet_id));
                     setToolbarTitle(receiverName, receiverSurname, petName);

@@ -103,6 +103,7 @@
     <string name="edit_owner">Επεξεργασία προφίλ</string>
     <string name="edit">Επεξεργασία</string>
     <string name="delete">Διαγραφή</string>
+    <string name="phone_item">Τηλέφωνο</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
     <string name="clear">ΚΑΘΑΡΙΣΜΟΣ</string>
     <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
@@ -127,6 +128,10 @@
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
+    <string name="add_booking_dialog">add_booking_dialog</string>
+    <string name="add_booking_title">Νέα κράτηση</string>
+    <string name="add_booking_desc">Συνιστούμε να προχωρήσετε σε Ανάθεση Φύλαξης αφού πρώτα έχετε επικοινωνήσει με τον Sitter που σας ενδιαφέρει.\n\nΗ Ανάθεση Φύλαξης θα πρέπει να γίνει αποδεκτή από τον Sitter εντός 3 ωρών.\n\nΜέχρι τότε, δεν μπορείτε να προχωρήσετε σε άλλη ανάθεση.
+    </string>
     <string name="new_image_title">Νέα Φωτογραφία</string>
     <string name="new_image_desc">Βγάλε νέα φωτογραφία ή επίλεξε μία υπάρχουσα από τη βιβλιοθήκη.</string>
     <string name="gallery">GALLERY</string>
@@ -155,6 +160,7 @@
     <string name="pet_id">pet_id</string>
     <string name="pet_name">pet_name</string>
     <string name="user_role_id">user_role_id</string>
+    <string name="max_booking">max_booking</string>
     <string name="from_id">from_id</string>
     <string name="role">role</string>
     <string name="type">type</string>
@@ -201,7 +207,11 @@
     <string name="contact_phone_gr">ΤΗΛ. ΕΠΙΚΟΙΝΩΝΙΑΣ</string>
     <string name="more_info_gr">ΠΕΡΙΣ. ΠΛΗΡΟΦΟΡΙΕΣ</string>
     <string name="pet_size_gr">ΜΕΓΕΘΟΣ ΠΟΥ ΑΝΑΛΑΜΒΑΝΩ</string>
+    <string name="pet_size_lowercase_gr">Μέγεθος που αναλαμβάνω:</string>
     <string name="years_exp_gr">ΕΤΗ ΕΜΠΕΙΡΙΑΣ ΣΤΗΝ ΚΑΤΟΧΗ/ΦΥΛΑΞΗ \nΣΚΥΛΟΥ</string>
+    <string name="years_exp_lowercase_gr">Έτη εμπειρίας στη φύλαξη σκύλου:</string>
+    <string name="pet_place_lowercase_gr">Διαμονή κατοικιδίου:</string>
+    <string name="place_type_lowercase_gr">Είδος κατοικίας:</string>
     <string name="pet_place_gr">ΔΙΑΜΟΝΗ ΚΑΤΟΙΚΙΔΙΟΥ</string>
     <string name="place_type_gr">ΕΙΔΟΣ ΚΑΤΟΙΚΙΑΣ</string>
     <string name="address_gr">ΔΙΕΥΘΥΝΣΗ</string>
@@ -302,6 +312,12 @@
     <string name="location_filter_lbl">Τοποθεσία</string>
     <string name="startdate_filter_lbl">Από</string>
     <string name="enddate_filter_lbl">Έως</string>
+    <string name="small_size">Μικρό</string>
+    <string name="normal_size">Κανονικό</string>
+    <string name="in">Εντός οικίας</string>
+    <string name="out">Εκτός οικίας</string>
+    <string name="mono">Μονοκατοικία</string>
+    <string name="apprtmnt">Διαμέρισμα</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>
@@ -354,12 +370,20 @@
     <string name="not_valid_name_fld">Απαιτούνται μόνο χαρακτήρες</string>
     <string name="not_valid_microchip">Ο αριθμός microchip αποτελείται από 15 αριθμούς.</string>
     <!-- PET SITTER SERVICES -->
-    <string name="service1">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟΝ ΧΩΡΟ ΜΟΥ)</string>
-    <string name="service2">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟΝ ΧΩΡΟ ΣΑΣ)</string>
-    <string name="service3">ΤΑΚΤΙΚΕΣ ΕΠΙΣΚΕΨΕΙΣ \n(ΣΤΟΝ ΧΩΡΟ ΣΑΣ)</string>
-    <string name="service4">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟΝ ΧΩΡΟ ΜΟΥ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
-    <string name="service5">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟΝ ΧΩΡΟ ΣΑΣ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
+    <string name="service1">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟ ΧΩΡΟ ΜΟΥ)</string>
+    <string name="service2">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟ ΧΩΡΟ ΣΑΣ)</string>
+    <string name="service3">ΤΑΚΤΙΚΕΣ ΕΠΙΣΚΕΨΕΙΣ \n(ΣΤΟ ΧΩΡΟ ΣΑΣ)</string>
+    <string name="service4">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟ ΧΩΡΟ ΜΟΥ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
+    <string name="service5">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟ ΧΩΡΟ ΣΑΣ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
     <string name="service6">ΒΟΛΤΑ ΣΚΥΛΟΥ</string>
+
+    <string name="service1_profile">Διανυκτέρευση (στο χώρο μου)</string>
+    <string name="service2_profile">Διανυκτέρευση (στο χώρο σας)</string>
+    <string name="service3_profile">Τακτικές επισκέψεις (στο χώρο σας)</string>
+    <string name="service4_profile">Ημερήσια φύλαξη (στο χώρο μου)</string>
+    <string name="service5_profile">Ημερήσια φύλαξη (στο χώρο σας)</string>
+    <string name="service6_profile">Βόλτα σκύλου</string>
+
     <string name="image_cont_desc">cont_desc</string>
 
     <string-array name="pet_genres">

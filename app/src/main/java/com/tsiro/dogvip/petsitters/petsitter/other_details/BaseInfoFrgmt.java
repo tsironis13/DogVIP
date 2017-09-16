@@ -67,6 +67,7 @@ public class BaseInfoFrgmt extends Fragment {
         if (getArguments() != null) {
             petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
             mBinding.setObj(petSitterObj);
+            if (mBinding.getObj().getPetsize() == 1) mBinding.petSizeChbx.setChecked(true);
 //            Log.e(debugTag, petSitterObj.getId() + " ID, NAME: " + petSitterObj.getName());
         }
     }
@@ -89,6 +90,17 @@ public class BaseInfoFrgmt extends Fragment {
             }
         });
         RxEventBus.add(this, disp1);
+        Disposable disp2 = RxView.clicks(mBinding.petSizeChbx).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                if (mBinding.petSizeChbx.isChecked()) {
+                    mBinding.getObj().setPetsize(1);
+                } else {
+                    mBinding.getObj().setPetsize(0);
+                }
+            }
+        });
+        RxEventBus.add(this, disp2);
     }
 
     @Override

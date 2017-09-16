@@ -16,6 +16,7 @@
         android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -252,6 +253,27 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".petsitters.sitter_assignment.SearchSitterFiltersActivity" />
+        </activity>
+
+        <activity
+            android:name=".petsitters.sitter_assignment.SitterProfileActivity"
+            android:theme="@style/UserProfileAppTheme"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".petsitters.sitter_assignment.SearchedSittersListActivity" />
+        </activity>
+
+        <activity
+            android:name=".petsitters.sitter_assignment.BookingDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".petsitters.sitter_assignment.SitterProfileActivity" />
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

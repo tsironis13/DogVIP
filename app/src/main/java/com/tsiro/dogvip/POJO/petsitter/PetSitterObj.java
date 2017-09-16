@@ -65,7 +65,7 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     private String imageurl;
     @SerializedName("petsize")
     @Expose
-    private boolean petsize;
+    private int petsize;
     @SerializedName("yearsexpr")
     @Expose
     private String yearsexpr;
@@ -75,6 +75,9 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     @SerializedName("urls")
     @Expose
     private ArrayList<Image> urls;
+    @SerializedName("strurls")
+    @Expose
+    private ArrayList<String> strurls;
     @SerializedName("address")
     @Expose
     private String address;
@@ -112,12 +115,14 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         city = in.readString();
         phone = in.readString();
         imageurl = in.readString();
-        petsize = in.readByte() != 0;
+        petsize = in.readInt();
         yearsexpr = in.readString();
         if (services == null) services = new ArrayList<>();
         in.readList(services, Integer.class.getClassLoader());
         if (urls == null) urls = new ArrayList<>();
         in.readTypedList(urls, Image.CREATOR);
+        if (strurls == null) strurls = new ArrayList<>();
+        in.readStringList(strurls);
         address = in.readString();
         petplace = in.readInt();
         placetype = in.readInt();
@@ -207,9 +212,9 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     public void setImageurl(String imageurl) { this.imageurl = imageurl; }
 
     @Bindable
-    public boolean getPetsize() { return petsize; }
+    public int getPetsize() { return petsize; }
 
-    public void setPetsize(boolean petsize) {
+    public void setPetsize(int petsize) {
         this.petsize = petsize;
         notifyPropertyChanged(BR.petsize);
     }
@@ -233,6 +238,10 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     public ArrayList<Image> getUrls() { return urls; }
 
     public void setUrls(ArrayList<Image> urls) { this.urls = urls; }
+
+    public ArrayList<String> getStrurls() { return strurls; }
+
+    public void setStrurls(ArrayList<String> strurls) { this.strurls = strurls; }
 
     @Bindable
     public String getAddress() { return address; }
@@ -288,10 +297,11 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         dest.writeString(city);
         dest.writeString(phone);
         dest.writeString(imageurl);
-        dest.writeByte((byte) (petsize ? 1 : 0));
+        dest.writeInt(petsize);
         dest.writeString(yearsexpr);
         dest.writeList(services);
         dest.writeTypedList(urls);
+        dest.writeStringList(strurls);
         dest.writeString(address);
         dest.writeInt(petplace);
         dest.writeInt(placetype);
