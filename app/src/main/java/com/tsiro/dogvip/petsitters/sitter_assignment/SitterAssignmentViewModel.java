@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.petsitters.sitter_assignment;
 
+import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.app.AppConfig;
@@ -61,6 +62,19 @@ public class SitterAssignmentViewModel implements SitterAssignmentContract.ViewM
                     .subscribeWith(new SitterAssignmentObserver());
 
             mSitterAssignmentRequestManager.searchSitters(petSitterObj, this).subscribe(mProcessor);
+        }
+    }
+
+    @Override
+    public void sendBooking(BookingObj bookingObj) {
+        if (requestState != AppConfig.REQUEST_RUNNING) {
+            mProcessor = AsyncProcessor.create();
+            mDisp = mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new SitterAssignmentObserver());
+
+            mSitterAssignmentRequestManager.sendBooking(bookingObj, this).subscribe(mProcessor);
         }
     }
 

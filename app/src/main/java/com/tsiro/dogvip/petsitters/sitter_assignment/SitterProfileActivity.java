@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.ImageViewPagerActivity;
 import com.tsiro.dogvip.POJO.DialogActions;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.R;
@@ -38,6 +39,7 @@ import com.tsiro.dogvip.databinding.ActivitySitterProfileBinding;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -56,6 +58,7 @@ public class SitterProfileActivity extends BaseActivity {
     private ActivitySitterProfileBinding mBinding;
     private Snackbar mSnackBar;
     private boolean callPhone;
+    private ArrayList<PetObj> petObjList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,10 +70,12 @@ public class SitterProfileActivity extends BaseActivity {
         if (savedInstanceState != null) {
             data = savedInstanceState.getParcelable(getResources().getString(R.string.data));
             petSitterObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
+            petObjList = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.pet_list));
         } else {
             if (getIntent().getExtras() != null) {
                 data = getIntent().getExtras().getParcelable(getResources().getString(R.string.data));
                 petSitterObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
+                petObjList = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.pet_list));
             }
         }
         if (petSitterObj != null) {
@@ -108,7 +113,11 @@ public class SitterProfileActivity extends BaseActivity {
         Disposable disp1 = RxView.clicks(mBinding.addBookingFlbtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                initializeBookingDialog(getResources().getString(R.string.add_booking_dialog), getResources().getString(R.string.add_booking_desc), getResources().getString(R.string.add_booking_title), getResources().getString(R.string.cancel), getResources().getString(R.string.ok));
+                if (petObjList != null && !petObjList.isEmpty()) {
+                    initializeBookingDialog(getResources().getString(R.string.add_booking_dialog), getResources().getString(R.string.add_booking_desc), getResources().getString(R.string.add_booking_title), getResources().getString(R.string.cancel), getResources().getString(R.string.ok));
+                } else {
+                    showSnackBar(getResources().getString(R.string.no_available_pets_for_booking), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+                }
             }
         });
         RxEventBus.add(this, disp1);
@@ -125,6 +134,7 @@ public class SitterProfileActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable(getResources().getString(R.string.data), data);
         outState.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
+        outState.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
     }
 
     @Override
@@ -147,6 +157,7 @@ public class SitterProfileActivity extends BaseActivity {
     public void onBackPressed() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(getResources().getString(R.string.parcelable_obj), data);
+        bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
         startActivity(new Intent(this, SearchedSittersListActivity.class).putExtras(bundle));
         finish();
     }
@@ -236,6 +247,7 @@ public class SitterProfileActivity extends BaseActivity {
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
                         bundle.putParcelable(getResources().getString(R.string.data), data);
+                        bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
                         startActivity(new Intent(SitterProfileActivity.this, BookingDetailsActivity.class).putExtras(bundle));
                         finish();
                     }

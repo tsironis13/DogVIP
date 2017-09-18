@@ -59,7 +59,7 @@
     <string name="send_msg">send_msg</string>
     <string name="update_read_msgs">update_read_msgs</string>
     <string name="get_chat_rooms">get_chat_rooms</string>
-    <string name="get_user_total_unread_msgs">get_user_total_unread_msgs</string>
+    <string name="get_user_total_unread_msgs_and_pending_booking">get_user_total_unread_msgs_and_pending_booking</string>
     <string name="get_petsitter_details">get_petsitter_details</string>
     <string name="add_petsitter">add_petsitter</string>
     <string name="edit_petsitter">edit_petsitter</string>
@@ -67,6 +67,7 @@
     <string name="edit_other_details">edit_other_details</string>
     <string name="search_pet_sitters">search_pet_sitters</string>
     <string name="get_owner_sitter_bookings">get_owner_sitter_bookings</string>
+    <string name="send_sitter_booking">send_sitter_booking</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -125,6 +126,9 @@
     <string name="no_data">Δεν βρέθηκαν αποτελέσματα.</string>
     <string name="dates_filter_required">Παρακαλώ συμπλήρωσε τις ημερομηνίες αναζήτησης.</string>
     <string name="end_date_smaller_than_start_date">Το φίλτρο έως πρέπει να είναι μικρότερο από το από.</string>
+    <string name="no_available_pets_for_booking">Δεν υπάρχουν διαθέσιμα κατοικίδια για ανάθεση.</string>
+    <string name="no_searched_services">Δεν υπάρχουν υπηρεσίες</string>
+    <string name="booking_already_pending">Δεν μπορείς να κάνεις νέα αναθεση. Υπάρχει μία σε εξέλιξη.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
@@ -179,6 +183,7 @@
     <string name="start_date">start_date</string>
     <string name="end_date">end_date</string>
     <string name="parcelable_list">parcelable_list</string>
+    <string name="pet_list">pet_list</string>
     <!--<string name="name">name</string>-->
     <!--<string name="surname">surname</string>-->
     <!--<string name="birth_date">birth_date</string>-->
@@ -215,8 +220,14 @@
     <string name="pet_place_gr">ΔΙΑΜΟΝΗ ΚΑΤΟΙΚΙΔΙΟΥ</string>
     <string name="place_type_gr">ΕΙΔΟΣ ΚΑΤΟΙΚΙΑΣ</string>
     <string name="address_gr">ΔΙΕΥΘΥΝΣΗ</string>
+    <string name="sitter_info_gr">ΣΤΟΙΧΕΙΑ SITTER</string>
+    <string name="book_for_services_gr">ΑΝΑΘΕΣΗ ΓΙΑ</string>
+    <string name="book_for_location_gr">ΣΤΗΝ ΠΕΡΙΟΧΗ</string>
+    <string name="book_for_pick_pet_gr">ΕΠΙΛΟΓΗ ΚΑΤΟΙΚΙΔΙΟΥ</string>
+    <string name="book_for_date_range_gr">ΓΙΑ ΤΟ ΧΡΟΝΙΚΟ ΔΙΑΣΤΗΜΑ</string>
     <string name="msg_item">Μηνύματα</string>
     <string name="search_item">Αναζήτηση</string>
+    <string name="book">Αναθεση φυλαξης</string>
     <string name="sitter_item">Sitter</string>
     <string name="image_output">image_output</string>
     <string name="gallery_uri">gallery_uri</string>
@@ -306,6 +317,7 @@
     <string name="date_time">%1$s %2$s</string>
     <!-- PET SITTERS ACTIVITY -->
     <string name="pet_sitters_title">Pet Sitters</string>
+    <string name="booking_details_title">Λεπτομέρειες ανάθεσης</string>
     <string name="show_place_images">φωτογραφιες χωρου</string>
     <string name="search_sitter_title">Αναζήτηση Sitter</string>
     <string name="services_filter_lbl">Ενδιαφέρομαι για</string>
@@ -385,6 +397,15 @@
     <string name="service6_profile">Βόλτα σκύλου</string>
 
     <string name="image_cont_desc">cont_desc</string>
+
+    <string-array name="services">
+        <item name="service1">Διανυκτέρευση (στο χώρο μου)</item>
+        <item name="service2">Διανυκτέρευση (στο χώρο σας)</item>
+        <item name="service3">Τακτικές επισκέψεις (στο χώρο σας)</item>
+        <item name="service4">Ημερήσια φύλαξη (στο χώρο μου)</item>
+        <item name="service5">Ημερήσια φύλαξη (στο χώρο σας)</item>
+        <item name="service6">Βόλτα σκύλου</item>
+    </string-array>
 
     <string-array name="pet_genres">
         <item name="male">Αρσενικό</item>

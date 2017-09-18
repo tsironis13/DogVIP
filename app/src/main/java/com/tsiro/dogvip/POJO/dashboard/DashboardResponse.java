@@ -18,6 +18,9 @@ public class DashboardResponse {
     @SerializedName("totalunread")
     @Expose
     private int totalunread;
+    @SerializedName("totalbookings")
+    @Expose
+    private int totalbookings;
 
     public int getCode() { return code; }
 
@@ -30,4 +33,8 @@ public class DashboardResponse {
     public int getTotalunread() { return totalunread; }
 
     public void setTotalunread(int totalunread) { this.totalunread = totalunread; }
+
+    public int getTotalbookings() { return totalbookings; }
+
+    public void setTotalbookings(int totalbookings) { this.totalbookings = totalbookings; }
 }

@@ -57,7 +57,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     Disposable disp;
     private ServiceAPI serviceAPI;
     private String email, mToken;
-    private int id, type, totalUnreadMsgs;
+    private int id, type, totalUnreadMsgs, totalBookings;
     private SnackBar mSnackBar;
     private boolean logout, userLoggedInFirstTime;
     private Bundle bundle;
@@ -271,7 +271,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     private void getTotalUnreadMsgs() {
         if (isNetworkAvailable()) {
             DashboardRequest request = new DashboardRequest();
-            request.setAction(getResources().getString(R.string.get_user_total_unread_msgs));
+            request.setAction(getResources().getString(R.string.get_user_total_unread_msgs_and_pending_booking));
             request.setAuthtoken(mToken);
             mViewModel.getTotelUnreadMsgs(request);
         }
@@ -322,6 +322,9 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
                 totalUnreadMsgs = response.getTotalunread();
                 unreadMsgsBadgeTtv.setVisibility(View.VISIBLE);
                 unreadMsgsBadgeTtv.setText(String.valueOf(response.getTotalunread()));
+            }
+            if (response.getTotalbookings() != 0) {
+                totalBookings = response.getTotalbookings();
             }
         }
     }

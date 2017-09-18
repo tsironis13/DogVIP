@@ -2,6 +2,7 @@ package com.tsiro.dogvip.petsitters.sitter_assignment;
 
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
+import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.app.Lifecycle;
@@ -23,6 +24,7 @@ public interface SitterAssignmentContract {
 
     interface ViewModel extends Lifecycle.ViewModel {
         void searchSitters(PetSitterObj petSitterObj);
+        void sendBooking(BookingObj bookingObj);
         void setRequestState(int state);
     }
 

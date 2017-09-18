@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,9 @@ public class SearchedSittersResponse implements Parcelable {
     @SerializedName("data")
     @Expose
     private List<PetSitterObj> data;
+    @SerializedName("id")
+    @Expose
+    private int id; //user role id
     private transient List<Integer> services;
     private transient String location;
     private transient String diplayStartDate;
@@ -32,6 +36,9 @@ public class SearchedSittersResponse implements Parcelable {
     private SearchedSittersResponse(Parcel in) {
         code = in.readInt();
         data = in.createTypedArrayList(PetSitterObj.CREATOR);
+        id = in.readInt();
+        if (services == null) services = new ArrayList<>();
+        in.readList(services, Integer.class.getClassLoader());
         location = in.readString();
         diplayStartDate = in.readString();
         displayEndDate = in.readString();
@@ -58,6 +65,10 @@ public class SearchedSittersResponse implements Parcelable {
     public List<PetSitterObj> getData() { return data; }
 
     public void setData(List<PetSitterObj> data) { this.data = data; }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public List<Integer> getServices() { return services; }
 
@@ -92,6 +103,8 @@ public class SearchedSittersResponse implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(code);
         parcel.writeTypedList(data);
+        parcel.writeInt(id);
+        parcel.writeList(services);
         parcel.writeString(location);
         parcel.writeString(diplayStartDate);
         parcel.writeString(displayEndDate);

@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.R;
@@ -49,6 +50,7 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
     private boolean callPhone;
     private String phone;
     private Snackbar mSnackBar;
+    private ArrayList<PetObj> petObjList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,9 +64,11 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
         }
         if (savedInstanceState != null) {
             data = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
+            petObjList = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.pet_list));
         } else {
             if (getIntent().getExtras() != null) {
                 data = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
+                petObjList = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.pet_list));
             }
         }
         initializeView();
@@ -78,6 +82,7 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(getResources().getString(R.string.parcelable_obj), data);
+        outState.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
     }
 
     @Override
@@ -88,6 +93,21 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
                     callPhone = true;
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
+        startActivity(new Intent(this, SearchSitterFiltersActivity.class).putExtras(bundle));
+        finish();
     }
 
     @Override
@@ -120,6 +140,7 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
         Bundle bundle = new Bundle();
         bundle.putParcelable(getResources().getString(R.string.data), data);
         bundle.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
+        bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
         startActivity(new Intent(this, SitterProfileActivity.class).putExtras(bundle));
         finish();
         Log.e(debugTag, "base virew" + data.getData().get((int) view.getTag()).getYearsexpr());
@@ -152,7 +173,6 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
             @Override
             protected int getLayoutIdForPosition(int position) {
                 return R.layout.searched_sitters_list_rcv_row;
-
             }
 
             @Override

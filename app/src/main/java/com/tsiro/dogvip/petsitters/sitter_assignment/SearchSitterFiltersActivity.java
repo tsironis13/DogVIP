@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.DialogActions;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.R;
@@ -52,7 +53,7 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
 
     private static final String debugTag = SearchSitterFiltersActivity.class.getSimpleName();
     private ActivitySearchSitterFiltersBinding mBinding;
-    private int pickerSelected;
+    private int pickerSelected, userRoleId;
     private SitterAssignmentPresenter sitterAssignmentPresenter;
     private ArrayList<Integer> services;
     private SparseArray<CheckBox> servicesCheckBoxList = new SparseArray<>();
@@ -61,6 +62,7 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
     private SitterAssignmentContract.ViewModel mViewModel;
     private long startDate, endDate;
     private String mToken;
+    private ArrayList<PetObj> petObjList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,8 +87,14 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             startDate = savedInstanceState.getLong(getResources().getString(R.string.start_date));
             endDate = savedInstanceState.getLong(getResources().getString(R.string.end_date));
             services = savedInstanceState.getIntegerArrayList(getResources().getString(R.string.parcelable_list));
+            petObjList = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.pet_list));
+            userRoleId = savedInstanceState.getInt(getResources().getString(R.string.user_role_id));
         } else {
             services = new ArrayList<>();
+            if (getIntent().getExtras() != null) {
+                petObjList = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.pet_list));
+                userRoleId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
+            }
         }
         petSitterObj = new PetSitterObj();
         servicesCheckBoxList.append(1, mBinding.service1ChckBx);
@@ -170,6 +178,8 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         outState.putIntegerArrayList(getResources().getString(R.string.parcelable_list), services);
         outState.putLong(getResources().getString(R.string.start_date), startDate);
         outState.putLong(getResources().getString(R.string.end_date), endDate);
+        outState.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
+        outState.putInt(getResources().getString(R.string.user_role_id), userRoleId);
     }
 
     @Override
@@ -226,11 +236,21 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         if (response.getData().isEmpty()) {
             showSnackBar(getResources().getString(R.string.no_items), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
         } else {
-//            Log.e(debugTag, response.getData().get(0).getYearsexpr() + " sfsd" + response.getData().get(1).getYearsexpr());
+            Log.e(debugTag, services + " SERV");
             Bundle bundle = new Bundle();
+            if (services != null) response.setServices(services);
+            response.setId(response.getId());
+            response.setStartDate(startDate);
+            response.setEndDate(endDate);
+            response.setDiplayStartDate(mBinding.startDateEdt.getText().toString());
+            response.setDisplayEndDate(mBinding.endDateEdt.getText().toString());
+            response.setLocation(mBinding.cityEdt.getText().toString());
+            response.setId(userRoleId);
             bundle.putParcelable(getResources().getString(R.string.parcelable_obj), response);
+            bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
             Intent intent = new Intent(this, SearchedSittersListActivity.class);
             startActivity(intent.putExtras(bundle));
+            finish();
         }
     }
 
@@ -254,7 +274,7 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             showSnackBar(getResources().getString(R.string.city_no_match), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
         } else {
             if (isNetworkAvailable()) {
-                Log.e(debugTag, services + " SERVICES");
+//                Log.e(debugTag, services + " SERVICES");
                 Log.e(debugTag, mBinding.cityEdt.getText().toString() + " LOCATION");
                 petSitterObj.setAuthtoken(mToken);
                 petSitterObj.setAction(getResources().getString(R.string.search_pet_sitters));

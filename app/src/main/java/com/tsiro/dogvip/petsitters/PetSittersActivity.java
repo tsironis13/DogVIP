@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.R;
@@ -22,6 +23,9 @@ import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 import com.tsiro.dogvip.petsitters.sitter_assignment.SearchSitterFiltersActivity;
 import com.tsiro.dogvip.requestmngrlayer.PetSitterRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -38,6 +42,8 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     private PetSittersContract.ViewModel mViewModel;
     private String mToken;
     private MenuItem searchItem;
+    private ArrayList<PetObj> petObjList;
+    private int userRoleId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +100,10 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_item:
-                startActivity(new Intent(this, SearchSitterFiltersActivity.class));
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
+                bundle.putInt(getResources().getString(R.string.user_role_id), userRoleId);
+                startActivity(new Intent(this, SearchSitterFiltersActivity.class).putExtras(bundle));
 //                finish();
                 return true;
             case R.id.sitter_item:
@@ -142,6 +151,8 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     }
 
     private void initializeView(OwnerSitterBookingsResponse response) {
+        if (response.getOwner_pets() != null) petObjList = response.getOwner_pets();
+        userRoleId = response.getId();
         PetSittersViewPager viewPager = new PetSittersViewPager(getSupportFragmentManager(), getResources().getStringArray(R.array.pet_sitters_tabs), response);
         mBinding.viewPgr.enablePaging(false);
         mBinding.viewPgr.setAdapter(viewPager);

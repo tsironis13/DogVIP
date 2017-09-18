@@ -62,6 +62,7 @@ public class AppConfig {
     private static final int ERROR_AGE_NOT_VALID = -330;
     public static final int ERROR_NO_OWNER_AND_SITTER_EXIST = -340;
     public static final int ERROR_NO_SITTER_EXISTS = -350;
+    private static final int ERROR_BOOKING_ALREADY_PENDING = -360;
 
     public static final int VISIBLE_THRESHOLD = 8;
 
@@ -339,6 +340,7 @@ public class AppConfig {
         inputValidationCodes.put(ERROR_INVALID_IMAGE_SIZE, R.string.invalid_image_size);
         inputValidationCodes.put(ERROR_NO_OWNER_EXISTS, R.string.no_owner_exists);
         inputValidationCodes.put(ERROR_AGE_NOT_VALID, R.string.not_valid_age);
+        inputValidationCodes.put(ERROR_BOOKING_ALREADY_PENDING, R.string.booking_already_pending);
 
         return inputValidationCodes;
     }

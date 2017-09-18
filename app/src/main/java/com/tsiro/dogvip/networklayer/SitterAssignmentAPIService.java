@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.networklayer;
 
+import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.app.AppConfig;
@@ -52,4 +53,27 @@ public class SitterAssignmentAPIService {
                 });
     }
 
+    public Flowable<SearchedSittersResponse> sendBooking(final BookingObj request, final SitterAssignmentViewModel sitterAssignmentViewModel) {
+        return serviceAPI.sendBooking(request)
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        sitterAssignmentViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        sitterAssignmentViewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                    }
+                })
+                .doOnNext(new Consumer<SearchedSittersResponse>() {
+                    @Override
+                    public void accept(@NonNull SearchedSittersResponse response) throws Exception {
+                        sitterAssignmentViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                    }
+                });
+    }
 }
