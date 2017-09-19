@@ -30,6 +30,7 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivitySearchSitterFiltersBinding;
+import com.tsiro.dogvip.petsitters.PetSittersActivity;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 import com.tsiro.dogvip.requestmngrlayer.SitterAssignmentRequestManager;
 import com.tsiro.dogvip.utilities.DialogPicker;
@@ -96,6 +97,7 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
                 userRoleId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
             }
         }
+        Log.e(debugTag, " USER ROLE ID => "+userRoleId);
         petSitterObj = new PetSitterObj();
         servicesCheckBoxList.append(1, mBinding.service1ChckBx);
         servicesCheckBoxList.append(2, mBinding.service2ChckBx);
@@ -137,18 +139,14 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
                     Log.e(debugTag, obj.getDisplay_date() + " DISPLAY DATE");
-                    if (obj.getCode() == AppConfig.STATUS_OK) {
-                        if (pickerSelected == 1) {//start date picker
-                            mBinding.startDateEdt.setText(obj.getDisplay_date());
-                            startDate = obj.getDate();
+                    if (pickerSelected == 1) {//start date picker
+                        mBinding.startDateEdt.setText(obj.getDisplay_date());
+                        startDate = obj.getDate();
 //                            petSitterObj.setStart_date(obj.getDate());
-                        } else if (pickerSelected == 2) {//end date picker
-                            mBinding.endDateEdt.setText(obj.getDisplay_date());
-                            endDate = obj.getDate();
+                    } else if (pickerSelected == 2) {//end date picker
+                        mBinding.endDateEdt.setText(obj.getDisplay_date());
+                        endDate = obj.getDate();
 //                            petSitterObj.setEnd_date(obj.getDate());
-                        }
-                    } else {
-                        showSnackBar(getResources().getString(R.string.invalid_date), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
                     }
                 } else {
 //                    petSitterObj.setDisplayage("");
@@ -169,6 +167,19 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
     protected void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, PetSittersActivity.class));
+        finish();
     }
 
     @Override

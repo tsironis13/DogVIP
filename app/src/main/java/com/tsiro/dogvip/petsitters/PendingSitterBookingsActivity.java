@@ -55,6 +55,7 @@ public class PendingSitterBookingsActivity extends BaseActivity implements PetSi
 
         if (getSupportActionBar()!= null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setTitle(getResources().getString(R.string.pending_sitter_bookings_title));
         }
         fetchPendingBookings();
     }

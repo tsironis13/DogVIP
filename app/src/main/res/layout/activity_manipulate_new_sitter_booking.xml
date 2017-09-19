@@ -36,24 +36,155 @@
                 android:id="@+id/incltoolbar"
                 layout="@layout/toolbar" />
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/containerLlt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{obj.name}" />
+                <ScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scrollbars="none"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/approveBtn"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@{obj.surname}" />
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/innerConstrntLlt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
 
-            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/profileImgv"
+                            android:layout_width="70dp"
+                            android:layout_height="75dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:imageUrl="@{obj.image_url}"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{obj.name}"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/profileImgv" />
+
+                        <TextView
+                            android:id="@+id/surnameTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginStart="3dp"
+                            android:text="@{obj.surname}"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/nameTtv" />
+
+                        <TextView
+                            android:id="@+id/customageTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            app:textPl="@{obj.age}"
+                            app:layout_constraintTop_toBottomOf="@+id/nameTtv"
+                            app:layout_constraintLeft_toRightOf="@+id/profileImgv" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginStart="4dp"
+                            android:text="@{obj.city}"
+                            app:layout_constraintTop_toBottomOf="@+id/surnameTtv"
+                            app:layout_constraintLeft_toRightOf="@+id/customageTtv" />
+
+                        <TextView
+                            android:id="@+id/info1Ttv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:textSize="15sp"
+                            android:text="@{@string/manipulate_new_booking_info1(obj.name, obj.surname, obj.p_name)}"
+                            app:layout_constraintTop_toBottomOf="@+id/profileImgv"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <TextView
+                            android:id="@+id/info2Ttv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:textSize="15sp"
+                            android:text="@string/manipulate_new_booking_info2"
+                            app:layout_constraintTop_toBottomOf="@+id/info1Ttv"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/servicesLlt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toBottomOf="@+id/info2Ttv"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <TextView
+                            android:id="@+id/info3Ttv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textSize="15sp"
+                            android:text="@{@string/manipulate_new_booking_info3(obj.start_date, obj.end_date)}"
+                            app:layout_constraintTop_toBottomOf="@+id/servicesLlt"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <TextView
+                            android:id="@+id/info4Ttv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:textSize="15sp"
+                            android:text="@{@string/manipulate_new_booking_info4(obj.date_created)}"
+                            app:layout_constraintTop_toBottomOf="@+id/info3Ttv"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </ScrollView>
+
+                <Button
+                    android:id="@+id/approveBtn"
+                    android:layout_width="135dp"
+                    android:layout_height="48dp"
+                    android:text="@string/approve_gr"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/ripple_drawable"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <Button
+                    android:id="@+id/rejectBtn"
+                    android:layout_width="135dp"
+                    android:layout_height="48dp"
+                    android:text="@string/reject_gr"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/ripple_drawable"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
 

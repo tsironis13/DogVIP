@@ -71,6 +71,7 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
                 petObjList = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.pet_list));
             }
         }
+        Log.e(debugTag, " USER ROLE ID => "+data.getId());
         initializeView();
         if (callPhone) {
             makeCall(phone);
@@ -106,6 +107,7 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
         super.onBackPressed();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
+        bundle.putInt(getResources().getString(R.string.user_role_id), data.getId());
         startActivity(new Intent(this, SearchSitterFiltersActivity.class).putExtras(bundle));
         finish();
     }

@@ -70,12 +70,12 @@ public class DialogPicker extends DialogFragment implements DatePickerDialog.OnD
         if (epoch/1000L > System.currentTimeMillis()/1000L) {
             dialogActions.setCode(AppConfig.STATUS_ERROR);
         } else {
-            SimpleDateFormat datefrmt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            String displayDate= datefrmt.format(new Date(epoch));
             dialogActions.setCode(AppConfig.STATUS_OK);
-            dialogActions.setDisplay_date(displayDate);
-            dialogActions.setDate(epoch/1000L);
         }
+        SimpleDateFormat datefrmt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String displayDate= datefrmt.format(new Date(epoch));
+        dialogActions.setDisplay_date(displayDate);
+        dialogActions.setDate(epoch/1000L);
         RxEventBus.createSubject(AppConfig.DIALOG_ACTION, 0).post(dialogActions);
     }
 

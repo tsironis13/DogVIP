@@ -51,6 +51,9 @@ public class BookingObj implements Parcelable{
     @SerializedName("image_url")
     @Expose
     private String image_url;
+    @SerializedName("age")
+    @Expose
+    private String age;
     @SerializedName("main_image")
     @Expose
     private String main_image;
@@ -157,6 +160,10 @@ public class BookingObj implements Parcelable{
     public String getImage_url() { return image_url; }
 
     public void setImage_url(String image_url) { this.image_url = image_url; }
+
+    public String getAge() { return age; }
+
+    public void setAge(String age) { this.age = age; }
 
     public String getDate_created() { return date_created; }
 

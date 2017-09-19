@@ -110,7 +110,7 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
                 bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
                 bundle.putInt(getResources().getString(R.string.user_role_id), userRoleId);
                 startActivity(new Intent(this, SearchSitterFiltersActivity.class).putExtras(bundle));
-//                finish();
+                finish();
                 return true;
             case R.id.sitter_item:
                 startActivity(new Intent(this, PetSitterActivity.class));

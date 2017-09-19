@@ -70,6 +70,8 @@
     <string name="send_sitter_booking">send_sitter_booking</string>
     <string name="get_booking_details">get_booking_details</string>
     <string name="get_pending_sitter_bookings">get_pending_sitter_bookings</string>
+    <string name="approve_booking">approve_booking</string>
+    <string name="reject_booking">reject_booking</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -132,6 +134,7 @@
     <string name="no_searched_services">Δεν υπάρχουν υπηρεσίες</string>
     <string name="booking_already_pending">Δεν μπορείς να κάνεις νέα αναθεση. Υπάρχει μία σε εξέλιξη.</string>
     <string name="new_sitter_booking_msg">Νέα αίτηση ανάθεσης φύλαξης.</string>
+    <string name="manipulate_new_sitter_booking_title">Αίτημα φύλαξης</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
@@ -321,6 +324,7 @@
     <!-- PET SITTERS ACTIVITY -->
     <string name="pet_sitters_title">Pet Sitters</string>
     <string name="booking_details_title">Λεπτομέρειες ανάθεσης</string>
+    <string name="pending_sitter_bookings_title">Αιτήματα φύλαξης</string>
     <string name="show_place_images">φωτογραφιες χωρου</string>
     <string name="search_sitter_title">Αναζήτηση Sitter</string>
     <string name="services_filter_lbl">Ενδιαφέρομαι για</string>
@@ -333,6 +337,12 @@
     <string name="out">Εκτός οικίας</string>
     <string name="mono">Μονοκατοικία</string>
     <string name="apprtmnt">Διαμέρισμα</string>
+    <string name="manipulate_new_booking_info1">Ο χρήστης %1$s %2$s σου έστειλε πρόσκληση ανάθεσης φύλαξης για τον σκύλο του ( %3$s )!</string>
+    <string name="manipulate_new_booking_info2">Η ανάθεση φύλαξης αφορά σε:</string>
+    <string name="manipulate_new_booking_info3">για το χρονικό διάστημα από %1$s έως %2$s.</string>
+    <string name="manipulate_new_booking_info4">Έχεις περιθώριο μέχρι και τις %1$s για να αποδεχθείς την ανάθεση!</string>
+    <string name="approve_gr">Αποδοχη</string>
+    <string name="reject_gr">Απορριψη</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>

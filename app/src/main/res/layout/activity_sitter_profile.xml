@@ -156,7 +156,7 @@
                 android:id="@+id/containerConstrLlt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:orientation="vertical">
 
                 <TextView
