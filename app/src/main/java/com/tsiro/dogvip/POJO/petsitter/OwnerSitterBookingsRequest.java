@@ -15,6 +15,9 @@ public class OwnerSitterBookingsRequest {
     @SerializedName("authtoken")
     @Expose
     private String authtoken;
+    @SerializedName("id")
+    @Expose
+    private int id;
 
     public String getAction() { return action; }
 
@@ -24,4 +27,7 @@ public class OwnerSitterBookingsRequest {
 
     public void setAuthtoken(String authtoken) { this.authtoken = authtoken; }
 
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 }

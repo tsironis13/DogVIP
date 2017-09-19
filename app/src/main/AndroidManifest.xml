@@ -276,6 +276,24 @@
                 android:value=".petsitters.sitter_assignment.SitterProfileActivity" />
         </activity>
 
+        <activity
+            android:name=".petsitters.ManipulateNewSitterBookingActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".petsitters.sitter_assignment.SitterProfileActivity" />-->
+        </activity>
+
+        <activity
+            android:name=".petsitters.PendingSitterBookingsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".dashboard.DashboardActivity" />
+        </activity>
+
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 

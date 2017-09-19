@@ -146,7 +146,7 @@ public class ChatRoomActivity extends BaseActivity implements ChatRoomContract.V
             }
         });
         RxEventBus.add(this, disp);
-        Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
+        Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_MSG_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
             @Override
             public void accept(@NonNull Message message) throws Exception {
                 if (message.getChat_room_id() == chatRoomId) {

@@ -10,8 +10,8 @@
 
     <item
         android:id="@+id/sitter_item"
-        android:icon="@drawable/sitter_icon"
         android:title="@string/sitter_item"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/dashboard_sitter_pending_bookings_menu_item" />
 
 </menu>

@@ -15,12 +15,19 @@ import okhttp3.RequestBody;
 
 public interface PetSittersContract {
 
+    interface Presenter {
+        void onBaseViewClick(android.view.View view);
+    }
+
     interface View extends Lifecycle.View {
+        void onBaseViewClick(android.view.View view);
         void onSuccess(OwnerSitterBookingsResponse response);
         void onError(int resource);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
+        void getPendingBookings(OwnerSitterBookingsRequest request);
+        void getBookingDetails(OwnerSitterBookingsRequest request);
         void getOwnerSitterBookings(OwnerSitterBookingsRequest request);
         void setRequestState(int state);
     }

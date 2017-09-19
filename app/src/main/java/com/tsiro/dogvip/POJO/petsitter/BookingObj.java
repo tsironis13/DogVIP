@@ -36,6 +36,24 @@ public class BookingObj implements Parcelable{
     @SerializedName("pet_id")
     @Expose
     private int pet_id;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("surname")
+    @Expose
+    private String surname;
+    @SerializedName("p_name")
+    @Expose
+    private String p_name;
+    @SerializedName("city")
+    @Expose
+    private String city;
+    @SerializedName("image_url")
+    @Expose
+    private String image_url;
+    @SerializedName("main_image")
+    @Expose
+    private String main_image;
     @SerializedName("date_created")
     @Expose
     private String date_created;
@@ -65,6 +83,10 @@ public class BookingObj implements Parcelable{
         sitter_id = in.readInt();
         owner_id = in.readInt();
         pet_id = in.readInt();
+        name = in.readString();
+        surname = in.readString();
+        p_name = in.readString();
+        city = in.readString();
         date_created = in.readString();
         start_date = in.readString();
         end_date = in.readString();
@@ -112,6 +134,30 @@ public class BookingObj implements Parcelable{
 
     public void setPet_id(int pet_id) { this.pet_id = pet_id; }
 
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public String getSurname() { return surname; }
+
+    public void setSurname(String surname) { this.surname = surname; }
+
+    public String getP_name() { return p_name; }
+
+    public void setP_name(String p_name) { this.p_name = p_name; }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public String getMain_image() { return main_image; }
+
+    public void setMain_image(String main_image) { this.main_image = main_image; }
+
+    public String getImage_url() { return image_url; }
+
+    public void setImage_url(String image_url) { this.image_url = image_url; }
+
     public String getDate_created() { return date_created; }
 
     public void setDate_created(String date_created) { this.date_created = date_created; }
@@ -150,6 +196,10 @@ public class BookingObj implements Parcelable{
         dest.writeInt(sitter_id);
         dest.writeInt(owner_id);
         dest.writeInt(pet_id);
+        dest.writeString(name);
+        dest.writeString(surname);
+        dest.writeString(p_name);
+        dest.writeString(city);
         dest.writeString(date_created);
         dest.writeString(start_date);
         dest.writeString(end_date);

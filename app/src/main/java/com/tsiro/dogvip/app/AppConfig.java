@@ -31,7 +31,7 @@ public class AppConfig {
     public static final int DIALOG_ACTION = 1030;
     public static final int USER_ACCOUNT_DATA = 900;
     public static final int UPLOAD_FCM_TOKEN = 1040;
-    public static final int PUBLISH_NOTFCTS = 1050;
+    public static final int PUBLISH_MSG_NOTFCTS = 1050;
     public static final int REFRESH_PETSITTER_PLACE_IMAGES = 1060;
     //REQUEST STATE
     public static final int REQUEST_NONE = 0;

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
@@ -82,6 +83,11 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     protected void onDestroy() {
         super.onDestroy();
         dismissDialog();
+    }
+
+    @Override
+    public void onBaseViewClick(View view) {
+
     }
 
     @Override

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="hasError"
+            type="boolean" />
+
+        <variable
+            name="errorText"
+            type="String" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/cntFrml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:orientation="vertical"
+            android:background="@color/colorPrimary">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <LinearLayout
+                android:id="@+id/errorLlt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="@{hasError ? View.VISIBLE : View.GONE}"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/errorTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@{errorText}" />
+
+                <Button
+                    android:id="@+id/retryBtn"
+                    android:layout_width="222dp"
+                    android:layout_height="48dp"
+                    android:text="@string/retry"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/ripple_drawable" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:background="@android:color/white"
+                android:visibility="@{!hasError ? View.VISIBLE : View.GONE}" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

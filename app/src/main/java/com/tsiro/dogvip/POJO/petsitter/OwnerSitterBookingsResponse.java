@@ -9,6 +9,7 @@ import com.tsiro.dogvip.POJO.lostfound.LostFoundObj;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by giannis on 14/9/2017.
@@ -31,6 +32,12 @@ public class OwnerSitterBookingsResponse implements Parcelable{
     @SerializedName("owner_pets")
     @Expose
     private ArrayList<PetObj> owner_pets;
+    @SerializedName("booking")
+    @Expose
+    private BookingObj booking;
+    @SerializedName("data")
+    @Expose
+    private List<BookingObj> data;
 
     public OwnerSitterBookingsResponse() {}
 
@@ -71,6 +78,16 @@ public class OwnerSitterBookingsResponse implements Parcelable{
     public ArrayList<PetObj> getOwner_pets() { return owner_pets; }
 
     public void setOwner_pets(ArrayList<PetObj> owner_pets) { this.owner_pets = owner_pets; }
+
+    public BookingObj getBooking() { return booking; }
+
+    public void setBooking(BookingObj booking) { this.booking = booking; }
+
+    public List<BookingObj> getData() { return data;                                     }
+
+    public void setData(List<BookingObj> data) {
+        this.data = data;
+    }
 
     @Override
     public int describeContents() {

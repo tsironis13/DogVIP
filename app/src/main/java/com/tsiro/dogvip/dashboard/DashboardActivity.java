@@ -29,6 +29,7 @@ import com.tsiro.dogvip.databinding.NavigationHeaderBinding;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.mychatrooms.MyChatRoomsActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
+import com.tsiro.dogvip.petsitters.PendingSitterBookingsActivity;
 import com.tsiro.dogvip.petsitters.PetSittersActivity;
 import com.tsiro.dogvip.requestmngrlayer.DashboardRequestManager;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
@@ -63,7 +64,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     private Bundle bundle;
     private CommonUtls mCommonUtls;
     private DashboardContract.ViewModel mViewModel;
-    private TextView unreadMsgsBadgeTtv;
+    private TextView unreadMsgsBadgeTtv, pendingBookingsBadgeTtv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
             }
         });
         RxEventBus.add(this, disp3);
-        Disposable disp4 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
+        Disposable disp4 = RxEventBus.createSubject(AppConfig.PUBLISH_MSG_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
             @Override
             public void accept(@NonNull Message message) throws Exception {
                 if (unreadMsgsBadgeTtv.getVisibility() == View.GONE) unreadMsgsBadgeTtv.setVisibility(View.VISIBLE);
@@ -211,6 +212,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         initializeMsgMenuItem(menu);
+        initializeSitterPendingBookingsMenuItem(menu);
         return true;
     }
 
@@ -230,6 +232,17 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashboardActivity.this, MyChatRoomsActivity.class));
+            }
+        });
+    }
+
+    private void initializeSitterPendingBookingsMenuItem(Menu menu) {
+        final View notifications = menu.findItem(R.id.sitter_item).getActionView();
+        pendingBookingsBadgeTtv = (TextView) notifications.findViewById(R.id.pendingBookingsBadgeTtv);
+        notifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardActivity.this, PendingSitterBookingsActivity.class));
             }
         });
     }
@@ -325,6 +338,8 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
             }
             if (response.getTotalbookings() != 0) {
                 totalBookings = response.getTotalbookings();
+                pendingBookingsBadgeTtv.setVisibility(View.VISIBLE);
+                pendingBookingsBadgeTtv.setText(String.valueOf(response.getTotalbookings()));
             }
         }
     }

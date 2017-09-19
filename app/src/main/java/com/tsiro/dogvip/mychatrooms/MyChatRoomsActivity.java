@@ -75,7 +75,7 @@ public class MyChatRoomsActivity extends BaseActivity implements MyChatRoomsCont
             }
         });
         RxEventBus.add(this, disp);
-        Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
+        Disposable disp1 = RxEventBus.createSubject(AppConfig.PUBLISH_MSG_NOTFCTS, AppConfig.PUBLISH_SUBJ).observeEvents(Message.class).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Message>() {
             @Override
             public void accept(@NonNull Message message) throws Exception {
                 if (!data.isEmpty() && rcvAdapter != null) {

@@ -11,6 +11,7 @@ import com.tsiro.dogvip.POJO.chat.Message;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
+import com.tsiro.dogvip.petsitters.ManipulateNewSitterBookingActivity;
 import com.tsiro.dogvip.utilities.MyLifecycleHandler;
 import com.tsiro.dogvip.utilities.NotificationUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
@@ -21,43 +22,60 @@ import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
+    private static final String debugTag = MyFirebaseMessagingService.class.getSimpleName();
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
-            String title = remoteMessage.getData().get(getResources().getString(R.string.title));
-            String message = remoteMessage.getData().get(getResources().getString(R.string.message));
-            String image = remoteMessage.getData().get(getResources().getString(R.string.imageurl));
-            String petName = remoteMessage.getData().get(getResources().getString(R.string.pet_name));
-            String timestamp = remoteMessage.getData().get(getResources().getString(R.string.timestamp));
-            int mesgId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.id)));
-            int userRoleId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.user_role_id))); //to_id
-            int chatRoomId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.chat_room_id)));
-            int fromId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.from_id)));
+            if (remoteMessage.getData().get(getResources().getString(R.string.action)).equals(getResources().getString(R.string.send_msg))) {
+                String title = remoteMessage.getData().get(getResources().getString(R.string.title));
+                String message = remoteMessage.getData().get(getResources().getString(R.string.message));
+                String image = remoteMessage.getData().get(getResources().getString(R.string.imageurl));
+                String petName = remoteMessage.getData().get(getResources().getString(R.string.pet_name));
+                String timestamp = remoteMessage.getData().get(getResources().getString(R.string.timestamp));
+                int mesgId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.id)));
+                int userRoleId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.user_role_id))); //to_id
+                int chatRoomId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.chat_room_id)));
+                int fromId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.from_id)));
 //            int role = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.role)));
 
-            Intent resultIntent = new Intent(getApplicationContext(), ChatRoomActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.get_chat_rooom_msgs_by_chatid));
-            bundle.putString(getResources().getString(R.string.title), title);
-            bundle.putString(getResources().getString(R.string.pet_name), petName);
-            bundle.putInt(getResources().getString(R.string.id), mesgId);
-            bundle.putInt(getResources().getString(R.string.chat_room_id), chatRoomId);
-            bundle.putInt(getResources().getString(R.string.user_role_id), userRoleId);
-            bundle.putInt(getResources().getString(R.string.from_id), fromId);
+                Intent resultIntent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(getResources().getString(R.string.action), getResources().getString(R.string.get_chat_rooom_msgs_by_chatid));
+                bundle.putString(getResources().getString(R.string.title), title);
+                bundle.putString(getResources().getString(R.string.pet_name), petName);
+                bundle.putInt(getResources().getString(R.string.id), mesgId);
+                bundle.putInt(getResources().getString(R.string.chat_room_id), chatRoomId);
+                bundle.putInt(getResources().getString(R.string.user_role_id), userRoleId);
+                bundle.putInt(getResources().getString(R.string.from_id), fromId);
 //            bundle.putInt(getResources().getString(R.string.role), role);
-            resultIntent.putExtras(bundle);
-            showNotificationMessage(getApplicationContext(), title, message, resultIntent, image);
+                resultIntent.putExtras(bundle);
+                showNotificationMessage(getApplicationContext(), title, message, resultIntent, image);
 
-            if (MyLifecycleHandler.isApplicationInForeground()) {
-                Message mesgobj = new Message();
-                mesgobj.setId(mesgId);
-                mesgobj.setMessage(message);
-                mesgobj.setUser_role_id(userRoleId);
-                mesgobj.setImage_url(image);
-                mesgobj.setChat_room_id(chatRoomId);
-                mesgobj.setCreated_at(timestamp);
-                RxEventBus.createSubject(AppConfig.PUBLISH_NOTFCTS, AppConfig.PUBLISH_SUBJ).post(mesgobj);
+                if (MyLifecycleHandler.isApplicationInForeground()) {
+                    Message mesgobj = new Message();
+                    mesgobj.setId(mesgId);
+                    mesgobj.setMessage(message);
+                    mesgobj.setUser_role_id(userRoleId);
+                    mesgobj.setImage_url(image);
+                    mesgobj.setChat_room_id(chatRoomId);
+                    mesgobj.setCreated_at(timestamp);
+                    RxEventBus.createSubject(AppConfig.PUBLISH_MSG_NOTFCTS, AppConfig.PUBLISH_SUBJ).post(mesgobj);
+                }
+            } else {
+//                Log.e(debugTag, remoteMessage.getData().get("id") + " BOOKING ID");
+                int bookingId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.id)));
+                String title = remoteMessage.getData().get(getResources().getString(R.string.title));
+                String image = remoteMessage.getData().get(getResources().getString(R.string.imageurl));
+                String timestamp = remoteMessage.getData().get(getResources().getString(R.string.timestamp));
+
+                Intent resultIntent = new Intent(getApplicationContext(), ManipulateNewSitterBookingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(getResources().getString(R.string.id), bookingId);
+                resultIntent.putExtras(bundle);
+                showNotificationMessage(getApplicationContext(), title, getResources().getString(R.string.new_sitter_booking_msg), resultIntent, image);
             }
+
         }
 
 

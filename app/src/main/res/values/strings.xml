@@ -68,6 +68,8 @@
     <string name="search_pet_sitters">search_pet_sitters</string>
     <string name="get_owner_sitter_bookings">get_owner_sitter_bookings</string>
     <string name="send_sitter_booking">send_sitter_booking</string>
+    <string name="get_booking_details">get_booking_details</string>
+    <string name="get_pending_sitter_bookings">get_pending_sitter_bookings</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -129,6 +131,7 @@
     <string name="no_available_pets_for_booking">Δεν υπάρχουν διαθέσιμα κατοικίδια για ανάθεση.</string>
     <string name="no_searched_services">Δεν υπάρχουν υπηρεσίες</string>
     <string name="booking_already_pending">Δεν μπορείς να κάνεις νέα αναθεση. Υπάρχει μία σε εξέλιξη.</string>
+    <string name="new_sitter_booking_msg">Νέα αίτηση ανάθεσης φύλαξης.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
