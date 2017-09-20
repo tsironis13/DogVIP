@@ -110,6 +110,7 @@
     <string name="delete">Διαγραφή</string>
     <string name="phone_item">Τηλέφωνο</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
+    <string name="submit">ΥΠΟΒΟΛΗ</string>
     <string name="clear">ΚΑΘΑΡΙΣΜΟΣ</string>
     <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
     <string name="required_fields_petsitter">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν pet sitter στην εφαρμογή.</string>
@@ -209,6 +210,7 @@
     <string name="small_size_gr">ΜΙΚΡΟ</string>
     <string name="half_blood_gr">ΗΜΙΑΙΜΟ</string>
     <string name="chrctr_gr">ΧΑΡΑΚΤΗΡΑΣ</string>
+    <string name="add_comment_gr">ΠΡΟΣΘΗΚΗ ΣΧΟΛΙΟΥ</string>
     <string name="genre_gr">ΦΥΛΛΟ</string>
     <string name="weight_gr">ΒΑΡΟΣ ΣΕ ΚΙΛΑ</string>
     <string name="pick_pet_gr">ΕΠΙΛΟΓΗ ΚΑΤΟΙΚΙΔΙΟΥ</string>
@@ -341,8 +343,11 @@
     <string name="manipulate_new_booking_info2">Η ανάθεση φύλαξης αφορά σε:</string>
     <string name="manipulate_new_booking_info3">για το χρονικό διάστημα από %1$s έως %2$s.</string>
     <string name="manipulate_new_booking_info4">Έχεις περιθώριο μέχρι και τις %1$s για να αποδεχθείς την ανάθεση!</string>
+    <string name="rate_booking_info1">Βαθμολογήστε τον χρήστη\n%1$s %2$s \nγια τον σκύλο του ( %3$s )</string>
     <string name="approve_gr">Αποδοχη</string>
     <string name="reject_gr">Απορριψη</string>
+    <string name="completed">ΟΛΟΚΛΗΡΩΘΗΚΕ</string>
+    <string name="ongoing">ΣΕ ΕΞΕΛΙΞΗ</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>
@@ -374,6 +379,7 @@
     <string name="weight_plhldr"><u>Βάρος</u></string>
     <string name="neutered_plhldr">Στειρωμένο</string>
     <string name="chrctr_plhldr"><u>Χαρακτήρας</u></string>
+    <string name="comment_plhldr"><u>Σχόλιο</u></string>
     <string name="love_match_location_plhldr">Τοποθεσία - Ράτσα</string>
     <string name="location_filter_plhldr">Τοποθεσία</string>
     <string name="race_filter_plhldr">Ράτσα</string>

@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
+import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.R;
@@ -86,8 +87,18 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     }
 
     @Override
-    public void onBaseViewClick(View view) {
+    public void onBaseViewClick(View view) {}
 
+    @Override
+    public void onFragmentRcvItemClick(BookingObj bookingObj, int type) {
+        if (type == 1) {
+            if (bookingObj.getCompleted() == 1) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(getResources().getString(R.string.parcelable_obj), bookingObj);
+                startActivity(new Intent(this, RateSitterActivity.class).putExtras(bundle));
+            }
+            Log.e(debugTag, bookingObj.getCompleted() + " COMPLETED");
+        }
     }
 
     @Override
@@ -124,7 +135,7 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     @Override
     public void onSuccess(OwnerSitterBookingsResponse response) {
         dismissDialog();
-        Log.e(debugTag, "onSuccess" + response.getId() + " USER ROLE ID");
+//        Log.e(debugTag, "onSuccess =>" + response.getOwner_bookings() + " "+ response.getSitter_bookings());
         if (response.getCode() == AppConfig.STATUS_OK) {
             mBinding.setHaserror(false);
         } else if (response.getCode() == AppConfig.ERROR_NO_OWNER_EXISTS || response.getCode() == AppConfig.ERROR_NO_SITTER_EXISTS || response.getCode() == AppConfig.ERROR_NO_OWNER_AND_SITTER_EXIST){

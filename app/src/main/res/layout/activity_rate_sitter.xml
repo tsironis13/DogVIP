@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.petsitter.BookingObj" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/cntFrml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/status_bar_height_keyboard_exists"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:fitsSystemWindows="true">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/info1Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="@{@string/rate_booking_info1(obj.name, obj.surname, obj.p_name)}" />
+
+                    <TextView
+                        android:id="@+id/info2Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:textSize="15sp"
+                        android:text="@string/manipulate_new_booking_info2"
+                        app:layout_constraintTop_toBottomOf="@+id/info1Ttv"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/servicesLlt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toBottomOf="@+id/info2Ttv"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:id="@+id/info3Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textSize="15sp"
+                        android:text="@{@string/manipulate_new_booking_info3(obj.start_date, obj.end_date)}"
+                        app:layout_constraintTop_toBottomOf="@+id/servicesLlt"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <RatingBar
+                        android:id="@+id/rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/ratingBarStyle"
+                        android:layout_marginTop="15dp"
+                        android:numStars="5"
+                        app:layout_constraintTop_toBottomOf="@+id/info3Ttv"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <TextView
+                        android:id="@+id/addCommentTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/weightLlt"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:text="@string/add_comment_gr"
+                        app:layout_constraintTop_toBottomOf="@+id/rating"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/addCommentLlt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:elevation="2dp"
+                        app:layout_constraintTop_toBottomOf="@+id/addCommentTtv"
+                        app:layout_constraintLeft_toLeftOf="parent">
+
+                        <EditText
+                            android:id="@+id/addCommentEdt"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:inputType="textMultiLine"
+                            android:minLines="9"
+                            android:gravity="top|start"
+                            android:maxLines="13"
+                            android:padding="11dp"
+                            android:hint="@string/comment_plhldr"
+                            android:textSize="13sp"
+                            android:background="@android:color/transparent"
+                            android:scrollbars="vertical" />
+
+                    </LinearLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

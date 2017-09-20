@@ -93,6 +93,9 @@ public class PendingSitterBookingsActivity extends BaseActivity implements PetSi
     }
 
     @Override
+    public void onFragmentRcvItemClick(BookingObj bookingObj, int type) {}
+
+    @Override
     public void onSuccess(OwnerSitterBookingsResponse response) {
         dismissDialog();
         if (response.getData().isEmpty()) {

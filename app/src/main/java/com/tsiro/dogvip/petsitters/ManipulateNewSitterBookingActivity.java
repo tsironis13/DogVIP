@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.R;
@@ -98,6 +99,9 @@ public class ManipulateNewSitterBookingActivity extends BaseActivity implements 
 
     @Override
     public void onBaseViewClick(View view) {}
+
+    @Override
+    public void onFragmentRcvItemClick(BookingObj bookingObj, int type) {}
 
     @Override
     public void onSuccess(OwnerSitterBookingsResponse response) {

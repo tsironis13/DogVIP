@@ -75,6 +75,15 @@ public class BookingObj implements Parcelable{
     @SerializedName("services")
     @Expose
     private List<Integer> services;
+    @SerializedName("completed")
+    @Expose
+    private int completed;
+    @SerializedName("voted")
+    @Expose
+    private int voted;
+    @SerializedName("state")
+    @Expose
+    private int state;
 
     public BookingObj() {}
 
@@ -95,6 +104,10 @@ public class BookingObj implements Parcelable{
         end_date = in.readString();
         if (services == null) services = new ArrayList<>();
         in.readList(services, Integer.class.getClassLoader());
+        completed = in.readInt();
+        voted = in.readInt();
+        state = in.readInt();
+        image_url = in.readString();
     }
 
     public static final Creator<BookingObj> CREATOR = new Creator<BookingObj>() {
@@ -189,6 +202,18 @@ public class BookingObj implements Parcelable{
 
     public void setServices(List<Integer> services) { this.services = services; }
 
+    public int getCompleted() { return completed; }
+
+    public void setCompleted(int completed) { this.completed = completed; }
+
+    public int getVoted() { return voted; }
+
+    public void setVoted(int voted) { this.voted = voted; }
+
+    public int getState() { return state; }
+
+    public void setState(int state) { this.state = state; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -211,5 +236,9 @@ public class BookingObj implements Parcelable{
         dest.writeString(start_date);
         dest.writeString(end_date);
         dest.writeList(services);
+        dest.writeInt(completed);
+        dest.writeInt(voted);
+        dest.writeInt(state);
+        dest.writeString(image_url);
     }
 }

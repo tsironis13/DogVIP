@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.petsitters;
 
+import android.util.Log;
 import android.view.View;
 
 import com.tsiro.dogvip.petsitters.sitter_assignment.SitterAssignmentContract;

@@ -23,10 +23,10 @@ public class OwnerSitterBookingsResponse implements Parcelable{
     @SerializedName("id") //user role id
     @Expose
     private int id;
-    @SerializedName("sitter_booking")
+    @SerializedName("sitter_bookings")
     @Expose
     private ArrayList<BookingObj> sitter_bookings;
-    @SerializedName("owner_booking")
+    @SerializedName("owner_bookings")
     @Expose
     private ArrayList<BookingObj> owner_bookings;
     @SerializedName("owner_pets")
@@ -44,6 +44,11 @@ public class OwnerSitterBookingsResponse implements Parcelable{
     protected OwnerSitterBookingsResponse(Parcel in) {
         code = in.readInt();
         id = in.readInt();
+        if (owner_bookings == null) owner_bookings = new ArrayList<>();
+        owner_bookings = in.createTypedArrayList(BookingObj.CREATOR);
+        if (sitter_bookings == null) sitter_bookings = new ArrayList<>();
+        sitter_bookings = in.createTypedArrayList(BookingObj.CREATOR);
+        if (owner_pets == null) owner_pets = new ArrayList<>();
         owner_pets = in.createTypedArrayList(PetObj.CREATOR);
     }
 
@@ -98,6 +103,8 @@ public class OwnerSitterBookingsResponse implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(code);
         dest.writeInt(id);
+        dest.writeTypedList(owner_bookings);
+        dest.writeTypedList(sitter_bookings);
         dest.writeTypedList(owner_pets);
     }
 }

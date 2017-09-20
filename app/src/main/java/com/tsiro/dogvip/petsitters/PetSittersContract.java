@@ -1,6 +1,7 @@
 package com.tsiro.dogvip.petsitters;
 
 import com.tsiro.dogvip.POJO.Image;
+import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
@@ -19,8 +20,13 @@ public interface PetSittersContract {
         void onBaseViewClick(android.view.View view);
     }
 
+    interface FrgmtView {
+        void onBaseViewClick(android.view.View view);
+    }
+
     interface View extends Lifecycle.View {
         void onBaseViewClick(android.view.View view);
+        void onFragmentRcvItemClick(BookingObj bookingObj, int type);//0 sitter booking, 1 owner booking
         void onSuccess(OwnerSitterBookingsResponse response);
         void onError(int resource);
     }
