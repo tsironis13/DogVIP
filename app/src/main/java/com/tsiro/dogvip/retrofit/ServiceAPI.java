@@ -25,6 +25,7 @@ import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
+import com.tsiro.dogvip.POJO.petsitter.RateBookingRequest;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
@@ -129,6 +130,8 @@ public interface ServiceAPI {
     @POST("actions.php")
     Flowable<OwnerSitterBookingsResponse> getOwnerSitterBookings(@Body OwnerSitterBookingsRequest request);
 
+    @POST("actions.php")
+    Flowable<OwnerSitterBookingsResponse> rateSitterBooking(@Body RateBookingRequest request);
 //    @Multipart
 //    @POST("actions.php")
 //    Flowable<GetOwnerResponse> submitOwner(@Part("body") RequestBody body, @Part MultipartBody.Part image);

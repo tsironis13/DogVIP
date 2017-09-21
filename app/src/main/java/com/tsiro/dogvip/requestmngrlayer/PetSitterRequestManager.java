@@ -8,6 +8,7 @@ import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
+import com.tsiro.dogvip.POJO.petsitter.RateBookingRequest;
 import com.tsiro.dogvip.mypets.GetOwnerViewModel;
 import com.tsiro.dogvip.mypets.owner.OwnerViewModel;
 import com.tsiro.dogvip.networklayer.MyPetsAPIService;
@@ -55,5 +56,10 @@ public class PetSitterRequestManager {
     public Flowable<OwnerSitterBookingsResponse> getOwnerSitterBookings(OwnerSitterBookingsRequest request, PetSittersViewModel viewModel) {
         //in case server response is faster than activity lifecycle callback methods
         return mPetSitterAPIService.getOwnerSitterBookings(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
+    }
+
+    public Flowable<OwnerSitterBookingsResponse> rateSitterBooking(RateBookingRequest request, PetSittersViewModel viewModel) {
+        //in case server response is faster than activity lifecycle callback methods
+        return mPetSitterAPIService.rateSitterBooknig(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 }

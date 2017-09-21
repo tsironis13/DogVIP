@@ -3,6 +3,7 @@ package com.tsiro.dogvip.petsitters;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
+import com.tsiro.dogvip.POJO.petsitter.RateBookingRequest;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.PetSitterRequestManager;
@@ -47,6 +48,19 @@ public class PetSittersViewModel implements PetSittersContract.ViewModel {
     public void onViewDetached() {
         mViewCallback = null;
         if (mDisp != null) mDisp.dispose();
+    }
+
+    @Override
+    public void rateSitterBoooking(RateBookingRequest request) {
+        if (requestState != AppConfig.REQUEST_RUNNING) {
+            mProcessor = AsyncProcessor.create();
+            mDisp = mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new PetSittersObserver());
+
+            mRequestManager.rateSitterBooking(request, this).subscribe(mProcessor);
+        }
     }
 
     @Override

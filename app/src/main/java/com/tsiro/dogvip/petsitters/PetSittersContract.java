@@ -5,6 +5,7 @@ import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
+import com.tsiro.dogvip.POJO.petsitter.RateBookingRequest;
 import com.tsiro.dogvip.app.Lifecycle;
 
 import okhttp3.MultipartBody;
@@ -35,6 +36,7 @@ public interface PetSittersContract {
         void getPendingBookings(OwnerSitterBookingsRequest request);
         void getBookingDetails(OwnerSitterBookingsRequest request);
         void getOwnerSitterBookings(OwnerSitterBookingsRequest request);
+        void rateSitterBoooking(RateBookingRequest request);
         void setRequestState(int state);
     }
 

@@ -72,6 +72,7 @@
     <string name="get_pending_sitter_bookings">get_pending_sitter_bookings</string>
     <string name="approve_booking">approve_booking</string>
     <string name="reject_booking">reject_booking</string>
+    <string name="rate_sitter_booking">rate_sitter_booking</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -136,6 +137,7 @@
     <string name="booking_already_pending">Δεν μπορείς να κάνεις νέα αναθεση. Υπάρχει μία σε εξέλιξη.</string>
     <string name="new_sitter_booking_msg">Νέα αίτηση ανάθεσης φύλαξης.</string>
     <string name="manipulate_new_sitter_booking_title">Αίτημα φύλαξης</string>
+    <string name="rating_not_valid">Η βαθμολογία δεν είναι έγκυρη</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
