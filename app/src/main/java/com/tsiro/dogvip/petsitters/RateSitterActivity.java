@@ -21,6 +21,7 @@ import com.tsiro.dogvip.POJO.petsitter.RateBookingRequest;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityRateSitterBinding;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 import com.tsiro.dogvip.petsitters.sitter_assignment.SearchSitterFiltersActivity;
@@ -47,7 +48,10 @@ public class RateSitterActivity extends BaseActivity implements PetSittersContra
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_rate_sitter);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
-
+        if (getSupportActionBar()!= null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setTitle(getResources().getString(R.string.rate_sitter_title));
+        }
         mViewModel = new PetSittersViewModel(PetSitterRequestManager.getInstance());
         mToken = getMyAccountManager().getAccountDetails().getToken();
         if (savedInstanceState != null) {
@@ -138,11 +142,14 @@ public class RateSitterActivity extends BaseActivity implements PetSittersContra
     @Override
     public void onSuccess(OwnerSitterBookingsResponse response) {
         dismissDialog();
+        startActivity(new Intent(this, PetSittersActivity.class));
+        finish();
     }
 
     @Override
     public void onError(int resource) {
         dismissDialog();
+        showSnackBar(getResources().getString(R.string.error), "", Snackbar.LENGTH_SHORT, getResources().getString(R.string.close));
     }
 
     private void submitRating() {

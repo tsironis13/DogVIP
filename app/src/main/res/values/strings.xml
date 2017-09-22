@@ -73,6 +73,7 @@
     <string name="approve_booking">approve_booking</string>
     <string name="reject_booking">reject_booking</string>
     <string name="rate_sitter_booking">rate_sitter_booking</string>
+    <string name="get_sitter_comments">get_sitter_comments</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -123,8 +124,8 @@
     <string name="no_items">Δεν υπάρχουν διαθέσιμα στοιχεία.</string>
     <string name="no_owner_created">Για να δεις τη συγκεκριμένη λειτουργία πρέπει να είσαι ιδιοκτήτης κατοικίδιου.\n\n Μπορείς να γίνεις ιδιοκτήτης μέσου του μενού Τα κατοικίδια μου.</string>
     <string name="city_no_match">Η συγκεκριμένη πόλη δεν είναι διαθέσιμη.</string>
-    <string name="race_not_match">Η συγκεκριμένη ράτσα δεν είναι διαθέσιμη. Επιλέξτε μία από τις προτεινόμενες κατά την πληκτρολόγηση.</string>
-    <string name="city_race_not_match">Η συγκεκριμένη πόλη ή ράτσα δεν είναι διαθέσιμη.</string>
+    <string name="race_not_match">Η συγκεκριμένη φυλή δεν είναι διαθέσιμη. Επιλέξτε μία από τις προτεινόμενες κατά την πληκτρολόγηση.</string>
+    <string name="city_race_not_match">Η συγκεκριμένη πόλη ή φυλή δεν είναι διαθέσιμη.</string>
     <string name="no_owner_exists">Δεν βρέθηκε ιδιοκτήτης για το συγκεκριμένο λογαριασμό.</string>
     <string name="no_petsitter_exists">Δεν βρέθηκε pet sitter για το συγκεκριμένο λογαριασμό.</string>
     <string name="not_valid_age">Μη έγκυρος αριθμός ηλικίας</string>
@@ -193,6 +194,7 @@
     <string name="end_date">end_date</string>
     <string name="parcelable_list">parcelable_list</string>
     <string name="pet_list">pet_list</string>
+    <string name="name_surname">name_surname</string>
     <!--<string name="name">name</string>-->
     <!--<string name="surname">surname</string>-->
     <!--<string name="birth_date">birth_date</string>-->
@@ -206,7 +208,7 @@
     <string name="age_gr">ΗΛΙΚΙΑ</string>
     <string name="city_gr">ΠΟΛΗ</string>
     <string name="phone_gr">ΤΗΛΕΦΩΝΟ</string>
-    <string name="race_gr">ΡΑΤΣΑ-ΦΥΛΗ</string>
+    <string name="race_gr">ΦΥΛΗ</string>
     <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
     <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
     <string name="small_size_gr">ΜΙΚΡΟ</string>
@@ -328,8 +330,10 @@
     <!-- PET SITTERS ACTIVITY -->
     <string name="pet_sitters_title">Pet Sitters</string>
     <string name="booking_details_title">Λεπτομέρειες ανάθεσης</string>
+    <string name="rate_sitter_title">Βαθμολογία χρήστη</string>
     <string name="pending_sitter_bookings_title">Αιτήματα φύλαξης</string>
     <string name="show_place_images">φωτογραφιες χωρου</string>
+    <string name="show_comments">Δες σχολια</string>
     <string name="search_sitter_title">Αναζήτηση Sitter</string>
     <string name="services_filter_lbl">Ενδιαφέρομαι για</string>
     <string name="location_filter_lbl">Τοποθεσία</string>
@@ -375,16 +379,16 @@
     <string name="city_plhldr"><u>Πόλη</u></string>
     <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
     <string name="phone_req_plhldr">*<u>Τηλέφωνο</u></string>
-    <string name="race_plhldr">*<u>Ράτσα-Φυλή</u></string>
+    <string name="race_plhldr">*<u>Φυλή</u></string>
     <string name="microchip_plhldr"><u>Αριθμός Microchip</u></string>
     <string name="genre_plhldr">*<u>Φύλλο</u></string>
     <string name="weight_plhldr"><u>Βάρος</u></string>
     <string name="neutered_plhldr">Στειρωμένο</string>
     <string name="chrctr_plhldr"><u>Χαρακτήρας</u></string>
     <string name="comment_plhldr"><u>Σχόλιο</u></string>
-    <string name="love_match_location_plhldr">Τοποθεσία - Ράτσα</string>
+    <string name="love_match_location_plhldr">Τοποθεσία - Φυλή</string>
     <string name="location_filter_plhldr">Τοποθεσία</string>
-    <string name="race_filter_plhldr">Ράτσα</string>
+    <string name="race_filter_plhldr">Φυλή</string>
     <string name="date_plhldr">*<u>Ημερομηνία</u></string>
     <string name="time_plhldr">*<u>Ωρα</u></string>
     <string name="location_lost_plhldr">*<u>Περιοχή</u></string>

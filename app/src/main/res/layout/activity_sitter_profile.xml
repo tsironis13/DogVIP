@@ -76,6 +76,44 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/ratingTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(sitter.rating)}"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_toLeftOf="@+id/starImgv"
+                        android:layout_toStartOf="@+id/starImgv"
+                        android:visibility="@{sitter.rating != 0 ? View.VISIBLE : View.GONE}" />
+
+                    <ImageView
+                        android:id="@+id/starImgv"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_star"
+                        android:visibility="@{sitter.rating != 0 ? View.VISIBLE : View.GONE}"
+                        android:contentDescription="@string/image_cont_desc" />
+
+                    <Button
+                        android:id="@+id/showCommentsBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:textSize="13sp"
+                        android:layout_below="@+id/ratingTtv"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/show_comments"
+                        android:elevation="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@android:color/white"
+                        android:background="@android:color/transparent" />
+
+                    <TextView
                         android:id="@+id/surnameTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

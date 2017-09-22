@@ -36,6 +36,7 @@ import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivitySitterProfileBinding;
+import com.tsiro.dogvip.petsitters.SitterCommentsActivity;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.io.IOException;
@@ -121,6 +122,16 @@ public class SitterProfileActivity extends BaseActivity {
             }
         });
         RxEventBus.add(this, disp1);
+        Disposable disp2 = RxView.clicks(mBinding.showCommentsBtn).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                Bundle bundle = new Bundle();
+                bundle.putInt(getResources().getString(R.string.id), petSitterObj.getId());
+                bundle.putString(getResources().getString(R.string.name_surname), petSitterObj.getName() + " "+petSitterObj.getSurname());
+                startActivity(new Intent(SitterProfileActivity.this, SitterCommentsActivity.class).putExtras(bundle));
+            }
+        });
+        RxEventBus.add(this, disp2);
     }
 
     @Override

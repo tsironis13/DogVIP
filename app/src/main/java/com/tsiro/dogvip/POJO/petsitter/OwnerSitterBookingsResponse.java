@@ -38,6 +38,9 @@ public class OwnerSitterBookingsResponse implements Parcelable{
     @SerializedName("data")
     @Expose
     private List<BookingObj> data;
+    @SerializedName("comment_data")
+    @Expose
+    private List<CommentObj> comment_data;
 
     public OwnerSitterBookingsResponse() {}
 
@@ -88,11 +91,15 @@ public class OwnerSitterBookingsResponse implements Parcelable{
 
     public void setBooking(BookingObj booking) { this.booking = booking; }
 
-    public List<BookingObj> getData() { return data;                                     }
+    public List<BookingObj> getData() { return data; }
 
     public void setData(List<BookingObj> data) {
         this.data = data;
     }
+
+    public List<CommentObj> getComment_data() { return comment_data; }
+
+    public void setComment_data(List<CommentObj> comment_data) { this.comment_data = comment_data; }
 
     @Override
     public int describeContents() {

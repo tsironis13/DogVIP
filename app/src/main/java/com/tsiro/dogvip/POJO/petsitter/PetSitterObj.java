@@ -98,6 +98,9 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
     @SerializedName("end_date")
     @Expose
     private long end_date;
+    @SerializedName("rating")
+    @Expose
+    private float rating;
 
     public PetSitterObj() {}
 
@@ -129,6 +132,7 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         has_services = in.readByte() != 0;
         start_date = in.readLong();
         end_date = in.readLong();
+        rating = in.readFloat();
     }
 
     public static final Creator<PetSitterObj> CREATOR = new Creator<PetSitterObj>() {
@@ -279,6 +283,10 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
 
     public void setEnd_date(long end_date) { this.end_date = end_date; }
 
+    public float getRating() { return rating; }
+
+    public void setRating(float rating) { this.rating = rating; }
+
     @Override
     public int describeContents() { return 0; }
 
@@ -308,5 +316,6 @@ public class PetSitterObj extends BaseObservable implements Parcelable {
         dest.writeByte((byte) (has_services ? 1 : 0));
         dest.writeLong(start_date);
         dest.writeLong(end_date);
+        dest.writeFloat(rating);
     }
 }

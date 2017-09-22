@@ -78,11 +78,34 @@
             app:layout_constraintLeft_toRightOf="@+id/petImgv" />
 
         <TextView
+            android:id="@+id/datecreatedTtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:text="@{obj.date_created}"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(obj.vote)}"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
+            android:visibility="@{obj.vote != 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/datecreatedTtv"
+            app:layout_constraintRight_toLeftOf="@+id/starImgv" />
+
+        <ImageView
+            android:id="@+id/starImgv"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:src="@drawable/ic_star"
+            android:visibility="@{obj.vote != 0 ? View.VISIBLE : View.GONE}"
+            android:contentDescription="@string/image_cont_desc"
+            app:layout_constraintTop_toBottomOf="@+id/datecreatedTtv"
             app:layout_constraintRight_toRightOf="parent" />
 
         <TextView

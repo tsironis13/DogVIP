@@ -21,6 +21,8 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityPetSittersBinding;
+import com.tsiro.dogvip.ownerpets.OwnerPetsActivity;
+import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 import com.tsiro.dogvip.petsitters.sitter_assignment.SearchSitterFiltersActivity;
 import com.tsiro.dogvip.requestmngrlayer.PetSitterRequestManager;
@@ -91,13 +93,18 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
 
     @Override
     public void onFragmentRcvItemClick(BookingObj bookingObj, int type) {
-        if (type == 1) {
-            if (bookingObj.getCompleted() == 1) {
+        if (type == 1) {//my pet assignments
+            if (bookingObj.getCompleted() == 1 && bookingObj.getVote() == 0) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(getResources().getString(R.string.parcelable_obj), bookingObj);
                 startActivity(new Intent(this, RateSitterActivity.class).putExtras(bundle));
+                finish();
             }
             Log.e(debugTag, bookingObj.getCompleted() + " COMPLETED");
+        } else { //sitter assignments
+            Bundle bundle = new Bundle();
+            bundle.putInt(getResources().getString(R.string.user_role_id), bookingObj.getOwner_id());
+            startActivity(new Intent(this, OwnerPetsActivity.class).putExtras(bundle));
         }
     }
 

@@ -33,6 +33,7 @@ public interface PetSittersContract {
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
+        void getSitterComments(OwnerSitterBookingsRequest request);
         void getPendingBookings(OwnerSitterBookingsRequest request);
         void getBookingDetails(OwnerSitterBookingsRequest request);
         void getOwnerSitterBookings(OwnerSitterBookingsRequest request);

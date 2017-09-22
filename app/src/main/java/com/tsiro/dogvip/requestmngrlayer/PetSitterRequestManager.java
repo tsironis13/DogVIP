@@ -62,4 +62,9 @@ public class PetSitterRequestManager {
         //in case server response is faster than activity lifecycle callback methods
         return mPetSitterAPIService.rateSitterBooknig(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
     }
+
+    public Flowable<OwnerSitterBookingsResponse> getSitterComments(OwnerSitterBookingsRequest request, PetSittersViewModel viewModel) {
+        //in case server response is faster than activity lifecycle callback methods
+        return mPetSitterAPIService.getSitterComments(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
+    }
 }

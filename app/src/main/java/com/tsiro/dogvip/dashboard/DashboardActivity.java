@@ -148,7 +148,6 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         Disposable disp5 = RxView.clicks(mBinding.sittersLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-//                sectionNotAvailableYet();
                 startActivity(new Intent(DashboardActivity.this, PetSittersActivity.class));
             }
         });

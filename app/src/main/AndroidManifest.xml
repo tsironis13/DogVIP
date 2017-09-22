@@ -299,9 +299,18 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".petsitters.PetSittersActivity" />
+        </activity>
+
+        <activity
+            android:name=".petsitters.SitterCommentsActivity"
+            android:screenOrientation="portrait">
+            <!--android:label="@string/app_name">-->
             <!--<meta-data-->
                 <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value=".dashboard.DashboardActivity" />-->
+                <!--android:value=".petsitters.PetSittersActivity" />-->
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

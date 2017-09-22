@@ -135,6 +135,30 @@ public class PetSitterAPIService {
                 });
     }
 
+    public Flowable<OwnerSitterBookingsResponse> getSitterComments(OwnerSitterBookingsRequest request, final PetSittersViewModel viewModel) {
+        return serviceAPI.getSitterComments(request)
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                    }
+                })
+                .doOnNext(new Consumer<OwnerSitterBookingsResponse>() {
+                    @Override
+                    public void accept(@NonNull OwnerSitterBookingsResponse response) throws Exception {
+                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                    }
+                });
+    }
+
     public Flowable<OwnerSitterBookingsResponse> rateSitterBooknig(RateBookingRequest request, final PetSittersViewModel viewModel) {
         return serviceAPI.rateSitterBooking(request)
                 .doOnSubscribe(new Consumer<Subscription>() {

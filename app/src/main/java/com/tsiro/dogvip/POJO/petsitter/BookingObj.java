@@ -78,9 +78,9 @@ public class BookingObj implements Parcelable{
     @SerializedName("completed")
     @Expose
     private int completed;
-    @SerializedName("voted")
+    @SerializedName("vote")
     @Expose
-    private int voted;
+    private float vote;
     @SerializedName("state")
     @Expose
     private int state;
@@ -105,7 +105,7 @@ public class BookingObj implements Parcelable{
         if (services == null) services = new ArrayList<>();
         in.readList(services, Integer.class.getClassLoader());
         completed = in.readInt();
-        voted = in.readInt();
+        vote = in.readFloat();
         state = in.readInt();
         image_url = in.readString();
     }
@@ -206,9 +206,9 @@ public class BookingObj implements Parcelable{
 
     public void setCompleted(int completed) { this.completed = completed; }
 
-    public int getVoted() { return voted; }
+    public float getVote() { return vote; }
 
-    public void setVoted(int voted) { this.voted = voted; }
+    public void setVote(float vote) { this.vote = vote; }
 
     public int getState() { return state; }
 
@@ -237,7 +237,7 @@ public class BookingObj implements Parcelable{
         dest.writeString(end_date);
         dest.writeList(services);
         dest.writeInt(completed);
-        dest.writeInt(voted);
+        dest.writeFloat(vote);
         dest.writeInt(state);
         dest.writeString(image_url);
     }

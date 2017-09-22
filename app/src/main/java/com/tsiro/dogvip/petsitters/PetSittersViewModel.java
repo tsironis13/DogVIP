@@ -51,6 +51,19 @@ public class PetSittersViewModel implements PetSittersContract.ViewModel {
     }
 
     @Override
+    public void getSitterComments(OwnerSitterBookingsRequest request) {
+        if (requestState != AppConfig.REQUEST_RUNNING) {
+            mProcessor = AsyncProcessor.create();
+            mDisp = mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new PetSittersObserver());
+
+            mRequestManager.getSitterComments(request, this).subscribe(mProcessor);
+        }
+    }
+
+    @Override
     public void rateSitterBoooking(RateBookingRequest request) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mProcessor = AsyncProcessor.create();

@@ -131,6 +131,9 @@ public interface ServiceAPI {
     Flowable<OwnerSitterBookingsResponse> getOwnerSitterBookings(@Body OwnerSitterBookingsRequest request);
 
     @POST("actions.php")
+    Flowable<OwnerSitterBookingsResponse> getSitterComments(@Body OwnerSitterBookingsRequest request);
+
+    @POST("actions.php")
     Flowable<OwnerSitterBookingsResponse> rateSitterBooking(@Body RateBookingRequest request);
 //    @Multipart
 //    @POST("actions.php")
