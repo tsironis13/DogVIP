@@ -31,6 +31,7 @@ import com.tsiro.dogvip.mychatrooms.MyChatRoomsActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.petsitters.PendingSitterBookingsActivity;
 import com.tsiro.dogvip.petsitters.PetSittersActivity;
+import com.tsiro.dogvip.profs.ProfProfileActivity;
 import com.tsiro.dogvip.requestmngrlayer.DashboardRequestManager;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
@@ -162,7 +163,8 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         Disposable disp7 = RxView.clicks(mBinding.profsLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                sectionNotAvailableYet();
+                startActivity(new Intent(DashboardActivity.this, ProfProfileActivity.class));
+//                sectionNotAvailableYet();
             }
         });
         RxEventBus.add(this, disp7);

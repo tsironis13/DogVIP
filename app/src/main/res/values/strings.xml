@@ -74,6 +74,7 @@
     <string name="reject_booking">reject_booking</string>
     <string name="rate_sitter_booking">rate_sitter_booking</string>
     <string name="get_sitter_comments">get_sitter_comments</string>
+    <string name="get_user_prof">get_user_prof</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -212,6 +213,7 @@
     <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
     <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
     <string name="small_size_gr">ΜΙΚΡΟ</string>
+    <string name="normal_size_gr">ΚΑΝΟΝΙΚΟ</string>
     <string name="half_blood_gr">ΗΜΙΑΙΜΟ</string>
     <string name="chrctr_gr">ΧΑΡΑΚΤΗΡΑΣ</string>
     <string name="add_comment_gr">ΠΡΟΣΘΗΚΗ ΣΧΟΛΙΟΥ</string>
@@ -223,8 +225,8 @@
     <string name="location_gr">ΠΕΡΙΟΧΗ</string>
     <string name="contact_phone_gr">ΤΗΛ. ΕΠΙΚΟΙΝΩΝΙΑΣ</string>
     <string name="more_info_gr">ΠΕΡΙΣ. ΠΛΗΡΟΦΟΡΙΕΣ</string>
-    <string name="pet_size_gr">ΜΕΓΕΘΟΣ ΠΟΥ ΑΝΑΛΑΜΒΑΝΩ</string>
-    <string name="pet_size_lowercase_gr">Μέγεθος που αναλαμβάνω:</string>
+    <string name="pet_size_gr">ΜΕΓΕΘΟΙ ΠΟΥ ΑΝΑΛΑΜΒΑΝΩ</string>
+    <string name="pet_size_lowercase_gr">Μεγέθοι που αναλαμβάνω:</string>
     <string name="years_exp_gr">ΕΤΗ ΕΜΠΕΙΡΙΑΣ ΣΤΗΝ ΚΑΤΟΧΗ/ΦΥΛΑΞΗ \nΣΚΥΛΟΥ</string>
     <string name="years_exp_lowercase_gr">Έτη εμπειρίας στη φύλαξη σκύλου:</string>
     <string name="pet_place_lowercase_gr">Διαμονή κατοικιδίου:</string>
@@ -341,6 +343,7 @@
     <string name="enddate_filter_lbl">Έως</string>
     <string name="small_size">Μικρό</string>
     <string name="normal_size">Κανονικό</string>
+    <string name="all_size">Μικρό, Κανονικό</string>
     <string name="in">Εντός οικίας</string>
     <string name="out">Εκτός οικίας</string>
     <string name="mono">Μονοκατοικία</string>
@@ -350,10 +353,12 @@
     <string name="manipulate_new_booking_info3">για το χρονικό διάστημα από %1$s έως %2$s.</string>
     <string name="manipulate_new_booking_info4">Έχεις περιθώριο μέχρι και τις %1$s για να αποδεχθείς την ανάθεση!</string>
     <string name="rate_booking_info1">Βαθμολογήστε τον χρήστη\n%1$s %2$s \nγια τον σκύλο του ( %3$s )</string>
+    <string name="user_rate_booking_info1">Βαθμολογήστε τον χρήστη\n%1$s %2$s \nγια τον σκύλο μου ( %3$s )</string>
     <string name="approve_gr">Αποδοχη</string>
     <string name="reject_gr">Απορριψη</string>
     <string name="completed">ΟΛΟΚΛΗΡΩΘΗΚΕ</string>
     <string name="ongoing">ΣΕ ΕΞΕΛΙΞΗ</string>
+    <string name="pending">ΣΕ ΕΚΚΡΕΜΟΤΗΤΑ</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>
@@ -414,6 +419,13 @@
     <string name="service5">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟ ΧΩΡΟ ΣΑΣ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
     <string name="service6">ΒΟΛΤΑ ΣΚΥΛΟΥ</string>
 
+    <string name="service1_filter">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟ ΧΩΡΟ ΣΑΣ)</string>
+    <string name="service2_filter">ΔΙΑΝΥΚΤΕΡΕΥΣΗ \n(ΣΤΟ ΧΩΡΟ ΜΟΥ)</string>
+    <string name="service3_filter">ΤΑΚΤΙΚΕΣ ΕΠΙΣΚΕΨΕΙΣ \n(ΣΤΟ ΧΩΡΟ ΜΟΥ)</string>
+    <string name="service4_filter">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟ ΧΩΡΟ ΣΑΣ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
+    <string name="service5_filter">ΗΜΕΡΗΣΙΑ ΦΥΛΑΞΗ \nΣΤΟ ΧΩΡΟ ΜΟΥ \n(ΧΩΡΙΣ ΔΙΑΝΥΚΤΕΡΕΥΣΗ)</string>
+    <string name="service6_filter">ΒΟΛΤΑ ΣΚΥΛΟΥ</string>
+
     <string name="service1_profile">Διανυκτέρευση (στο χώρο μου)</string>
     <string name="service2_profile">Διανυκτέρευση (στο χώρο σας)</string>
     <string name="service3_profile">Τακτικές επισκέψεις (στο χώρο σας)</string>
@@ -422,15 +434,33 @@
     <string name="service6_profile">Βόλτα σκύλου</string>
 
     <string name="image_cont_desc">cont_desc</string>
+    <!-- sitter perspective services array -->
+    <string-array name="sitter_perspective_services">
+        <item name="sitter_perspective_service1">Διανυκτέρευση (στο χώρο μου)</item>
+        <item name="sitter_perspective_service2">Διανυκτέρευση (στο χώρο σας)</item>
+        <item name="sitter_perspective_service3">Τακτικές επισκέψεις (στο χώρο σας)</item>
+        <item name="sitter_perspective_service4">Ημερήσια φύλαξη (στο χώρο μου)</item>
+        <item name="sitter_perspective_service5">Ημερήσια φύλαξη (στο χώρο σας)</item>
+        <item name="sitter_perspective_service6">Βόλτα σκύλου</item>
+    </string-array>
 
-    <string-array name="services">
-        <item name="service1">Διανυκτέρευση (στο χώρο μου)</item>
-        <item name="service2">Διανυκτέρευση (στο χώρο σας)</item>
-        <item name="service3">Τακτικές επισκέψεις (στο χώρο σας)</item>
-        <item name="service4">Ημερήσια φύλαξη (στο χώρο μου)</item>
-        <item name="service5">Ημερήσια φύλαξη (στο χώρο σας)</item>
+    <string-array name="user_perspective_services">
+        <item name="service1">Διανυκτέρευση (στο χώρο σας)</item>
+        <item name="service2">Διανυκτέρευση (στο χώρο μου)</item>
+        <item name="service3">Τακτικές επισκέψεις (στο χώρο μου)</item>
+        <item name="service4">Ημερήσια φύλαξη (στο χώρο σας)</item>
+        <item name="service5">Ημερήσια φύλαξη (στο χώρο μου)</item>
         <item name="service6">Βόλτα σκύλου</item>
     </string-array>
+
+    <!--<string-array name="services">-->
+        <!--<item name="service1">Διανυκτέρευση (στο χώρο μου)</item>-->
+        <!--<item name="service2">Διανυκτέρευση (στο χώρο σας)</item>-->
+        <!--<item name="service3">Τακτικές επισκέψεις (στο χώρο μου)</item>-->
+        <!--<item name="service4">Ημερήσια φύλαξη (στο χώρο μου)</item>-->
+        <!--<item name="service5">Ημερήσια φύλαξη (στο χώρο σας)</item>-->
+        <!--<item name="service6">Βόλτα σκύλου</item>-->
+    <!--</string-array>-->
 
     <string-array name="pet_genres">
         <item name="male">Αρσενικό</item>
@@ -459,7 +489,7 @@
     </string-array>
 
     <string-array name="pet_sitters_tabs">
-        <item name="sitter_assignments">Αναθεσεις για αλλους</item>
-        <item name="my_pet_assignments">Αναθεσεις προς εμενα</item>
+        <item name="my_pet_assignments">Αναθεσεις προς αλλους sitter</item>
+        <item name="sitter_assignments">Οι αναθεσεις μου</item>
     </string-array>
 </resources>

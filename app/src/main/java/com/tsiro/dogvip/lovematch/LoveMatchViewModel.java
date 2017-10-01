@@ -1,12 +1,17 @@
 package com.tsiro.dogvip.lovematch;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
 import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,13 +31,17 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     private AsyncProcessor<LoveMatchResponse> mProcessor;
     private int requestState;
     private Disposable mLoveMatchDisp;
+    private Context context;
 
-    public LoveMatchViewModel(LoveMatchRequestManager mLoveMatchRequestManager) {
+    public LoveMatchViewModel(LoveMatchRequestManager mLoveMatchRequestManager, Context context) {
+        Log.e("LoveMatchViewModel", "LoveMatchViewModel");
         this.mLoveMatchRequestManager = mLoveMatchRequestManager;
+        this.context = context;
     }
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
+//        Log.e("onViewAttached", "onViewAttached");
         this.mViewClback = (LoveMatchContract.View) viewCallback;
     }
 
@@ -80,6 +89,21 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
 
             mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
         }
+    }
+
+    @Override
+    public void onViewClick(View view) {
+        mViewClback.onViewClick(view);
+    }
+
+    @Override
+    public void onLoveImageViewClick(View view) {
+        mViewClback.onLoveImageViewClick(view);
+    }
+
+    @Override
+    public void onMessageIconClick(View view) {
+        mViewClback.onMessageIconClick(view);
     }
 
     private class GetPetsByFilterObserver extends DisposableSubscriber<LoveMatchResponse> {

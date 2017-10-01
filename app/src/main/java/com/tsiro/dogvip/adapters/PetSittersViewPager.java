@@ -34,11 +34,11 @@ public class PetSittersViewPager extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                mFragment = SitterAssignmentsFrgmt.newInstance(data);
+                mFragment = MyPetAssignmentsFrgmt.newInstance(data);
                 if (pages[position] == null) pages[position] = mFragment;
                 return pages[position];
             case 1:
-                mFragment = MyPetAssignmentsFrgmt.newInstance(data);
+                mFragment = SitterAssignmentsFrgmt.newInstance(data);
                 if (pages[position] == null) pages[position] = mFragment;
                 return pages[position];
             default:

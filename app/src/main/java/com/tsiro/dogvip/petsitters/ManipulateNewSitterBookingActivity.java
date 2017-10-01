@@ -117,7 +117,7 @@ public class ManipulateNewSitterBookingActivity extends BaseActivity implements 
                     textView.setTypeface(Typeface.DEFAULT_BOLD);
                     mBinding.servicesLlt.addView(textView);
                 } else {
-                    String[] services = getResources().getStringArray(R.array.services);
+                    String[] services = getResources().getStringArray(R.array.sitter_perspective_services);
                     for (Integer service : response.getBooking().getServices()) {
                         TextView textView = new TextView(this);
                         textView.setText(services[service-1]);

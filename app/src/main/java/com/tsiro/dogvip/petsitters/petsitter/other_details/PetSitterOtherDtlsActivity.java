@@ -22,6 +22,7 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityPetSitterOtherDetailsBinding;
+import com.tsiro.dogvip.petsitters.PetSittersActivity;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterContract;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterViewModel;
@@ -166,7 +167,9 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     @Override
     public void onSuccess(PetSitterObj response) {
         dismissDialog();
-        showSnackBar(getResources().getString(R.string.success_action), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+        startActivity(new Intent(this, PetSitterActivity.class));
+        finish();
+//        showSnackBar(getResources().getString(R.string.success_action), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
     }
 
     @Override

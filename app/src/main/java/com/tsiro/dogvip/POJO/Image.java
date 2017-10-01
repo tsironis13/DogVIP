@@ -11,6 +11,7 @@ import android.view.View;
 import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tsiro.dogvip.image_states.State;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 //class used also to get image upload response data
 public class Image extends BaseObservable implements Parcelable{
 
+    private State state;
     private transient File image;
     private transient boolean issize_valid, delete_local_file, isinvalid_filetype;
     @SerializedName("code")
@@ -84,6 +86,14 @@ public class Image extends BaseObservable implements Parcelable{
             return new Image[size];
         }
     };
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
 
     public int getCode() { return code; }
 

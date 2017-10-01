@@ -1,5 +1,9 @@
 package com.tsiro.dogvip.mypets.owner;
 
+/**
+ * Created by giannis on 30/9/2017.
+ */
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
@@ -18,19 +22,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
@@ -39,6 +38,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.rey.material.widget.SnackBar;
 import com.tsiro.dogvip.POJO.DialogActions;
 import com.tsiro.dogvip.POJO.Image;
+import com.tsiro.dogvip.POJO.TestImage;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
@@ -46,10 +46,16 @@ import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityOwnerBinding;
-import com.tsiro.dogvip.mypets.MyPetsActivity;
+import com.tsiro.dogvip.image_states.CameraImageState;
+import com.tsiro.dogvip.image_states.GalleryImageState;
+import com.tsiro.dogvip.image_states.ImageUploadViewModel;
+import com.tsiro.dogvip.image_states.NoImageState;
+import com.tsiro.dogvip.image_states.State;
+import com.tsiro.dogvip.image_states.UrlImageState;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.DialogPicker;
+import com.tsiro.dogvip.utilities.ImageUtls;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
@@ -63,53 +69,44 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-
 /**
  * Created by giannis on 3/8/2017.
  */
 
-public class OwnerActivity extends BaseActivity implements OwnerContract.View {
+public class OwnerActivity extends BaseActivity implements OwnerContract.View, Lifecycle.ImageUploadView {
 
+    private static final String debugTag = OwnerActivity.class.getSimpleName();
     private ActivityOwnerBinding mBinding;
-    private OwnerContract.ViewModel mOwnerFrgmtViewModel;
-    private CommonUtls mCommonUtls;
-    private File output, fileToUpload;
-    private Uri photoURI, galleryURI;
-    private int state;
+    private OwnerViewModel mOwnerFrgmtViewModel;
+    private ImageUploadViewModel imageUploadViewModel;
     private OwnerObj ownerObj;
-    private boolean addowner, initializeImagePickerDialog, imageuploading;
+    private boolean addowner, initializeImagePickerDialog;
     private String mToken, imageAction;
     private SnackBar mSnackBar;
+    private Bundle savedInstanceState;
+    private TestImage image;
+    private ImageUtls imageUtls;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(debugTag, "onCreate");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_owner);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         mSnackBar = mBinding.snckBr;
 
-        mCommonUtls = getCommonUtls();
+        imageUtls = new ImageUtls(this);
+        imageUploadViewModel = new ImageUploadViewModel(MyPetsRequestManager.getInstance(), imageUtls, this);
         mOwnerFrgmtViewModel = new OwnerViewModel(MyPetsRequestManager.getInstance());
         mToken = getMyAccountManager().getAccountDetails().getToken();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.cityEdt.setAdapter(adapter);
 
         if (savedInstanceState != null) {
-            state = savedInstanceState.getInt(getResources().getString(R.string.imageview_state));
-            if (state == 1) {
-                String strUri = savedInstanceState.getString(getResources().getString(R.string.gallery_uri));
-                if (strUri != null) {
-                    galleryURI = Uri.parse(strUri);
-//                    isImageValid(galleryURI, state);
-                }
-            } else if (state == 2) {
-                output=(File) savedInstanceState.getSerializable(getResources().getString(R.string.image_output));
-            }
             addowner = savedInstanceState.getBoolean(getResources().getString(R.string.add_ownr));
+            if (savedInstanceState.getBoolean("st")) mBinding.setNoimagestate(true);
             mBinding.setAdduser(addowner);
         } else {
             if (getIntent() != null) {//add or edit owner
@@ -118,12 +115,20 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
             }
         }
         if (getSupportActionBar()!= null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.savedInstanceState = savedInstanceState;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        imageUploadViewModel.onViewAttached(this);
         configureActivity(savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        imageUploadViewModel.onViewResumed();
         Disposable disp = RxView.clicks(mBinding.profileImgv).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
@@ -185,6 +190,12 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        imageUploadViewModel.onViewDetached();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
@@ -200,7 +211,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
         if (addowner) {
             startActivity(new Intent(this, DashboardActivity.class));
         } else {
-            if (imageuploading) {
+            if (mBinding.getProcessing()) {
                 showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.image_uploading_on_progress), "").subscribe();
             } else {
                 if (getIntent().getExtras().getBoolean(getResources().getString(R.string.edit_ownr)) && ownerObj.getImageurl() != null) {
@@ -232,12 +243,9 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
          * state 2, camera image selected,
          * state 3, url image fetched
          */
-        if (state == 1) {
-            if (galleryURI != null) outState.putString(getResources().getString(R.string.gallery_uri), galleryURI.toString());
-        } else if (state == 2){
-            if (output != null) outState.putSerializable(getResources().getString(R.string.image_output), output);
-        }
-        outState.putInt(getResources().getString(R.string.imageview_state), state);
+        Log.e(debugTag, image.getState() + " onSaveInstanceState");
+        outState.putBoolean("st", mBinding.getNoimagestate());
+        outState.putParcelable("image", image);
         outState.putBoolean(getResources().getString(R.string.add_ownr), addowner);
         if (ownerObj != null)outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
     }
@@ -247,18 +255,16 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.EXTERNAL_CONTENT_URI || requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                Uri uri = null;
-                int saveinstance_state = state;
+                mBinding.setNoimagestate(false);
                 if (requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
-                    uri = mCommonUtls.getUriForFile(output);
-                    state = 2;
+                    image.setState(new CameraImageState());
+                    image.setUri(imageUtls.getUriForFile(image.getFile()));
+                    imageUploadViewModel.loadImage(image);
                 } else {
-                    state = 1;
-                    uri = data.getData();
-                    galleryURI = uri;
+                    image.setState(new GalleryImageState());
+                    image.setUri(data.getData());
+                    imageUploadViewModel.loadImage(image);
                 }
-                boolean isinvalid = isImageValid(uri, state);
-                if (isinvalid && saveinstance_state == 3) state = 3;
             }
         }
     }
@@ -286,6 +292,16 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
     }
 
     @Override
+    public void imageUploading() {
+        mBinding.setProcessing(true);
+    }
+
+    @Override
+    public void noImageUrl() {
+        mBinding.setNoimagestate(true);
+    }
+
+    @Override
     public void onSuccess(OwnerObj response) {
         dismissDialog();
         Intent intent = new Intent(this, OwnerProfileActivity.class);
@@ -302,21 +318,44 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
         showSnackBar(style, getResources().getString(resource), "").subscribe();
     }
 
+//    @Override
+//    public void onSuccessUpload() {
+//        mBinding.setProcessing(false);
+//        Log.e(debugTag, "onSuccessUpload");
+//    }
+//
+//    @Override
+//    public void onSuccessDelete() {
+//        mBinding.setProcessing(false);
+//        Log.e(debugTag, "onSuccessDelete");
+//    }
+//
+//    @Override
+//    public void onErrorUpload() {
+//        mBinding.setProcessing(false);
+//    }
+//
+//    @Override
+//    public void onErrorDelete() {
+//        mBinding.setProcessing(false);
+//    }
+
     @Override
-    public void onImageActionSuccess(Image image) {
+    public void onSuccessImageAction(Image image) {
         mBinding.setProcessing(false);
-        setImageuploading(false);
+//        this.image.getState().onSuccess(imageUploadViewModel);
         if (image.getCode() == AppConfig.STATUS_OK) {
             if (image.getAction().equals(getResources().getString(R.string.delete_owner_image))) {
-                state = 0;
-                mBinding.setImgstate(state);
-                setOwnerProfileImg(null);
+                imageUtls.clearImageWithGlide(mBinding.profileImgv, R.drawable.default_person);
+                this.image.setState(new NoImageState());
                 ownerObj.setImageurl("");
                 imageAction = "";
+                mBinding.setNoimagestate(true);
             } else {
-                mBinding.setImgstate(state);
+                this.image.setState(new UrlImageState(image.getImageurl()));
+//                Log.e(debugTag, this.image.getState() + " lk");
                 ownerObj.setImageurl(image.getImageurl());
-                mCommonUtls.deleteAppStorage(output);
+//                mCommonUtls.deleteAppStorage(output);
             }
         } else {
             showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.error), imageAction).delay(400, TimeUnit.MILLISECONDS).subscribe(new Consumer<String>() {
@@ -326,7 +365,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
                         imageAction = action;
                         deleteImg(ownerObj.getId());
                     } else {
-                        uploadImage();
+//                        uploadImage();
                     }
                 }
             });
@@ -334,20 +373,27 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
     }
 
     @Override
-    public void onImageActionError() {
+    public void onErrorImageAction() {
         mBinding.setProcessing(false);
-        setImageuploading(false);
-        showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.error), imageAction).delay(200, TimeUnit.MILLISECONDS).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(@io.reactivex.annotations.NonNull String action) throws Exception {
-                if (action.equals(getResources().getString(R.string.delete_owner_image))) {
-                    imageAction = action;
-                    deleteImg(ownerObj.getId());
-                } else {
-                    uploadImage();
-                }
-            }
-        });
+//        this.image.getState().onError(imageUploadViewModel);
+
+
+//        showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.error), imageAction).delay(200, TimeUnit.MILLISECONDS).subscribe(new Consumer<String>() {
+//            @Override
+//            public void accept(@io.reactivex.annotations.NonNull String action) throws Exception {
+//                if (action.equals(getResources().getString(R.string.delete_owner_image))) {
+//                    imageAction = action;
+//                    deleteImg(ownerObj.getId());
+//                } else {
+////                    uploadImage();
+//                }
+//            }
+//        });
+    }
+
+    @Override
+    public void loadImageUrl(Object obj, final State state, final File file) {
+        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, imageUploadViewModel, getResources().getString(R.string.upload_ownr_img), mToken, ownerObj.getId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -372,14 +418,14 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
             setTitle(getResources().getString(R.string.edit_owner));
             if (savedInstanceState != null) {
                 ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
+                image = savedInstanceState.getParcelable("image");
+                image.setViewModel(imageUploadViewModel);
+                Log.e(debugTag, image.getState() + " saved state");
             } else {
                 ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
+                image = new TestImage(imageUploadViewModel, ownerObj.getImageurl());
             }
-            if (ownerObj.getImageurl() != null && !ownerObj.getImageurl().equals("")) {
-                state = 3;
-                mBinding.setImgstate(state);
-                setOwnerProfileImg(Uri.parse(ownerObj.getImageurl()));
-            }
+            imageUploadViewModel.loadImage(image);//new code
             mBinding.setOwner(ownerObj);
         }
     }
@@ -389,9 +435,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
         image.setAction(getResources().getString(R.string.delete_owner_image));
         image.setAuthtoken(mToken);
         image.setId(id);
-        imageAction = getResources().getString(R.string.delete_owner_image);
-        mBinding.setProcessing(true);
-        mOwnerFrgmtViewModel.deleteImage(image);
+        imageUploadViewModel.deleteImage(image);
     }
 
     private void submitForm() {
@@ -434,109 +478,28 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
         }
     }
 
-    private boolean isImageValid(Uri uri, int state) {
-        Image img = mCommonUtls.isImageSizeValid(uri, state, output);
-        fileToUpload = img.getImage();
-        if (!img.isInvalid_filetype()) {
-            if (img.getSize()) {
-                if (img.isDeleteLocalFile()) output = img.getImage();
-                if (isNetworkAvailable()) {
-                    setOwnerProfileImg(uri);
-                } else {
-                    showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection), "").subscribe();
-                }
-            } else {
-                showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_image_size), "").subscribe();
-                output = null;
-            }
-        } else {
-            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.invalid_file_type), "").subscribe();
-        }
-        return img.isInvalid_filetype();
-    }
-
-    private void uploadImage() {
-        MultipartBody.Part mfile;
-        try {
-            mfile = mCommonUtls.getRequestFileBody(fileToUpload);
-            RequestBody action = RequestBody.create(okhttp3.MultipartBody.FORM, getResources().getString(R.string.upload_ownr_img));
-            RequestBody token = RequestBody.create(okhttp3.MultipartBody.FORM, mToken);
-            RequestBody id = RequestBody.create(okhttp3.MultipartBody.FORM, ownerObj.getId()+"");
-            imageAction = getResources().getString(R.string.upload_ownr_img);
-            mOwnerFrgmtViewModel.uploadImage(action, token, id, mfile);
-            mBinding.setProcessing(true);
-            setImageuploading(true);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setOwnerProfileImg(final Uri uri) {
-        Object object = uri;
-        if (state == 0) object = R.drawable.default_person;
-        if (object != null) {
-            Glide.with(this)
-                    .load(object)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
-                        }
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            if (state == 3) return false;
-                            if (state == 1 || state == 2) uploadImage();
-                            if (state == 0) output = null;
-                            return false;
-                        }
-                    })
-                    .transition(withCrossFade())
-                    .apply(new RequestOptions().centerCrop().error(R.drawable.default_person))
-                    .into(mBinding.profileImgv);
-        }
-    }
-
     private void initializeDialog(String action, final String desc, String title, String positiveBtnTxt, String negativeBtnTxt) {
         Disposable dialogDisp = initializeGenericDialog(action, desc, title, positiveBtnTxt, negativeBtnTxt).subscribe(new Consumer<DialogActions>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) {
                 if (obj.getAction().equals(getResources().getString(R.string.pick_image_dialog))) {
                     if (obj.getSelected_action() == 1) {//positive action (camera image)
-                        state = 2;
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         // Ensure that there's a camera activity to handle the intent
                         if (intent.resolveActivity(getPackageManager()) != null) {
+                            File tempFile = null;
                             try {
-                                output = mCommonUtls.createImageFile(".jpg");
+                                tempFile = imageUtls.createTempImageFile(".jpg");
+                                image.setFile(tempFile);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            if (output != null) {
-                                photoURI = mCommonUtls.getUriForFile(output);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                }
-                                else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                    ClipData clip = ClipData.newUri(getContentResolver(), "photo", photoURI);
-                                    intent.setClipData(clip);
-                                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                }
-                                else {
-                                    List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                                    for (ResolveInfo resolveInfo : resInfoList) {
-                                        String packageName = resolveInfo.activityInfo.packageName;
-                                        grantUriPermission(packageName, photoURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                    }
-                                }
-                                startActivityForResult(intent, AppConfig.ACTION_IMAGE_CAPTURE);
-                            }
+                            Intent resultIntent = imageUploadViewModel.grantTempFilePermission(intent, tempFile);
+                            if (resultIntent != null) startActivityForResult(resultIntent, AppConfig.ACTION_IMAGE_CAPTURE);
                         } else {
                             showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.no_camera_available), "").subscribe();
                         }
-                    } else {//negative action
-                        state = 1;
+                    } else {//negative action (gallery image)
 //                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         Intent intent = new Intent();
                         intent.setType("image/*");
@@ -551,10 +514,6 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
             }
         });
         RxEventBus.add(this, dialogDisp);
-    }
-
-    private void setImageuploading(boolean imageuploading) {
-        this.imageuploading = imageuploading;
     }
 
     private io.reactivex.Observable<String> showSnackBar(final int style, final String msg, final String action) {
@@ -581,3 +540,4 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View {
     }
 
 }
+

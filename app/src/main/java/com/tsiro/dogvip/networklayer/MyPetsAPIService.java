@@ -5,6 +5,7 @@ import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.app.AppConfig;
+import com.tsiro.dogvip.image_states.ImageUploadViewModel;
 import com.tsiro.dogvip.mypets.GetOwnerViewModel;
 import com.tsiro.dogvip.mypets.owner.OwnerViewModel;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileViewModel;
@@ -106,12 +107,12 @@ public class MyPetsAPIService {
                 });
     }
 
-    public Flowable<Image> uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image, final OwnerViewModel ownerViewModel) {
+    public Flowable<Image> uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image, final ImageUploadViewModel viewModel) {
         return serviceAPI.uploadImage(action, token, id, image)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
-                        ownerViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -119,23 +120,23 @@ public class MyPetsAPIService {
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        ownerViewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
                 .doOnNext(new Consumer<Image>() {
                     @Override
                     public void accept(@NonNull Image response) throws Exception {
-                        ownerViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });
     }
 
-    public Flowable<Image> deleteImage(Image image, final OwnerViewModel ownerViewModel) {
+    public Flowable<Image> deleteImage(Image image, final ImageUploadViewModel viewModel) {
         return serviceAPI.deleteImage(image)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
-                        ownerViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -143,13 +144,13 @@ public class MyPetsAPIService {
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        ownerViewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
                 .doOnNext(new Consumer<Image>() {
                     @Override
                     public void accept(@NonNull Image response) throws Exception {
-                        ownerViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });
     }

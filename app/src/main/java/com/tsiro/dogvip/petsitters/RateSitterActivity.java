@@ -70,7 +70,7 @@ public class RateSitterActivity extends BaseActivity implements PetSittersContra
                 textView.setTypeface(Typeface.DEFAULT_BOLD);
                 mBinding.servicesLlt.addView(textView);
             } else {
-                String[] services = getResources().getStringArray(R.array.services);
+                String[] services = getResources().getStringArray(R.array.user_perspective_services);
                 for (Integer service : bookingObj.getServices()) {
                     TextView textView = new TextView(this);
                     textView.setText(services[service-1]);
@@ -109,6 +109,18 @@ public class RateSitterActivity extends BaseActivity implements PetSittersContra
     protected void onDestroy() {
         super.onDestroy();
         dismissDialog();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, PetSittersActivity.class));
+        finish();
     }
 
     @Override

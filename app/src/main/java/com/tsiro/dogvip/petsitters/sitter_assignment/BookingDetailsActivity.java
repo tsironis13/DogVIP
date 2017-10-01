@@ -184,7 +184,7 @@ public class BookingDetailsActivity extends BaseActivity implements SitterAssign
             textView.setTextColor(ContextCompat.getColor(this, R.color.color_white));
             mBinding.servicesLlt.addView(textView);
         } else {
-            String[] services = getResources().getStringArray(R.array.services);
+            String[] services = getResources().getStringArray(R.array.user_perspective_services);
             for (Integer service : data.getServices()) {
                 TextView textView = new TextView(this);
                 textView.setText(services[service-1]);

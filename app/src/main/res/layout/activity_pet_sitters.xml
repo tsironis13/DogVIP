@@ -52,40 +52,54 @@
                 app:tabSelectedTextColor="@android:color/white"
                 app:tabIndicatorColor="@android:color/white" />
 
-            <com.tsiro.dogvip.utilities.CustomViewPager
-                android:id="@+id/viewPgr"
+            <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{!haserror ? View.VISIBLE : View.GONE}" />
+                android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/errorLlt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:visibility="@{haserror ? View.VISIBLE : View.GONE}"
-                android:gravity="center">
+                <com.tsiro.dogvip.utilities.CustomViewPager
+                    android:id="@+id/viewPgr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{!haserror ? View.VISIBLE : View.GONE}" />
 
-                <TextView
-                    android:id="@+id/errorTtv"
+                <LinearLayout
+                    android:id="@+id/errorLlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="@{haserror ? View.VISIBLE : View.GONE}"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/errorTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@{errortext}" />
+
+                    <Button
+                        android:id="@+id/retryBtn"
+                        android:layout_width="222dp"
+                        android:layout_height="48dp"
+                        android:text="@string/retry"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/ripple_drawable" />
+
+                </LinearLayout>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/editPetSitterFab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:text="@{errortext}" />
+                    android:layout_margin="16dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_edit_white" />
 
-                <Button
-                    android:id="@+id/retryBtn"
-                    android:layout_width="222dp"
-                    android:layout_height="48dp"
-                    android:text="@string/retry"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/ripple_drawable" />
-
-            </LinearLayout>
+            </android.support.design.widget.CoordinatorLayout>
 
         </LinearLayout>
 

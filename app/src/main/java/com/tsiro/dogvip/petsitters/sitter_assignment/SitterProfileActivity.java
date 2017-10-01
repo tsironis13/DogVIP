@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -213,8 +214,17 @@ public class SitterProfileActivity extends BaseActivity {
     private void initializeView() {
         if (!petSitterObj.getServices().isEmpty()) {
             for (Integer service : petSitterObj.getServices()) {
-                View view = mBinding.containerConstrLlt.findViewWithTag(String.valueOf(service));
-                if (view instanceof CheckBox) ((CheckBox) view).setChecked(true);
+                ViewGroup container = mBinding.servicesConstLlt;
+                for (int i = 0; i < container.getChildCount(); i++) {
+                    if (Integer.parseInt(container.getChildAt(i).getTag().toString()) == service) {
+                        View view = container.getChildAt(i);
+                        if (view instanceof CheckBox) {
+                            view.setVisibility(View.VISIBLE);
+                            ((CheckBox) view).setChecked(true);
+                        }
+                        if (view instanceof TextView) view.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         }
         Log.e(debugTag, petSitterObj.getStrurls() + " urls");

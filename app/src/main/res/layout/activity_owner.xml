@@ -7,8 +7,8 @@
         <import type="android.view.View"/>
 
         <variable
-            name="imgstate"
-            type="int" />
+            name="noimagestate"
+            type="boolean" />
 
         <variable
             name="adduser"
@@ -143,7 +143,7 @@
                             android:textColor="@color/error_color"
                             android:textStyle="bold"
                             android:text="@string/image_size_limit" />
-
+                        <!-- android:visibility="@{imgstate != 0 &amp;&amp; !processing ? View.VISIBLE : View.GONE}" -->
                         <com.rey.material.widget.ImageButton
                             android:id="@+id/clearImgv"
                             android:layout_width="wrap_content"
@@ -153,7 +153,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:background="@null"
-                            android:visibility="@{imgstate != 0 &amp;&amp; !processing ? View.VISIBLE : View.GONE}"
+                            android:visibility="@{!processing &amp;&amp; !noimagestate  ? View.VISIBLE : View.GONE}"
                             android:src="@drawable/ic_delete" />
 
                     </RelativeLayout>

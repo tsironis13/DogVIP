@@ -78,7 +78,7 @@
                             android:id="@+id/service1Ttv"
                             android:layout_width="wrap_content"
                             android:layout_height="51dp"
-                            android:text="@string/service1"
+                            android:text="@string/service1_filter"
                             android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/baselineView"
                             app:layout_constraintStart_toStartOf="@id/baselineView" />
@@ -97,7 +97,7 @@
                             android:id="@+id/service2Ttv"
                             android:layout_width="wrap_content"
                             android:layout_height="51dp"
-                            android:text="@string/service2"
+                            android:text="@string/service2_filter"
                             android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/service1Ttv"
                             app:layout_constraintStart_toStartOf="@id/service1Ttv" />
@@ -116,7 +116,7 @@
                             android:id="@+id/service3Ttv"
                             android:layout_width="wrap_content"
                             android:layout_height="51dp"
-                            android:text="@string/service3"
+                            android:text="@string/service3_filter"
                             android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/service2Ttv"
                             app:layout_constraintStart_toStartOf="@id/service2Ttv" />
@@ -135,7 +135,7 @@
                             android:id="@+id/service4Ttv"
                             android:layout_width="wrap_content"
                             android:layout_height="68dp"
-                            android:text="@string/service4"
+                            android:text="@string/service4_filter"
                             android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/service3Ttv"
                             app:layout_constraintStart_toStartOf="@id/service3Ttv" />
@@ -154,7 +154,7 @@
                             android:id="@+id/service5Ttv"
                             android:layout_width="wrap_content"
                             android:layout_height="68dp"
-                            android:text="@string/service5"
+                            android:text="@string/service5_filter"
                             android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/service4Ttv"
                             app:layout_constraintStart_toStartOf="@id/service4Ttv" />
@@ -173,7 +173,7 @@
                             android:id="@+id/service6Ttv"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:text="@string/service6"
+                            android:text="@string/service6_filter"
                             android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/service5Ttv"
                             app:layout_constraintStart_toStartOf="@id/service5Ttv" />

@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.lovematch;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -27,14 +28,20 @@ import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityLoveMatchBinding;
 import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
+import com.tsiro.dogvip.retrofit.ServiceAPI;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import dagger.android.AndroidInjection;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import retrofit2.Retrofit;
 
 /**
  * Created by giannis on 1/7/2017.
@@ -43,22 +50,27 @@ import io.reactivex.functions.Consumer;
 public class LoveMatchActivity extends BaseActivity implements LoveMatchContract.View {
 
     private ActivityLoveMatchBinding mBinding;
-    private LoveMatchContract.ViewModel mViewModel;
     private String mToken, city, race;
     private RecyclerViewAdapter rcvAdapter;
     private LinearLayoutManager linearLayoutManager;
     private int page = 1, position;
     private ArrayList<PetObj> data;
-    private LoveMatchPresenter loveMatchPresenter;
     private boolean availableData = true, isLoading, error, hasfilters, noitems;
+
+//    @Inject
+//    LoveMatchRequestManager loveMatchRequestManager;
+    //    @Inject
+//    ServiceAPI serviceAPI;
+    @Inject
+    LoveMatchViewModel mViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+//        Log.e("aaa", loveMatchRequestManager + " api");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_love_match);
         mToken = getMyAccountManager().getAccountDetails().getToken();
-        mViewModel = new LoveMatchViewModel(LoveMatchRequestManager.getInstance());
-        loveMatchPresenter = new LoveMatchPresenter(this);
 
         ArrayAdapter<String> cadapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.locationEdt.setAdapter(cadapter);
@@ -189,19 +201,12 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
+//        Log.e("on Activity get vew mdl", "getViewModel");
         return mViewModel;
     }
 
     @Override
-    public void onBaseViewClick(View view) {
-        position = (int)view.getTag();
-        showPetProfile(position);
-        mBinding.locationEdt.setText("");
-        mBinding.raceEdt.setText("");
-    }
-
-    @Override
-    public void onPetImageViewClick(View view) {
+    public void onViewClick(View view) {
         position = (int)view.getTag();
         showPetProfile(position);
         mBinding.locationEdt.setText("");
@@ -354,7 +359,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
 
             @Override
             protected Object getClickListenerObject() {
-                return loveMatchPresenter;
+                return mViewModel;
             }
         };
         mBinding.rcv.setLayoutManager(linearLayoutManager);

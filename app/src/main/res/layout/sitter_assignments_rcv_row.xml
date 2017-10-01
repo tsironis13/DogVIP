@@ -85,6 +85,37 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <!-- COMPLETED (COMPLETED => 1)-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/completed"
+            android:visibility="@{obj.completed == 1 ? View.VISIBLE : View.GONE}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+        <!-- ONGOING (COMPLETED => 0)-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/ongoing"
+            android:visibility="@{obj.completed == 0 ? View.VISIBLE : View.GONE}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+        <!-- PENDING (COMPLETED => -1)-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/pending"
+            android:visibility="@{obj.completed == -1 ? View.VISIBLE : View.GONE}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

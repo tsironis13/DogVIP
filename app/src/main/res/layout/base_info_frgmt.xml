@@ -27,18 +27,27 @@
                 android:text="@string/pet_size_gr" />
 
             <CheckBox
-                android:id="@+id/petSizeChbx"
+                android:id="@+id/petSizeSmallChbx"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_below="@+id/petsizeTtv"
                 android:textSize="13sp"
                 android:text="@string/small_size_gr" />
 
+            <CheckBox
+                android:id="@+id/petSizeNormalChbx"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="-10dp"
+                android:layout_below="@+id/petSizeSmallChbx"
+                android:textSize="13sp"
+                android:text="@string/normal_size_gr" />
+
             <TextView
                 android:id="@+id/yearexpTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/petSizeChbx"
+                android:layout_below="@id/petSizeNormalChbx"
                 android:layout_marginBottom="7dp"
                 android:textStyle="bold"
                 android:text="@string/years_exp_gr" />

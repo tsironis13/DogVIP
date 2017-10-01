@@ -1,16 +1,9 @@
 package com.tsiro.dogvip.mypets.ownerprofile;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +12,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,16 +19,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
-import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.mypets.owner.OwnerActivity;
@@ -44,7 +32,6 @@ import com.tsiro.dogvip.petlikes.PetLikesActivity;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
-import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.POJO.DialogActions;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
@@ -56,8 +43,6 @@ import com.tsiro.dogvip.databinding.ActivityOwnerprofileBinding;
 import com.tsiro.dogvip.mypets.pet.PetActivity;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
-
-import java.security.MessageDigest;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;

@@ -207,10 +207,33 @@
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <TextView
-                    android:id="@+id/sizeTtv"
+                    android:id="@+id/smallSizeTtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{sitter.petsize == 1 ? @string/small_size : @string/normal_size}"
+                    android:text="@string/small_size"
+                    android:visibility="@{sitter.petsize == 2 ? View.VISIBLE : View.GONE}"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/sizeLblTtv" />
+
+                <TextView
+                    android:id="@+id/normalSizeTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal_size"
+                    android:visibility="@{sitter.petsize == 1 ? View.VISIBLE : View.GONE}"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/sizeLblTtv" />
+
+                <TextView
+                    android:id="@+id/allSizeTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_size"
+                    android:visibility="@{sitter.petsize == 3 ? View.VISIBLE : View.GONE}"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -234,7 +257,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
-                    app:layout_constraintTop_toBottomOf="@+id/sizeTtv"
+                    app:layout_constraintBottom_toTopOf="@+id/view1"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/yearsexpLblTtv"
                     app:layout_constraintLeft_toRightOf="@+id/yearsexpLblTtv" />
 
                 <View
@@ -246,125 +270,153 @@
                     app:layout_constraintTop_toBottomOf="@+id/yearsexpLblTtv"
                     app:layout_constraintLeft_toLeftOf="parent" />
 
-                <TextView
-                    android:id="@+id/service1Ttv"
-                    android:layout_width="wrap_content"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/servicesConstLlt"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/service1_profile"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
+                    android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@id/view1"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <CheckBox
-                    android:id="@+id/service1ChckBx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="1"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/view1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/service1Ttv" />
+                    <TextView
+                        android:id="@+id/service1Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/service1_profile"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:tag="1"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="@id/servicesConstLlt"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/service2Ttv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/service2_profile"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/service1Ttv"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <CheckBox
+                        android:id="@+id/service1ChckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="1"
+                        android:enabled="false"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="@id/servicesConstLlt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/service1Ttv" />
 
-                <CheckBox
-                    android:id="@+id/service2ChckBx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="2"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/service1ChckBx"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/service2Ttv" />
+                    <TextView
+                        android:id="@+id/service2Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/service2_profile"
+                        android:textStyle="bold"
+                        android:tag="2"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/service1Ttv"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/service3Ttv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/service3_profile"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/service2Ttv"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <CheckBox
+                        android:id="@+id/service2ChckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="2"
+                        android:enabled="false"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/service1ChckBx"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/service2Ttv" />
 
-                <CheckBox
-                    android:id="@+id/service3ChckBx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="3"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/service2ChckBx"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/service3Ttv" />
+                    <TextView
+                        android:id="@+id/service3Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/service3_profile"
+                        android:tag="3"
+                        android:visibility="gone"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/service2Ttv"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/service4Ttv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/service4_profile"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/service3Ttv"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <CheckBox
+                        android:id="@+id/service3ChckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="3"
+                        android:enabled="false"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/service2ChckBx"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/service3Ttv" />
 
-                <CheckBox
-                    android:id="@+id/service4ChckBx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="4"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/service3ChckBx"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/service4Ttv" />
+                    <TextView
+                        android:id="@+id/service4Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/service4_profile"
+                        android:tag="4"
+                        android:visibility="gone"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/service3Ttv"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/service5Ttv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/service5_profile"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/service4Ttv"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <CheckBox
+                        android:id="@+id/service4ChckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="4"
+                        android:enabled="false"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/service3ChckBx"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/service4Ttv" />
 
-                <CheckBox
-                    android:id="@+id/service5ChckBx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="5"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/service4ChckBx"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/service5Ttv" />
+                    <TextView
+                        android:id="@+id/service5Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/service5_profile"
+                        android:tag="5"
+                        android:visibility="gone"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/service4Ttv"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/service6Ttv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/service6_profile"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/service5Ttv"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <CheckBox
+                        android:id="@+id/service5ChckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="5"
+                        android:visibility="gone"
+                        android:enabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/service4ChckBx"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/service5Ttv" />
 
-                <CheckBox
-                    android:id="@+id/service6ChckBx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="6"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/service5ChckBx"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/service6Ttv" />
+                    <TextView
+                        android:id="@+id/service6Ttv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/service6_profile"
+                        android:layout_marginTop="10dp"
+                        android:tag="6"
+                        android:visibility="gone"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/service5Ttv"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/service6ChckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="6"
+                        android:visibility="gone"
+                        android:enabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/service5ChckBx"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/service6Ttv" />
+
+                </android.support.constraint.ConstraintLayout>
 
                 <View
                     android:id="@+id/view2"
@@ -372,7 +424,7 @@
                     android:layout_height="1dp"
                     android:background="@color/divider_color"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toBottomOf="@+id/service6Ttv"
+                    app:layout_constraintTop_toBottomOf="@+id/servicesConstLlt"
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <TextView

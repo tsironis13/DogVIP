@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="haserror"
+            type="boolean" />
+
+        <variable
+            name="errortext"
+            type="String" />
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/cntFrml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@color/colorPrimary">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kalase" />
+
+                <!--<com.tsiro.dogvip.utilities.CustomViewPager-->
+                    <!--android:id="@+id/viewPgr"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:visibility="@{!haserror ? View.VISIBLE : View.GONE}" />-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/errorLlt"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:visibility="@{haserror ? View.VISIBLE : View.GONE}"-->
+                    <!--android:gravity="center">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/errorTtv"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="12dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textSize="16sp"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:text="@{errortext}" />-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/retryBtn"-->
+                        <!--android:layout_width="222dp"-->
+                        <!--android:layout_height="48dp"-->
+                        <!--android:text="@string/retry"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:background="@drawable/ripple_drawable" />-->
+
+                <!--</LinearLayout>-->
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/editPetSitterFab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_edit_white" />
+
+            </android.support.design.widget.CoordinatorLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

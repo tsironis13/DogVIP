@@ -12,26 +12,20 @@ import io.reactivex.processors.FlowableProcessor;
 
 public interface LoveMatchContract {
 
-    interface Presenter {
-        void onPetImageViewClick(android.view.View view);
-        void onLoveImageViewClick(android.view.View view);
-        void onMessageIconClick(android.view.View view);
-        void onBaseViewClick(android.view.View view);
-    }
-
     interface View extends Lifecycle.View {
         void onSuccess(LoveMatchResponse response);
         void onError(int resource);
-        void onPetImageViewClick(android.view.View view);
         void onLoveImageViewClick(android.view.View view);
         void onMessageIconClick(android.view.View view);
-        void onBaseViewClick(android.view.View view);
+        void onViewClick(android.view.View view);
     }
 
     interface ViewModel extends Lifecycle.ViewModel {
         void setRequestState(int state);
         void getPetsByFilter(LoveMatchRequest request);
-
+        void onLoveImageViewClick(android.view.View view);
+        void onMessageIconClick(android.view.View view);
+        void onViewClick(android.view.View view);
     }
 
 }

@@ -1,7 +1,5 @@
 package com.tsiro.dogvip.mypets.owner;
 
-import android.util.Log;
-
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.app.AppConfig;
@@ -22,13 +20,13 @@ import okhttp3.RequestBody;
  * Created by giannis on 4/6/2017.
  */
 
-public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageUploadModel {
+public class OwnerViewModel implements OwnerContract.ViewModel {
 
+    private static final String debugTag = OwnerViewModel.class.getSimpleName();
     private MyPetsRequestManager mMyPetsRequestManager;
-    private OwnerContract.View mViewClback, mViewImageUploadClback;
-    private Disposable mDisp, mUploadDisp;
+    private OwnerContract.View mViewClback;
+    private Disposable mDisp;
     private AsyncProcessor<OwnerObj> mProcessor;
-    private AsyncProcessor<Image> imageProcessor;
     private int requestState;
 
     public OwnerViewModel(MyPetsRequestManager mMyPetsRequestManager) {
@@ -38,7 +36,7 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewClback = (OwnerContract.View) viewCallback;
-        this.mViewImageUploadClback = (OwnerContract.View) viewCallback;
+//        Log.e(debugTag, "onViewAttached "+mViewClback);
     }
 
     @Override
@@ -48,15 +46,10 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new OwnerObserver());
-        if (mUploadDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null) imageProcessor.subscribe(new ImageUploadSubscriber(this));
     }
 
     @Override
     public void onViewDetached() {
-        if (requestState != AppConfig.REQUEST_RUNNING) {
-            mViewImageUploadClback = null;
-            if (mUploadDisp != null) mUploadDisp.dispose();
-        }
         mViewClback = null;
         if (mDisp != null) mDisp.dispose();
     }
@@ -74,39 +67,15 @@ public class OwnerViewModel implements OwnerContract.ViewModel, Lifecycle.ImageU
         }
     }
 
-    @Override
-    public void uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image) {
-        if (requestState != AppConfig.REQUEST_RUNNING) {
-            imageProcessor = AsyncProcessor.create();
-            mUploadDisp = imageProcessor.subscribeWith(new ImageUploadSubscriber(this));
-
-            mMyPetsRequestManager.uploadImage(action, token, id, image, this).subscribe(imageProcessor);
-        }
-    }
-
-    @Override
-    public void deleteImage(Image image) {
-        if (requestState != AppConfig.REQUEST_RUNNING) {
-            imageProcessor = AsyncProcessor.create();
-            mUploadDisp = imageProcessor.subscribeWith(new ImageUploadSubscriber(this));
-
-            mMyPetsRequestManager.deleteImage(image, this).subscribe(imageProcessor);
-        }
-    }
-
-    @Override
-    public void onSuccessImageAction(Image image) {
-        mUploadDisp = null;
-        //hack for devices which call onDestroy method (OwnerFrgmt should be moved in MyPetsActivity)
-        if (mViewImageUploadClback !=null)mViewImageUploadClback.onImageActionSuccess(image);
-    }
-
-    @Override
-    public void onErrorImageAction() {
-        mUploadDisp = null;
-        mViewImageUploadClback.onImageActionError();
-        if (mViewImageUploadClback != null) requestState = AppConfig.REQUEST_NONE;
-    }
+//    @Override
+//    public void deleteImage(Image image) {
+////        if (requestState != AppConfig.REQUEST_RUNNING) {
+////            imageProcessor = AsyncProcessor.create();
+////            mUploadDisp = imageProcessor.subscribeWith(new ImageUploadSubscriber(this));
+////
+////            mMyPetsRequestManager.deleteImage(image, this).subscribe(imageProcessor);
+////        }
+//    }
 
     @Override
     public void setRequestState(int state) {

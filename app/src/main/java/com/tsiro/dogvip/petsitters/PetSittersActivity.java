@@ -74,6 +74,14 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
             }
         });
         RxEventBus.add(this, disp);
+        Disposable disp1 = RxView.clicks(mBinding.editPetSitterFab).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                startActivity(new Intent(PetSittersActivity.this, PetSitterActivity.class));
+                finish();
+            }
+        });
+        RxEventBus.add(this, disp1);
     }
 
     @Override
@@ -103,8 +111,13 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
             Log.e(debugTag, bookingObj.getCompleted() + " COMPLETED");
         } else { //sitter assignments
             Bundle bundle = new Bundle();
-            bundle.putInt(getResources().getString(R.string.user_role_id), bookingObj.getOwner_id());
-            startActivity(new Intent(this, OwnerPetsActivity.class).putExtras(bundle));
+            if (bookingObj.getCompleted() == -1) { //pending
+                bundle.putInt(getResources().getString(R.string.id), bookingObj.getId());
+                startActivity(new Intent(this, ManipulateNewSitterBookingActivity.class).putExtras(bundle));
+            } else {
+                bundle.putInt(getResources().getString(R.string.user_role_id), bookingObj.getOwner_id());
+                startActivity(new Intent(this, OwnerPetsActivity.class).putExtras(bundle));
+            }
         }
     }
 
@@ -130,10 +143,6 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
                 startActivity(new Intent(this, SearchSitterFiltersActivity.class).putExtras(bundle));
                 finish();
                 return true;
-            case R.id.sitter_item:
-                startActivity(new Intent(this, PetSitterActivity.class));
-                finish();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -144,14 +153,16 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
         dismissDialog();
 //        Log.e(debugTag, "onSuccess =>" + response.getOwner_bookings() + " "+ response.getSitter_bookings());
         if (response.getCode() == AppConfig.STATUS_OK) {
+            searchItem.setVisible(true);
             mBinding.setHaserror(false);
         } else if (response.getCode() == AppConfig.ERROR_NO_OWNER_EXISTS || response.getCode() == AppConfig.ERROR_NO_SITTER_EXISTS || response.getCode() == AppConfig.ERROR_NO_OWNER_AND_SITTER_EXIST){
             if (mBinding.getHaserror()) mBinding.setHaserror(false);
         }
+        if (response.getCode() == AppConfig.ERROR_NO_SITTER_EXISTS) searchItem.setVisible(true);
         initializeView(response);
-        if (response.getCode() == AppConfig.ERROR_NO_OWNER_EXISTS || response.getCode() == AppConfig.ERROR_NO_OWNER_AND_SITTER_EXIST) {
-            searchItem.setVisible(false);
-        }
+//        if (response.getCode() == AppConfig.ERROR_NO_OWNER_EXISTS || response.getCode() == AppConfig.ERROR_NO_OWNER_AND_SITTER_EXIST) {
+//            searchItem.setVisible(false);
+//        }
     }
 
     @Override

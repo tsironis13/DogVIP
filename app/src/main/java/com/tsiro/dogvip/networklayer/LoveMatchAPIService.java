@@ -11,6 +11,8 @@ import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import org.reactivestreams.Subscription;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -24,9 +26,14 @@ import io.reactivex.schedulers.Schedulers;
 public class LoveMatchAPIService {
 
     private ServiceAPI serviceAPI;
-
-    public LoveMatchAPIService() {
-        serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
+//    @Inject
+//    ServiceAPI serviceAPI;
+    @Inject
+    public LoveMatchAPIService(ServiceAPI serviceAPI) {
+        Log.e("LoveMatchAPIService", "LoveMatchAPIService");
+//        Log.e("LoveMatchAPIService", serviceAPI + " SERVICE API");
+//        serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
+        this.serviceAPI = serviceAPI;
     }
 
     public Flowable<LoveMatchResponse> getPetsByFilter(final LoveMatchRequest request, final LoveMatchViewModel loveMatchViewModel) {

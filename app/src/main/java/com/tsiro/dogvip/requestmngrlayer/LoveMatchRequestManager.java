@@ -9,6 +9,8 @@ import com.tsiro.dogvip.networklayer.LoveMatchAPIService;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 
 /**
@@ -17,16 +19,12 @@ import io.reactivex.Flowable;
 
 public class LoveMatchRequestManager {
 
-    private static LoveMatchRequestManager mInstance;
     private LoveMatchAPIService mLoveMatchAPIService;
 
-    private LoveMatchRequestManager() {
-        this.mLoveMatchAPIService = new LoveMatchAPIService();
-    }
-
-    public static LoveMatchRequestManager getInstance() {
-        if (mInstance == null) mInstance = new LoveMatchRequestManager();
-        return mInstance;
+    @Inject
+    public LoveMatchRequestManager(LoveMatchAPIService loveMatchAPIService) {
+        Log.e("asa", "LoveMatchRequestManager");
+        this.mLoveMatchAPIService = loveMatchAPIService;
     }
 
     public Flowable<LoveMatchResponse> getPetsByFilter(LoveMatchRequest request, LoveMatchViewModel viewModel) {

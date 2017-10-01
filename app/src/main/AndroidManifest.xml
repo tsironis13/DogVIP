@@ -306,11 +306,16 @@
 
         <activity
             android:name=".petsitters.SitterCommentsActivity"
-            android:screenOrientation="portrait">
-            <!--android:label="@string/app_name">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value=".petsitters.PetSittersActivity" />-->
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".profs.ProfProfileActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".dashboard.DashboardActivity" />
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

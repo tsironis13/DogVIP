@@ -67,7 +67,14 @@ public class BaseInfoFrgmt extends Fragment {
         if (getArguments() != null) {
             petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
             mBinding.setObj(petSitterObj);
-            if (mBinding.getObj().getPetsize() == 1) mBinding.petSizeChbx.setChecked(true);
+            if (mBinding.getObj().getPetsize() == 1) {
+                mBinding.petSizeNormalChbx.setChecked(true);
+            } else if (mBinding.getObj().getPetsize() == 2) {
+                mBinding.petSizeSmallChbx.setChecked(true);
+            } else if (mBinding.getObj().getPetsize() == 3) {
+                mBinding.petSizeSmallChbx.setChecked(true);
+                mBinding.petSizeNormalChbx.setChecked(true);
+            }
 //            Log.e(debugTag, petSitterObj.getId() + " ID, NAME: " + petSitterObj.getName());
         }
     }
@@ -90,23 +97,38 @@ public class BaseInfoFrgmt extends Fragment {
             }
         });
         RxEventBus.add(this, disp1);
-        Disposable disp2 = RxView.clicks(mBinding.petSizeChbx).subscribe(new Consumer<Object>() {
+        Disposable disp2 = RxView.clicks(mBinding.petSizeSmallChbx).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                if (mBinding.petSizeChbx.isChecked()) {
-                    mBinding.getObj().setPetsize(1);
-                } else {
-                    mBinding.getObj().setPetsize(0);
-                }
+                checkPetSize();
             }
         });
         RxEventBus.add(this, disp2);
+        Disposable disp3 = RxView.clicks(mBinding.petSizeNormalChbx).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                checkPetSize();
+            }
+        });
+        RxEventBus.add(this, disp3);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    private void checkPetSize() {
+        if (mBinding.petSizeSmallChbx.isChecked() && mBinding.petSizeNormalChbx.isChecked()) {
+            mBinding.getObj().setPetsize(3); //both small and normal size
+        } else if (mBinding.petSizeSmallChbx.isChecked() && !mBinding.petSizeNormalChbx.isChecked()) {
+            mBinding.getObj().setPetsize(2); //small size
+        } else if (!mBinding.petSizeSmallChbx.isChecked() && mBinding.petSizeNormalChbx.isChecked()) {
+            mBinding.getObj().setPetsize(1); //normal size
+        } else {
+            mBinding.getObj().setPetsize(0);
+        }
     }
 
     private void saveDetails() {
