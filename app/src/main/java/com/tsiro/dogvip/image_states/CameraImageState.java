@@ -3,6 +3,7 @@ package com.tsiro.dogvip.image_states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.TestImage;
 
 import java.io.File;
@@ -44,15 +45,15 @@ public class CameraImageState implements State, Parcelable {
 
     @Override
     public void uploadImageToServer(ImageUploadViewModel viewModel, String action, String token, int ownerId, File file) {
-        viewModel.uploadImage(action, token, ownerId, file);
+        viewModel.uploadImage(this, action, token, ownerId, file);
     }
 
-    @Override
-    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
+//    @Override
+//    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
 
     @Override
-    public void onSuccess(ImageUploadViewModel viewModel) {
-        viewModel.onSuccessUpload();
+    public void onSuccess(Image image, ImageUploadViewModel viewModel) {
+        viewModel.onSuccessUpload(image);
     }
 
     @Override

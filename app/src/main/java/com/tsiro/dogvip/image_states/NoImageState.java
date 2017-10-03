@@ -3,6 +3,7 @@ package com.tsiro.dogvip.image_states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.TestImage;
 
 import java.io.File;
@@ -44,18 +45,14 @@ public class NoImageState implements State, Parcelable {
     @Override
     public void uploadImageToServer(ImageUploadViewModel viewModel, String action, String token, int ownerId, File file) {}
 
-    @Override
-    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
+//    @Override
+//    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
 
     @Override
-    public void onSuccess(ImageUploadViewModel viewModel) {
-        viewModel.onSuccessDelete();
-    }
+    public void onSuccess(Image image, ImageUploadViewModel viewModel) {}
 
     @Override
-    public void onError(ImageUploadViewModel viewModel) {
-        viewModel.onErrorDelete();
-    }
+    public void onError(ImageUploadViewModel viewModel) {}
 
     @Override
     public int describeContents() {

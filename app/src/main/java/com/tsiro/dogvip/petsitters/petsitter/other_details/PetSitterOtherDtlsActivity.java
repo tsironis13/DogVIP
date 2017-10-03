@@ -167,7 +167,7 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     @Override
     public void onSuccess(PetSitterObj response) {
         dismissDialog();
-        startActivity(new Intent(this, PetSitterActivity.class));
+        startActivity(new Intent(this, PetSittersActivity.class));
         finish();
 //        showSnackBar(getResources().getString(R.string.success_action), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
     }

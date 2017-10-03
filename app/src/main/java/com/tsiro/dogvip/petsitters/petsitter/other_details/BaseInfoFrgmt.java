@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.RadioGroup;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
@@ -36,6 +38,7 @@ public class BaseInfoFrgmt extends Fragment {
     private View mView;
     private PetSitterOtherDtlsContract.View viewContract;
     private PetSitterObj petSitterObj;
+    private int petSizeIndex;
 
     public static BaseInfoFrgmt newInstance(PetSitterObj petSitterObj) {
         Bundle bundle = new Bundle();
@@ -67,14 +70,20 @@ public class BaseInfoFrgmt extends Fragment {
         if (getArguments() != null) {
             petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
             mBinding.setObj(petSitterObj);
+            Log.e(debugTag, mBinding.getObj().getPetsize() + " petsize");
             if (mBinding.getObj().getPetsize() == 1) {
-                mBinding.petSizeNormalChbx.setChecked(true);
+                mBinding.smallSizeRdBtn.setChecked(true);
             } else if (mBinding.getObj().getPetsize() == 2) {
-                mBinding.petSizeSmallChbx.setChecked(true);
-            } else if (mBinding.getObj().getPetsize() == 3) {
-                mBinding.petSizeSmallChbx.setChecked(true);
-                mBinding.petSizeNormalChbx.setChecked(true);
+                mBinding.normalSizeRdBtn.setChecked(true);
             }
+//            if (mBinding.getObj().getPetsize() == 1) {
+//                mBinding.petSizeNormalChbx.setChecked(true);
+//            } else if (mBinding.getObj().getPetsize() == 2) {
+//                mBinding.petSizeSmallChbx.setChecked(true);
+//            } else if (mBinding.getObj().getPetsize() == 3) {
+//                mBinding.petSizeSmallChbx.setChecked(true);
+//                mBinding.petSizeNormalChbx.setChecked(true);
+//            }
 //            Log.e(debugTag, petSitterObj.getId() + " ID, NAME: " + petSitterObj.getName());
         }
     }
@@ -100,17 +109,28 @@ public class BaseInfoFrgmt extends Fragment {
         Disposable disp2 = RxView.clicks(mBinding.petSizeSmallChbx).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                checkPetSize();
+//                checkPetSize();
             }
         });
         RxEventBus.add(this, disp2);
         Disposable disp3 = RxView.clicks(mBinding.petSizeNormalChbx).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                checkPetSize();
+//                checkPetSize();
             }
         });
-        RxEventBus.add(this, disp3);
+//        mBinding.getObj().setPetsize(0);
+        mBinding.petSizeRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                if (i == R.id.smallSizeRdBtn) {
+                    mBinding.getObj().setPetsize(1);
+                } else {
+                    mBinding.getObj().setPetsize(2);
+                }
+                Log.e(debugTag, mBinding.getObj().getPetsize() + " pet size");
+            }
+        });
     }
 
     @Override

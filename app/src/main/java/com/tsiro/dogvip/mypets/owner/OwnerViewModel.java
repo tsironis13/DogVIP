@@ -7,6 +7,8 @@ import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.ImageUploadSubscriber;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -29,6 +31,7 @@ public class OwnerViewModel implements OwnerContract.ViewModel {
     private AsyncProcessor<OwnerObj> mProcessor;
     private int requestState;
 
+    @Inject
     public OwnerViewModel(MyPetsRequestManager mMyPetsRequestManager) {
         this.mMyPetsRequestManager = mMyPetsRequestManager;
     }

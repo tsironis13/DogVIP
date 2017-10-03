@@ -16,6 +16,8 @@ import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import org.reactivestreams.Subscription;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -32,8 +34,9 @@ public class MyPetsAPIService {
 
     private ServiceAPI serviceAPI;
 
-    public MyPetsAPIService() {
-        serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
+    @Inject
+    public MyPetsAPIService(ServiceAPI serviceAPI) {
+        this.serviceAPI = serviceAPI;
     }
     public Flowable<OwnerObj> getOwnerDetails(final OwnerRequest request, final GetOwnerViewModel getOwnerViewModel) {
         return serviceAPI.getOwnerDetails(request)

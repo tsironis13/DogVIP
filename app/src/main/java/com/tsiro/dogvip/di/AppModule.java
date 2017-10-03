@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.di;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -8,6 +9,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tsiro.dogvip.app.AppConfig;
+import com.tsiro.dogvip.di.qualifiers.ActivityContext;
 import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
@@ -34,6 +36,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AppModule {
 
     private static final String debugTag = AppModule.class.getSimpleName();
+
+    @Provides
+    @ActivityContext
+    Context provideActivityContext(Activity activity) {
+        Log.e(debugTag, "provideActivityContext");
+        return activity;
+    }
 
     @Provides
     @ApplicationContext
@@ -81,7 +90,7 @@ public class AppModule {
     @Singleton
     ServiceAPI provideServiceAPI(Retrofit retrofit) {
         ServiceAPI serviceAPI = retrofit.create(ServiceAPI.class);
-        Log.e(debugTag, serviceAPI + " sERVICE API");
+//        Log.e(debugTag, serviceAPI + " sERVICE API");
         return serviceAPI;
     }
 

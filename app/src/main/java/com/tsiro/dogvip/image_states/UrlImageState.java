@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.TestImage;
 
 import java.io.File;
@@ -52,17 +53,17 @@ public class UrlImageState implements State, Parcelable {
         Log.e("no do nothing", "no do nothing");
     }
 
-    @Override
-    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
+//    @Override
+//    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
 
     @Override
-    public void onSuccess(ImageUploadViewModel viewModel) {
-//        viewModel.onSuccessUpload();
+    public void onSuccess(Image image, ImageUploadViewModel viewModel) {
+        viewModel.onSuccessDelete();
     }
 
     @Override
     public void onError(ImageUploadViewModel viewModel) {
-//        viewModel.onErrorUpload();
+        viewModel.onErrorDelete();
     }
 
     @Override

@@ -201,6 +201,7 @@
                     android:id="@+id/sizeLblTtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
                     android:text="@string/pet_size_lowercase_gr"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent"
@@ -210,8 +211,9 @@
                     android:id="@+id/smallSizeTtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
                     android:text="@string/small_size"
-                    android:visibility="@{sitter.petsize == 2 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{sitter.petsize == 1 ? View.VISIBLE : View.GONE}"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -222,22 +224,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/normal_size"
-                    android:visibility="@{sitter.petsize == 1 ? View.VISIBLE : View.GONE}"
+                    android:layout_marginTop="7dp"
+                    android:visibility="@{sitter.petsize == 2 ? View.VISIBLE : View.GONE}"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/sizeLblTtv" />
 
-                <TextView
-                    android:id="@+id/allSizeTtv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/all_size"
-                    android:visibility="@{sitter.petsize == 3 ? View.VISIBLE : View.GONE}"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/sizeLblTtv" />
+                <!--<TextView-->
+                    <!--android:id="@+id/allSizeTtv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/all_size"-->
+                    <!--android:visibility="@{sitter.petsize == 3 ? View.VISIBLE : View.GONE}"-->
+                    <!--android:layout_marginLeft="4dp"-->
+                    <!--android:layout_marginStart="4dp"-->
+                    <!--app:layout_constraintTop_toTopOf="parent"-->
+                    <!--app:layout_constraintLeft_toRightOf="@+id/sizeLblTtv" />-->
 
                 <TextView
                     android:id="@+id/yearsexpLblTtv"

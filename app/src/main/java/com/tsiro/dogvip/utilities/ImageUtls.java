@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.utilities;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -24,6 +25,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.tsiro.dogvip.POJO.TestImage;
 import com.tsiro.dogvip.R;
+import com.tsiro.dogvip.di.qualifiers.ActivityContext;
+import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
 import com.tsiro.dogvip.image_states.ImageUploadViewModel;
 import com.tsiro.dogvip.image_states.State;
 
@@ -34,6 +37,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -49,7 +54,8 @@ public class ImageUtls {
 
     private Context mContext;
 
-    public ImageUtls(Context context) {
+    @Inject
+    public ImageUtls(@ApplicationContext Context context) {
         this.mContext = context;
     }
 

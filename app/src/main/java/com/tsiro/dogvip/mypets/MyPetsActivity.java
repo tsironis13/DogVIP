@@ -15,7 +15,9 @@ import com.tsiro.dogvip.databinding.ActivityMypetsBinding;
 import com.tsiro.dogvip.mypets.owner.OwnerActivityOld;
 //import com.tsiro.dogvip.mypets.owner.OwnerFrgmt;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
+import com.tsiro.dogvip.networklayer.MyPetsAPIService;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import io.reactivex.annotations.NonNull;
@@ -43,7 +45,8 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         if (getSupportActionBar()!= null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mGetOwnerViewModel = new GetOwnerViewModel(MyPetsRequestManager.getInstance());
+        mGetOwnerViewModel = new GetOwnerViewModel(new MyPetsRequestManager(
+                new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())));
         mToken = getMyAccountManager().getAccountDetails().getToken();
         if (savedInstanceState != null) {
             editOwner = savedInstanceState.getBoolean(getResources().getString(R.string.edit_ownr));

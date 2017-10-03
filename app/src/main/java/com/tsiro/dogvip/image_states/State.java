@@ -2,6 +2,7 @@ package com.tsiro.dogvip.image_states;
 
 import android.os.Parcelable;
 
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.TestImage;
 
 import java.io.File;
@@ -14,8 +15,8 @@ public interface State extends Parcelable {
 
     void loadImage(ImageUploadViewModel viewModel, TestImage testImage);
     void uploadImageToServer(ImageUploadViewModel viewModel, String action, String token, int id, File file);
-    void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id);
-    void onSuccess(ImageUploadViewModel viewModel);
+//    void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id);
+    void onSuccess(Image image, ImageUploadViewModel viewModel);
     void onError(ImageUploadViewModel viewModel);
 
 }

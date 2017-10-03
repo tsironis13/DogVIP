@@ -26,11 +26,38 @@
                 android:textStyle="bold"
                 android:text="@string/pet_size_gr" />
 
+            <RadioGroup
+                android:id="@+id/petSizeRadioGrp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/petsizeTtv">
+
+                <RadioButton
+                    android:id="@+id/smallSizeRdBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:height="48dp"
+                    android:textSize="13sp"
+                    android:text="@string/small_size_gr" />
+
+                <RadioButton
+                    android:id="@+id/normalSizeRdBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:height="48dp"
+                    android:textSize="13sp"
+                    android:text="@string/all_size_gr" />
+
+            </RadioGroup>
+
             <CheckBox
                 android:id="@+id/petSizeSmallChbx"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_below="@+id/petsizeTtv"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:textSize="13sp"
                 android:text="@string/small_size_gr" />
 
@@ -39,15 +66,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginTop="-10dp"
+                android:visibility="gone"
                 android:layout_below="@+id/petSizeSmallChbx"
                 android:textSize="13sp"
-                android:text="@string/normal_size_gr" />
+                android:text="@string/all_size_gr" />
 
             <TextView
                 android:id="@+id/yearexpTtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/petSizeNormalChbx"
+                android:layout_below="@id/petSizeRadioGrp"
                 android:layout_marginBottom="7dp"
                 android:textStyle="bold"
                 android:text="@string/years_exp_gr" />

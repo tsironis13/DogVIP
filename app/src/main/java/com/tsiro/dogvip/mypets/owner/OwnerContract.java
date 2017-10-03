@@ -20,8 +20,6 @@ public class OwnerContract {
     interface View extends Lifecycle.View {
         void onSuccess(OwnerObj response);
         void onError(int resource, boolean msglength);
-//        void onImageActionSuccess(Image image); //upload, delete image
-//        void onImageActionError();
     }
 
     public interface ViewModel extends Lifecycle.ViewModel {

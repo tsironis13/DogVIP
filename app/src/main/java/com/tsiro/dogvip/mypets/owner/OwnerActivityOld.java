@@ -44,7 +44,9 @@ import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityOwnerBinding;
 import com.tsiro.dogvip.image_states.State;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
+import com.tsiro.dogvip.networklayer.MyPetsAPIService;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.utilities.DialogPicker;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
@@ -92,7 +94,8 @@ public class OwnerActivityOld extends BaseActivity implements OwnerContract.View
         mSnackBar = mBinding.snckBr;
 
         mCommonUtls = getCommonUtls();
-        mOwnerFrgmtViewModel = new OwnerViewModel(MyPetsRequestManager.getInstance());
+        mOwnerFrgmtViewModel = new OwnerViewModel(new MyPetsRequestManager(
+                new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())));
         mToken = getMyAccountManager().getAccountDetails().getToken();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.cityEdt.setAdapter(adapter);

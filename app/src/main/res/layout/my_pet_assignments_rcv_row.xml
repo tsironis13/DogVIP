@@ -107,13 +107,26 @@
             android:contentDescription="@string/image_cont_desc"
             app:layout_constraintTop_toBottomOf="@+id/datecreatedTtv"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/rateHereTtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{obj.vote == 0 &amp;&amp; obj.completed == 1 ? View.VISIBLE : View.GONE}"
+            android:text="@string/rate_here"
+            android:textColor="@color/green_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
         <!-- COMPLETED (COMPLETED => 1)-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:text="@string/completed"
-            android:visibility="@{obj.completed == 1 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{obj.vote != 0 &amp;&amp; obj.completed == 1 ? View.VISIBLE : View.GONE}"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -133,6 +146,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:text="@string/pending"
+            android:textColor="@color/error_color"
             android:visibility="@{obj.completed == -1 ? View.VISIBLE : View.GONE}"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

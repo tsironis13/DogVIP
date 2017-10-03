@@ -378,7 +378,7 @@
                         android:layout_width="270dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/search_item"
+                        android:text="@string/srch_item"
                         android:textColor="@android:color/white"
                         android:background="@drawable/ripple_drawable" />
 

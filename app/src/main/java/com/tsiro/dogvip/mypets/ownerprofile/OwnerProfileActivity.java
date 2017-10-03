@@ -28,8 +28,10 @@ import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.mypets.owner.OwnerActivity;
+import com.tsiro.dogvip.networklayer.MyPetsAPIService;
 import com.tsiro.dogvip.petlikes.PetLikesActivity;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.POJO.DialogActions;
@@ -72,7 +74,8 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ownerprofile);
         setSupportActionBar(mBinding.toolbar);
         mBinding.colTlbrLyt.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
-        mOwnerProfileViewModel = new OwnerProfileViewModel(MyPetsRequestManager.getInstance());
+        mOwnerProfileViewModel = new OwnerProfileViewModel(new MyPetsRequestManager(
+                new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())));
 
 //        petObjList = new ArrayList<>();
         if (savedInstanceState == null) {

@@ -31,12 +31,10 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     private AsyncProcessor<LoveMatchResponse> mProcessor;
     private int requestState;
     private Disposable mLoveMatchDisp;
-    private Context context;
 
-    public LoveMatchViewModel(LoveMatchRequestManager mLoveMatchRequestManager, Context context) {
-        Log.e("LoveMatchViewModel", "LoveMatchViewModel");
+    @Inject
+    public LoveMatchViewModel(LoveMatchRequestManager mLoveMatchRequestManager) {
         this.mLoveMatchRequestManager = mLoveMatchRequestManager;
-        this.context = context;
     }
 
     @Override

@@ -107,8 +107,15 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e(debugTag, "onStart");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        Log.e(debugTag, "onResume");
         Disposable disp = RxView.clicks(mBinding.retryBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -189,6 +196,12 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
     protected void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(debugTag, "onStop");
     }
 
     @Override

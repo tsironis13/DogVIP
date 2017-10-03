@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.image_states;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import com.tsiro.dogvip.POJO.TestImage;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.di.qualifiers.ActivityContext;
+import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
 import com.tsiro.dogvip.utilities.GenericImageUploadSubscriber;
 import com.tsiro.dogvip.utilities.ImageUploadSubscriber;
@@ -24,8 +27,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -37,6 +44,7 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
 
     private static final String debugTag = ImageUploadViewModel.class.getSimpleName();
     private MyPetsRequestManager mMyPetsRequestManager;
+
     private ImageUtls imageUtls;
     private Lifecycle.ImageUploadView mViewClback;
     private Disposable mUploadDisp;
@@ -44,7 +52,8 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
     private int requestState;
     private Context mContext;
 
-    public ImageUploadViewModel(MyPetsRequestManager mMyPetsRequestManager, ImageUtls imageUtls, Context context) {
+    @Inject
+    public ImageUploadViewModel(MyPetsRequestManager mMyPetsRequestManager, ImageUtls imageUtls, @ApplicationContext Context context) {
         this.mMyPetsRequestManager = mMyPetsRequestManager;
         this.imageUtls = imageUtls;
         this.mContext = context;
@@ -53,22 +62,32 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         mViewClback = (Lifecycle.ImageUploadView) viewCallback;
+        Log.e(debugTag, mViewClback + " view callback");
     }
 
     @Override
-    public void onViewResumed() {
-        if (mUploadDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null) imageProcessor.subscribe(new GenericImageUploadSubscriber(this));
+    public void onViewResumed() {}
+
+    @Override
+    public void onViewResumed(State state) {
+        if (mUploadDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null)
+            imageProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new GenericImageUploadSubscriber(state, this));
     }
 
     @Override
     public void onViewDetached() {
         if (requestState != AppConfig.REQUEST_RUNNING) {
+            Log.e(debugTag, "view detached ");
             mViewClback = null;
             if (mUploadDisp != null) mUploadDisp.dispose();
         }
     }
 
     public void loadImage(TestImage testImage) {
+        Log.e(debugTag, "loadImage");
 //        this.testImage = testImage;
         testImage.loadImage(testImage);
     }
@@ -99,6 +118,7 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
     }
 
     public void isGalleryImageValid(TestImage testImage, State state) {
+        Log.e(debugTag, imageUtls + " IMAGEUTLS");
         prepareImageToUpload(imageUtls.isGalleryImageValid(testImage.getUri(), testImage), state, testImage.getUri(), testImage.getFile());
     }
 
@@ -119,32 +139,47 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
         mViewClback.noImageUrl();
     }
 
-    public void deleteImage(Image image) {
+    public void deleteImage(State state, Image image) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             imageProcessor = AsyncProcessor.create();
-            mUploadDisp = imageProcessor.subscribeWith(new GenericImageUploadSubscriber(this));
+            mUploadDisp = imageProcessor
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeWith(new GenericImageUploadSubscriber(state, this));
 
             mMyPetsRequestManager.deleteImage(image, this).subscribe(imageProcessor);
         }
     }
 
-    public void onSuccessUpload() {
+    public void onSuccessUpload(Image image) {
+        mUploadDisp = null;
+        if (mViewClback !=null) mViewClback.onSuccessUpload(image);
+        Log.e(debugTag, "onSuccessUpload");
 //        mViewClback.onSuccessUpload();
     }
 
     public void onErrorUpload() {
+        mUploadDisp = null;
+        mViewClback.onErrorUpload();
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
 //        mViewClback.onErrorUpload();
     }
 
     public void onSuccessDelete() {
+        mUploadDisp = null;
+        if (mViewClback !=null) mViewClback.onSuccessDelete();
+        Log.e(debugTag, "onSuccessDelete");
 //        mViewClback.onSuccessDelete();
     }
 
     public void onErrorDelete() {
+        mUploadDisp = null;
+        mViewClback.onErrorDelete();
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
 //        mViewClback.onErrorDelete();
     }
 
-    public void uploadImage(String uploadAction, String mToken, int uploadId, File file) {
+    public void uploadImage(State state, String uploadAction, String mToken, int uploadId, File file) {
         MultipartBody.Part mfile;
         try {
             mfile = imageUtls.getRequestFileBody(file);
@@ -153,7 +188,7 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
             RequestBody id = RequestBody.create(okhttp3.MultipartBody.FORM, uploadId+"");
             if (requestState != AppConfig.REQUEST_RUNNING) {
                 imageProcessor = AsyncProcessor.create();
-                mUploadDisp = imageProcessor.subscribeWith(new GenericImageUploadSubscriber(this));
+                mUploadDisp = imageProcessor.subscribeWith(new GenericImageUploadSubscriber(state, this));
                 mViewClback.imageUploading();
                 mMyPetsRequestManager.uploadImage(action, token, id, mfile, this).subscribe(imageProcessor);
             }
@@ -165,6 +200,7 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
     private void prepareImageToUpload(TestImage testImage, State state, Uri uri, File file) {
         if (!testImage.isFileTypeInvalid()) {
             if (testImage.isHasValidSize()) {
+                Log.e(debugTag, mViewClback + " null?? here view callback");
                 mViewClback.loadImageUrl(uri, state, file);
 //                if (img.isDeleteLocalFile()) output = img.getImage();
 //                if (isNetworkAvailable()) {
@@ -180,21 +216,21 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
         }
     }
 
-    @Override
-    public void onSuccessImageAction(Image image) {
-        mUploadDisp = null;
-//        Log.e(debugTag, "kjsdsd "+testImage.getState());
-//        if (mViewClback != null) testImage.getState().onSuccess(this);
-        if (mViewClback !=null) mViewClback.onSuccessImageAction(image);
-    }
-
-    @Override
-    public void onErrorImageAction() {
-        Log.e(debugTag, "onerror");
-        mUploadDisp = null;
-        mViewClback.onErrorImageAction();
-//        testImage.getState().onError(this);
-        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
-
-    }
+//    @Override
+//    public void onSuccessImageAction(Image image) {
+//        mUploadDisp = null;
+////        Log.e(debugTag, "kjsdsd "+testImage.getState());
+////        if (mViewClback != null) testImage.getState().onSuccess(this);
+//        if (mViewClback !=null) mViewClback.onSuccessImageAction(image);
+//    }
+//
+//    @Override
+//    public void onErrorImageAction() {
+//        Log.e(debugTag, "onerror");
+//        mUploadDisp = null;
+//        mViewClback.onErrorImageAction();
+////        testImage.getState().onError(this);
+//        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+//
+//    }
 }

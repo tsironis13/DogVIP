@@ -32,20 +32,17 @@ public interface Lifecycle {
     }
 
     interface GenericImageUploadViewModel extends ViewModel {
-        void onSuccessImageAction(Image image);
-        void onErrorImageAction();
+        void onViewResumed(State state);
     }
 
     interface ImageUploadView {
         void noImageUrl();
         void loadImageUrl(Object obj, final State state, File file);
         void imageUploading();
-        void onSuccessImageAction(Image image);
-        void onErrorImageAction();
-//        void onSuccessUpload();
-//        void onErrorUpload();
-//        void onSuccessDelete();
-//        void onErrorDelete();
+        void onSuccessUpload(Image image);
+        void onErrorUpload();
+        void onSuccessDelete();
+        void onErrorDelete();
     }
 
 }

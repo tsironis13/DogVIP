@@ -16,6 +16,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.ImageViewPagerActivity;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
+import com.tsiro.dogvip.networklayer.MyPetsAPIService;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
@@ -23,6 +24,7 @@ import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityOwnerPetsBinding;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import io.reactivex.annotations.NonNull;
@@ -45,7 +47,7 @@ public class OwnerPetsActivity extends BaseActivity implements OwnerPetsContract
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new OwnerPetsViewModel(MyPetsRequestManager.getInstance());
+        mViewModel = new OwnerPetsViewModel(new MyPetsRequestManager(new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())));
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_owner_pets);
         setSupportActionBar(mBinding.toolbar);
         mBinding.colTlbrLyt.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));

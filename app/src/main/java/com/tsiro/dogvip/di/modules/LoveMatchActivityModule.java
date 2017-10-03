@@ -20,9 +20,9 @@ public class LoveMatchActivityModule {
 
     private static final String debugTag = LoveMatchActivityModule.class.getSimpleName();
 
-    @Provides
-    LoveMatchViewModel provideLoveMatchViewModel(LoveMatchRequestManager loveMatchRequestManager, @ApplicationContext Context context) {
-        Log.e(debugTag, "provideLoveMatchViewModel");
-        return new LoveMatchViewModel(loveMatchRequestManager, context);
-    }
+//    @Provides
+//    LoveMatchViewModel provideLoveMatchViewModel(LoveMatchRequestManager loveMatchRequestManager, @ApplicationContext Context context) {
+//        Log.e(debugTag, "provideLoveMatchViewModel");
+//        return new LoveMatchViewModel(loveMatchRequestManager, context);
+//    }
 }

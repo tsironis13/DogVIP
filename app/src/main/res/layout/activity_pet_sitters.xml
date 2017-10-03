@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_gravity="bottom|end"
-                    android:src="@drawable/ic_edit_white" />
+                    android:src="@drawable/ic_sitter_icon" />
 
             </android.support.design.widget.CoordinatorLayout>
 

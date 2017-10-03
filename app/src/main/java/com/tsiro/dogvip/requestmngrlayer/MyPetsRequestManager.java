@@ -14,6 +14,8 @@ import com.tsiro.dogvip.ownerpets.OwnerPetsViewModel;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -27,14 +29,15 @@ public class MyPetsRequestManager {
     private static MyPetsRequestManager mInstance;
     private MyPetsAPIService mMyPetsAPIService;
 
-    private MyPetsRequestManager() {
-        this.mMyPetsAPIService = new MyPetsAPIService();
+    @Inject
+    public MyPetsRequestManager(MyPetsAPIService mMyPetsAPIService) {
+        this.mMyPetsAPIService = mMyPetsAPIService;
     }
 
-    public static MyPetsRequestManager getInstance() {
-        if (mInstance == null) mInstance = new MyPetsRequestManager();
-        return mInstance;
-    }
+//    public static MyPetsRequestManager getInstance() {
+//        if (mInstance == null) mInstance = new MyPetsRequestManager();
+//        return mInstance;
+//    }
 
     public Flowable<OwnerObj> getOwnerDetails(OwnerRequest request, GetOwnerViewModel getOwnerViewModel) {
         //in case server response is faster than activity lifecycle callback methods

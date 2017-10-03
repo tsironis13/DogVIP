@@ -213,7 +213,7 @@
     <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
     <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
     <string name="small_size_gr">ΜΙΚΡΟ</string>
-    <string name="normal_size_gr">ΚΑΝΟΝΙΚΟ</string>
+    <string name="all_size_gr">ΑΝΕΞΑΡΤΗΤΟΥ ΜΕΓΕΘΟΥΣ</string>
     <string name="half_blood_gr">ΗΜΙΑΙΜΟ</string>
     <string name="chrctr_gr">ΧΑΡΑΚΤΗΡΑΣ</string>
     <string name="add_comment_gr">ΠΡΟΣΘΗΚΗ ΣΧΟΛΙΟΥ</string>
@@ -225,8 +225,8 @@
     <string name="location_gr">ΠΕΡΙΟΧΗ</string>
     <string name="contact_phone_gr">ΤΗΛ. ΕΠΙΚΟΙΝΩΝΙΑΣ</string>
     <string name="more_info_gr">ΠΕΡΙΣ. ΠΛΗΡΟΦΟΡΙΕΣ</string>
-    <string name="pet_size_gr">ΜΕΓΕΘΟΙ ΠΟΥ ΑΝΑΛΑΜΒΑΝΩ</string>
-    <string name="pet_size_lowercase_gr">Μεγέθοι που αναλαμβάνω:</string>
+    <string name="pet_size_gr">ΜΕΓΕΘΗ ΠΟΥ ΑΝΑΛΑΜΒΑΝΩ</string>
+    <string name="pet_size_lowercase_gr">Μεγέθη που αναλαμβάνω:</string>
     <string name="years_exp_gr">ΕΤΗ ΕΜΠΕΙΡΙΑΣ ΣΤΗΝ ΚΑΤΟΧΗ/ΦΥΛΑΞΗ \nΣΚΥΛΟΥ</string>
     <string name="years_exp_lowercase_gr">Έτη εμπειρίας στη φύλαξη σκύλου:</string>
     <string name="pet_place_lowercase_gr">Διαμονή κατοικιδίου:</string>
@@ -241,6 +241,7 @@
     <string name="book_for_date_range_gr">ΓΙΑ ΤΟ ΧΡΟΝΙΚΟ ΔΙΑΣΤΗΜΑ</string>
     <string name="msg_item">Μηνύματα</string>
     <string name="search_item">Αναζήτηση</string>
+    <string name="srch_item">Αναζητηση</string>
     <string name="book">Αναθεση φυλαξης</string>
     <string name="sitter_item">Sitter</string>
     <string name="image_output">image_output</string>
@@ -342,8 +343,8 @@
     <string name="startdate_filter_lbl">Από</string>
     <string name="enddate_filter_lbl">Έως</string>
     <string name="small_size">Μικρό</string>
-    <string name="normal_size">Κανονικό</string>
-    <string name="all_size">Μικρό, Κανονικό</string>
+    <string name="normal_size">Ανεξαρτήτου μεγέθους</string>
+    <!--<string name="all_size">Μικρό, Κανονικό</string>-->
     <string name="in">Εντός οικίας</string>
     <string name="out">Εκτός οικίας</string>
     <string name="mono">Μονοκατοικία</string>
@@ -359,6 +360,7 @@
     <string name="completed">ΟΛΟΚΛΗΡΩΘΗΚΕ</string>
     <string name="ongoing">ΣΕ ΕΞΕΛΙΞΗ</string>
     <string name="pending">ΣΕ ΕΚΚΡΕΜΟΤΗΤΑ</string>
+    <string name="rate_here">ΒΑΘΜΟΛΟΓΗΣΤΕ</string>
     <!-- MY CHAT ROOMS ACTIVITY -->
     <string name="my_chats_title">Οι συνομιλίες μου</string>
     <string name="chat_room_username">%1$s %2$s</string>

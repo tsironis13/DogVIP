@@ -53,7 +53,9 @@ import com.tsiro.dogvip.image_states.NoImageState;
 import com.tsiro.dogvip.image_states.State;
 import com.tsiro.dogvip.image_states.UrlImageState;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
+import com.tsiro.dogvip.networklayer.MyPetsAPIService;
 import com.tsiro.dogvip.requestmngrlayer.MyPetsRequestManager;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.utilities.DialogPicker;
 import com.tsiro.dogvip.utilities.ImageUtls;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
@@ -65,6 +67,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
@@ -79,34 +84,48 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
 
     private static final String debugTag = OwnerActivity.class.getSimpleName();
     private ActivityOwnerBinding mBinding;
-    private OwnerViewModel mOwnerFrgmtViewModel;
-    private ImageUploadViewModel imageUploadViewModel;
     private OwnerObj ownerObj;
     private boolean addowner, initializeImagePickerDialog;
-    private String mToken, imageAction;
+    private String mToken;
     private SnackBar mSnackBar;
-    private Bundle savedInstanceState;
     private TestImage image;
-    private ImageUtls imageUtls;
 
+    @Inject
+    OwnerViewModel mOwnerViewModel;
+    @Inject
+    ImageUploadViewModel mImageUploadViewModel;
+    @Inject
+    ImageUtls imageUtls;
+    /* 4 imageview states to handle
+     * state 0, no image selected,
+     * state 1, gallery image selected,
+     * state 2, camera image selected,
+     * state 3, url image fetched
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         Log.e(debugTag, "onCreate");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_owner);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         mSnackBar = mBinding.snckBr;
 
-        imageUtls = new ImageUtls(this);
-        imageUploadViewModel = new ImageUploadViewModel(MyPetsRequestManager.getInstance(), imageUtls, this);
-        mOwnerFrgmtViewModel = new OwnerViewModel(MyPetsRequestManager.getInstance());
+//        mOwnerViewModel = new OwnerViewModel(new MyPetsRequestManager(
+//                new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())));
+//        imageUtls = new ImageUtls(this);
+//        mImageUploadViewModel = new ImageUploadViewModel(new MyPetsRequestManager(
+//                new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())), imageUtls, this);
+
+
+//        imageUploadViewModel = new ImageUploadViewModel(MyPetsRequestManager.getInstance(), imageUtls, this);
+        mImageUploadViewModel.onViewAttached(this);
         mToken = getMyAccountManager().getAccountDetails().getToken();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.cityEdt.setAdapter(adapter);
 
         if (savedInstanceState != null) {
             addowner = savedInstanceState.getBoolean(getResources().getString(R.string.add_ownr));
-            if (savedInstanceState.getBoolean("st")) mBinding.setNoimagestate(true);
             mBinding.setAdduser(addowner);
         } else {
             if (getIntent() != null) {//add or edit owner
@@ -115,20 +134,20 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
             }
         }
         if (getSupportActionBar()!= null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.savedInstanceState = savedInstanceState;
+        configureActivity(savedInstanceState);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        imageUploadViewModel.onViewAttached(this);
-        configureActivity(savedInstanceState);
+        Log.e(debugTag, "onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        imageUploadViewModel.onViewResumed();
+        Log.e(debugTag, "onResume");
+        mImageUploadViewModel.onViewResumed(image.getState());
         Disposable disp = RxView.clicks(mBinding.profileImgv).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
@@ -192,12 +211,14 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     @Override
     protected void onStop() {
         super.onStop();
-        imageUploadViewModel.onViewDetached();
+        Log.e(debugTag, "onStop");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mImageUploadViewModel.onViewDetached();
+        Log.e(debugTag, "onDEstroy");
     }
 
     @Override
@@ -237,14 +258,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        /* 4 imageview states to handle
-         * state 0, no image selected,
-         * state 1, gallery image selected,
-         * state 2, camera image selected,
-         * state 3, url image fetched
-         */
         Log.e(debugTag, image.getState() + " onSaveInstanceState");
-        outState.putBoolean("st", mBinding.getNoimagestate());
         outState.putParcelable("image", image);
         outState.putBoolean(getResources().getString(R.string.add_ownr), addowner);
         if (ownerObj != null)outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
@@ -259,11 +273,11 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
                 if (requestCode == AppConfig.ACTION_IMAGE_CAPTURE) {
                     image.setState(new CameraImageState());
                     image.setUri(imageUtls.getUriForFile(image.getFile()));
-                    imageUploadViewModel.loadImage(image);
+                    mImageUploadViewModel.loadImage(image);
                 } else {
                     image.setState(new GalleryImageState());
                     image.setUri(data.getData());
-                    imageUploadViewModel.loadImage(image);
+                    mImageUploadViewModel.loadImage(image);
                 }
             }
         }
@@ -288,7 +302,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mOwnerFrgmtViewModel;
+        return mOwnerViewModel;
     }
 
     @Override
@@ -318,82 +332,48 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
         showSnackBar(style, getResources().getString(resource), "").subscribe();
     }
 
-//    @Override
-//    public void onSuccessUpload() {
-//        mBinding.setProcessing(false);
-//        Log.e(debugTag, "onSuccessUpload");
-//    }
-//
-//    @Override
-//    public void onSuccessDelete() {
-//        mBinding.setProcessing(false);
-//        Log.e(debugTag, "onSuccessDelete");
-//    }
-//
-//    @Override
-//    public void onErrorUpload() {
-//        mBinding.setProcessing(false);
-//    }
-//
-//    @Override
-//    public void onErrorDelete() {
-//        mBinding.setProcessing(false);
-//    }
-
     @Override
-    public void onSuccessImageAction(Image image) {
+    public void onSuccessUpload(Image image) {
         mBinding.setProcessing(false);
-//        this.image.getState().onSuccess(imageUploadViewModel);
-        if (image.getCode() == AppConfig.STATUS_OK) {
-            if (image.getAction().equals(getResources().getString(R.string.delete_owner_image))) {
-                imageUtls.clearImageWithGlide(mBinding.profileImgv, R.drawable.default_person);
-                this.image.setState(new NoImageState());
-                ownerObj.setImageurl("");
-                imageAction = "";
-                mBinding.setNoimagestate(true);
-            } else {
-                this.image.setState(new UrlImageState(image.getImageurl()));
+        this.image.setState(new UrlImageState(image.getImageurl()));
 //                Log.e(debugTag, this.image.getState() + " lk");
-                ownerObj.setImageurl(image.getImageurl());
-//                mCommonUtls.deleteAppStorage(output);
-            }
-        } else {
-            showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.error), imageAction).delay(400, TimeUnit.MILLISECONDS).subscribe(new Consumer<String>() {
-                @Override
-                public void accept(@io.reactivex.annotations.NonNull String action) throws Exception {
-                    if (action.equals(getResources().getString(R.string.delete_owner_image))) {
-                        imageAction = action;
-                        deleteImg(ownerObj.getId());
-                    } else {
-//                        uploadImage();
-                    }
-                }
-            });
-        }
+        ownerObj.setImageurl(image.getImageurl());
     }
 
     @Override
-    public void onErrorImageAction() {
+    public void onSuccessDelete() {
         mBinding.setProcessing(false);
-//        this.image.getState().onError(imageUploadViewModel);
+        imageUtls.clearImageWithGlide(mBinding.profileImgv, R.drawable.default_person);
+        this.image.setState(new NoImageState());
+        ownerObj.setImageurl("");
+        mBinding.setNoimagestate(true);
+        Log.e(debugTag, "onSuccessDelete");
+    }
 
-
-//        showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.error), imageAction).delay(200, TimeUnit.MILLISECONDS).subscribe(new Consumer<String>() {
-//            @Override
-//            public void accept(@io.reactivex.annotations.NonNull String action) throws Exception {
-//                if (action.equals(getResources().getString(R.string.delete_owner_image))) {
+    @Override
+    public void onErrorUpload() {
+        mBinding.setProcessing(false);
+        showSnackBar(R.style.SnackBarWithAction, getResources().getString(R.string.error), "aa").delay(400, TimeUnit.MILLISECONDS).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@io.reactivex.annotations.NonNull String action) throws Exception {
+                if (action.equals(getResources().getString(R.string.delete_owner_image))) {
 //                    imageAction = action;
-//                    deleteImg(ownerObj.getId());
-//                } else {
-////                    uploadImage();
-//                }
-//            }
-//        });
+                    deleteImg(ownerObj.getId());
+                } else {
+//                        uploadImage();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onErrorDelete() {
+        mBinding.setProcessing(false);
     }
 
     @Override
     public void loadImageUrl(Object obj, final State state, final File file) {
-        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, imageUploadViewModel, getResources().getString(R.string.upload_ownr_img), mToken, ownerObj.getId());
+        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, mImageUploadViewModel, getResources().getString(R.string.upload_ownr_img), mToken, ownerObj.getId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -419,13 +399,14 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
             if (savedInstanceState != null) {
                 ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
                 image = savedInstanceState.getParcelable("image");
-                image.setViewModel(imageUploadViewModel);
+                if (image.getState() instanceof NoImageState) mBinding.setNoimagestate(true);
+                image.setViewModel(mImageUploadViewModel);
                 Log.e(debugTag, image.getState() + " saved state");
             } else {
                 ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
-                image = new TestImage(imageUploadViewModel, ownerObj.getImageurl());
+                image = new TestImage(mImageUploadViewModel, ownerObj.getImageurl());
             }
-            imageUploadViewModel.loadImage(image);//new code
+            mImageUploadViewModel.loadImage(image);//new code
             mBinding.setOwner(ownerObj);
         }
     }
@@ -435,7 +416,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
         image.setAction(getResources().getString(R.string.delete_owner_image));
         image.setAuthtoken(mToken);
         image.setId(id);
-        imageUploadViewModel.deleteImage(image);
+        mImageUploadViewModel.deleteImage(this.image.getState(), image);
     }
 
     private void submitForm() {
@@ -460,7 +441,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
                     if (addowner) {
                         ownerObj.setAction(getResources().getString(R.string.add_ownr));
                         initializeProgressDialog(getResources().getString(R.string.please_wait));
-                        mOwnerFrgmtViewModel.submitOwner(ownerObj);
+                        mOwnerViewModel.submitOwner(ownerObj);
                     } else {
                         if (!mBinding.getProcessing()) {
                             ownerObj.setAction(getResources().getString(R.string.edit_ownr));
@@ -468,7 +449,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
 //                            if (getImageurl() != null && !getImageurl().equals("")) ownerObj.setImageurl(getImageurl());
 //                        ownerObj.setId(ownerObj.getId());
                             initializeProgressDialog(getResources().getString(R.string.please_wait));
-                            mOwnerFrgmtViewModel.submitOwner(ownerObj);
+                            mOwnerViewModel.submitOwner(ownerObj);
                         }
                     }
                 }
@@ -494,7 +475,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            Intent resultIntent = imageUploadViewModel.grantTempFilePermission(intent, tempFile);
+                            Intent resultIntent = mImageUploadViewModel.grantTempFilePermission(intent, tempFile);
                             if (resultIntent != null) startActivityForResult(resultIntent, AppConfig.ACTION_IMAGE_CAPTURE);
                         } else {
                             showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.no_camera_available), "").subscribe();

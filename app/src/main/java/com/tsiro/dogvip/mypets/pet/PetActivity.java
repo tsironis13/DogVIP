@@ -16,6 +16,8 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.rey.material.widget.SnackBar;
 import com.tsiro.dogvip.POJO.DialogActions;
 import com.tsiro.dogvip.POJO.Image;
+import com.tsiro.dogvip.networklayer.MyPetsAPIService;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.uploadimagecontrol.ImageUploadControlActivity;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
@@ -56,7 +58,8 @@ public class PetActivity extends BaseActivity implements PetContract.View {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_pet);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
-        mPetViewModel = new PetViewModel(MyPetsRequestManager.getInstance());
+        mPetViewModel = new PetViewModel(new MyPetsRequestManager(
+                new MyPetsAPIService(RetrofitFactory.getInstance().getServiceAPI())));
         mToken = getMyAccountManager().getAccountDetails().getToken();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_row, getResources().getStringArray(R.array.pet_genres));

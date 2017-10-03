@@ -22,6 +22,7 @@ import com.tsiro.dogvip.adapters.PickPetSpnrAdapter;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityBookingDetailsBinding;
+import com.tsiro.dogvip.petsitters.PetSittersActivity;
 import com.tsiro.dogvip.requestmngrlayer.SitterAssignmentRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
@@ -135,7 +136,8 @@ public class BookingDetailsActivity extends BaseActivity implements SitterAssign
     @Override
     public void onSuccess(SearchedSittersResponse response) {
         dismissDialog();
-        showSnackBar(getResources().getString(R.string.success_action), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
+        startActivity(new Intent(this, PetSittersActivity.class));
+//        showSnackBar(getResources().getString(R.string.success_action), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
     }
 
     @Override
