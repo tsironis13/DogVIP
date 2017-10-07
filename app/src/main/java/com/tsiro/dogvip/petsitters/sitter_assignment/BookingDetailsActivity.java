@@ -75,7 +75,6 @@ public class BookingDetailsActivity extends BaseActivity implements SitterAssign
         mBinding.setObj(petSitterObj);
         mBinding.setBooking(data);
         initializeView();
-        Log.e(debugTag, petObjList.get(0).getP_name()+"Services =? " + data.getLocation());
     }
 
     @Override
@@ -157,8 +156,6 @@ public class BookingDetailsActivity extends BaseActivity implements SitterAssign
 
     private void sendBooking() {
         if (isNetworkAvailable()) {
-            Log.e(debugTag, "SIITER ID => "+petSitterObj.getId() + "\n" + " USER ROLE ID => "+data.getId() + "\n"  + " PET ID => " + pet_id + " \n" +  " SERVICES => "+ data.getServices()
-                    + " \n" + " START DATE => "+data.getStartDate() + " \n" + " END DATE => "+data.getEndDate());
             BookingObj bookingObj = new BookingObj();
             bookingObj.setAuthtoken(mToken);
             bookingObj.setAction(getResources().getString(R.string.send_sitter_booking));

@@ -108,7 +108,6 @@ public class ManipulateNewSitterBookingActivity extends BaseActivity implements 
         dismissDialog();
         if (action.equals(getResources().getString(R.string.get_booking_details))) {
             mBinding.setObj(response.getBooking());
-            Log.e(debugTag, response.getBooking().getServices() + " services");
             if (response.getBooking().getServices() != null) {
                 if (response.getBooking().getServices().isEmpty()) {
                     TextView textView = new TextView(this);

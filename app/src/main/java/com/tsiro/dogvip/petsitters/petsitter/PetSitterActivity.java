@@ -107,15 +107,8 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e(debugTag, "onStart");
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        Log.e(debugTag, "onResume");
         Disposable disp = RxView.clicks(mBinding.retryBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -139,7 +132,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
                     if (obj.getCode() == AppConfig.STATUS_OK) {
-                        Log.e(debugTag, obj.getDisplay_date() + " DATE");
                         mBinding.getPetsitter().setDisplayage(obj.getDisplay_date());
                         mBinding.getPetsitter().setAge(obj.getDate());
                     } else {
@@ -199,15 +191,8 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(debugTag, "onStop");
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        Log.e(debugTag, "onSaveInstanceState");
          /* 4 imageview states to handle
          * state 0, no image selected,
          * state 1, gallery image selected,
@@ -274,8 +259,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
                     galleryURI = uri;
                 }
                 boolean isinvalid = isImageValid(uri, state);
-//                Log.e(debugTag, isinvalid + " IS IMAGE VALID");
-//                Log.e(debugTag, "onActivityResult");
                 if (isinvalid && saveinstance_state == 3) state = 3;
             }
         }
@@ -326,13 +309,11 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
             addPetSitter = true;
             mBinding.setAddpetsitter(true);
         }
-//        Log.e(debugTag, response.getCode() + " CODE");
     }
 
     @Override
     public void onError(int resource, boolean msglength) {
         dismissDialog();
-        Log.e(debugTag, "onError");
         if (!viewLoadedFirstTime) {
             mBinding.setHasError(true);
             mBinding.setErrorText(getResources().getString(R.string.error));
@@ -436,7 +417,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
                         initializeProgressDialog(getResources().getString(R.string.please_wait));
                         mViewModel.petSitterRelatedActions(petSitterObj);
                     } else {
-                        Log.e(debugTag, petSitterObj.getAge() + " age");
                         if (!mBinding.getProcessing()) {
                             petSitterObj.setAction(getResources().getString(R.string.edit_petsitter));
                             petSitterObj.setSubaction(getResources().getString(R.string.edit_base_details));
@@ -459,7 +439,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
             viewLoadedFirstTime = savedInstanceState.getBoolean(getResources().getString(R.string.view_loaded_first_time));
             if (viewLoadedFirstTime) {
                 petSitterObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
-//            Log.e(debugTag, petSitterObj.getImageurl() +" IMAGE URL");
                 addPetSitter = savedInstanceState.getBoolean("test");
                 if (addPetSitter) {
                     setTitle(getResources().getString(R.string.add_owner));
@@ -472,7 +451,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
                     }
                 }
                 mBinding.setAddpetsitter(addPetSitter);
-//            Log.e(debugTag, petSitterObj.getName() + " name here");
                 mBinding.setPetsitter(petSitterObj);
             } else {
                 mBinding.setHasError(true);
@@ -488,7 +466,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
                 petSitterObj.setAction(getResources().getString(R.string.get_petsitter_details));
                 mViewModel.petSitterRelatedActions(petSitterObj);
             } else {
-//                Log.e(debugTag, menu.findItem(R.id.save_item) + " item");
 //                menuItem.setVisible(false);
                 mBinding.setHasError(true);
                 mBinding.setErrorText(getResources().getString(R.string.no_internet_connection));
@@ -505,7 +482,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
                 if (isNetworkAvailable()) {
                     setPetSitterProfileImg(uri);
                 } else {
-//                    Log.e(debugTag, "here");
                     showSnackBar(getResources().getString(R.string.no_internet_connection), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close)).subscribe();
                 }
             } else {
@@ -519,7 +495,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
     }
 
     private void setPetSitterProfileImg(final Uri uri) {
-//        Log.e(debugTag, "setPetSitterProfileImg: " + uri + "STATE: "+state);
         Object object = uri;
         if (state == 0) object = R.drawable.default_person;
         if (object != null) {
@@ -551,7 +526,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
             RequestBody action = RequestBody.create(okhttp3.MultipartBody.FORM, getResources().getString(R.string.upload_petsitter_img));
             RequestBody token = RequestBody.create(okhttp3.MultipartBody.FORM, mToken);
             RequestBody id = RequestBody.create(okhttp3.MultipartBody.FORM, mBinding.getPetsitter().getId()+"");
-            Log.e(debugTag, petSitterObj.getId() + " PETSITTER ID");
             imageAction = getResources().getString(R.string.upload_petsitter_img);
             mViewModel.uploadImage(action, token, id, mfile);
             mBinding.setProcessing(true);
@@ -579,7 +553,6 @@ public class PetSitterActivity extends BaseActivity implements PetSitterContract
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) {
                 if (obj.getAction().equals(getResources().getString(R.string.pick_image_dialog))) {
-                    Log.e(debugTag, "here");
                     if (obj.getSelected_action() == 1) {//positive action (camera image)
                         state = 2;
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

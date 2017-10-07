@@ -72,6 +72,14 @@
         <item name="sb_duration">4000</item>
         <item name="sb_singleLine">false</item>
     </style>
+
+    <!-- CheckBox white -->
+    <style name="checkBoxWhite" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+
     <!-- SPINNER -->
     <!--<style name="Spinner" parent="Material.Widget.Spinner.Light">-->
         <!--<item name="rd_style">@style/Material.Drawable.Ripple.Wave.Light</item>-->

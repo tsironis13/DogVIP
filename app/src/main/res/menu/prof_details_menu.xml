@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/msg_item"
+        android:icon="@drawable/ic_message"
+        android:title="@string/message"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/phone_item"
+        android:icon="@drawable/ic_phone_white"
+        android:title="@string/phone_gr"
+        app:showAsAction="ifRoom" />
+
+</menu>

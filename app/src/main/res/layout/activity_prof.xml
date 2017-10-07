@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="processing"
+            type="boolean" />
+
+        <variable
+            name="prof"
+            type="com.tsiro.dogvip.POJO.profs.ProfObj" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/status_bar_height_keyboard_exists"
+            android:fitsSystemWindows="true">
+
+            <include
+                android:id="@+id/incltoolbar"
+                layout="@layout/toolbar" />
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:background="@color/colorPrimary">
+
+                <RelativeLayout
+                    android:id="@+id/containerRlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:descendantFocusability="beforeDescendants"
+                    android:focusableInTouchMode="true"
+                    android:paddingBottom="8dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <!--android:visibility="@{adduser ? View.GONE : View.VISIBLE}"-->
+                    <TextView
+                        android:id="@+id/reqfldsTtv"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="start"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="@color/error_color"
+                        android:text="@string/required_fields_prof" />
+                    <!-- profile photo Rlt -->
+                    <RelativeLayout
+                        android:id="@+id/profilePhoneLlt"
+                        android:layout_below="@+id/reqfldsTtv"
+                        android:layout_width="270dp"
+                        android:layout_height="150dp"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="vertical"
+                        android:visibility="@{prof.id == 0 ? View.GONE : View.VISIBLE}">
+
+                        <TextView
+                            android:id="@+id/profileLblTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="7dp"
+                            android:layout_centerHorizontal="true"
+                            android:textStyle="bold"
+                            android:text="@string/profile_photo_gr" />
+
+                        <RelativeLayout
+                            android:id="@+id/profRlt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/profileLblTtv"
+                            android:layout_centerHorizontal="true">
+
+                            <ImageView
+                                android:id="@+id/profileImgv"
+                                android:layout_width="85dp"
+                                android:layout_height="85dp"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="@string/image_cont_desc"
+                                android:src="@drawable/prof_default_icon" />
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/image_upload_background"
+                                android:visibility="@{processing ? View.VISIBLE : View.GONE}">
+
+                                <ProgressBar
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_gravity="center"
+                                    android:theme="@style/ProcessingImageProgressBarStyle" />
+
+                            </FrameLayout>
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/edit"
+                            android:layout_marginBottom="-10dp"
+                            android:layout_alignBottom="@+id/profRlt"
+                            android:padding="5dp"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:background="@drawable/circle_image_small" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/profRlt"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="bottom"
+                            android:textColor="@color/error_color"
+                            android:textStyle="bold"
+                            android:text="@string/image_size_limit" />
+                        <!-- android:visibility="@{imgstate != 0 &amp;&amp; !processing ? View.VISIBLE : View.GONE}" -->
+                        <com.rey.material.widget.ImageButton
+                            android:id="@+id/clearImgv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/profRlt"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:background="@null"
+                            android:visibility="@{!processing &amp;&amp; !prof.image_url.empty  ? View.VISIBLE : View.GONE}"
+                            android:src="@drawable/ic_delete" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/categoryTtv"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/profilePhoneLlt"
+                        android:text="@string/category_gr" />
+
+                    <CheckBox
+                        android:id="@+id/category1CheckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prof_category1"
+                        android:tag="1"
+                        android:layout_marginLeft="-7dp"
+                        android:layout_marginStart="-7dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_below="@+id/categoryTtv"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <CheckBox
+                        android:id="@+id/category2CheckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="2"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="-7dp"
+                        android:layout_marginStart="-7dp"
+                        android:text="@string/prof_category2"
+                        android:layout_below="@id/category1CheckBx" />
+
+                    <CheckBox
+                        android:id="@+id/category3CheckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="3"
+                        android:layout_marginLeft="-7dp"
+                        android:layout_marginStart="-7dp"
+                        android:text="@string/prof_category3"
+                        android:layout_below="@id/category2CheckBx" />
+
+                    <CheckBox
+                        android:id="@+id/category4CheckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="4"
+                        android:text="@string/prof_category4"
+                        android:layout_marginBottom="5dp"
+                        android:layout_alignRight="@+id/categoryTtv"
+                        android:layout_alignEnd="@+id/categoryTtv"
+                        android:layout_below="@+id/categoryTtv" />
+
+                    <CheckBox
+                        android:id="@+id/category5CheckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="5"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/prof_category5"
+                        android:layout_below="@id/category4CheckBx"
+                        android:layout_alignRight="@+id/category4CheckBx"
+                        android:layout_alignEnd="@+id/category4CheckBx" />
+
+                    <CheckBox
+                        android:id="@+id/category6CheckBx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="6"
+                        android:text="@string/prof_category6"
+                        android:layout_below="@id/category5CheckBx"
+                        android:layout_alignRight="@+id/category5CheckBx"
+                        android:layout_alignEnd="@+id/category5CheckBx" />
+
+                    <TextView
+                        android:id="@+id/cityTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/category3CheckBx"
+                        android:text="@string/city_gr" />
+
+                    <LinearLayout
+                        android:id="@+id/cityLlt"
+                        android:layout_width="270dp"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:background="@android:color/white"
+                        android:layout_below="@+id/cityTtv"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center_vertical"
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
+                        android:elevation="2dp"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.14"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:srcCompat="@drawable/location" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/cityEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.86"
+                            android:textSize="12sp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:hint="@string/city_plhldr"
+                            android:dropDownAnchor="@+id/cityLlt"
+                            android:dropDownWidth="270dp"
+                            android:completionThreshold="1"
+                            android:background="@android:color/transparent"
+                            android:text="@={prof.city}"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/nameTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cityLlt"
+                        android:layout_marginBottom="7dp"
+                        android:textStyle="bold"
+                        android:text="@string/firm_name_gr" />
+
+                    <LinearLayout
+                        android:id="@+id/nameLlt"
+                        android:layout_width="270dp"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="15dp"
+                        android:background="@android:color/white"
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
+                        android:layout_below="@+id/nameTtv"
+                        android:gravity="center_vertical"
+                        android:elevation="2dp"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.14"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:srcCompat="@drawable/person" />
+
+                        <EditText
+                            android:id="@+id/nameEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.86"
+                            android:textSize="12sp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:hint="@string/firm_name_plhldr"
+                            android:background="@android:color/transparent"
+                            android:text="@={prof.name}"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/addressTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/nameLlt"
+                        android:text="@string/firm_address_gr" />
+
+                    <LinearLayout
+                        android:id="@+id/addressLlt"
+                        android:layout_width="270dp"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/addressTtv"
+                        android:layout_marginBottom="15dp"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:elevation="2dp"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.14"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:srcCompat="@drawable/ic_address" />
+
+                        <EditText
+                            android:id="@+id/addressEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.86"
+                            android:textSize="12sp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:hint="@string/firm_address_plhldr"
+                            android:background="@android:color/transparent"
+                            android:text="@={prof.place_address}"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/phoneTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_below="@+id/addressLlt"
+                        android:textStyle="bold"
+                        android:text="@string/phone_gr" />
+
+                    <LinearLayout
+                        android:id="@+id/phoneLlt"
+                        android:layout_width="270dp"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:background="@android:color/white"
+                        android:layout_below="@id/phoneTtv"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp"
+                        android:elevation="2dp"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.14"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:srcCompat="@drawable/phone" />
+
+                        <EditText
+                            android:id="@+id/phoneEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.86"
+                            android:textSize="12sp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:hint="@string/phone_plhldr"
+                            android:background="@android:color/transparent"
+                            android:text="@={prof.mobile_number}"
+                            android:inputType="phone" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/websiteTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_below="@+id/phoneLlt"
+                        android:textStyle="bold"
+                        android:text="@string/website_gr" />
+
+                    <LinearLayout
+                        android:id="@+id/websiteLlt"
+                        android:layout_width="270dp"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:background="@android:color/white"
+                        android:layout_below="@id/websiteTtv"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp"
+                        android:elevation="2dp"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.14"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:srcCompat="@drawable/ic_website" />
+
+                        <EditText
+                            android:id="@+id/websiteEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.86"
+                            android:textSize="12sp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:hint="@string/website_plhldr"
+                            android:background="@android:color/transparent"
+                            android:text="@={prof.website}"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+        <com.rey.material.widget.SnackBar
+            android:id="@+id/snckBr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="bottom" />
+
+    </FrameLayout>
+
+</layout>

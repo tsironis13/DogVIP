@@ -42,15 +42,12 @@ public class PetSitterViewModel implements PetSitterContract.ViewModel, Lifecycl
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-//        Log.e(debugTag, "onAttached");
         this.mViewClback = (PetSitterContract.View) viewCallback;
         this.mViewImageUploadClback = (PetSitterContract.View) viewCallback;
     }
 
     @Override
     public void onViewResumed() {
-//        Log.e(debugTag, "onViewResumed");
-//        Log.e(debugTag, "DISP => "+mUploadDisp + " REQUEST STATE => "+requestState+ " PROCESSOR => "+imageProcessor);
         if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && mProcessor != null)
             mProcessor
                 .subscribeOn(Schedulers.io())
@@ -63,7 +60,6 @@ public class PetSitterViewModel implements PetSitterContract.ViewModel, Lifecycl
 
     @Override
     public void onViewDetached() {
-//        Log.e(debugTag, "onViewDetached");
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mViewImageUploadClback = null;
             if (mUploadDisp != null) mUploadDisp.dispose();
@@ -74,7 +70,6 @@ public class PetSitterViewModel implements PetSitterContract.ViewModel, Lifecycl
 
     @Override
     public void onSuccessImageAction(Image image) {
-//        Log.e(debugTag, "onSuccessImageAction");
         mUploadDisp = null;
         mViewImageUploadClback.onImageActionSuccess(image);
     }

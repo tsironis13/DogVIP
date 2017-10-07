@@ -28,4 +28,8 @@ public interface LoveMatchContract {
         void onViewClick(android.view.View view);
     }
 
+    interface GetPetsViewModel {
+        void getPetsByFilter(LoveMatchRequest request);
+    }
+
 }

@@ -2,11 +2,8 @@ package com.tsiro.dogvip.networklayer;
 
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.lostfound.LostFoundViewModel;
-import com.tsiro.dogvip.lovematch.LoveMatchViewModel;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 

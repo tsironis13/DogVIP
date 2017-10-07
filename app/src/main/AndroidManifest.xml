@@ -310,12 +310,40 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name=".profs.ProfProfileActivity"
+            android:name=".profs.profprofile.ProfProfileActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".profs.prof.ProfActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".profs.profprofile.ProfProfileActivity" />
+        </activity>
+
+        <activity
+            android:name=".profs.SearchedProfsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".profs.profprofile.ProfProfileActivity" />
+        </activity>
+
+        <activity
+            android:name=".profs.ProfDetailsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".profs.SearchedProfsActivity" />
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

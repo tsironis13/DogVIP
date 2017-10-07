@@ -132,7 +132,6 @@ public class PlaceInfoFrgmt extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e(debugTag, "onActivityResult" + resultCode + " "+requestCode);
         if (resultCode == RESULT_OK) {
             if (requestCode == AppConfig.REFRESH_PETSITTER_PLACE_IMAGES) {
                 ArrayList<Image> urls = data.getExtras().getParcelableArrayList(getResources().getString(R.string.urls));
@@ -140,7 +139,6 @@ public class PlaceInfoFrgmt extends Fragment {
                     petSitterObj.setUrls(urls);
                     viewContract.updatePetSitterPlaceImages(urls);
                 }
-                Log.e(debugTag, "onActivityResult "+data.getExtras().getParcelableArrayList(getResources().getString(R.string.urls)) );
             }
         }
     }
@@ -161,13 +159,10 @@ public class PlaceInfoFrgmt extends Fragment {
     }
 
     private void submitDetails() {
-//        Log.e(debugTag, "POSITION 1: "+ mBinding.petplaceSpnr.getSelectedItemPosition());
-//        Log.e(debugTag, "POSITION 2: "+ mBinding.placetypeSpnr.getSelectedItemPosition());
         hideSoftKeyboard();
         petSitterObj.setPetplace(mBinding.petplaceSpnr.getSelectedItemPosition());
         petSitterObj.setPlacetype(mBinding.placetypeSpnr.getSelectedItemPosition());
         petSitterObj.setAddress(mBinding.placeaddressEdt.getText().toString());
-        Log.e(debugTag, "CALPRIT HERE???? "+petSitterObj.getServices());
         viewContract.onOtherDetailsSubmit(petSitterObj);
     }
 

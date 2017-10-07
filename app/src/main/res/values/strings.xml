@@ -26,9 +26,11 @@
     <string name="upload_ownr_img">upload_ownr_img</string>
     <string name="upload_pet_img">upload_pet_img</string>
     <string name="upload_petsitter_img">upload_petsitter_img</string>
+    <string name="upload_prof_img">upload_prof_img</string>
     <string name="upload_petsitter_place_img">upload_petsitter_place_img</string>
     <string name="delete_owner_image">delete_owner_image</string>
     <string name="delete_petsitter_image">delete_petsitter_image</string>
+    <string name="delete_prof_image">delete_prof_image</string>
     <string name="delete_owner">delete_owner</string>
     <string name="add_pet">add_pet</string>
     <string name="edit_pet">edit_pet</string>
@@ -75,6 +77,10 @@
     <string name="rate_sitter_booking">rate_sitter_booking</string>
     <string name="get_sitter_comments">get_sitter_comments</string>
     <string name="get_user_prof">get_user_prof</string>
+    <string name="add_prof">add_prof</string>
+    <string name="edit_prof">edit_prof</string>
+    <string name="delete_prof">delete_prof</string>
+    <string name="search_prof">search_prof</string>
 
     <string name="date_pick_action">date_pick_action</string>
     <string name="time_pick_action">time_pick_action</string>
@@ -117,6 +123,7 @@
     <string name="clear">ΚΑΘΑΡΙΣΜΟΣ</string>
     <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
     <string name="required_fields_petsitter">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν pet sitter στην εφαρμογή.</string>
+    <string name="required_fields_prof">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν επαγγελματίας στην εφαρμογή.</string>
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
     <string name="swipe_to_edit_delete">Σύρετε αριστερά για επεξεργασία/διαγραφή.</string>
     <string name="image_uploading_on_progress">Ανέβασμα φωτογραφίας σε εξέλιξη. Παρακαλώ περιμένετε.</string>
@@ -125,6 +132,7 @@
     <string name="no_items">Δεν υπάρχουν διαθέσιμα στοιχεία.</string>
     <string name="no_owner_created">Για να δεις τη συγκεκριμένη λειτουργία πρέπει να είσαι ιδιοκτήτης κατοικίδιου.\n\n Μπορείς να γίνεις ιδιοκτήτης μέσου του μενού Τα κατοικίδια μου.</string>
     <string name="city_no_match">Η συγκεκριμένη πόλη δεν είναι διαθέσιμη.</string>
+    <string name="prof_categories_list_empty">Παρακαλώ επίλεξε τουλάχιστον μία κατηγορία για την επιχείρηση σου.</string>
     <string name="race_not_match">Η συγκεκριμένη φυλή δεν είναι διαθέσιμη. Επιλέξτε μία από τις προτεινόμενες κατά την πληκτρολόγηση.</string>
     <string name="city_race_not_match">Η συγκεκριμένη πόλη ή φυλή δεν είναι διαθέσιμη.</string>
     <string name="no_owner_exists">Δεν βρέθηκε ιδιοκτήτης για το συγκεκριμένο λογαριασμό.</string>
@@ -140,6 +148,7 @@
     <string name="new_sitter_booking_msg">Νέα αίτηση ανάθεσης φύλαξης.</string>
     <string name="manipulate_new_sitter_booking_title">Αίτημα φύλαξης</string>
     <string name="rating_not_valid">Η βαθμολογία δεν είναι έγκυρη</string>
+    <string name="no_prof_exists">Δεν έχετε καταχωρήσει επιχείρηση μέχρι τώρα.</string>
     <!-- DIALOS -->
     <string name="pick_image_dialog">pick_img_dialog</string>
     <string name="clear_image_dialog">clear_img_dialog</string>
@@ -168,6 +177,9 @@
     
     <string name="delete_lost_found_item_title">Διαγραφή εγγραφής</string>
     <string name="delete_lost_found_item_desc">Η συγκεκριμένη εγγραφή θα διαγραφεί οριστικά.</string>
+
+    <string name="delete_prof_title">Διαγραφή Επαγγελματία</string>
+    <string name="delete_prof_desc">Ο επαγγελματίας θα διαγραφεί οριστικά.</string>
     <!-- TAGS-->
     <string name="id">id</string>
     <string name="myprefs">myprefs</string>
@@ -204,11 +216,15 @@
     <string name="profile_photo_gr">ΕΙΚΟΝΑ ΠΡΟΦΙΛ</string>
     <string name="photo_gr">ΕΙΚΟΝΑ</string>
     <string name="name_gr">ΟΝΟΜΑ</string>
+    <string name="firm_name_gr">ΟΝΟΜΑΣΙΑ ΕΠΙΧΕΙΡΗΣΗΣ</string>
+    <string name="firm_address_gr">ΔΙΕΥΘΥΝΣΗ ΕΠΙΧΕΙΡΗΣΗΣ</string>
     <string name="surname_gr">ΕΠΙΘΕΤΟ</string>
     <string name="birthdate_gr">ΗΜ. ΓΕΝΝΗΣΗΣ</string>
     <string name="age_gr">ΗΛΙΚΙΑ</string>
     <string name="city_gr">ΠΟΛΗ</string>
+    <string name="category_gr">ΚΑΤΗΓΟΡΙΑ</string>
     <string name="phone_gr">ΤΗΛΕΦΩΝΟ</string>
+    <string name="website_gr">WEBSITE</string>
     <string name="race_gr">ΦΥΛΗ</string>
     <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
     <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
@@ -254,6 +270,7 @@
     <string name="data">data</string>
     <string name="mypets">mypets</string>
     <string name="dialog_type">dialog_type</string>
+    <string name="image">image</string>
 
     <string name="male">Αρσενικό,</string>
     <string name="female">Θηλυκό,</string>
@@ -372,12 +389,23 @@
     <string name="no_pet_images_yet">Δεν έχεις προσθέσει κάποια εικόνα.</string>
     <string name="pet_images_limit">Μέγιστος επιτρεπτός αριθμός\n φωτογραφιών: <b>6</b>.</string>
     <string name="photos">Φωτογραφίες</string>
+    <!-- PROFS -->
+    <string name="prof_profile_title">Επαγγελματίες</string>
+    <string name="prof_category1">Pet shop</string>
+    <string name="prof_category2">Περιποίηση σκύλων</string>
+    <string name="prof_category3">Ξενοδοχείο ζώων</string>
+    <string name="prof_category4">Dog friendy spot</string>
+    <string name="prof_category5">Εκπαιδευτής</string>
+    <string name="prof_category6">Άλλο</string>
+    <string name="categories_gr">ΚΑΤΗΓΟΡΙΕΣ</string>
     <!-- EDITEXT PLACEHOLDERS -->
     <string name="email_plhldr">*<u>Email</u></string>
     <string name="password_plhldr">*<u>Κωδικός</u></string>
     <string name="confrmpassword_plhldr">*<u>Επιβεβαίωση κωδικού</u></string>
     <string name="new_password_plhldr">*<u>Νέος κωδικός</u></string>
     <string name="name_plhldr">*<u>Όνομα</u></string>
+    <string name="firm_name_plhldr">*<u>Όνομασία επιχείρησης</u></string>
+    <string name="firm_address_plhldr">*<u>Διεύθυνση επιχείρησης</u></string>
     <string name="surname_plhldr">*<u>Επίθετο</u></string>
     <string name="birth_date_plhldr">*<u>Ημ. γέννησης</u></string>
     <string name="birth_date_notreq_plhldr">Ημ. γέννησης</string>
@@ -385,6 +413,7 @@
     <string name="age_notreq_plhldr"><u>Ηλικία</u></string>
     <string name="city_plhldr"><u>Πόλη</u></string>
     <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
+    <string name="website_plhldr"><u>Website</u></string>
     <string name="phone_req_plhldr">*<u>Τηλέφωνο</u></string>
     <string name="race_plhldr">*<u>Φυλή</u></string>
     <string name="microchip_plhldr"><u>Αριθμός Microchip</u></string>

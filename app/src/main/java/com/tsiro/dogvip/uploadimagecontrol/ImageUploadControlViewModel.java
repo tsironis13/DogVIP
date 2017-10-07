@@ -43,7 +43,6 @@ public class ImageUploadControlViewModel implements ImageUploadControlContract.V
 
     @Override
     public void onViewResumed() {
-//        Log.e(debugTag, "DISP => "+mDisp + " REQUEST STATE => "+requestState+ " PROCESSOR => "+imageProcessor);
         if (mDisp != null && requestState != AppConfig.REQUEST_RUNNING && imageProcessor != null){
             imageProcessor
                     .subscribeOn(Schedulers.io())

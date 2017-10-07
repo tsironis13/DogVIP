@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.di.qualifiers.ActivityContext;
 import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
@@ -22,8 +23,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.processors.AsyncProcessor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+//import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -40,7 +43,6 @@ public class AppModule {
     @Provides
     @ActivityContext
     Context provideActivityContext(Activity activity) {
-        Log.e(debugTag, "provideActivityContext");
         return activity;
     }
 
@@ -89,9 +91,7 @@ public class AppModule {
     @Provides
     @Singleton
     ServiceAPI provideServiceAPI(Retrofit retrofit) {
-        ServiceAPI serviceAPI = retrofit.create(ServiceAPI.class);
-//        Log.e(debugTag, serviceAPI + " sERVICE API");
-        return serviceAPI;
+        return retrofit.create(ServiceAPI.class);
     }
 
 }

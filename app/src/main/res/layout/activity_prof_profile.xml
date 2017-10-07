@@ -11,8 +11,20 @@
             type="boolean" />
 
         <variable
+            name="showretry"
+            type="boolean" />
+
+        <variable
+            name="search"
+            type="boolean" />
+
+        <variable
             name="errortext"
             type="String" />
+
+        <variable
+            name="prof"
+            type="com.tsiro.dogvip.POJO.profs.ProfObj" />
 
     </data>
 
@@ -40,56 +52,324 @@
                 layout="@layout/toolbar" />
 
             <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/coordlt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <Button
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/errorLlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="@{haserror ? View.VISIBLE : View.GONE}"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/errorTtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@{errortext}" />
+
+                    <Button
+                        android:id="@+id/retryBtn"
+                        android:layout_width="222dp"
+                        android:layout_height="48dp"
+                        android:text="@string/retry"
+                        android:visibility="@{showretry ? View.VISIBLE : View.GONE}"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/ripple_drawable" />
+
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="kalase" />
+                    android:orientation="vertical">
 
-                <!--<com.tsiro.dogvip.utilities.CustomViewPager-->
-                    <!--android:id="@+id/viewPgr"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:visibility="@{!haserror ? View.VISIBLE : View.GONE}" />-->
+                    <RelativeLayout
+                        android:id="@+id/searchFilterContainerRlt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:padding="15dp"
+                        android:visibility="@{search ? View.VISIBLE : View.GONE}">
 
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/errorLlt"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:visibility="@{haserror ? View.VISIBLE : View.GONE}"-->
-                    <!--android:gravity="center">-->
+                        <ImageView
+                            android:id="@+id/collapseImgv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/ic_keyboard_arrow_up_white" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/errorTtv"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="12dp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:textSize="16sp"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:text="@{errortext}" />-->
+                        <LinearLayout
+                            android:id="@+id/locationLlt"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="15dp"
+                            android:layout_below="@+id/collapseImgv"
+                            android:background="@color/colorAccentOpaque"
+                            android:elevation="2dp"
+                            android:weightSum="1">
 
-                    <!--<Button-->
-                        <!--android:id="@+id/retryBtn"-->
-                        <!--android:layout_width="222dp"-->
-                        <!--android:layout_height="48dp"-->
-                        <!--android:text="@string/retry"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:background="@drawable/ripple_drawable" />-->
+                            <ImageView
+                                android:id="@+id/locationIconImgv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14"
+                                android:contentDescription="@string/image_cont_desc"
+                                app:srcCompat="@drawable/ic_search_white" />
 
-                <!--</LinearLayout>-->
+                            <AutoCompleteTextView
+                                android:id="@+id/locationEdt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.86"
+                                android:textSize="13sp"
+                                android:completionThreshold="1"
+                                android:paddingRight="8dp"
+                                android:textStyle="bold"
+                                android:textCursorDrawable="@null"
+                                android:focusableInTouchMode="false"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@android:color/white"
+                                android:hint="@string/location_filter_plhldr"
+                                android:dropDownWidth="match_parent"
+                                android:dropDownAnchor="@+id/locationLlt"
+                                android:background="@android:color/transparent"
+                                android:inputType="text" />
+
+                        </LinearLayout>
+
+                        <CheckBox
+                            android:id="@+id/category1CheckBx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/prof_category1"
+                            android:theme="@style/checkBoxWhite"
+                            android:textColor="@android:color/white"
+                            android:tag="1"
+                            android:layout_marginLeft="-7dp"
+                            android:layout_marginStart="-7dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_below="@+id/locationLlt"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <CheckBox
+                            android:id="@+id/category2CheckBx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:tag="2"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="-7dp"
+                            android:layout_marginStart="-7dp"
+                            android:text="@string/prof_category2"
+                            android:theme="@style/checkBoxWhite"
+                            android:textColor="@android:color/white"
+                            android:layout_below="@id/category1CheckBx" />
+
+                        <CheckBox
+                            android:id="@+id/category3CheckBx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:tag="3"
+                            android:layout_marginLeft="-7dp"
+                            android:layout_marginStart="-7dp"
+                            android:text="@string/prof_category3"
+                            android:theme="@style/checkBoxWhite"
+                            android:textColor="@android:color/white"
+                            android:layout_below="@id/category2CheckBx" />
+
+                        <CheckBox
+                            android:id="@+id/category4CheckBx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:tag="4"
+                            android:text="@string/prof_category4"
+                            android:theme="@style/checkBoxWhite"
+                            android:textColor="@android:color/white"
+                            android:layout_marginBottom="5dp"
+                            android:layout_alignRight="@+id/locationLlt"
+                            android:layout_alignEnd="@+id/locationLlt"
+                            android:layout_below="@+id/locationLlt" />
+
+                        <CheckBox
+                            android:id="@+id/category5CheckBx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:tag="5"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/prof_category5"
+                            android:theme="@style/checkBoxWhite"
+                            android:textColor="@android:color/white"
+                            android:layout_below="@id/category4CheckBx"
+                            android:layout_alignRight="@+id/category4CheckBx"
+                            android:layout_alignEnd="@+id/category4CheckBx" />
+
+                        <CheckBox
+                            android:id="@+id/category6CheckBx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:tag="6"
+                            android:text="@string/prof_category6"
+                            android:theme="@style/checkBoxWhite"
+                            android:textColor="@android:color/white"
+                            android:layout_below="@id/category5CheckBx"
+                            android:layout_alignRight="@+id/category5CheckBx"
+                            android:layout_alignEnd="@+id/category5CheckBx" />
+
+                    </RelativeLayout>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:visibility="@{!haserror ? View.VISIBLE : View.GONE}">
+
+                        <ImageView
+                            android:id="@+id/profImgv"
+                            android:layout_width="70dp"
+                            android:layout_height="75dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            app:imageUrl="@{prof.image_url}"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/profName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:text="@{prof.name}"
+                            app:layout_constraintLeft_toRightOf="@+id/profImgv"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/profCity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:textSize="14sp"
+                            android:text="@{prof.city}"
+                            app:layout_constraintLeft_toRightOf="@+id/profImgv"
+                            app:layout_constraintTop_toBottomOf="@+id/profName" />
+
+                        <TextView
+                            android:id="@+id/profAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:textSize="14sp"
+                            android:text="@{prof.place_address}"
+                            app:layout_constraintLeft_toRightOf="@+id/profImgv"
+                            app:layout_constraintTop_toBottomOf="@+id/profCity" />
+
+                        <TextView
+                            android:id="@+id/categoriesLblTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/categories_gr"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/profImgv" />
+
+                        <LinearLayout
+                            android:id="@+id/categoriesLlt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/categoriesLblTtv" />
+
+                        <TextView
+                            android:id="@+id/phoneLblTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/phone_gr"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/categoriesLlt" />
+
+                        <TextView
+                            android:id="@+id/phoneTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{prof.mobile_number}"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phoneLblTtv" />
+
+                        <TextView
+                            android:id="@+id/emailLblTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/email"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/phoneTtv" />
+
+                        <TextView
+                            android:id="@+id/emailTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{prof.email}"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/emailLblTtv" />
+
+                        <TextView
+                            android:id="@+id/websiteLblTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/website_gr"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/emailTtv" />
+
+                        <TextView
+                            android:id="@+id/websiteTtv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{prof.website}"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/websiteLblTtv" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </LinearLayout>
+
+                </ScrollView>
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/editPetSitterFab"
+                    android:id="@+id/editProfFab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_gravity="bottom|end"
-                    android:src="@drawable/ic_edit_white" />
+                    android:src="@drawable/ic_prof_white" />
 
             </android.support.design.widget.CoordinatorLayout>
 

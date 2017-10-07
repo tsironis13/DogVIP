@@ -1,12 +1,9 @@
 package com.tsiro.dogvip.networklayer;
 
-import android.util.Log;
-
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.lovematch.LoveMatchViewModel;
-import com.tsiro.dogvip.retrofit.RetrofitFactory;
+import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import org.reactivestreams.Subscription;
@@ -26,13 +23,9 @@ import io.reactivex.schedulers.Schedulers;
 public class LoveMatchAPIService {
 
     private ServiceAPI serviceAPI;
-//    @Inject
-//    ServiceAPI serviceAPI;
+
     @Inject
     public LoveMatchAPIService(ServiceAPI serviceAPI) {
-        Log.e("LoveMatchAPIService", "LoveMatchAPIService");
-//        Log.e("LoveMatchAPIService", serviceAPI + " SERVICE API");
-//        serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
         this.serviceAPI = serviceAPI;
     }
 

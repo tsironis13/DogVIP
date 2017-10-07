@@ -1,10 +1,8 @@
 package com.tsiro.dogvip.requestmngrlayer;
 
-import android.util.Log;
-
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
-import com.tsiro.dogvip.lovematch.LoveMatchViewModel;
+import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
 import com.tsiro.dogvip.networklayer.LoveMatchAPIService;
 
 import java.util.concurrent.TimeUnit;
@@ -23,7 +21,6 @@ public class LoveMatchRequestManager {
 
     @Inject
     public LoveMatchRequestManager(LoveMatchAPIService loveMatchAPIService) {
-        Log.e("asa", "LoveMatchRequestManager");
         this.mLoveMatchAPIService = loveMatchAPIService;
     }
 

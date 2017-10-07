@@ -74,23 +74,6 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     //circle images
-    @BindingAdapter("bind:imageUrl")
-    public static void loadImage(ImageView imageView, String url) {
-        //.skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
-        int default_img = 0;
-        if (imageView.getId() == R.id.petImgv) {
-            default_img = R.drawable.ic_pets;
-        } else if (imageView.getId() == R.id.profileImgv) {
-            default_img = R.drawable.default_person;
-        }
-        Glide.with(imageView.getContext())
-                .load(url)
-                .transition(withCrossFade())
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .error(default_img).placeholder(default_img))
-                .into(imageView);
-    }
 
     @BindingAdapter("bind:textPl")
     public static void setText(TextView textView, String text) {

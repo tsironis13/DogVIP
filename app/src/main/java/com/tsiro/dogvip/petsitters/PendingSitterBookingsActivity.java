@@ -85,7 +85,6 @@ public class PendingSitterBookingsActivity extends BaseActivity implements PetSi
 
     @Override
     public void onBaseViewClick(View view) {
-        Log.e(debugTag, view.getTag()  + " index");
         Bundle bundle = new Bundle();
         bundle.putInt(getResources().getString(R.string.id), data.get((int)view.getTag()).getId());
         Intent intent = new Intent(this, ManipulateNewSitterBookingActivity.class).putExtras(bundle);

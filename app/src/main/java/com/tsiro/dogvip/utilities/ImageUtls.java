@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -342,7 +343,6 @@ public class ImageUtls {
     }
 
     public Uri getUriForFile(File output) {
-        Log.e("ddd", output + " output");
         return FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".provider", output);
     }
 
@@ -352,7 +352,7 @@ public class ImageUtls {
         return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
     }
 
-    public void loadImageWithGlide(Object obj, final State state, final File file, ImageView imageView, final ImageUploadViewModel imageUploadViewModel, final String action, final String token, final int id) {
+    public void loadImageWithGlide(Object obj, final State state, final File file, ImageView imageView, final ImageUploadViewModel imageUploadViewModel, final String action, final String token, final int id, int default_icon) {
         Glide.with(imageView.getContext())
                 .load(obj)
                 .listener(new RequestListener<Drawable>() {
@@ -365,7 +365,27 @@ public class ImageUtls {
                     }
                 })
                 .transition(withCrossFade())
-                .apply(new RequestOptions().centerCrop().error(R.drawable.default_person))
+                .apply(new RequestOptions().centerCrop().error(default_icon))
+                .into(imageView);
+    }
+
+    @BindingAdapter("bind:imageUrl")
+    public static void loadRecyclerViewImage(ImageView imageView, String url) {
+        //.skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+        int default_img = 0;
+        if (imageView.getId() == R.id.petImgv) {
+            default_img = R.drawable.ic_pets;
+        } else if (imageView.getId() == R.id.profileImgv) {
+            default_img = R.drawable.default_person;
+        } else {
+            default_img = R.drawable.prof_default_icon;
+        }
+        Glide.with(imageView.getContext())
+                .load(url)
+                .transition(withCrossFade())
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .error(default_img).placeholder(default_img))
                 .into(imageView);
     }
 

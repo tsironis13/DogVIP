@@ -39,8 +39,6 @@ public class UrlImageState implements State, Parcelable {
 
     @Override
     public void loadImage(ImageUploadViewModel viewModel, TestImage testImage) {
-        Log.e("state", "UrlImageState");
-//        Log.e("", "UrlImageState "+ url + " a "+ this.ownerViewModel  );
         viewModel.loadImageUrl(url, this);
     }
 
@@ -50,7 +48,6 @@ public class UrlImageState implements State, Parcelable {
 
     @Override
     public void uploadImageToServer(ImageUploadViewModel viewModel, String action, String token, int ownerId, File file) {
-        Log.e("no do nothing", "no do nothing");
     }
 
 //    @Override

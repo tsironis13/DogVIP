@@ -1,16 +1,9 @@
 package com.tsiro.dogvip.mychatrooms;
 
-import android.util.Log;
-
-import com.tsiro.dogvip.POJO.chat.FetchChatRoomRequest;
-import com.tsiro.dogvip.POJO.chat.FetchChatRoomResponse;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomsRequest;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomsResponse;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.chatroom.ChatRoomContract;
-import com.tsiro.dogvip.chatroom.ChatRoomViewModel;
-import com.tsiro.dogvip.lovematch.LoveMatchViewModel;
 import com.tsiro.dogvip.requestmngrlayer.ChatRequestManager;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

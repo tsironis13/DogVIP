@@ -1,10 +1,10 @@
 package com.tsiro.dogvip.lovematch;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +20,8 @@ import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
+import com.tsiro.dogvip.lovematch.viewmodel.GetPetsViewModel;
+import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
@@ -27,21 +29,17 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityLoveMatchBinding;
-import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
-import com.tsiro.dogvip.retrofit.ServiceAPI;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import dagger.android.AndroidInjection;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import retrofit2.Retrofit;
 
 /**
  * Created by giannis on 1/7/2017.
@@ -55,7 +53,8 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     private LinearLayoutManager linearLayoutManager;
     private int page = 1, position;
     private ArrayList<PetObj> data;
-    private boolean availableData = true, isLoading, error, hasfilters, noitems;
+    private boolean availableData = true, isLoading, error, hasfilters;
+    private static final String debugTag = LoveMatchActivity.class.getSimpleName();
 
 //    @Inject
 //    LoveMatchRequestManager loveMatchRequestManager;
@@ -63,12 +62,14 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
 //    ServiceAPI serviceAPI;
     @Inject
     LoveMatchViewModel mViewModel;
+    @Inject
+    GetPetsViewModel getPetsViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-//        Log.e("aaa", loveMatchRequestManager + " api");
+        Log.e(debugTag, "onCREATE");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_love_match);
         mToken = getMyAccountManager().getAccountDetails().getToken();
 
@@ -144,28 +145,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                         search();
                     }
                 }
-
-//                if (!Arrays.asList(AppConfig.cities).contains(mBinding.locationEdt.getText().toString())) {
-//                    showSnackBar(getResources().getString(R.string.city_no_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
-//                } else if (!Arrays.asList(AppConfig.races).contains(mBinding.raceEdt.getText().toString())) {
-//                    showSnackBar(getResources().getString(R.string.race_not_match), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
-//                } else {
-//                    page = 1;
-//                    hasfilters = true;
-//                    mBinding.setHasFilters(true);
-//                    city = mBinding.locationEdt.getText().toString();
-//                    race = mBinding.raceEdt.getText().toString();
-//                    if (!data.isEmpty())data.clear();
-//                    fetchData(page);
-//                }
-
-
-
-
-//                if (mBinding.locationEdt.getText().toString().isEmpty() && mBinding.raceEdt.getText().toString().isEmpty()) {
-//                    showSnackBar(R.style.SnackBarMultiLine, getResources().getString(R.string.please_fill_out_search_filters), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
-//                } else {
-//                }
             }
         });
         RxEventBus.add(this, disp4);
@@ -185,12 +164,19 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             }
         });
         RxEventBus.add(this, disp5);
+//        getViewModel().onViewAttached(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.e(debugTag, "onSaveInstanceState");
     }
 
     @Override
@@ -201,7 +187,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-//        Log.e("on Activity get vew mdl", "getViewModel");
         return mViewModel;
     }
 
@@ -382,9 +367,10 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     private void fetchData(int page) {
+        Log.e(debugTag, "fetchdata "+page);
         if (isNetworkAvailable()) {
             if (page ==1 )initializeProgressDialog(getResources().getString(R.string.please_wait));
-            LoveMatchRequest request = new LoveMatchRequest();
+            final LoveMatchRequest request = new LoveMatchRequest();
             request.setAction(getResources().getString(R.string.get_all_pets_by_filter));
             request.setAuthtoken(mToken);
             request.setPage(page);
@@ -395,7 +381,16 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                 request.setRace(race);
 //                collapseSearchFilters();
             }
-            mViewModel.getPetsByFilter(request);
+//            mViewModel.getPetsByFilter(request);
+//            if (mViewModel != null)
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mViewModel.kalase(request, getPetsViewModel);
+                }
+            }, 1000);
+
         } else {
             if (page > 1) {
                 error = true;

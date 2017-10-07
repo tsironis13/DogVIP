@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.retrofit;
 
+import com.tsiro.dogvip.POJO.BaseResponseObj;
 import com.tsiro.dogvip.POJO.FcmTokenUpload;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomRequest;
@@ -27,8 +28,11 @@ import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.RateBookingRequest;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
-import com.tsiro.dogvip.POJO.profs.GetUserProfRequest;
-import com.tsiro.dogvip.POJO.profs.GetUserProfResponse;
+import com.tsiro.dogvip.POJO.profs.DeleteProfRequest;
+import com.tsiro.dogvip.POJO.profs.GetProfDetailsRequest;
+import com.tsiro.dogvip.POJO.profs.ProfDetailsResponse;
+import com.tsiro.dogvip.POJO.profs.SaveProfDetailsRequest;
+import com.tsiro.dogvip.POJO.profs.SearchProfsRequest;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -139,7 +143,16 @@ public interface ServiceAPI {
     Flowable<OwnerSitterBookingsResponse> rateSitterBooking(@Body RateBookingRequest request);
 
     @POST("actions.php")
-    Flowable<GetUserProfResponse> getUserProf(@Body GetUserProfRequest request);
+    Flowable<ProfDetailsResponse> getProfDetails(@Body GetProfDetailsRequest request);
+
+    @POST("actions.php")
+    Flowable<ProfDetailsResponse> saveProfDetails(@Body SaveProfDetailsRequest request);
+
+    @POST("actions.php")
+    Flowable<ProfDetailsResponse> deleteProf(@Body DeleteProfRequest request);
+
+    @POST("actions.php")
+    Flowable<ProfDetailsResponse> searchProf(@Body SearchProfsRequest request);
 //    @Multipart
 //    @POST("actions.php")
 //    Flowable<GetOwnerResponse> submitOwner(@Part("body") RequestBody body, @Part MultipartBody.Part image);

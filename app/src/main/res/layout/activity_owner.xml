@@ -70,7 +70,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/error_color"
                         android:text="@string/required_fields_owner" />
-
+                    <!-- profile photo Rlt -->
                     <RelativeLayout
                         android:id="@+id/profilePhoneLlt"
                         android:layout_below="@+id/reqfldsTtv"

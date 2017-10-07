@@ -102,8 +102,6 @@ public class PetSitterPlaceUploadControlActivity extends BaseActivity implements
                 petsitter_id = getIntent().getExtras().getInt(getResources().getString(R.string.id));
                 urls = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.urls));
             }
-//            Log.e(debugTag, getIntent().getExtras().getInt(getResources().getString(R.string.id)) + " ID");
-            Log.e(debugTag, getIntent().getExtras().getStringArrayList(getResources().getString(R.string.urls)) + " URLS");
         }
         configureActivity(urls);
         if (initializeImagePickerDialog) {
@@ -389,9 +387,6 @@ public class PetSitterPlaceUploadControlActivity extends BaseActivity implements
                     image.setAuthtoken(mToken);
                     image.setId(petsitter_id);
                     image.setChecked_urls(checkedUrls);
-                    for (ImagePathIndex ch: checkedUrls) {
-                        Log.e(debugTag, ch.getIndex() + " INDEX, Path: "+ ch.getPath());
-                    }
                     if (isNetworkAvailable()) {
                         mViewModel.manipulatePetImage(image);
                         initializeProgressDialog(getResources().getString(R.string.please_wait));

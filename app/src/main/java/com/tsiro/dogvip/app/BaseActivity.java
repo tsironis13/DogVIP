@@ -56,21 +56,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
     @Override
     protected void onStart() {
         super.onStart();
-//        Log.e(debugTag, "onStart");
         if (getViewModel() != null) getViewModel().onViewAttached(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(debugTag, "onResume");
         if (getViewModel() != null) getViewModel().onViewResumed();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e(debugTag, "onStop");
         if (getViewModel() != null) getViewModel().onViewDetached();
     }
 

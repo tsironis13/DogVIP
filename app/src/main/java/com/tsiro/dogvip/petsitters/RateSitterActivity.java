@@ -177,7 +177,6 @@ public class RateSitterActivity extends BaseActivity implements PetSittersContra
                 request.setRating(mBinding.rating.getRating());
                 request.setComment(mBinding.addCommentEdt.getText().toString());
                 mViewModel.rateSitterBoooking(request);
-//                Log.e(debugTag, mBinding.rating.getRating() + " RATING");
             } else {
                 showSnackBar(getResources().getString(R.string.rating_not_valid), "", Snackbar.LENGTH_SHORT, getResources().getString(R.string.close));
             }

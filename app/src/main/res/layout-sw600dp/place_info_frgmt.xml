@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.petsitter.PetSitterObj" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/petplaceTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:textStyle="bold"
+                    android:text="@string/pet_place_gr" />
+
+                <LinearLayout
+                    android:id="@+id/petplaceLlt"
+                    android:layout_width="510dp"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp"
+                    android:background="@android:color/white"
+                    android:layout_below="@+id/petplaceTtv"
+                    android:gravity="center_vertical"
+                    android:elevation="2dp"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:contentDescription="@string/image_cont_desc"
+                        app:srcCompat="@drawable/location" />
+
+                    <Spinner
+                        android:id="@+id/petplaceSpnr"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="0.9"
+                        android:theme="@style/ThemeOverlay.AppCompat.Light"
+                        android:spinnerMode="dropdown"
+                        android:maxHeight="48dp"
+                        android:dropDownWidth="wrap_content"
+                        app:spn_arrowColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/placetypeTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/petplaceLlt"
+                    android:layout_marginBottom="7dp"
+                    android:textStyle="bold"
+                    android:text="@string/place_type_gr" />
+
+                <LinearLayout
+                    android:id="@+id/placetypeLlt"
+                    android:layout_width="510dp"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp"
+                    android:background="@android:color/white"
+                    android:layout_below="@+id/placetypeTtv"
+                    android:gravity="center_vertical"
+                    android:elevation="2dp"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:contentDescription="@string/image_cont_desc"
+                        app:srcCompat="@drawable/location" />
+
+                    <Spinner
+                        android:id="@+id/placetypeSpnr"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="0.9"
+                        android:theme="@style/ThemeOverlay.AppCompat.Light"
+                        android:spinnerMode="dropdown"
+                        android:maxHeight="48dp"
+                        android:dropDownWidth="wrap_content"
+                        app:spn_arrowColor="@color/colorAccent" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/placeaddressTtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/placetypeLlt"
+                    android:layout_marginBottom="7dp"
+                    android:textStyle="bold"
+                    android:text="@string/address_gr" />
+
+                <LinearLayout
+                    android:id="@+id/placeaddressLlt"
+                    android:layout_width="510dp"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp"
+                    android:background="@android:color/white"
+                    android:layout_below="@+id/placeaddressTtv"
+                    android:gravity="center_vertical"
+                    android:elevation="2dp"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:contentDescription="@string/image_cont_desc"
+                        app:srcCompat="@drawable/ic_address" />
+
+                    <EditText
+                        android:id="@+id/placeaddressEdt"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:inputType="textPostalAddress"
+                        android:hint="@string/address_plhldr"
+                        android:layout_weight="0.9"
+                        android:textSize="12sp"
+                        android:paddingRight="8dp"
+                        android:text="@={obj.address}"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:background="@android:color/transparent" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/placeImgBtn"
+                    android:layout_width="510dp"
+                    android:layout_height="48dp"
+                    android:text="@string/show_place_images"
+                    android:layout_below="@id/placeaddressLlt"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/ripple_drawable" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/previousBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|start"
+            android:src="@drawable/ic_navigate_before_white" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

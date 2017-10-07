@@ -34,7 +34,6 @@ public abstract class OwnerActivityModule {
 //    @Provides
 //    @ActivityContext
 //    Context provideContext(Context context) {
-//        Log.e("aaa", "provide context");
 //        return context;
 //    }
 

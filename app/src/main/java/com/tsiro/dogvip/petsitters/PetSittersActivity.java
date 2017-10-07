@@ -108,7 +108,6 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
                 startActivity(new Intent(this, RateSitterActivity.class).putExtras(bundle));
                 finish();
             }
-            Log.e(debugTag, bookingObj.getCompleted() + " COMPLETED");
         } else { //sitter assignments
             Bundle bundle = new Bundle();
             if (bookingObj.getCompleted() == -1) { //pending
@@ -151,7 +150,6 @@ public class PetSittersActivity extends BaseActivity implements PetSittersContra
     @Override
     public void onSuccess(OwnerSitterBookingsResponse response) {
         dismissDialog();
-//        Log.e(debugTag, "onSuccess =>" + response.getOwner_bookings() + " "+ response.getSitter_bookings());
         if (response.getCode() == AppConfig.STATUS_OK) {
             searchItem.setVisible(true);
             mBinding.setHaserror(false);

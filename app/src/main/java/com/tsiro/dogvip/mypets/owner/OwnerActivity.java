@@ -106,7 +106,6 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        Log.e(debugTag, "onCreate");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_owner);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         mSnackBar = mBinding.snckBr;
@@ -138,15 +137,8 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e(debugTag, "onStart");
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        Log.e(debugTag, "onResume");
         mImageUploadViewModel.onViewResumed(image.getState());
         Disposable disp = RxView.clicks(mBinding.profileImgv).subscribe(new Consumer<Object>() {
             @Override
@@ -211,14 +203,12 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e(debugTag, "onStop");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mImageUploadViewModel.onViewDetached();
-        Log.e(debugTag, "onDEstroy");
     }
 
     @Override
@@ -258,8 +248,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.e(debugTag, image.getState() + " onSaveInstanceState");
-        outState.putParcelable("image", image);
+        outState.putParcelable(getResources().getString(R.string.image), image);
         outState.putBoolean(getResources().getString(R.string.add_ownr), addowner);
         if (ownerObj != null)outState.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
     }
@@ -336,7 +325,6 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
     public void onSuccessUpload(Image image) {
         mBinding.setProcessing(false);
         this.image.setState(new UrlImageState(image.getImageurl()));
-//                Log.e(debugTag, this.image.getState() + " lk");
         ownerObj.setImageurl(image.getImageurl());
     }
 
@@ -347,7 +335,6 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
         this.image.setState(new NoImageState());
         ownerObj.setImageurl("");
         mBinding.setNoimagestate(true);
-        Log.e(debugTag, "onSuccessDelete");
     }
 
     @Override
@@ -373,7 +360,7 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
 
     @Override
     public void loadImageUrl(Object obj, final State state, final File file) {
-        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, mImageUploadViewModel, getResources().getString(R.string.upload_ownr_img), mToken, ownerObj.getId());
+        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, mImageUploadViewModel, getResources().getString(R.string.upload_ownr_img), mToken, ownerObj.getId(), R.drawable.default_person);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -394,21 +381,21 @@ public class OwnerActivity extends BaseActivity implements OwnerContract.View, L
             setTitle(getResources().getString(R.string.add_owner));
             ownerObj = new OwnerObj();
             mBinding.setOwner(ownerObj);
+            image = new TestImage("");
         } else {//edit owner
             setTitle(getResources().getString(R.string.edit_owner));
             if (savedInstanceState != null) {
                 ownerObj = savedInstanceState.getParcelable(getResources().getString(R.string.parcelable_obj));
-                image = savedInstanceState.getParcelable("image");
+                image = savedInstanceState.getParcelable(getResources().getString(R.string.image));
                 if (image.getState() instanceof NoImageState) mBinding.setNoimagestate(true);
-                image.setViewModel(mImageUploadViewModel);
-                Log.e(debugTag, image.getState() + " saved state");
+//                image.setViewModel(mImageUploadViewModel);
             } else {
                 ownerObj = getIntent().getExtras().getParcelable(getResources().getString(R.string.parcelable_obj));
-                image = new TestImage(mImageUploadViewModel, ownerObj.getImageurl());
+                image = new TestImage(ownerObj.getImageurl());
             }
-            mImageUploadViewModel.loadImage(image);//new code
             mBinding.setOwner(ownerObj);
         }
+        mImageUploadViewModel.loadImage(image);//new code
     }
 
     private void deleteImg(int id) {

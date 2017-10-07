@@ -34,23 +34,13 @@ public class GalleryImageState implements State, Parcelable {
 
     @Override
     public void loadImage(ImageUploadViewModel viewModel, TestImage testImage) {
-        Log.e("hi", "GalleryImageState");
         viewModel.isGalleryImageValid(testImage, this);
     }
 
-//    @Override
-//    public void isImageValid(OwnerContract.ViewModel viewModel, Uri uri, TestImage testImage) {
-////        viewModel.isGalleryImageValid(uri, testImage, this);
-//    }
-
     @Override
     public void uploadImageToServer(ImageUploadViewModel viewModel, String action, String token, int ownerId, File file) {
-        Log.e("yes upload it", "yes upload it");
         viewModel.uploadImage(this, action, token, ownerId, file);
     }
-
-//    @Override
-//    public void deleteImage(ImageUploadViewModel viewModel, String action, String token, int id) {}
 
     @Override
     public void onSuccess(Image image, ImageUploadViewModel viewModel) {

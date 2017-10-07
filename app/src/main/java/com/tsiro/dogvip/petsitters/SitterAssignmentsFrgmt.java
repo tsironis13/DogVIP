@@ -74,7 +74,6 @@ public class SitterAssignmentsFrgmt extends Fragment implements PetSittersContra
 
     private void initializeView(final OwnerSitterBookingsResponse data) {
         if (data.getCode() == AppConfig.STATUS_OK || data.getCode() == AppConfig.ERROR_NO_OWNER_EXISTS) {
-            Log.e(debugTag, data.getSitter_bookings().size() + "SIZE");
             if (data.getSitter_bookings().isEmpty()) {
                 mBinding.setHaserror(true);
                 mBinding.setErrortext(getResources().getString(R.string.no_data));

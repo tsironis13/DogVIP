@@ -22,20 +22,11 @@ public class TestImage implements Parcelable {
     private File file;
     private Uri uri;
     private boolean hasValidSize, isFileTypeInvalid;
-//    private OwnerContract.ViewModel viewModel;
-    private ImageUploadViewModel viewModel;
 
-    public TestImage(ImageUploadViewModel viewModel, String url) {
-        this.viewModel = viewModel;
+    public TestImage(String url) {
         state = url.isEmpty() ? new NoImageState() : new UrlImageState(url);
         this.url = url;
     }
-
-//    public TestImage(OwnerContract.ViewModel viewModel, String url) {
-//        this.viewModel = viewModel;
-//        state = url.isEmpty() ? new NoImageState() : new UrlImageState(url);
-//        this.url = url;
-//    }
 
     private TestImage(Parcel in) {
         state = in.readParcelable(State.class.getClassLoader());
@@ -57,18 +48,6 @@ public class TestImage implements Parcelable {
             return new TestImage[size];
         }
     };
-
-    public ImageUploadViewModel getViewModel() {
-        return viewModel;
-    }
-
-    public void setViewModel(ImageUploadViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
-
-    public void loadImage(TestImage testImage) {
-        state.loadImage(viewModel, testImage);
-    }
 
     public Uri getUri() { return uri; }
 

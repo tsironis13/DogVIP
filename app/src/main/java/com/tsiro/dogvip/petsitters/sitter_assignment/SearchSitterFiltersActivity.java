@@ -97,7 +97,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
                 userRoleId = getIntent().getExtras().getInt(getResources().getString(R.string.user_role_id));
             }
         }
-        Log.e(debugTag, " USER ROLE ID => "+userRoleId);
         petSitterObj = new PetSitterObj();
         servicesCheckBoxList.append(1, mBinding.service1ChckBx);
         servicesCheckBoxList.append(2, mBinding.service2ChckBx);
@@ -138,7 +137,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             @Override
             public void accept(@io.reactivex.annotations.NonNull DialogActions obj) throws Exception {
                 if (obj.getAction().equals(getResources().getString(R.string.date_pick_action))) {
-                    Log.e(debugTag, obj.getDisplay_date() + " DISPLAY DATE");
                     if (pickerSelected == 1) {//start date picker
                         mBinding.startDateEdt.setText(obj.getDisplay_date());
                         startDate = obj.getDate();
@@ -223,7 +221,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
 
     @Override
     public void onServiceCheckBoxClick(View view) {
-        Log.e(debugTag, "view checked unckedked");
         if (view instanceof CheckBox) {
             CheckBox checkBox = (CheckBox) view;
             if (checkBox.isChecked()) {
@@ -231,7 +228,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             } else {
                 if (services.contains(Integer.valueOf(view.getTag().toString()))) services.remove(Integer.valueOf(view.getTag().toString()));
             }
-//            Log.e(debugTag, view.getTag() + " TAG, "+ checkBox.isChecked());
         }
     }
 
@@ -247,7 +243,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         if (response.getData().isEmpty()) {
             showSnackBar(getResources().getString(R.string.no_items), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
         } else {
-            Log.e(debugTag, services + " SERV");
             Bundle bundle = new Bundle();
             if (services != null) response.setServices(services);
             response.setId(response.getId());
@@ -275,8 +270,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         hideSoftKeyboard();
         petSitterObj.setStart_date(startDate);
         petSitterObj.setEnd_date(endDate);
-        Log.e(debugTag, petSitterObj.getStart_date() + " START DATE");
-        Log.e(debugTag, petSitterObj.getEnd_date() + " END DATE");
         if (petSitterObj.getStart_date() == 0 || petSitterObj.getEnd_date() == 0) {
             showSnackBar(getResources().getString(R.string.dates_filter_required), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
         } else if (petSitterObj.getEnd_date() < petSitterObj.getStart_date()) {
@@ -285,8 +278,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
             showSnackBar(getResources().getString(R.string.city_no_match), "", Snackbar.LENGTH_LONG, getResources().getString(R.string.close));
         } else {
             if (isNetworkAvailable()) {
-//                Log.e(debugTag, services + " SERVICES");
-                Log.e(debugTag, mBinding.cityEdt.getText().toString() + " LOCATION");
                 petSitterObj.setAuthtoken(mToken);
                 petSitterObj.setAction(getResources().getString(R.string.search_pet_sitters));
                 petSitterObj.setServices(services);
@@ -306,9 +297,6 @@ public class SearchSitterFiltersActivity extends BaseActivity implements SitterA
         ViewGroup innerConstrntLlt = mBinding.innerConstrntLlt;
         for (Integer service: services) {
             servicesCheckBoxList.get(service).setChecked(false);
-//            for (int i =0; i < innerConstrntLlt.getChildCount(); i++) {
-//                Log.e(debugTag, service + " TAG " + innerConstrntLlt.getChildAt(i).getTag());
-//            }
 //            CheckBox checkBox = (CheckBox) innerConstrntLlt.findViewWithTag(service);
 //            checkBox.setChecked(false);
         }

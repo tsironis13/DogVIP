@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="presenter"
+            type="com.tsiro.dogvip.petsitters.petsitter.other_details.PetSitterOtherDtlsPresenter" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/containerRlt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="15dp"
+            android:gravity="center_horizontal">
+
+            <RelativeLayout
+                android:id="@+id/service1Rlt"
+                android:layout_width="510dp"
+                android:layout_height="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service1"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <CheckBox
+                    android:id="@+id/service1ChckBx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:tag="1"
+                    android:onClick="@{(view) -> presenter.onServiceCheckBoxClick(view)}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/service2Rlt"
+                android:layout_width="510dp"
+                android:layout_height="55dp"
+                android:layout_below="@+id/service1Rlt">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service2"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <CheckBox
+                    android:id="@+id/service2ChckBx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:tag="2"
+                    android:onClick="@{(view) -> presenter.onServiceCheckBoxClick(view)}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/service3Rlt"
+                android:layout_width="510dp"
+                android:layout_height="55dp"
+                android:layout_below="@+id/service2Rlt">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service3"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <CheckBox
+                    android:id="@+id/service3ChckBx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:tag="3"
+                    android:onClick="@{(view) -> presenter.onServiceCheckBoxClick(view)}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/service4Rlt"
+                android:layout_width="510dp"
+                android:layout_height="68dp"
+                android:layout_below="@+id/service3Rlt">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service4"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <CheckBox
+                    android:id="@+id/service4ChckBx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:tag="4"
+                    android:onClick="@{(view) -> presenter.onServiceCheckBoxClick(view)}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/service5Rlt"
+                android:layout_width="510dp"
+                android:layout_height="68dp"
+                android:layout_below="@+id/service4Rlt">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service5"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <CheckBox
+                    android:id="@+id/service5ChckBx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:tag="5"
+                    android:onClick="@{(view) -> presenter.onServiceCheckBoxClick(view)}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/service6Rlt"
+                android:layout_width="510dp"
+                android:layout_height="68dp"
+                android:layout_below="@+id/service5Rlt">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service6"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <CheckBox
+                    android:id="@+id/service6ChckBx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:tag="6"
+                    android:onClick="@{(view) -> presenter.onServiceCheckBoxClick(view)}" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_navigate_next_white" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/previousBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|start"
+            android:src="@drawable/ic_navigate_before_white" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

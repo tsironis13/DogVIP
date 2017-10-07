@@ -2,16 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <!-- obj needed by view holder-->
-        <variable
-            name="obj"
-            type="com.tsiro.dogvip.POJO.petsitter.PetSitterObj" />
-
-        <import type="android.view.View" />
-
-    </data>
-
     <FrameLayout
         android:id="@+id/cntFrml"
         android:layout_width="match_parent"

@@ -1,9 +1,12 @@
 package com.tsiro.dogvip.app;
 
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import com.tsiro.dogvip.BuildConfig;
 import com.tsiro.dogvip.R;
+
+import java.util.HashMap;
 
 /**
  * Created by giannis on 20/5/2017.
@@ -63,6 +66,8 @@ public class AppConfig {
     public static final int ERROR_NO_OWNER_AND_SITTER_EXIST = -340;
     public static final int ERROR_NO_SITTER_EXISTS = -350;
     private static final int ERROR_BOOKING_ALREADY_PENDING = -360;
+    public static final int ERROR_NO_PROF_EXISTS = -370;
+    public static final int ERROR_NO_OWNER_AND_PROF_EXISTS = -380;
 
     public static final int VISIBLE_THRESHOLD = 8;
 
@@ -323,6 +328,19 @@ public class AppConfig {
             "Χουϊπετ - Whippet"
     };
 
+    private static final SparseArray<String> profCategoryHashMap = new SparseArray<>();
+
+    public static SparseArray<String> getProfCategoryHashMap() {
+        profCategoryHashMap.put(1, "Pet shop");
+        profCategoryHashMap.put(2, "Περιποίηση σκύλων");
+        profCategoryHashMap.put(3, "Ξενοδοχείο ζώων");
+        profCategoryHashMap.put(4, "Dog friendy spot");
+        profCategoryHashMap.put(5, "Εκπαιδευτής");
+        profCategoryHashMap.put(6, "Άλλο");
+
+        return profCategoryHashMap;
+    }
+
     private static final SparseIntArray inputValidationCodes = new SparseIntArray();
 
     public static SparseIntArray getCodes() {
@@ -341,6 +359,7 @@ public class AppConfig {
         inputValidationCodes.put(ERROR_NO_OWNER_EXISTS, R.string.no_owner_exists);
         inputValidationCodes.put(ERROR_AGE_NOT_VALID, R.string.not_valid_age);
         inputValidationCodes.put(ERROR_BOOKING_ALREADY_PENDING, R.string.booking_already_pending);
+        inputValidationCodes.put(ERROR_NO_PROF_EXISTS, R.string.no_prof_exists);
 
         return inputValidationCodes;
     }

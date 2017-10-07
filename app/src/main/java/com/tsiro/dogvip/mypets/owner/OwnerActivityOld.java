@@ -72,7 +72,7 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class OwnerActivityOld extends BaseActivity implements OwnerContract.View {
 
-    private static final String debugTag = OwnerActivityOld.class.getSimpleName();
+//    private static final String debugTag = OwnerActivityOld.class.getSimpleName();
     private ActivityOwnerBinding mBinding;
     private OwnerContract.ViewModel mOwnerFrgmtViewModel;
     private CommonUtls mCommonUtls;
@@ -88,7 +88,6 @@ public class OwnerActivityOld extends BaseActivity implements OwnerContract.View
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(debugTag, "onCreate");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_owner);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         mSnackBar = mBinding.snckBr;

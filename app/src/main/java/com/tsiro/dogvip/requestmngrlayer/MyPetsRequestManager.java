@@ -48,14 +48,6 @@ public class MyPetsRequestManager {
         return mMyPetsAPIService.submitOwner(request, ownerViewModel);
     }
 
-    public Flowable<Image> uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part file, ImageUploadViewModel viewModel) {
-        return mMyPetsAPIService.uploadImage(action, token, id, file, viewModel);
-    }
-
-    public Flowable<Image> deleteImage(Image image, ImageUploadViewModel viewModel) {
-        return mMyPetsAPIService.deleteImage(image, viewModel);
-    }
-
     public Flowable<OwnerRequest> deleteOwner(OwnerRequest request, OwnerProfileViewModel ownerProfileViewModel) {
         return mMyPetsAPIService.deleteOwner(request, ownerProfileViewModel).delay(500, TimeUnit.MILLISECONDS);
     }

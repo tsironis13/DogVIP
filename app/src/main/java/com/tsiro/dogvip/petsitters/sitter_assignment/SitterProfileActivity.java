@@ -227,8 +227,6 @@ public class SitterProfileActivity extends BaseActivity {
                 }
             }
         }
-        Log.e(debugTag, petSitterObj.getStrurls() + " urls");
-//        Log.e(debugTag, petSitterObj.getPetplace() + " PET PLACE" + petSitterObj.getPlacetype() + " place type" + " pet size" + petSitterObj.getPetsize());
     }
 
     private void getPermissionToMakePhoneCall(String phone) {

@@ -71,7 +71,6 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
                 petObjList = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.pet_list));
             }
         }
-        Log.e(debugTag, " USER ROLE ID => "+data.getId());
         initializeView();
         if (callPhone) {
             makeCall(phone);
@@ -145,7 +144,6 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
         bundle.putParcelableArrayList(getResources().getString(R.string.pet_list), petObjList);
         startActivity(new Intent(this, SitterProfileActivity.class).putExtras(bundle));
         finish();
-        Log.e(debugTag, "base virew" + data.getData().get((int) view.getTag()).getYearsexpr());
     }
 
 
@@ -168,7 +166,6 @@ public class SearchedSittersListActivity extends BaseActivity implements SitterA
         rcvAdapter = new RecyclerViewAdapter(R.layout.searched_sitters_list_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
-//                Log.e(debugTag, data.getData().get(position).getPhone() + "phone");
                 return data.getData().get(position);
             }
 

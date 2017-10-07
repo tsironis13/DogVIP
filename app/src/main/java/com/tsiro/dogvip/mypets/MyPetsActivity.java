@@ -12,7 +12,7 @@ import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityMypetsBinding;
-import com.tsiro.dogvip.mypets.owner.OwnerActivityOld;
+import com.tsiro.dogvip.mypets.owner.OwnerActivity;
 //import com.tsiro.dogvip.mypets.owner.OwnerFrgmt;
 import com.tsiro.dogvip.mypets.ownerprofile.OwnerProfileActivity;
 import com.tsiro.dogvip.networklayer.MyPetsAPIService;
@@ -111,7 +111,7 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
         if (!response.isExists()) { //Owner does not exist
             bundle = new Bundle();
             bundle.putBoolean(getResources().getString(R.string.add_ownr), true);
-            startActivity(new Intent(this, OwnerActivityOld.class).putExtras(bundle));
+            startActivity(new Intent(this, OwnerActivity.class).putExtras(bundle));
         } else { //Owner exists
             Intent intent = new Intent(this, OwnerProfileActivity.class);
             Bundle mBundle = new Bundle();
@@ -137,7 +137,7 @@ public class MyPetsActivity extends BaseActivity implements GetOwnerContract.Vie
             bundle = new Bundle();
             bundle.putBoolean(getResources().getString(R.string.add_ownr), false);
             bundle.putParcelable(getResources().getString(R.string.parcelable_obj), ownerObj);
-            startActivity(new Intent(this, OwnerActivityOld.class).putExtras(bundle));
+            startActivity(new Intent(this, OwnerActivity.class).putExtras(bundle));
         } else {
             checkOwnerExists(mToken);
         }

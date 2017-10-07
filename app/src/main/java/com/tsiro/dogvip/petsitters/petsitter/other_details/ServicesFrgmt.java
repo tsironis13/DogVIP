@@ -74,7 +74,6 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
                 petSitterObj = getArguments().getParcelable(getResources().getString(R.string.parcelable_obj));
                 configureFramgnet(petSitterObj);
 //            mBinding.setObj(petSitterObj);
-//            Log.e(debugTag, petSitterObj.getId() + " ID, NAME: " + petSitterObj.getName());
             }
         }
     }
@@ -108,7 +107,6 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
-//        Log.e(debugTag, "SERVICES")
     }
 
     @Override
@@ -120,13 +118,11 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
             } else {
                 if (services.contains(Integer.valueOf(view.getTag().toString()))) services.remove(Integer.valueOf(view.getTag().toString()));
             }
-            Log.e(debugTag, view.getTag() + " TAG, "+ checkBox.isChecked());
         }
     }
 
     private void configureFramgnet(PetSitterObj petSitterObj) {
         if (petSitterObj != null) {
-            Log.e(debugTag, petSitterObj.getServices() + " SERVICES");
             if (petSitterObj.getServices() != null) {
                 if (petSitterObj.getServices().isEmpty()) {
                     petSitterObj.setHas_services(false);
@@ -147,7 +143,6 @@ public class ServicesFrgmt extends Fragment implements PetSitterOtherDtlsContrac
     }
 
     private void saveDetails() {
-        Log.e(debugTag, services + " SERVICES On NEXT");
         petSitterObj.setServices(services);
         viewContract.onNextClick(2, petSitterObj);
     }

@@ -90,7 +90,6 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(getResources().getString(R.string.parcelable_obj), petSitterObj);
-        Log.e(debugTag, "SERVICES ON SAVE INSTANCE STATE: "+petSitterObj.getServices());
     }
 
     @Override
@@ -136,7 +135,6 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
 
     @Override
     public void onOtherDetailsSubmit(PetSitterObj petSitterObj) {
-        Log.e(debugTag,  "PET SIZE => " + petSitterObj.getPetsize() +"\n"+ "YEARS => " + petSitterObj.getYearsexpr() +"\n"+ " SERVICES" + this.petSitterObj.getServices());
         if (isNetworkAvailable()) {
             petSitterObj.setAuthtoken(mToken);
             petSitterObj.setAction(getResources().getString(R.string.edit_petsitter));
@@ -153,10 +151,6 @@ public class PetSitterOtherDtlsActivity extends BaseActivity implements PetSitte
     public void onNextClick(int position, PetSitterObj petSitterObj) {
         mBinding.viewPgr.setCurrentItem(position);
         this.petSitterObj = petSitterObj;
-//        Log.e(debugTag, petSitterObj.getPetsize()+ " PET SIZE");
-//        Log.e(debugTag, petSitterObj.getYearsexpr() + " YEAR EXPRS");
-//        Log.e(debugTag, petSitterObj.getId() + " ID");
-        Log.e(debugTag, petSitterObj.getServices() + " SERVICES G");
     }
 
     @Override

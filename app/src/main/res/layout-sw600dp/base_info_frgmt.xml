@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="obj"
+            type="com.tsiro.dogvip.POJO.petsitter.PetSitterObj" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="15dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/petsizeTtv"
+                android:layout_width="510dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textStyle="bold"
+                android:text="@string/pet_size_gr" />
+
+            <RadioGroup
+                android:id="@+id/petSizeRadioGrp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/petsizeTtv">
+
+                <RadioButton
+                    android:id="@+id/smallSizeRdBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:height="48dp"
+                    android:textSize="13sp"
+                    android:text="@string/small_size_gr" />
+
+                <RadioButton
+                    android:id="@+id/normalSizeRdBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:height="48dp"
+                    android:textSize="13sp"
+                    android:text="@string/all_size_gr" />
+
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/petSizeSmallChbx"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/petsizeTtv"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textSize="13sp"
+                android:text="@string/small_size_gr" />
+
+            <CheckBox
+                android:id="@+id/petSizeNormalChbx"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="-10dp"
+                android:visibility="gone"
+                android:layout_below="@+id/petSizeSmallChbx"
+                android:textSize="13sp"
+                android:text="@string/all_size_gr" />
+
+            <TextView
+                android:id="@+id/yearexpTtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/petSizeRadioGrp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="7dp"
+                android:textStyle="bold"
+                android:text="@string/years_exp_gr" />
+
+            <LinearLayout
+                android:id="@+id/yearexpLlt"
+                android:layout_width="510dp"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:background="@android:color/white"
+                android:layout_below="@+id/yearexpTtv"
+                android:gravity="center_vertical"
+                android:elevation="2dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:contentDescription="@string/image_cont_desc"
+                    app:srcCompat="@drawable/ic_stars_black" />
+
+                <EditText
+                    android:id="@+id/yearexpEdt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:textSize="12sp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:hint="@string/years_exp_plhldr"
+                    android:text="@={obj.yearsexpr}"
+                    android:background="@android:color/transparent"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/previousBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|start"
+            android:src="@drawable/ic_navigate_before_white" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_navigate_next_white" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

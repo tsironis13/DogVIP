@@ -110,54 +110,6 @@ public class MyPetsAPIService {
                 });
     }
 
-    public Flowable<Image> uploadImage(RequestBody action, RequestBody token, RequestBody id, MultipartBody.Part image, final ImageUploadViewModel viewModel) {
-        return serviceAPI.uploadImage(action, token, id, image)
-                .doOnSubscribe(new Consumer<Subscription>() {
-                    @Override
-                    public void accept(@NonNull Subscription subscription) throws Exception {
-                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
-                    }
-                })
-                .doOnNext(new Consumer<Image>() {
-                    @Override
-                    public void accept(@NonNull Image response) throws Exception {
-                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
-                    }
-                });
-    }
-
-    public Flowable<Image> deleteImage(Image image, final ImageUploadViewModel viewModel) {
-        return serviceAPI.deleteImage(image)
-                .doOnSubscribe(new Consumer<Subscription>() {
-                    @Override
-                    public void accept(@NonNull Subscription subscription) throws Exception {
-                        viewModel.setRequestState(AppConfig.REQUEST_RUNNING);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        viewModel.setRequestState(AppConfig.REQUEST_FAILED);
-                    }
-                })
-                .doOnNext(new Consumer<Image>() {
-                    @Override
-                    public void accept(@NonNull Image response) throws Exception {
-                        viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
-                    }
-                });
-    }
-
     public Flowable<OwnerRequest> deleteOwner(OwnerRequest request, final OwnerProfileViewModel ownerProfileViewModel) {
         return serviceAPI.deleteOwner(request)
                 .doOnSubscribe(new Consumer<Subscription>() {

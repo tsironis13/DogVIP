@@ -63,7 +63,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     RxEventBus.createSubject(AppConfig.PUBLISH_MSG_NOTFCTS, AppConfig.PUBLISH_SUBJ).post(mesgobj);
                 }
             } else {
-//                Log.e(debugTag, remoteMessage.getData().get("id") + " BOOKING ID");
                 int bookingId = Integer.parseInt(remoteMessage.getData().get(getResources().getString(R.string.id)));
                 String title = remoteMessage.getData().get(getResources().getString(R.string.title));
                 String image = remoteMessage.getData().get(getResources().getString(R.string.imageurl));

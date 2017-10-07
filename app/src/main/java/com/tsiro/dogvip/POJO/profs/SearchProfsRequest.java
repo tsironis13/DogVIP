@@ -3,11 +3,13 @@ package com.tsiro.dogvip.POJO.profs;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
- * Created by giannis on 30/9/2017.
+ * Created by giannis on 6/10/2017.
  */
 
-public class GetUserProfRequest {
+public class SearchProfsRequest {
 
     @SerializedName("action")
     @Expose
@@ -15,6 +17,12 @@ public class GetUserProfRequest {
     @SerializedName("authtoken")
     @Expose
     private String authtoken;
+    @SerializedName("city")
+    @Expose
+    private String city;
+    @SerializedName("categories")
+    @Expose
+    private List<Integer> categories;
 
     public String getAction() { return action; }
 
@@ -23,4 +31,12 @@ public class GetUserProfRequest {
     public String getAuthtoken() { return authtoken; }
 
     public void setAuthtoken(String authtoken) { this.authtoken = authtoken; }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public List<Integer> getCategories() { return categories; }
+
+    public void setCategories(List<Integer> categories) { this.categories = categories; }
 }

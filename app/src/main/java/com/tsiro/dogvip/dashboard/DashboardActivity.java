@@ -1,12 +1,10 @@
 package com.tsiro.dogvip.dashboard;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +15,6 @@ import com.rey.material.widget.SnackBar;
 import com.tsiro.dogvip.LoginActivity;
 import com.tsiro.dogvip.LostFoundActivity;
 import com.tsiro.dogvip.POJO.chat.Message;
-import com.tsiro.dogvip.POJO.chat.SendMessageRequest;
 import com.tsiro.dogvip.POJO.dashboard.DashboardRequest;
 import com.tsiro.dogvip.POJO.dashboard.DashboardResponse;
 import com.tsiro.dogvip.R;
@@ -31,21 +28,17 @@ import com.tsiro.dogvip.mychatrooms.MyChatRoomsActivity;
 import com.tsiro.dogvip.mypets.MyPetsActivity;
 import com.tsiro.dogvip.petsitters.PendingSitterBookingsActivity;
 import com.tsiro.dogvip.petsitters.PetSittersActivity;
-import com.tsiro.dogvip.profs.ProfProfileActivity;
+import com.tsiro.dogvip.profs.profprofile.ProfProfileActivity;
 import com.tsiro.dogvip.requestmngrlayer.DashboardRequestManager;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**

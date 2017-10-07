@@ -39,7 +39,6 @@ public class OwnerViewModel implements OwnerContract.ViewModel {
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewClback = (OwnerContract.View) viewCallback;
-//        Log.e(debugTag, "onViewAttached "+mViewClback);
     }
 
     @Override
