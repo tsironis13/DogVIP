@@ -15,6 +15,7 @@ import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
 import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPet;
 import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPetResponse;
+import com.tsiro.dogvip.POJO.lovematch.LoveMatch;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
@@ -109,8 +110,14 @@ public interface ServiceAPI {
     @POST("actions.php")
     Flowable<Image> deletePetImage(@Body Image request);
 
+//    @POST("actions.php")
+//    Flowable<LoveMatchResponse> getPetsByFilter(@Body LoveMatchRequest request);
+
     @POST("actions.php")
-    Flowable<LoveMatchResponse> getPetsByFilter(@Body LoveMatchRequest request);
+    Flowable<LoveMatch> getPetsByFilter(@Body LoveMatchRequest request);
+
+    @POST("actions.php")
+    Flowable<LoveMatch> likeDislikePet(@Body LoveMatchRequest request);
 
     @POST("actions.php")
     Flowable<PetLikesResponse> getPetLikes(@Body PetLikesRequest request);

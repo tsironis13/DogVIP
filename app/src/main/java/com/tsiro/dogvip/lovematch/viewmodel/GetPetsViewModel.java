@@ -55,29 +55,29 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
 
     private void onSuccessGetPets(LoveMatchResponse response) {
         mLoveMatchDisp = null;
-        onSuccessGetPets1(response);
+//        onSuccessGetPets1(response);
 //        mViewClback.onSuccess(response);
     }
 
     private void onErrorGetPets(int code) {
         mLoveMatchDisp = null;
-        onErrorGetPets1(code);
+//        onErrorGetPets1(code);
 //        mViewClback.onError(code);
 //        if (mViewClback != null) setRequestState(AppConfig.REQUEST_NONE);
     }
 
     public void getPetsByFilter(LoveMatchRequest request) {
-        if (getRequestState() != AppConfig.REQUEST_RUNNING) {
-//            mViewClback = view;
-            setRequestState(AppConfig.REQUEST_RUNNING);
-            mProcessor = AsyncProcessor.create();
-            mLoveMatchDisp = mProcessor
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new GetPetsByFilterObserver());
-
-            mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
-        }
+//        if (getRequestState() != AppConfig.REQUEST_RUNNING) {
+////            mViewClback = view;
+//            setRequestState(AppConfig.REQUEST_RUNNING);
+//            mProcessor = AsyncProcessor.create();
+//            mLoveMatchDisp = mProcessor
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeWith(new GetPetsByFilterObserver());
+//
+//            mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
+//        }
     }
 
 //    @Override

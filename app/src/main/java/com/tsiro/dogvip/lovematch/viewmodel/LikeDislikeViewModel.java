@@ -54,30 +54,35 @@ public class LikeDislikeViewModel extends LoveMatchViewModel implements LoveMatc
 
     private void onSuccessGetPets(LoveMatchResponse response) {
         mLoveMatchDisp = null;
-        onSuccessGetPets1(response);
+//        onSuccessGetPets1(response);
 //        mViewClback.onSuccess(response);
     }
 
     private void onErrorGetPets(int code) {
         mLoveMatchDisp = null;
-        onErrorGetPets1(code);
+//        onErrorGetPets1(code);
 //        mViewClback.onError(code);
 //        if (mViewClback != null) setRequestState(AppConfig.REQUEST_NONE);
     }
 
+    @Override
     public void likeDislikePet(LoveMatchRequest request) {
-        if (getRequestState() != AppConfig.REQUEST_RUNNING) {
-//            mViewClback = view;
-            setRequestState(AppConfig.REQUEST_RUNNING);
-            mProcessor = AsyncProcessor.create();
-            mLoveMatchDisp = mProcessor
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new LikeDisplikeObserver());
 
-            mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
-        }
     }
+
+//    public void likeDislikePet(LoveMatchRequest request) {
+//        if (getRequestState() != AppConfig.REQUEST_RUNNING) {
+////            mViewClback = view;
+//            setRequestState(AppConfig.REQUEST_RUNNING);
+//            mProcessor = AsyncProcessor.create();
+//            mLoveMatchDisp = mProcessor
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeWith(new LikeDisplikeObserver());
+//
+//            mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
+//        }
+//    }
 
 //    @Override
 //    public void getPetsByFilter(LoveMatchRequest request) {

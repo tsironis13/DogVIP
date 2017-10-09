@@ -171,51 +171,51 @@ public class PetProfileActivity extends BaseActivity implements PetProfileContra
     }
 
     private void likedislikePet() {
-        if (isNetworkAvailable()) {
-            String subaction = petObj.isLiked() == 0 ? getResources().getString(R.string.like_pet) : getResources().getString(R.string.dislike_pet);
-            LoveMatchRequest request = new LoveMatchRequest();
-            request.setAction(getResources().getString(R.string.like_dislike_pet));
-            request.setSubaction(subaction);
-            request.setP_id(petObj.getId());
-            request.setAuthtoken(getMyAccountManager().getAccountDetails().getToken());
-            if (!processing) RetrofitFactory.getInstance().getServiceAPI().getPetsByFilter(request)
-                    .doOnSubscribe(new Consumer<Subscription>() {
-                        @Override
-                        public void accept(@NonNull Subscription subscription) throws Exception {
-                            processing = true;
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            processing = false;
-                            showSnackBar(getResources().getString(R.string.error), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
-                        }
-                    })
-                    .doOnNext(new Consumer<LoveMatchResponse>() {
-                        @Override
-                        public void accept(@NonNull LoveMatchResponse response) throws Exception {
-                            processing = false;
-                            int total_likes = petObj.getTotal_likes();
-                            if (response.getSubaction().equals(getResources().getString(R.string.like_pet))) {
-                                total_likes++;
-                                petObj.setTotal_likes(total_likes);
-                                petObj.setLiked(1);
-                                lovedItem.setIcon(R.drawable.ic_favorite_white);
-                            } else {
-                                total_likes--;
-                                petObj.setTotal_likes(total_likes);
-                                petObj.setLiked(0);
-                                lovedItem.setIcon(R.drawable.ic_favorite_border_white);
-                            }
-                            showSnackBar(getResources().getString(R.string.success_action), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
-                        }
-                    }).subscribe();
-        } else {
-            showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
-        }
+//        if (isNetworkAvailable()) {
+//            String subaction = petObj.isLiked() == 0 ? getResources().getString(R.string.like_pet) : getResources().getString(R.string.dislike_pet);
+//            LoveMatchRequest request = new LoveMatchRequest();
+//            request.setAction(getResources().getString(R.string.like_dislike_pet));
+//            request.setSubaction(subaction);
+//            request.setP_id(petObj.getId());
+//            request.setAuthtoken(getMyAccountManager().getAccountDetails().getToken());
+//            if (!processing) RetrofitFactory.getInstance().getServiceAPI().getPetsByFilter(request)
+//                    .doOnSubscribe(new Consumer<Subscription>() {
+//                        @Override
+//                        public void accept(@NonNull Subscription subscription) throws Exception {
+//                            processing = true;
+//                        }
+//                    })
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .doOnError(new Consumer<Throwable>() {
+//                        @Override
+//                        public void accept(@NonNull Throwable throwable) throws Exception {
+//                            processing = false;
+//                            showSnackBar(getResources().getString(R.string.error), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+//                        }
+//                    })
+//                    .doOnNext(new Consumer<LoveMatchResponse>() {
+//                        @Override
+//                        public void accept(@NonNull LoveMatchResponse response) throws Exception {
+//                            processing = false;
+//                            int total_likes = petObj.getTotal_likes();
+//                            if (response.getSubaction().equals(getResources().getString(R.string.like_pet))) {
+//                                total_likes++;
+//                                petObj.setTotal_likes(total_likes);
+//                                petObj.setLiked(1);
+//                                lovedItem.setIcon(R.drawable.ic_favorite_white);
+//                            } else {
+//                                total_likes--;
+//                                petObj.setTotal_likes(total_likes);
+//                                petObj.setLiked(0);
+//                                lovedItem.setIcon(R.drawable.ic_favorite_border_white);
+//                            }
+//                            showSnackBar(getResources().getString(R.string.success_action), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
+//                        }
+//                    }).subscribe();
+//        } else {
+//            showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
+//        }
     }
 
     private void sendMsg() {

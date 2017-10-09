@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
@@ -237,6 +238,31 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
         bundle.putString(getResources().getString(R.string.receiver_surname), obj.getSurname());
         bundle.putString(getResources().getString(R.string.pet_name), obj.getP_name());
         startActivity(new Intent(this, ChatRoomActivity.class).putExtras(bundle));
+    }
+
+    @Override
+    public void onPetDataSuccess(GetPetsResponse response) {
+        dismissDialog();
+        mBinding.setHasError(false);
+        isLoading = false;
+        error = false;
+        mBinding.setExists(true);
+        if (response.getData() != null && response.getData().size() < 20) availableData = false;
+        if (page == 1) {
+            data = response.getData();
+            if (data != null && data.isEmpty()) {
+                mBinding.setHasError(true);
+                mBinding.setErrorText(getResources().getString(R.string.no_items));
+//                    mBinding.setNoitems(true);
+            } else {
+                initializeRcView(response.getData());
+            }
+        } else {
+            for (PetObj item : response.getData()) {
+                data.add(item);
+                rcvAdapter.notifyItemInserted(data.size());
+            }
+        }
     }
 
     @Override

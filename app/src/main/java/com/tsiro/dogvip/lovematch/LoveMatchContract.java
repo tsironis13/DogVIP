@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.lovematch;
 
+import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.app.Lifecycle;
@@ -13,6 +14,7 @@ import io.reactivex.processors.FlowableProcessor;
 public interface LoveMatchContract {
 
     interface View extends Lifecycle.View {
+        void onPetDataSuccess(GetPetsResponse response);
         void onSuccess(LoveMatchResponse response);
         void onError(int resource);
         void onLoveImageViewClick(android.view.View view);

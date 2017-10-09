@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.requestmngrlayer;
 
+import com.tsiro.dogvip.POJO.lovematch.LoveMatch;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
@@ -24,9 +25,19 @@ public class LoveMatchRequestManager {
         this.mLoveMatchAPIService = loveMatchAPIService;
     }
 
-    public Flowable<LoveMatchResponse> getPetsByFilter(LoveMatchRequest request, LoveMatchViewModel viewModel) {
+//    public Flowable<LoveMatchResponse> getPetsByFilter(LoveMatchRequest request, LoveMatchViewModel viewModel) {
+//        //in case server response is faster than activity lifecycle callback methods
+//        return mLoveMatchAPIService.getPetsByFilter(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
+//    }
+
+    public Flowable<LoveMatch> getPetsByFilter(LoveMatchRequest request, LoveMatchViewModel viewModel) {
         //in case server response is faster than activity lifecycle callback methods
         return mLoveMatchAPIService.getPetsByFilter(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
+    }
+
+    public Flowable<LoveMatch> likeDislikePet(LoveMatchRequest request, LoveMatchViewModel viewModel) {
+        //in case server response is faster than activity lifecycle callback methods
+        return mLoveMatchAPIService.likeDislikePet(request, viewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 
 }

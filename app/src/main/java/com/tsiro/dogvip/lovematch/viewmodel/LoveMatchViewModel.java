@@ -4,8 +4,15 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import com.tsiro.dogvip.POJO.lovematch.Command;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsCommand;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeCommand;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeResponse;
+import com.tsiro.dogvip.POJO.lovematch.LoveMatch;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
+import com.tsiro.dogvip.POJO.lovematch.RemoteControl;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
@@ -30,10 +37,13 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     private static final String debugTag = LoveMatchViewModel.class.getSimpleName();
     public LoveMatchContract.View mViewClback;
     public LoveMatchRequestManager mLoveMatchRequestManager;
-    private AsyncProcessor<LoveMatchResponse> mProcessor;
+//    private AsyncProcessor<LoveMatchResponse> mProcessor;
+private AsyncProcessor<LoveMatch> mProcessor;
     private int requestState;
     private Disposable mLoveMatchDisp;
 //    public abstract void onViewResumed();
+    private RemoteControl remoteControl = new RemoteControl();
+    private LoveMatch loveMatch = new LoveMatch();
 
     @Inject
     public LoveMatchViewModel(LoveMatchRequestManager mLoveMatchRequestManager) {
@@ -68,38 +78,58 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
 
     public int getRequestState() { return requestState; }
 
-//    public void kalase(LoveMatchRequest request) {
-//        if (requestState != AppConfig.REQUEST_RUNNING) {
-//            requestState = AppConfig.REQUEST_RUNNING;
-////            getPetsViewModel.kala(request, mViewClback);
-//        }
-////        if (mViewClback != null)
+//    private void onSuccessGetPets(LoveMatchResponse response) {
+//        mLoveMatchDisp = null;
+//        mViewClback.onSuccess(response);
+//    }
+//
+//    private void onErrorGetPets(int code) {
+//        mLoveMatchDisp = null;
+//        mViewClback.onError(code);
+//        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
 //    }
 
-    public final void onSuccessGetPets1(LoveMatchResponse response) {
-//        mLoveMatchDisp = null;
-        mViewClback.onSuccess(response);
+    public void onSuccessGetPets(GetPetsResponse response) {
+        Log.e(debugTag, response.getData() + " data");
+        mLoveMatchDisp = null;
+        mViewClback.onPetDataSuccess(response);
     }
 
-    public final void onErrorGetPets1(int code) {
-//        mLoveMatchDisp = null;
-        mViewClback.onError(code);
-        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+    public void onSuccessLikeDislikePet(LikeDislikeResponse response) {
+
     }
 
-    private void onSuccessGetPets(LoveMatchResponse response) {
+//    private void onSuccessGetPets(GetPetsResponse response) {
 //        mLoveMatchDisp = null;
-        mViewClback.onSuccess(response);
-    }
+////        mViewClback.onSuccess(response);
+//    }
 
     private void onErrorGetPets(int code) {
-//        mLoveMatchDisp = null;
+        mLoveMatchDisp = null;
         mViewClback.onError(code);
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+    }
+
+    public void likeDislikePet(LoveMatchRequest request) {
+        if (getRequestState() != AppConfig.REQUEST_RUNNING) {
+            Command likeDislikeCommand = new LikeDislikeCommand();
+            remoteControl.setCommand(likeDislikeCommand);
+//            mViewClback = view;
+            setRequestState(AppConfig.REQUEST_RUNNING);
+            mProcessor = AsyncProcessor.create();
+            mLoveMatchDisp = mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new GetPetsByFilterObserver());
+
+            mLoveMatchRequestManager.likeDislikePet(request, this).subscribe(mProcessor);
+        }
     }
 
     public void getPetsByFilter(LoveMatchRequest request) {
         if (getRequestState() != AppConfig.REQUEST_RUNNING) {
+            Command getPetsCommand = new GetPetsCommand();
+            remoteControl.setCommand(getPetsCommand);
 //            mViewClback = view;
             setRequestState(AppConfig.REQUEST_RUNNING);
             mProcessor = AsyncProcessor.create();
@@ -128,25 +158,51 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     }
 
 
-    private class GetPetsByFilterObserver extends DisposableSubscriber<LoveMatchResponse> {
+//    private class GetPetsByFilterObserver extends DisposableSubscriber<LoveMatchResponse> {
+//
+//        @Override
+//        public void onNext(LoveMatchResponse response) {
+//            if (response.getCode() != AppConfig.STATUS_OK) {
+//                onErrorGetPets(AppConfig.getCodes().get(response.getCode()));
+//            } else {
+//                onSuccessGetPets(response);
+//            }
+//        }
+//
+//        @Override
+//        public void onError(Throwable t) {
+//            onErrorGetPets(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
+//        }
+//
+//        @Override
+//        public void onComplete() {
+//
+//        }
+//    }
+private class GetPetsByFilterObserver extends DisposableSubscriber<LoveMatch> {
 
-        @Override
-        public void onNext(LoveMatchResponse response) {
-            if (response.getCode() != AppConfig.STATUS_OK) {
-                onErrorGetPets(AppConfig.getCodes().get(response.getCode()));
-            } else {
-                onSuccessGetPets(response);
-            }
-        }
+    @Override
+    public void onNext(LoveMatch response) {
+        Log.e("kalase", response.getCode() + " ");
+        if (response.getCode() != AppConfig.STATUS_OK) {
+//            remoteControl.pressButton(LoveMatchViewModel.this, response);
 
-        @Override
-        public void onError(Throwable t) {
-            onErrorGetPets(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
-        }
+            onErrorGetPets(AppConfig.getCodes().get(response.getCode()));
+        } else {
+//            onSuccessGetPets(response);
 
-        @Override
-        public void onComplete() {
-
+            remoteControl.pressButton(LoveMatchViewModel.this, response);
         }
     }
+
+    @Override
+    public void onError(Throwable t) {
+        Log.e(debugTag, t + " ");
+        onErrorGetPets(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
+    }
+
+    @Override
+    public void onComplete() {
+    }
+}
 }
