@@ -21,7 +21,9 @@ import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.lovematch.viewmodel.GetPetsViewModel;
+import com.tsiro.dogvip.lovematch.viewmodel.LikeDislikeViewModel;
 import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
+import com.tsiro.dogvip.networklayer.LoveMatchAPIService;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
@@ -29,6 +31,8 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityLoveMatchBinding;
+import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
+import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
@@ -55,21 +59,26 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     private ArrayList<PetObj> data;
     private boolean availableData = true, isLoading, error, hasfilters;
     private static final String debugTag = LoveMatchActivity.class.getSimpleName();
-
+//    private GetPetsViewModel getPetsViewModel = new GetPetsViewModel(mLoveMatchRequestManager);;
 //    @Inject
 //    LoveMatchRequestManager loveMatchRequestManager;
     //    @Inject
 //    ServiceAPI serviceAPI;
     @Inject
     LoveMatchViewModel mViewModel;
-    @Inject
-    GetPetsViewModel getPetsViewModel;
+//    @Inject
+//    GetPetsViewModel mViewModel;
+//    @Inject
+//    LikeDislikeViewModel mLikeDislikeViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        Log.e(debugTag, "onCREATE");
+
+//        mViewModel1 = new LoveMatchViewModel(new LoveMatchRequestManager(new LoveMatchAPIService(RetrofitFactory.getInstance().getServiceAPI())));
+//        mViewModel = new GetPetsViewModel(new LoveMatchRequestManager(new LoveMatchAPIService(RetrofitFactory.getInstance().getServiceAPI())));
+//mLikeDislikeViewModel = new LikeDislikeViewModel(new LoveMatchRequestManager(new LoveMatchAPIService(RetrofitFactory.getInstance().getServiceAPI())));
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_love_match);
         mToken = getMyAccountManager().getAccountDetails().getToken();
 
@@ -176,7 +185,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.e(debugTag, "onSaveInstanceState");
     }
 
     @Override
@@ -367,7 +375,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     private void fetchData(int page) {
-        Log.e(debugTag, "fetchdata "+page);
         if (isNetworkAvailable()) {
             if (page ==1 )initializeProgressDialog(getResources().getString(R.string.please_wait));
             final LoveMatchRequest request = new LoveMatchRequest();
@@ -381,15 +388,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                 request.setRace(race);
 //                collapseSearchFilters();
             }
-//            mViewModel.getPetsByFilter(request);
-//            if (mViewModel != null)
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mViewModel.kalase(request, getPetsViewModel);
-                }
-            }, 1000);
+            mViewModel.getPetsByFilter(request);
 
         } else {
             if (page > 1) {

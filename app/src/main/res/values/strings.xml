@@ -216,7 +216,7 @@
     <string name="profile_photo_gr">ΕΙΚΟΝΑ ΠΡΟΦΙΛ</string>
     <string name="photo_gr">ΕΙΚΟΝΑ</string>
     <string name="name_gr">ΟΝΟΜΑ</string>
-    <string name="firm_name_gr">ΟΝΟΜΑΣΙΑ ΕΠΙΧΕΙΡΗΣΗΣ</string>
+    <string name="firm_name_gr">ΕΠΩΝΥΜΙΑ ΕΠΙΧΕΙΡΗΣΗΣ</string>
     <string name="firm_address_gr">ΔΙΕΥΘΥΝΣΗ ΕΠΙΧΕΙΡΗΣΗΣ</string>
     <string name="surname_gr">ΕΠΙΘΕΤΟ</string>
     <string name="birthdate_gr">ΗΜ. ΓΕΝΝΗΣΗΣ</string>
@@ -404,7 +404,7 @@
     <string name="confrmpassword_plhldr">*<u>Επιβεβαίωση κωδικού</u></string>
     <string name="new_password_plhldr">*<u>Νέος κωδικός</u></string>
     <string name="name_plhldr">*<u>Όνομα</u></string>
-    <string name="firm_name_plhldr">*<u>Όνομασία επιχείρησης</u></string>
+    <string name="firm_name_plhldr">*<u>Επωνυμία επιχείρησης</u></string>
     <string name="firm_address_plhldr">*<u>Διεύθυνση επιχείρησης</u></string>
     <string name="surname_plhldr">*<u>Επίθετο</u></string>
     <string name="birth_date_plhldr">*<u>Ημ. γέννησης</u></string>

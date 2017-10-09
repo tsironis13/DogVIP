@@ -84,10 +84,8 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
     @Override
     public void onViewDetached() {
         if (requestState != AppConfig.REQUEST_RUNNING) {
-//            Log.e(debugTag, "here");
             mViewClback = null;
             if (mUploadDisp != null) {
-//                Log.e(debugTag, "disposed onViewDetached");
                 mUploadDisp.dispose();
             }
         }
@@ -156,13 +154,11 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
     }
 
     void onSuccessUpload(Image image) {
-        Log.e(debugTag, "onSuccessUpload " + image.getImageurl() + " ID "+image.getId());
         mUploadDisp = null;
         if (mViewClback !=null) mViewClback.onSuccessUpload(image);
     }
 
     void onErrorUpload() {
-        Log.e(debugTag, "onErrorUpload");
         mUploadDisp = null;
         mViewClback.onErrorUpload();
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
@@ -187,7 +183,6 @@ public class ImageUploadViewModel implements Lifecycle.GenericImageUploadViewMod
             RequestBody token = RequestBody.create(okhttp3.MultipartBody.FORM, mToken);
             RequestBody id = RequestBody.create(okhttp3.MultipartBody.FORM, uploadId+"");
             if (requestState != AppConfig.REQUEST_RUNNING) {
-//                Log.e(debugTag, "new subscriber: ID: " + test);
                 imageProcessor = AsyncProcessor.create();
                 mUploadDisp = imageProcessor
                                         .subscribeOn(Schedulers.io())

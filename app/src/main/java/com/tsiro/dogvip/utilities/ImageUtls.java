@@ -378,7 +378,7 @@ public class ImageUtls {
         } else if (imageView.getId() == R.id.profileImgv) {
             default_img = R.drawable.default_person;
         } else {
-            default_img = R.drawable.prof_default_icon;
+            default_img = R.drawable.default_person;
         }
         Glide.with(imageView.getContext())
                 .load(url)

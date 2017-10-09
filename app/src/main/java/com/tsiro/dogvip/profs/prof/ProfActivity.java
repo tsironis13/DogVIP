@@ -39,6 +39,7 @@ import com.tsiro.dogvip.image_states.ImageUploadViewModel;
 import com.tsiro.dogvip.image_states.NoImageState;
 import com.tsiro.dogvip.image_states.State;
 import com.tsiro.dogvip.image_states.UrlImageState;
+import com.tsiro.dogvip.profs.profprofile.ProfProfileActivity;
 import com.tsiro.dogvip.profs.profprofile.ProfProfileContract;
 import com.tsiro.dogvip.profs.profprofile.ProfProfileViewModel;
 import com.tsiro.dogvip.requestmngrlayer.ProfRequestManager;
@@ -91,7 +92,6 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-//        Log.e(debugTag, "onCreate");
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_prof);
         mSnackBar = mBinding.snckBr;
         setSupportActionBar(mBinding.incltoolbar.toolbar);
@@ -131,7 +131,6 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
     @Override
     protected void onResume() {
         super.onResume();
-//        Log.e(debugTag, "onResume");
         mImageUploadViewModel.onViewResumed(image.getState());
         Disposable disp = RxView.clicks(mBinding.profileImgv).subscribe(new Consumer<Object>() {
             @Override
@@ -169,7 +168,6 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        Log.e(debugTag, "onSaveInstanceState");
         outState.putParcelable(getResources().getString(R.string.image), image);
         outState.putParcelable(getResources().getString(R.string.parcelable_obj), mBinding.getProf());
     }
@@ -227,7 +225,7 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
         dismissDialog();
         mBinding.scrollView.smoothScrollTo(0, 0);
         mBinding.setProf(response.getProf());
-//        Log.e(debugTag, mBinding.g)
+        startActivity(new Intent(this, ProfProfileActivity.class));
     }
 
     @Override
@@ -270,7 +268,7 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
 
     @Override
     public void loadImageUrl(Object obj, State state, File file) {
-        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, mImageUploadViewModel, getResources().getString(R.string.upload_prof_img), mToken, profObj.getId(), R.drawable.prof_default_icon);
+        imageUtls.loadImageWithGlide(obj, state, file, mBinding.profileImgv, mImageUploadViewModel, getResources().getString(R.string.upload_prof_img), mToken, profObj.getId(), R.drawable.default_person);
     }
 
     @Override
@@ -304,7 +302,7 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
     @Override
     public void onSuccessDelete() {
         mBinding.setProcessing(false);
-        imageUtls.clearImageWithGlide(mBinding.profileImgv, R.drawable.prof_default_icon);
+        imageUtls.clearImageWithGlide(mBinding.profileImgv, R.drawable.default_person);
         this.image.setState(new NoImageState());
         profObj.setImage_url("");
     }
@@ -326,7 +324,6 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
             image = new TestImage(profObj.getImage_url());
         }
         mImageUploadViewModel.loadImage(image);
-//        Log.e(debugTag, profObj.getImage_url() + " aa");
         mBinding.setProf(profObj);
         if (mBinding.getProf().getId() == 0) {
             setTitle(getResources().getString(R.string.add_owner));
@@ -340,7 +337,6 @@ public class ProfActivity extends BaseActivity implements ProfProfileContract.Vi
                 chechBx.setChecked(true);
             }
         }
-//        Log.e(debugTag, " State: " + image.getState() + " " + image.getUri());
 
     }
 

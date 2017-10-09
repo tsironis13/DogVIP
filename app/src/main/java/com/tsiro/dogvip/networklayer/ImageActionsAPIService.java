@@ -45,14 +45,12 @@ public class ImageActionsAPIService {
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.e("aa", throwable.toString());
                         viewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
                 .doOnNext(new Consumer<Image>() {
                     @Override
                     public void accept(@NonNull Image response) throws Exception {
-                        Log.e("fff", response.getCode() + " ");
                         viewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });

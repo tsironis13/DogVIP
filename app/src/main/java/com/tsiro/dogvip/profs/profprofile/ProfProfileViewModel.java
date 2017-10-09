@@ -117,9 +117,7 @@ public class ProfProfileViewModel implements ProfProfileContract.ViewModel {
 //                    .map(new Function<ProfDetailsResponse, ProfDetailsResponse>() {
 //                        @Override
 //                        public ProfDetailsResponse apply(@NonNull ProfDetailsResponse profDetailsResponse) throws Exception {
-////                            Log.e("aa", profDetailsResponse.getProf().setCity("kalase"); + " asdklsdkkjds");
 //                            profDetailsResponse.getProf().setCity("kalase");
-//                            Log.e("debugatag", profDetailsResponse.getCode() + "code");
 //                            return profDetailsResponse;
 //                        }
 //                    })
@@ -171,7 +169,6 @@ public class ProfProfileViewModel implements ProfProfileContract.ViewModel {
 
         @Override
         public void onError(Throwable t) {
-//            Log.e("aa", t.toString());
             onProfsError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
 

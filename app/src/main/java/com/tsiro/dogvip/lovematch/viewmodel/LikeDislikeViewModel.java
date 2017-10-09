@@ -5,7 +5,6 @@ import android.util.Log;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.lovematch.LoveMatchContract;
 import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
 
@@ -18,10 +17,10 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * Created by giannis on 7/10/2017.
+ * Created by giannis on 8/10/2017.
  */
 
-public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchContract.GetPetsViewModel {
+public class LikeDislikeViewModel extends LoveMatchViewModel implements LoveMatchContract.LikeDislikePetViewModel {
 
     private static final String debugTag = GetPetsViewModel.class.getSimpleName();
     private AsyncProcessor<LoveMatchResponse> mProcessor;
@@ -29,7 +28,7 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
 //    private LoveMatchContract.View mViewClback1;
 
 //    @Inject
-    public GetPetsViewModel(LoveMatchRequestManager mLoveMatchRequestManager) {
+    public LikeDislikeViewModel(LoveMatchRequestManager mLoveMatchRequestManager) {
         super(mLoveMatchRequestManager);
     }
 
@@ -40,7 +39,7 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
             mProcessor
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new GetPetsByFilterObserver());
+                    .subscribe(new LikeDisplikeObserver());
         }
     }
 
@@ -66,7 +65,7 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
 //        if (mViewClback != null) setRequestState(AppConfig.REQUEST_NONE);
     }
 
-    public void getPetsByFilter(LoveMatchRequest request) {
+    public void likeDislikePet(LoveMatchRequest request) {
         if (getRequestState() != AppConfig.REQUEST_RUNNING) {
 //            mViewClback = view;
             setRequestState(AppConfig.REQUEST_RUNNING);
@@ -74,7 +73,7 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
             mLoveMatchDisp = mProcessor
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new GetPetsByFilterObserver());
+                    .subscribeWith(new LikeDisplikeObserver());
 
             mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
         }
@@ -94,7 +93,7 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
 ////        }
 //    }
 
-    private class GetPetsByFilterObserver extends DisposableSubscriber<LoveMatchResponse> {
+    private class LikeDisplikeObserver extends DisposableSubscriber<LoveMatchResponse> {
 
         @Override
         public void onNext(LoveMatchResponse response) {
@@ -115,5 +114,4 @@ public class GetPetsViewModel extends LoveMatchViewModel implements LoveMatchCon
 
         }
     }
-
 }

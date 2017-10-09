@@ -28,11 +28,12 @@ import io.reactivex.subscribers.DisposableSubscriber;
 public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
 
     private static final String debugTag = LoveMatchViewModel.class.getSimpleName();
-    private LoveMatchContract.View mViewClback;
+    public LoveMatchContract.View mViewClback;
     public LoveMatchRequestManager mLoveMatchRequestManager;
     private AsyncProcessor<LoveMatchResponse> mProcessor;
     private int requestState;
     private Disposable mLoveMatchDisp;
+//    public abstract void onViewResumed();
 
     @Inject
     public LoveMatchViewModel(LoveMatchRequestManager mLoveMatchRequestManager) {
@@ -40,19 +41,22 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     }
 
     @Override
-    public void onViewAttached(Lifecycle.View viewCallback) {
+    public final void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewClback = (LoveMatchContract.View) viewCallback;
-        Log.e(debugTag, mViewClback + " KALASE");
     }
 
     @Override
     public void onViewResumed() {
-
+        if (mLoveMatchDisp != null && getRequestState() != AppConfig.REQUEST_RUNNING) {
+            mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new GetPetsByFilterObserver());
+        }
     }
 
     @Override
     public void onViewDetached() {
-        Log.e(debugTag, "view detached");
         mViewClback = null;
         if (mLoveMatchDisp != null) mLoveMatchDisp.dispose();
     }
@@ -64,36 +68,45 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
 
     public int getRequestState() { return requestState; }
 
-    public void kalase(LoveMatchRequest request, GetPetsViewModel viewModel) {
-        Log.e(debugTag, mViewClback + " hlkasklklsaklasklaslkasas");
-//        Log.e(debugTag, mViewClback.toString() + " aa");
-        if (requestState != AppConfig.REQUEST_RUNNING) {
-            requestState = AppConfig.REQUEST_RUNNING;
-            viewModel.kala(request, mViewClback);
-        }
-//        if (mViewClback != null)
-    }
+//    public void kalase(LoveMatchRequest request) {
+//        if (requestState != AppConfig.REQUEST_RUNNING) {
+//            requestState = AppConfig.REQUEST_RUNNING;
+////            getPetsViewModel.kala(request, mViewClback);
+//        }
+////        if (mViewClback != null)
+//    }
 
-    private void onSuccessGetPets(LoveMatchResponse response) {
-        mLoveMatchDisp = null;
+    public final void onSuccessGetPets1(LoveMatchResponse response) {
+//        mLoveMatchDisp = null;
         mViewClback.onSuccess(response);
     }
 
-    private void onErrorGetPets(int code) {
-        mLoveMatchDisp = null;
+    public final void onErrorGetPets1(int code) {
+//        mLoveMatchDisp = null;
         mViewClback.onError(code);
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
-    @Override
+    private void onSuccessGetPets(LoveMatchResponse response) {
+//        mLoveMatchDisp = null;
+        mViewClback.onSuccess(response);
+    }
+
+    private void onErrorGetPets(int code) {
+//        mLoveMatchDisp = null;
+        mViewClback.onError(code);
+        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+    }
+
     public void getPetsByFilter(LoveMatchRequest request) {
-        if (requestState != AppConfig.REQUEST_RUNNING) {
-            requestState = AppConfig.REQUEST_RUNNING;
+        if (getRequestState() != AppConfig.REQUEST_RUNNING) {
+//            mViewClback = view;
+            setRequestState(AppConfig.REQUEST_RUNNING);
             mProcessor = AsyncProcessor.create();
             mLoveMatchDisp = mProcessor
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribeWith(new GetPetsByFilterObserver());
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new GetPetsByFilterObserver());
 
             mLoveMatchRequestManager.getPetsByFilter(request, this).subscribe(mProcessor);
         }

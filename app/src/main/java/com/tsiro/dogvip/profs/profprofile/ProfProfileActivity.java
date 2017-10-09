@@ -211,7 +211,6 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
             mBinding.setHaserror(true);
             mBinding.setErrortext(getResources().getString(R.string.no_prof_exists));
         } else if (response.getAction() != null && response.getAction().equals(getResources().getString(R.string.search_prof))) {
-            Log.e(debugTag, response.getProfs() + " list");
             if (!response.getProfs().isEmpty()) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList(getResources().getString(R.string.data), response.getProfs());
@@ -242,7 +241,6 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
     @Override
     public void onError(int resource) {
         dismissDialog();
-//        Log.e(debugTag, "onError");
     }
 
     @Override
@@ -282,7 +280,6 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
             textView.setText(AppConfig.getProfCategoryHashMap().get(category));
             textView.setTypeface(Typeface.DEFAULT_BOLD);
             mBinding.categoriesLlt.addView(textView);
-//            Log.e(debugTag, AppConfig.getProfCategoryHashMap().get(category) + " ");
         }
     }
 
@@ -290,7 +287,6 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
         return new DisposableSubscriber<SearchProfFormValidation>() {
             @Override
             public void onNext(SearchProfFormValidation searchProfFormValidation) {
-                Log.e(debugTag, searchProfFormValidation.getCode() + " code validation");
                 if (searchProfFormValidation.getCode() == AppConfig.STATUS_ERROR) {
                     showSnackBar(searchProfFormValidation.getMsg(), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
                 } else {
@@ -306,12 +302,10 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
 
             @Override
             public void onError(Throwable t) {
-                Log.e(debugTag, t.toString());
             }
 
             @Override
             public void onComplete() {
-                Log.e(debugTag, "onCOmplete");
             }
         };
     }
@@ -325,7 +319,6 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
                         new Function3<List<Integer>, String, Boolean, SearchProfFormValidation>() {
                             @Override
                             public SearchProfFormValidation apply(@NonNull List<Integer> categories, @NonNull String city, @NonNull Boolean networkOn) throws Exception {
-                                Log.e(debugTag, city + " "+ categories);
                                 if (city.isEmpty() && categories.isEmpty()) {
                                     searchProfFormValidation.setCode(AppConfig.STATUS_ERROR);
                                     searchProfFormValidation.setMsg(getResources().getString(R.string.please_fill_out_search_filters));

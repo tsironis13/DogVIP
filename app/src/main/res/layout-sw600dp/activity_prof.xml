@@ -57,7 +57,7 @@
                     <!--android:visibility="@{adduser ? View.GONE : View.VISIBLE}"-->
                     <TextView
                         android:id="@+id/reqfldsTtv"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15dp"
                         android:layout_gravity="center_horizontal"
@@ -70,8 +70,8 @@
                     <RelativeLayout
                         android:id="@+id/profilePhoneLlt"
                         android:layout_below="@+id/reqfldsTtv"
-                        android:layout_width="270dp"
-                        android:layout_height="150dp"
+                        android:layout_width="510dp"
+                        android:layout_height="175dp"
                         android:layout_marginBottom="15dp"
                         android:orientation="vertical"
                         android:visibility="@{prof.id == 0 ? View.GONE : View.VISIBLE}">
@@ -94,8 +94,8 @@
 
                             <ImageView
                                 android:id="@+id/profileImgv"
-                                android:layout_width="85dp"
-                                android:layout_height="85dp"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
                                 android:layout_centerHorizontal="true"
                                 android:contentDescription="@string/image_cont_desc"
                                 android:src="@drawable/default_person" />
@@ -121,7 +121,7 @@
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:src="@drawable/edit"
-                            android:layout_marginBottom="-10dp"
+                            android:layout_marginBottom="-13dp"
                             android:layout_alignBottom="@+id/profRlt"
                             android:padding="5dp"
                             android:layout_centerHorizontal="true"
@@ -156,7 +156,7 @@
 
                     <TextView
                         android:id="@+id/categoryTtv"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
                         android:layout_marginTop="7dp"
@@ -242,7 +242,7 @@
 
                     <LinearLayout
                         android:id="@+id/cityLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:background="@android:color/white"
@@ -257,7 +257,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/location" />
 
@@ -265,7 +265,7 @@
                             android:id="@+id/cityEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -291,7 +291,7 @@
 
                     <LinearLayout
                         android:id="@+id/nameLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_marginBottom="15dp"
@@ -306,7 +306,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/person" />
 
@@ -314,7 +314,7 @@
                             android:id="@+id/nameEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -338,7 +338,7 @@
 
                     <LinearLayout
                         android:id="@+id/addressLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:layout_below="@+id/addressTtv"
@@ -351,7 +351,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/ic_address" />
 
@@ -359,7 +359,7 @@
                             android:id="@+id/addressEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -383,7 +383,7 @@
 
                     <LinearLayout
                         android:id="@+id/phoneLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:background="@android:color/white"
@@ -396,7 +396,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/phone" />
 
@@ -404,7 +404,7 @@
                             android:id="@+id/phoneEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"
@@ -428,7 +428,7 @@
 
                     <LinearLayout
                         android:id="@+id/websiteLlt"
-                        android:layout_width="270dp"
+                        android:layout_width="510dp"
                         android:layout_height="48dp"
                         android:orientation="horizontal"
                         android:background="@android:color/white"
@@ -441,7 +441,7 @@
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:contentDescription="@string/image_cont_desc"
                             app:srcCompat="@drawable/ic_website" />
 
@@ -449,7 +449,7 @@
                             android:id="@+id/websiteEdt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.86"
+                            android:layout_weight="0.9"
                             android:textSize="12sp"
                             android:paddingRight="8dp"
                             android:paddingTop="12dp"

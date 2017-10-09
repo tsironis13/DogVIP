@@ -22,7 +22,6 @@ public interface LoveMatchContract {
 
     interface ViewModel extends Lifecycle.ViewModel {
         void setRequestState(int state);
-        void getPetsByFilter(LoveMatchRequest request);
         void onLoveImageViewClick(android.view.View view);
         void onMessageIconClick(android.view.View view);
         void onViewClick(android.view.View view);
@@ -30,6 +29,10 @@ public interface LoveMatchContract {
 
     interface GetPetsViewModel {
         void getPetsByFilter(LoveMatchRequest request);
+    }
+
+    interface LikeDislikePetViewModel {
+        void likeDislikePet(LoveMatchRequest request);
     }
 
 }

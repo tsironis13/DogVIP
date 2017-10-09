@@ -69,6 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
     protected void onStop() {
         super.onStop();
         if (getViewModel() != null) getViewModel().onViewDetached();
+
     }
 
     @Override
