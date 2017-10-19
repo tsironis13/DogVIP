@@ -9,9 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.tsiro.dogvip.LoginActivity;
 import com.tsiro.dogvip.R;
+import com.tsiro.dogvip.login.LoginActivity;
 
 /**
  * Created by giannis on 22/5/2017.

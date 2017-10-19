@@ -1,4 +1,4 @@
-package com.tsiro.dogvip.di.modules;
+package com.tsiro.dogvip.base.activity;
 
 import android.app.Activity;
 import android.content.Context;

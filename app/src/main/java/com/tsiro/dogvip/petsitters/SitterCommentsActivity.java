@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -14,7 +13,7 @@ import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivitySitterCommentsBinding;
 import com.tsiro.dogvip.requestmngrlayer.PetSitterRequestManager;

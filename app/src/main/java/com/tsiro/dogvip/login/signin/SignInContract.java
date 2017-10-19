@@ -1,4 +1,4 @@
-package com.tsiro.dogvip.login;
+package com.tsiro.dogvip.login.signin;
 
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;

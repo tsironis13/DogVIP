@@ -36,7 +36,7 @@ import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityPetSitterBinding;
 import com.tsiro.dogvip.petsitters.PetSittersActivity;

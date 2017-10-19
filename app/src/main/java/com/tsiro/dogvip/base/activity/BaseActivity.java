@@ -1,37 +1,32 @@
-package com.tsiro.dogvip.app;
+package com.tsiro.dogvip.base.activity;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 
-import com.rey.material.app.DatePickerDialog;
 import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.tsiro.dogvip.POJO.DialogActions;
-import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.accountmngr.MyAccountManager;
+import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import javax.inject.Inject;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by giannis on 4/6/2017.

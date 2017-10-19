@@ -1,10 +1,8 @@
 package com.tsiro.dogvip.requestmngrlayer;
 
-import android.content.Context;
-
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
-import com.tsiro.dogvip.login.SignInViewModel;
+import com.tsiro.dogvip.login.signin.SignInViewModel;
 import com.tsiro.dogvip.networklayer.SignInAPIService;
 
 import java.util.concurrent.TimeUnit;

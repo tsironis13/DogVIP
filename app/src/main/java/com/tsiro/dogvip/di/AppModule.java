@@ -12,6 +12,8 @@ import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.di.qualifiers.ActivityContext;
 import com.tsiro.dogvip.di.qualifiers.ApplicationContext;
+import com.tsiro.dogvip.di.scope.PerActivity;
+import com.tsiro.dogvip.login.LoginActivity;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import java.lang.annotation.Retention;
@@ -24,6 +26,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;
+import dagger.android.ContributesAndroidInjector;
 import io.reactivex.processors.AsyncProcessor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -37,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by giannis on 24/9/2017.
  */
 @Module(includes = AndroidInjectionModule.class)
-public class AppModule {
+class AppModule {
 
     private static final String debugTag = AppModule.class.getSimpleName();
 
@@ -47,12 +50,6 @@ public class AppModule {
         return application;
     }
 
-//    @Provides
-//    Gson provideGson() {
-//        GsonBuilder gsonBuilder = new GsonBuilder();
-//        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-//        return gsonBuilder.create();
-//    }
     @Provides
     @Singleton
     HttpLoggingInterceptor provideHttpLoggingInterceptor() {

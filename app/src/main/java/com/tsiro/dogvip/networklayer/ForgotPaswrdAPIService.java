@@ -2,7 +2,7 @@ package com.tsiro.dogvip.networklayer;
 
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.resetpasswrd.ForgotPaswrdViewModel;
+import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdViewModel;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 

@@ -39,7 +39,7 @@ import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityOwnerprofileBinding;
 import com.tsiro.dogvip.mypets.pet.PetActivity;

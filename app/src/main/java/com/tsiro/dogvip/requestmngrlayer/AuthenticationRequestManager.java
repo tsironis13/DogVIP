@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
+import com.tsiro.dogvip.login.signup.RegistrationViewModel;
 import com.tsiro.dogvip.networklayer.RegistrationAPIService;
-import com.tsiro.dogvip.register.RegistrationViewModel;
 
 import java.util.concurrent.TimeUnit;
 

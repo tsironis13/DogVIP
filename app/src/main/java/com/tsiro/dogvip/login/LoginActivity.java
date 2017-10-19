@@ -1,11 +1,14 @@
-package com.tsiro.dogvip;
+package com.tsiro.dogvip.login;
 
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,33 +18,58 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.tsiro.dogvip.POJO.TestImage;
+import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
+import com.tsiro.dogvip.R;
+import com.tsiro.dogvip.accountmngr.MyAccountManager;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityLoginBinding;
 import com.tsiro.dogvip.splashscreen.SplashFrgmt;
+import com.tsiro.dogvip.utilities.UIUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements HasSupportFragmentInjector, Lifecycle.BaseView {
 
+    private static final String debugTag = LoginActivity.class.getSimpleName();
     private static boolean anmtionOnPrgrs;
     private static CompositeDisposable mCompDisp;
-    private GoogleApiClient mGoogleApiClient;
+//    private GoogleApiClient mGoogleApiClient;
     private ActivityLoginBinding mBinding;
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentInjector;
+    @Inject
+    GoogleApiClient mGoogleApiClient;
+    @Inject
+    MyAccountManager mAccountManager;
+    @Inject
+    UIUtls uiUtls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+
+        Log.e(debugTag, uiUtls + " uiutls");
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 
-        if (getMyAccountManager().checkAccountExists()) {
+        if (mAccountManager.checkAccountExists()) {
 //            getMyAccountManager().getUserData(this);
             logUserIn(false);
         } else {
@@ -64,13 +92,13 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
          * initialized here to avoid 'Already managing a GoogleApiClient with id 0' exceptions
          * disconnect and stop managing Google client in onPause()
          */
-        initializeGoogleSignUp();
+        mGoogleApiClient.connect();
     }
 
-    @Override
-    public Lifecycle.ViewModel getViewModel() {
-        return null;
-    }
+//    @Override
+//    public Lifecycle.ViewModel getViewModel() {
+//        return null;
+//    }
 
     @Override
     protected void onResume() {
@@ -104,12 +132,21 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
     protected void onDestroy() {
         super.onDestroy();
         RxEventBus.unregister(this);
+        Log.e(debugTag, mGoogleApiClient + "onDestroy");
         if (mGoogleApiClient != null) {
-            mGoogleApiClient.stopAutoManage(this);
             mGoogleApiClient.disconnect();
+            mGoogleApiClient = null;
+//            mGoogleApiClient.stopAutoManage(this);
+
         }
         //prevent window leaks
-        dismissDialog();
+//        dismissDialog();
+    }
+
+    @Override
+    public AndroidInjector<android.support.v4.app.Fragment> supportFragmentInjector() {
+        Log.e(debugTag, "fragmentInjector");
+        return fragmentInjector;
     }
 
     @Override
@@ -121,37 +158,27 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
         }
     }
 
+    public void addAccount(AuthenticationResponse response) {
+        if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
+            logUserIn(true);
+        } else {
+            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
+        }
+    }
 
-    public void logUserIn(boolean userLoggedInFirstTime) {
+    private void logUserIn(boolean userLoggedInFirstTime) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(getResources().getString(R.string.user_logged_in_first_time), userLoggedInFirstTime);
         startActivity(new Intent(LoginActivity.this, DashboardActivity.class).putExtras(bundle));
         finish();
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
-    }
-
-    private void initializeGoogleSignUp() {
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addOnConnectionFailedListener(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-    }
-
     public GoogleApiClient getmGoogleApiClient() {
         return mGoogleApiClient;
+    }
+
+    public MyAccountManager getmAccountManager() {
+        return mAccountManager;
     }
 
     public void showSnackBar(final int style, final String msg) {
@@ -166,5 +193,4 @@ public class LoginActivity extends BaseActivity implements Lifecycle.BaseView, G
             });
         }
     }
-
 }

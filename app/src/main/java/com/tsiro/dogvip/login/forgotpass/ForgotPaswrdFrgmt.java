@@ -1,13 +1,11 @@
-package com.tsiro.dogvip.resetpasswrd;
+package com.tsiro.dogvip.login.forgotpass;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,27 +18,23 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import com.tsiro.dogvip.LoginActivity;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseFragment;
+import com.tsiro.dogvip.base.fragment.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ForgotpaswrdFrgmtBinding;
-import com.tsiro.dogvip.login.SignInFrgmt;
+import com.tsiro.dogvip.login.LoginActivity;
+import com.tsiro.dogvip.login.signin.SignInFrgmt;
 import com.tsiro.dogvip.requestmngrlayer.ForgotPaswrdRequestManager;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by giannis on 17/5/2017.
@@ -190,7 +184,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
 
     @Override
     public void onSuccess(final ForgotPaswrdObj response) {
-        ((LoginActivity) getActivity()).dismissDialog();
+//        ((LoginActivity) getActivity()).dismissDialog();
         if (response.getSubaction().equals(getResources().getString(R.string.forgot_paswrd_email_subaction))) {
             mBinding.setViewstate(true);
             emailValidated = true;
@@ -209,14 +203,14 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
 
     @Override
     public void onError(final int resource, final boolean msglength) {
-        ((LoginActivity) getActivity()).dismissDialog();
+//        ((LoginActivity) getActivity()).dismissDialog();
         int style = R.style.SnackBarSingleLine;
         if (msglength) style = R.style.SnackBarMultiLine;
         ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
     }
 
     private void submit(String email, String subaction) {
-        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
+//        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
             forgotPaswrdObj.setAction(getResources().getString(R.string.forgot_paswrd));
             forgotPaswrdObj.setSubaction(subaction);
             forgotPaswrdObj.setEmail(email);
@@ -226,10 +220,10 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                 forgotPaswrdObj.setUserId(user_id);
             }
             mForgotPaswrdViewModel.fogotpass(forgotPaswrdObj);
-            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
-        } else {
-            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
-        }
+//            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
+//        } else {
+//            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
+//        }
     }
 
 }

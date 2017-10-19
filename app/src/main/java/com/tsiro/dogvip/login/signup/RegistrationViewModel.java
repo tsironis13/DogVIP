@@ -1,9 +1,7 @@
-package com.tsiro.dogvip.register;
+package com.tsiro.dogvip.login.signup;
 
-import android.util.Log;
-
-import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
+import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.requestmngrlayer.AuthenticationRequestManager;

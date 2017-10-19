@@ -1,18 +1,11 @@
-package com.tsiro.dogvip.di.modules;
+package com.tsiro.dogvip.lovematch;
 
 import android.app.Activity;
-import android.content.Context;
 
-import com.tsiro.dogvip.POJO.lovematch.GetPetsCommand;
-import com.tsiro.dogvip.POJO.lovematch.ResponseController;
-import com.tsiro.dogvip.di.scope.PerActivity;
-import com.tsiro.dogvip.lovematch.LoveMatchActivity;
-import com.tsiro.dogvip.lovematch.LoveMatchContract;
-import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
+import com.tsiro.dogvip.base.activity.BaseActivityModule;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * Created by giannis on 24/9/2017.

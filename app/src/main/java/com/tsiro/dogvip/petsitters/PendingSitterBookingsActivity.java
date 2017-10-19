@@ -7,23 +7,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
-import com.tsiro.dogvip.POJO.chat.ChatRoom;
 import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityPendingSitterBookingsBinding;
 import com.tsiro.dogvip.requestmngrlayer.PetSitterRequestManager;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;

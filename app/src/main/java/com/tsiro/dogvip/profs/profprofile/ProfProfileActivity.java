@@ -7,19 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LruCache;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.tsiro.dogvip.POJO.DialogActions;
 import com.tsiro.dogvip.POJO.profs.DeleteProfRequest;
 import com.tsiro.dogvip.POJO.profs.GetProfDetailsRequest;
@@ -29,7 +24,7 @@ import com.tsiro.dogvip.POJO.profs.SearchProfFormValidation;
 import com.tsiro.dogvip.POJO.profs.SearchProfsRequest;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityProfProfileBinding;
 import com.tsiro.dogvip.profs.SearchedProfsActivity;
@@ -38,27 +33,18 @@ import com.tsiro.dogvip.requestmngrlayer.ProfRequestManager;
 import com.tsiro.dogvip.utilities.NetworkUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.functions.Function3;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.tsiro.dogvip.POJO.petsitter.BookingObj;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsRequest;
 import com.tsiro.dogvip.POJO.petsitter.OwnerSitterBookingsResponse;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityManipulateNewSitterBookingBinding;

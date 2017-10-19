@@ -20,6 +20,8 @@ import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 
 /**
  * Created by giannis on 22/5/2017.
@@ -30,6 +32,7 @@ public class MyAccountManager {
     private Context mContext;
     private AccountManager am;
 
+    @Inject
     public MyAccountManager(Context context) {
         this.mContext = context;
         this.am = AccountManager.get(mContext);

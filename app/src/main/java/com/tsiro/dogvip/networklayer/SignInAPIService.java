@@ -1,17 +1,13 @@
 package com.tsiro.dogvip.networklayer;
 
-import android.util.Log;
-
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.login.SignInViewModel;
+import com.tsiro.dogvip.login.signin.SignInViewModel;
 import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import org.reactivestreams.Subscription;
-
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

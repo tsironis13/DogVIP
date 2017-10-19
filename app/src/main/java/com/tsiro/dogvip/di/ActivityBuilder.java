@@ -1,17 +1,13 @@
 package com.tsiro.dogvip.di;
 
-import com.tsiro.dogvip.di.modules.LoveMatchActivityModule;
-import com.tsiro.dogvip.di.modules.OwnerActivityModule;
-import com.tsiro.dogvip.di.qualifiers.ActivityContext;
+import com.tsiro.dogvip.login.LoginActivityModule;
+import com.tsiro.dogvip.login.signin.SignInFragmentModule;
+import com.tsiro.dogvip.lovematch.LoveMatchActivityModule;
 import com.tsiro.dogvip.di.scope.PerActivity;
+import com.tsiro.dogvip.login.LoginActivity;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
-import com.tsiro.dogvip.mypets.owner.OwnerActivity;
+import com.tsiro.dogvip.profs.ProfModule;
 import com.tsiro.dogvip.profs.prof.ProfActivity;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import javax.inject.Scope;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -23,13 +19,14 @@ import dagger.android.ContributesAndroidInjector;
 abstract class ActivityBuilder {
 
     @PerActivity
+    @ContributesAndroidInjector(modules = {LoginActivityModule.class})
+    abstract LoginActivity bindLoginActivity();
+
+    @PerActivity
     @ContributesAndroidInjector(modules = {LoveMatchActivityModule.class})
     abstract LoveMatchActivity bindLoveMatchActivity();
 
-    @ContributesAndroidInjector(modules = {OwnerActivityModule.class})
-    abstract OwnerActivity bindOwnerActivity();
-
-    @ContributesAndroidInjector
+    @PerActivity
+    @ContributesAndroidInjector(modules = {ProfModule.class})
     abstract ProfActivity bindProfActivity();
-
 }

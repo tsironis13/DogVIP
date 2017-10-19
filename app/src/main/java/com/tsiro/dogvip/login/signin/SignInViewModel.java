@@ -1,11 +1,10 @@
-package com.tsiro.dogvip.login;
-
-import android.util.Log;
+package com.tsiro.dogvip.login.signin;
 
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.login.signin.SignInContract;
 import com.tsiro.dogvip.requestmngrlayer.SignInRequestManager;
 
 import io.reactivex.annotations.NonNull;

@@ -56,7 +56,7 @@ public class ImageUtls {
     private Context mContext;
 
     @Inject
-    public ImageUtls(@ApplicationContext Context context) {
+    public ImageUtls(Context context) {
         this.mContext = context;
     }
 

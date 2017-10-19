@@ -26,7 +26,7 @@ import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityLoveMatchBinding;
 import com.tsiro.dogvip.utilities.UIUtls;
@@ -337,11 +337,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
                 mViewModel.retry();
-//                final GetPetsByFilterRequest request = new GetPetsByFilterRequest();
-//                request.setAction(getResources().getString(R.string.get_all_pets_by_filter));
-//                request.setAuthtoken(mToken);
-//                request.setPage(page);
-//                mViewModel.getPetsByFilter(request);
             }
         });
     }

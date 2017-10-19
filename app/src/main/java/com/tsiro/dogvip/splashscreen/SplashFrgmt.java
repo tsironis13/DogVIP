@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 
-import com.facebook.AccessToken;
-import com.facebook.FacebookRequestError;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.login.LoginManager;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.databinding.SplashFrgmtBinding;
-import com.tsiro.dogvip.login.SignInFrgmt;
-import com.tsiro.dogvip.register.RegisterFrgmt;
+import com.tsiro.dogvip.login.signin.SignInFrgmt;
+import com.tsiro.dogvip.login.signup.RegisterFrgmt;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
@@ -82,21 +75,6 @@ public class SplashFrgmt extends Fragment {
                 new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-//                        GraphRequest delPermRequest = new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest.Callback() {
-//                            @Override
-//                            public void onCompleted(GraphResponse graphResponse) {
-//                                if(graphResponse!=null){
-//                                    FacebookRequestError error =graphResponse.getError();
-//                                    if(error!=null){
-//
-//                                    }else {
-////                                        finish();
-//                                    }
-//                                }
-//                            }
-//                        });
-//                        delPermRequest.executeAsync();
-//                        LoginManager.getInstance().logOut();
                         mFragmentManager
                                 .beginTransaction()
                                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)

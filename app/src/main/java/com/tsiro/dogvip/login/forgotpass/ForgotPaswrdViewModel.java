@@ -1,6 +1,4 @@
-package com.tsiro.dogvip.resetpasswrd;
-
-import android.util.Log;
+package com.tsiro.dogvip.login.forgotpass;
 
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.app.AppConfig;

@@ -3,8 +3,8 @@ package com.tsiro.dogvip.requestmngrlayer;
 import android.content.Context;
 
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
+import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdViewModel;
 import com.tsiro.dogvip.networklayer.ForgotPaswrdAPIService;
-import com.tsiro.dogvip.resetpasswrd.ForgotPaswrdViewModel;
 
 import java.util.concurrent.TimeUnit;
 

@@ -9,7 +9,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityMypetsBinding;
 import com.tsiro.dogvip.mypets.owner.OwnerActivity;

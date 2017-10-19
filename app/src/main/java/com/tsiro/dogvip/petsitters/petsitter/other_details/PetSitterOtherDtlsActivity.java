@@ -7,19 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.PetSitterOtherDetailsViewPager;
-import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityPetSitterOtherDetailsBinding;
 import com.tsiro.dogvip.petsitters.PetSittersActivity;
@@ -27,16 +22,8 @@ import com.tsiro.dogvip.petsitters.petsitter.PetSitterActivity;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterContract;
 import com.tsiro.dogvip.petsitters.petsitter.PetSitterViewModel;
 import com.tsiro.dogvip.requestmngrlayer.PetSitterRequestManager;
-import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by giannis on 8/9/2017.

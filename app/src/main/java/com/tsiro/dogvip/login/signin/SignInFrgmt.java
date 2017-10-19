@@ -1,12 +1,11 @@
-package com.tsiro.dogvip.register;
+package com.tsiro.dogvip.login.signin;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -29,68 +28,88 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.tsiro.dogvip.LoginActivity;
-import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
+import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.accountmngr.MyAccountManager;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseFragment;
+import com.tsiro.dogvip.base.fragment.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.databinding.RegisterFrgmtBinding;
-import com.tsiro.dogvip.login.SignInFrgmt;
-import com.tsiro.dogvip.requestmngrlayer.AuthenticationRequestManager;
+import com.tsiro.dogvip.databinding.SigninFrgmtBinding;
+import com.tsiro.dogvip.login.LoginActivity;
+import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdFrgmt;
+import com.tsiro.dogvip.login.signup.RegisterFrgmt;
+import com.tsiro.dogvip.requestmngrlayer.SignInRequestManager;
+import com.tsiro.dogvip.utilities.UIUtls;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
-import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
- * Created by giannis on 15/5/2017.
+ * Created by giannis on 17/5/2017.
  */
 
-public class RegisterFrgmt extends BaseFragment implements RegistrationContract.View {
+public class SignInFrgmt extends BaseFragment implements SignInContract.View, GoogleApiClient.OnConnectionFailedListener {
 
     private View mView;
-    private RegisterFrgmtBinding mBinding;
-    private RegistrationContract.ViewModel mRegstrViewModel;
-    private RegistrationRequest request;
-    private ProgressDialog mProgressDialog;
-    private CallbackManager mCallbackMngr;
-    private AwesomeValidation mAwesomeValidation;
-    private boolean mFBUserLoggedIn, mGoogleUserLoggedIn;
+    private SigninFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;
+    private SignInContract.ViewModel mSignInViewModel;
+    private SignInRequest request;
+    private AwesomeValidation mAwesomeValidation;
+    private int fragmentCreatedCode; // login activity: check if fragments are created on button click
     private Lifecycle.BaseView baseView;
+    private CallbackManager mCallbackMngr;
     private GoogleApiClient mGoogleApiClient;
+    private boolean mFBUserLoggedIn, mGoogleUserLoggedIn;
+    @Inject
+    UIUtls uiUtls;
 
-    public static RegisterFrgmt newInstance() {
-        return new RegisterFrgmt();
+    public static SignInFrgmt newInstance(int x) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConfig.FRAGMENT_CREATED, x);
+        SignInFrgmt signInFrgmt = new SignInFrgmt();
+        signInFrgmt.setArguments(bundle);
+        return signInFrgmt;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
+        mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("aaa", uiUtls + " aa");
+        fragmentCreatedCode = getArguments().getInt(AppConfig.FRAGMENT_CREATED);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (mView == null ) {
-            mBinding = DataBindingUtil.inflate(inflater, R.layout.register_frgmt, container, false);
+        if (fragmentCreatedCode != 100 && fragmentCreatedCode != 200) return null;
+
+        if (mView == null) {
+            mBinding = DataBindingUtil.inflate(inflater, R.layout.signin_frgmt, container, false);
             mView = mBinding.getRoot();
+            fragmentCreatedCode = 300;
         }
         return mView;
     }
@@ -98,17 +117,15 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
-
         mFragmentManager = getActivity().getSupportFragmentManager();
-        mRegstrViewModel = new RegistrationViewModel(AuthenticationRequestManager.getInstance());
+
+        mSignInViewModel = new SignInViewModel(SignInRequestManager.getInstance());
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
         mAwesomeValidation.addValidation(mBinding.passEdt, "^(?=.*\\D)[a-zA-Z\\d]{8}$", getResources().getString(R.string.not_valid_pass));
-        mAwesomeValidation.addValidation(mBinding.confpassEdt, mBinding.passEdt, getResources().getString(R.string.passwrds_not_match));
 
-        request = new RegistrationRequest();
+        request = new SignInRequest();
 
         initializeFBSignUp();
     }
@@ -116,40 +133,65 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
     @Override
     public void onResume() {
         super.onResume();
-        Disposable disp = RxView.clicks(mBinding.registerBtn).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(@NonNull Object o) throws Exception {
-                if (mAwesomeValidation.validate()) {
-                    baseView.hideSoftKeyboard();
-                    registerUser(mBinding.emailEdt.getText().toString(), 0);
-                }
-            }
-        });
-        RxEventBus.add(this, disp);
-        Disposable disp1 = RxView.clicks(mBinding.facebookBtn).subscribe(new Consumer<Object>() {
+        Disposable disp = RxView.clicks(mBinding.facebookBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 mBinding.hiddenFbBtn.performClick();
             }
         });
-        RxEventBus.add(this, disp1);
-        Disposable disp2 = RxView.clicks(mBinding.googleBtn).subscribe(new Consumer<Object>() {
+        RxEventBus.add(this, disp);
+
+        Disposable disp1 = RxView.clicks(mBinding.googleBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, AppConfig.GOOGLE_REQ_CODE);
             }
         });
+        RxEventBus.add(this, disp1);
+
+        Disposable disp2 = RxView.clicks(mBinding.notMemberBtn).subscribe(
+                new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        baseView.hideSoftKeyboard();
+                        mFragmentManager
+                                .beginTransaction()
+                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                .replace(R.id.loginContainer, RegisterFrgmt.newInstance(), getResources().getString(R.string.regstr_fgmt))
+                                .addToBackStack(getResources().getString(R.string.regstr_fgmt))
+                                .commit();
+                    }
+                }
+        );
         RxEventBus.add(this, disp2);
-        Disposable disp3 = RxView.clicks(mBinding.termsBtn).subscribe(new Consumer<Object>() {
+
+        Disposable disp3 = RxView.clicks(mBinding.forgotpassBtn).subscribe(
+                new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        baseView.hideSoftKeyboard();
+                        mFragmentManager
+                                .beginTransaction()
+                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                .replace(R.id.loginContainer, ForgotPaswrdFrgmt.newInstance(100), getResources().getString(R.string.forgotpaswrd_fgmt))
+                                .addToBackStack(getResources().getString(R.string.forgotpaswrd_fgmt))
+                                .commit();
+                    }
+                }
+        );
+        RxEventBus.add(this, disp3);
+
+        Disposable disp4 = RxView.clicks(mBinding.signInBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                Uri uri = Uri.parse("http://dogvip.votingsystem.gr/terms.html");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+                if (mAwesomeValidation.validate()) {
+                    baseView.hideSoftKeyboard();
+                    signinUser(mBinding.emailEdt.getText().toString(), 0);
+                }
             }
         });
-        RxEventBus.add(this, disp3);
+        RxEventBus.add(this, disp4);
     }
 
     @Override
@@ -175,28 +217,16 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
     }
 
     @Override
-    public void onSuccess(final AuthenticationResponse response) {
-        ((LoginActivity) getActivity()).dismissDialog();
-        if (response.getRegtype() == 0) {
-            new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
-            mFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
-                    .addToBackStack(getResources().getString(R.string.signin_fgmt))
-                    .commit();
-        } else {
-            logoutFBUser();
-            logoutGoogleUser();
+    public Lifecycle.ViewModel getViewModel() {
+        return mSignInViewModel;
+    }
 
-            MyAccountManager mAccountManager = ((LoginActivity)getActivity()).getMyAccountManager();
-            //check if account exists, otherwise display the error
-            if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
-                ((LoginActivity)getActivity()).logUserIn(true);
-            } else {
-                ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
-            }
-        }
+    @Override
+    public void onSuccess(final AuthenticationResponse response) {
+        uiUtls.dismissDialog();
+        logoutFBUser();
+
+        ((LoginActivity)getActivity()).addAccount(response);
     }
 
     @Override
@@ -204,15 +234,10 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
         logoutFBUser();
         logoutGoogleUser();
 
-        ((LoginActivity) getActivity()).dismissDialog();
+        uiUtls.dismissDialog();
         int style = R.style.SnackBarSingleLine;
         if (msglength) style = R.style.SnackBarMultiLine;
         ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
-    }
-
-    @Override
-    public Lifecycle.ViewModel getViewModel() {
-        return mRegstrViewModel;
     }
 
     @Override
@@ -220,30 +245,29 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.GOOGLE_REQ_CODE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignUpResult(result);
+            handleGoogleSignInResult(result);
         } else {
             mCallbackMngr.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void registerUser(String email, int regtype) {
-        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
-            request.setAction(getResources().getString(R.string.register_user));
-            if (regtype == 0) { //email registration
-                request.setEmail(email);
-                request.setPassword(mBinding.passEdt.getText().toString());
-                request.setConfpassword(mBinding.confpassEdt.getText().toString());
-                request.setRegstrType(regtype); //0 -> email registr
-            } else {
-                request.setEmail(email);
-                request.setDeviceid(android.os.Build.SERIAL);
-                request.setRegstrType(regtype); // 1 -> fb registr, 2 -> google regstr
-            }
-            mRegstrViewModel.register(request);
-            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
-        } else {
-            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
-        }
+    @Override
+    public void onConnectionFailed(@android.support.annotation.NonNull ConnectionResult connectionResult) {
+        ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
+    }
+
+    private void signinUser(String email, int account_type) {
+//        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
+            request.setAction(getResources().getString(R.string.signin_user));
+            request.setEmail(email);
+            request.setRegstrType(account_type); //0 -> email registr, 1 -> fb registr, 2 -> google regstr
+            request.setDeviceid(android.os.Build.SERIAL);
+            if (account_type == 0) request.setPassword(mBinding.passEdt.getText().toString());
+            mSignInViewModel.signin(request);
+            uiUtls.initializeProgressDialog(getResources().getString(R.string.please_wait));
+//        } else {
+//            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
+//        }
     }
 
     private void initializeFBSignUp() {
@@ -259,7 +283,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
                             mFBUserLoggedIn = true;
-                            registerUser(object.getString(getResources().getString(R.string.email)), 1);
+                            signinUser(object.getString(getResources().getString(R.string.email)), 1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -273,7 +297,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
 
             @Override
             public void onCancel() {
-                ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.sign_up_cancel));
+                ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.signin_cancel));
             }
 
             @Override
@@ -283,12 +307,12 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
         });
     }
 
-    private void handleGoogleSignUpResult(GoogleSignInResult result) {
+    private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             mGoogleUserLoggedIn = true;
 
             GoogleSignInAccount account = result.getSignInAccount();
-            if (account != null)registerUser(account.getEmail(), 2);
+            if (account != null)signinUser(account.getEmail(), 2);
         }
     }
 

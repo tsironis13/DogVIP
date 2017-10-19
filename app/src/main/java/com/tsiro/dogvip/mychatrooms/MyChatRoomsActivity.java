@@ -9,7 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,7 +21,7 @@ import com.tsiro.dogvip.POJO.chat.Message;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivityMyChatRoomsBinding;

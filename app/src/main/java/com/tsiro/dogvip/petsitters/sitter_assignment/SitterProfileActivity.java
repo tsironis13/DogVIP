@@ -1,23 +1,17 @@
 package com.tsiro.dogvip.petsitters.sitter_assignment;
 
 import android.Manifest;
-import android.content.ClipData;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,16 +27,14 @@ import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.petsitter.SearchedSittersResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivitySitterProfileBinding;
 import com.tsiro.dogvip.petsitters.SitterCommentsActivity;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;

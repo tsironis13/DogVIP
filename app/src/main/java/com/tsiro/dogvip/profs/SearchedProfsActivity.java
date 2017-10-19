@@ -9,21 +9,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
-import com.tsiro.dogvip.POJO.petsitter.PetSitterObj;
 import com.tsiro.dogvip.POJO.profs.ProfDetailsResponse;
 import com.tsiro.dogvip.POJO.profs.ProfObj;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivitySearchedProfsBinding;
@@ -32,7 +29,6 @@ import com.tsiro.dogvip.profs.profprofile.ProfProfileViewModel;
 import com.tsiro.dogvip.requestmngrlayer.ProfRequestManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by giannis on 7/10/2017.

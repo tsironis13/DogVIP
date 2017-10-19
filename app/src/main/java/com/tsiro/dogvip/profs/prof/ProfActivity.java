@@ -30,7 +30,7 @@ import com.tsiro.dogvip.POJO.profs.ProfObj;
 import com.tsiro.dogvip.POJO.profs.SaveProfDetailsRequest;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityProfBinding;
 import com.tsiro.dogvip.image_states.CameraImageState;

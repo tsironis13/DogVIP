@@ -6,7 +6,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.resetpasswrd.ForgotPaswrdContract;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.subscribers.DisposableSubscriber;

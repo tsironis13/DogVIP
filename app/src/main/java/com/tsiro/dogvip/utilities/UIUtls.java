@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.utilities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -39,9 +40,10 @@ public class UIUtls {
 
 //    @Inject
     private Context mContext;
+    private ProgressDialog mProgressDialog;
 
     @Inject
-    public UIUtls(Context context) {
+    public UIUtls(@ApplicationContext Context context) {
         this.mContext = context;
     }
 
@@ -97,4 +99,21 @@ public class UIUtls {
         return snackbar;
     }
 
+    public ProgressDialog initializeProgressDialog(String msg) {
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setMessage(msg);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+
+        return mProgressDialog;
+    }
+
+    public void dismissDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
 }

@@ -16,7 +16,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.ImageViewPagerActivity;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.app.BaseActivity;
+import com.tsiro.dogvip.base.activity.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivityPetProfileBinding;
