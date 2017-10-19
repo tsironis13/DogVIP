@@ -3,6 +3,7 @@ package com.tsiro.dogvip.di;
 import com.tsiro.dogvip.di.modules.LoveMatchActivityModule;
 import com.tsiro.dogvip.di.modules.OwnerActivityModule;
 import com.tsiro.dogvip.di.qualifiers.ActivityContext;
+import com.tsiro.dogvip.di.scope.PerActivity;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.mypets.owner.OwnerActivity;
 import com.tsiro.dogvip.profs.prof.ProfActivity;
@@ -19,9 +20,10 @@ import dagger.android.ContributesAndroidInjector;
  * Created by giannis on 24/9/2017.
  */
 @Module
-public abstract class ActivityBuilder {
+abstract class ActivityBuilder {
 
-    @ContributesAndroidInjector
+    @PerActivity
+    @ContributesAndroidInjector(modules = {LoveMatchActivityModule.class})
     abstract LoveMatchActivity bindLoveMatchActivity();
 
     @ContributesAndroidInjector(modules = {OwnerActivityModule.class})

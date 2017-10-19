@@ -10,7 +10,7 @@
 
         <variable
             name="presenter"
-            type="com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel" />
+            type="com.tsiro.dogvip.lovematch.LoveMatchViewModel" />
 
     </data>
 

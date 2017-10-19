@@ -36,12 +36,16 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  */
 
 public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
-
+    private static final String debugTag = RecyclerViewAdapter.class.getSimpleName();
     private int layoutid;
     private ViewDataBinding mBinding;
 
     public RecyclerViewAdapter(int layoutId) {
         this.layoutid = layoutId;
+    }
+
+    public void setData() {
+
     }
 
     @Override

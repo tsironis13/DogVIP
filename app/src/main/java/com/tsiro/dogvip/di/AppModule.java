@@ -23,6 +23,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.AndroidInjectionModule;
 import io.reactivex.processors.AsyncProcessor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -35,16 +36,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by giannis on 24/9/2017.
  */
-@Module
+@Module(includes = AndroidInjectionModule.class)
 public class AppModule {
 
     private static final String debugTag = AppModule.class.getSimpleName();
-
-    @Provides
-    @ActivityContext
-    Context provideActivityContext(Activity activity) {
-        return activity;
-    }
 
     @Provides
     @ApplicationContext
@@ -63,7 +58,6 @@ public class AppModule {
     HttpLoggingInterceptor provideHttpLoggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
         return interceptor;
     }
 

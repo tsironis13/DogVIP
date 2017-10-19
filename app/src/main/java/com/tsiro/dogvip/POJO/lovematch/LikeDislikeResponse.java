@@ -9,8 +9,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class LikeDislikeResponse {
 
-    @SerializedName("test")
+    @SerializedName("liked")
     @Expose
-    private int test;
+    private int liked;
 
+    public int getLiked() { return liked; }
+
+    public void setLiked(int liked) { this.liked = liked; }
 }

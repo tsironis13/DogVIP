@@ -1,8 +1,8 @@
 package com.tsiro.dogvip.retrofit;
 
-import com.tsiro.dogvip.POJO.BaseResponseObj;
 import com.tsiro.dogvip.POJO.FcmTokenUpload;
 import com.tsiro.dogvip.POJO.Image;
+import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomRequest;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomResponse;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomsRequest;
@@ -15,9 +15,8 @@ import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
 import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPet;
 import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPetResponse;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatch;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsByFilterRequest;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeRequest;
 import com.tsiro.dogvip.POJO.mypets.OwnerRequest;
 import com.tsiro.dogvip.POJO.mypets.owner.OwnerObj;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
@@ -111,13 +110,13 @@ public interface ServiceAPI {
     Flowable<Image> deletePetImage(@Body Image request);
 
 //    @POST("actions.php")
-//    Flowable<LoveMatchResponse> getPetsByFilter(@Body LoveMatchRequest request);
+//    Flowable<LoveMatchResponse> getPetsByFilter(@Body GetPetsByFilterRequest request);
 
     @POST("actions.php")
-    Flowable<LoveMatch> getPetsByFilter(@Body LoveMatchRequest request);
+    Flowable<Response> getPetsByFilter(@Body GetPetsByFilterRequest request);
 
     @POST("actions.php")
-    Flowable<LoveMatch> likeDislikePet(@Body LoveMatchRequest request);
+    Flowable<Response> likeDislikePet(@Body LikeDislikeRequest request);
 
     @POST("actions.php")
     Flowable<PetLikesResponse> getPetLikes(@Body PetLikesRequest request);

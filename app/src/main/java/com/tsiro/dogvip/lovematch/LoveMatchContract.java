@@ -1,11 +1,15 @@
 package com.tsiro.dogvip.lovematch;
 
 import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeResponse;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.app.Lifecycle;
+import com.tsiro.dogvip.utilities.NetworkUtls;
 
-import io.reactivex.processors.FlowableProcessor;
+import javax.inject.Inject;
+
+import io.reactivex.Maybe;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * Created by giannis on 2/7/2017.
@@ -15,8 +19,10 @@ public interface LoveMatchContract {
 
     interface View extends Lifecycle.View {
         void onPetDataSuccess(GetPetsResponse response);
+        void onLikeDislikeSuccess(LikeDislikeResponse response);
         void onSuccess(LoveMatchResponse response);
         void onError(int resource);
+        void onGetPetsByFilterError(int resource);
         void onLoveImageViewClick(android.view.View view);
         void onMessageIconClick(android.view.View view);
         void onViewClick(android.view.View view);
@@ -27,14 +33,6 @@ public interface LoveMatchContract {
         void onLoveImageViewClick(android.view.View view);
         void onMessageIconClick(android.view.View view);
         void onViewClick(android.view.View view);
-    }
-
-    interface GetPetsViewModel {
-        void getPetsByFilter(LoveMatchRequest request);
-    }
-
-    interface LikeDislikePetViewModel {
-        void likeDislikePet(LoveMatchRequest request);
     }
 
 }

@@ -68,6 +68,7 @@ public class AppConfig {
     private static final int ERROR_BOOKING_ALREADY_PENDING = -360;
     public static final int ERROR_NO_PROF_EXISTS = -370;
     public static final int ERROR_NO_OWNER_AND_PROF_EXISTS = -380;
+    public static final int ERROR_NO_CONNECTION = - 1010;
 
     public static final int VISIBLE_THRESHOLD = 8;
 
@@ -344,6 +345,7 @@ public class AppConfig {
     private static final SparseIntArray inputValidationCodes = new SparseIntArray();
 
     public static SparseIntArray getCodes() {
+        inputValidationCodes.put(ERROR_NO_CONNECTION, R.string.no_internet_connection);
         inputValidationCodes.put(STATUS_ERROR, R.string.error);
         inputValidationCodes.put(ERROR_EMPTY_REQUIRED_FLDS, R.string.empty_required_fields);
         inputValidationCodes.put(ERROR_INVALID_EMAIL, R.string.invalid_email);

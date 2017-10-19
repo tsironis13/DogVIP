@@ -315,7 +315,7 @@ public class ProfProfileActivity extends BaseActivity implements ProfProfileCont
                 .zip(
                         Observable.just(categoriesList).toFlowable(BackpressureStrategy.LATEST),
                         Observable.just(mBinding.locationEdt.getText().toString()).toFlowable(BackpressureStrategy.LATEST),
-                        networkUtls.isNetworkAvailable(),
+                        networkUtls.isNetworkAvailable1(),
                         new Function3<List<Integer>, String, Boolean, SearchProfFormValidation>() {
                             @Override
                             public SearchProfFormValidation apply(@NonNull List<Integer> categories, @NonNull String city, @NonNull Boolean networkOn) throws Exception {

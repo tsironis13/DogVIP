@@ -1,6 +1,8 @@
 package com.tsiro.dogvip.POJO.lovematch;
 
-import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
+import com.tsiro.dogvip.POJO.BaseResponseObj;
+import com.tsiro.dogvip.POJO.Response;
+import com.tsiro.dogvip.lovematch.LoveMatchContract;
 
 /**
  * Created by giannis on 9/10/2017.
@@ -8,6 +10,7 @@ import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
 
 public interface Command {
 
-    void execute(LoveMatchViewModel loveMatchViewModel, LoveMatch loveMatch);
+    void executeOnSuccess(Response response);
+    void executeOnError(int resource);
 
 }

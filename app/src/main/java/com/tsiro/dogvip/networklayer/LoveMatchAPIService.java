@@ -2,11 +2,11 @@ package com.tsiro.dogvip.networklayer;
 
 import android.util.Log;
 
-import com.tsiro.dogvip.POJO.lovematch.LoveMatch;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
+import com.tsiro.dogvip.POJO.Response;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeRequest;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsByFilterRequest;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
+import com.tsiro.dogvip.lovematch.LoveMatchViewModel;
 import com.tsiro.dogvip.retrofit.ServiceAPI;
 
 import org.reactivestreams.Subscription;
@@ -32,7 +32,7 @@ public class LoveMatchAPIService {
         this.serviceAPI = serviceAPI;
     }
 
-//    public Flowable<LoveMatchResponse> getPetsByFilter(final LoveMatchRequest request, final LoveMatchViewModel loveMatchViewModel) {
+//    public Flowable<LoveMatchResponse> getPetsByFilter(final GetPetsByFilterRequest request, final LoveMatchViewModel loveMatchViewModel) {
 //
 //        return serviceAPI.getPetsByFilter(request)
 //                .doOnSubscribe(new Consumer<Subscription>() {
@@ -57,12 +57,13 @@ public class LoveMatchAPIService {
 //                });
 //    }
 
-    public Flowable<LoveMatch> getPetsByFilter(final LoveMatchRequest request, final LoveMatchViewModel loveMatchViewModel) {
+    public Flowable<Response> getPetsByFilter(final GetPetsByFilterRequest request, final LoveMatchViewModel loveMatchViewModel) {
 
         return serviceAPI.getPetsByFilter(request)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
+                        Log.e("REQUEST_RUNNING", "REQUEST_RUNNING");
                         loveMatchViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
                     }
                 })
@@ -74,15 +75,15 @@ public class LoveMatchAPIService {
                         loveMatchViewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
-                .doOnNext(new Consumer<LoveMatch>() {
+                .doOnNext(new Consumer<Response>() {
                     @Override
-                    public void accept(@NonNull LoveMatch response) throws Exception {
+                    public void accept(@NonNull Response response) throws Exception {
                         loveMatchViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });
     }
 
-    public Flowable<LoveMatch> likeDislikePet(final LoveMatchRequest request, final LoveMatchViewModel loveMatchViewModel) {
+    public Flowable<Response> likeDislikePet(final LikeDislikeRequest request, final LoveMatchViewModel loveMatchViewModel) {
 
         return serviceAPI.likeDislikePet(request)
                 .doOnSubscribe(new Consumer<Subscription>() {
@@ -99,9 +100,9 @@ public class LoveMatchAPIService {
                         loveMatchViewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
-                .doOnNext(new Consumer<LoveMatch>() {
+                .doOnNext(new Consumer<Response>() {
                     @Override
-                    public void accept(@NonNull LoveMatch response) throws Exception {
+                    public void accept(@NonNull Response response) throws Exception {
                         loveMatchViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });

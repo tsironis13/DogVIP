@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -17,14 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsByFilterRequest;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeRequest;
+import com.tsiro.dogvip.POJO.lovematch.LikeDislikeResponse;
 import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
-import com.tsiro.dogvip.lovematch.viewmodel.GetPetsViewModel;
-import com.tsiro.dogvip.lovematch.viewmodel.LikeDislikeViewModel;
-import com.tsiro.dogvip.lovematch.viewmodel.LoveMatchViewModel;
-import com.tsiro.dogvip.networklayer.LoveMatchAPIService;
 import com.tsiro.dogvip.petprofile.PetProfileActivity;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.adapters.RecyclerViewAdapter;
@@ -32,8 +29,7 @@ import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ActivityLoveMatchBinding;
-import com.tsiro.dogvip.requestmngrlayer.LoveMatchRequestManager;
-import com.tsiro.dogvip.retrofit.RetrofitFactory;
+import com.tsiro.dogvip.utilities.UIUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.util.ArrayList;
@@ -60,41 +56,55 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     private ArrayList<PetObj> data;
     private boolean availableData = true, isLoading, error, hasfilters;
     private static final String debugTag = LoveMatchActivity.class.getSimpleName();
-//    private GetPetsViewModel getPetsViewModel = new GetPetsViewModel(mLoveMatchRequestManager);;
-//    @Inject
-//    LoveMatchRequestManager loveMatchRequestManager;
-    //    @Inject
-//    ServiceAPI serviceAPI;
+
     @Inject
     LoveMatchViewModel mViewModel;
-//    @Inject
-//    GetPetsViewModel mViewModel;
-//    @Inject
-//    LikeDislikeViewModel mLikeDislikeViewModel;
+    @Inject
+    UIUtls uiUtls;
+    @Inject
+    LikeDislikeRequest likeDislikeRequest;
+    @Inject
+    GetPetsByFilterRequest getPetsByFilterRequest;
+    @Inject
+    LoveMatchActivityRetainFragment mLoveMatchActivityRetainFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
-//        mViewModel1 = new LoveMatchViewModel(new LoveMatchRequestManager(new LoveMatchAPIService(RetrofitFactory.getInstance().getServiceAPI())));
-//        mViewModel = new GetPetsViewModel(new LoveMatchRequestManager(new LoveMatchAPIService(RetrofitFactory.getInstance().getServiceAPI())));
-//mLikeDislikeViewModel = new LikeDislikeViewModel(new LoveMatchRequestManager(new LoveMatchAPIService(RetrofitFactory.getInstance().getServiceAPI())));
+        Log.e(debugTag, "onCreate: "+ this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_love_match);
         mToken = getMyAccountManager().getAccountDetails().getToken();
+
+        if (getSupportFragmentManager().findFragmentByTag("my_fragment") == null) {
+            getSupportFragmentManager().beginTransaction().add(mLoveMatchActivityRetainFragment, "my_fragment").commit();
+//            Log.e(debugTag, mLoveMatchActivityRetainFragment + " inside if null");
+        } else {
+            mLoveMatchActivityRetainFragment = (LoveMatchActivityRetainFragment) getSupportFragmentManager().findFragmentByTag("my_fragment");
+//            Log.e(debugTag, mLoveMatchActivityRetainFragment + " RETAIN FRGMNT HERE");
+        }
+
+        mLoveMatchActivityRetainFragment.getViewModel();
+//        Log.e(debugTag, "HERE IT IS "+mLoveMatchActivityRetainFragment.getViewModel());
+        if (mLoveMatchActivityRetainFragment.getViewModel() != null) mViewModel = mLoveMatchActivityRetainFragment.getViewModel();
+
+
+        if (savedInstanceState != null) {
+            mBinding.setHasError(savedInstanceState.getBoolean(("haserror")));
+            mBinding.setExists(savedInstanceState.getBoolean("exists"));
+        }
 
         ArrayAdapter<String> cadapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
         mBinding.locationEdt.setAdapter(cadapter);
 
         ArrayAdapter<String> radapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.races);
         mBinding.raceEdt.setAdapter(radapter);
-
-        fetchData(page);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        fetchData(page);
         Disposable disp = RxView.clicks(mBinding.locationLlt).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
@@ -174,7 +184,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             }
         });
         RxEventBus.add(this, disp5);
-//        getViewModel().onViewAttached(this);
     }
 
     @Override
@@ -186,12 +195,16 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean("exists", mBinding.getExists());
+        outState.putBoolean(("haserror"), mBinding.getHasError());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         dismissDialog();
+        mLoveMatchActivityRetainFragment.retainViewModel(mViewModel);
+//        mLoveMatchActivityRetainFragment = null;
     }
 
     @Override
@@ -210,20 +223,15 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     @Override
     public void onLoveImageViewClick(View view) {
         position = (int)view.getTag();
-        if (isNetworkAvailable()) {
-            if (!isLoading) {
-                String subaction = data.get(position).isLiked() == 0 ? getResources().getString(R.string.like_pet) : getResources().getString(R.string.dislike_pet);
-                LoveMatchRequest request = new LoveMatchRequest();
-                request.setAction(getResources().getString(R.string.like_dislike_pet));
-                request.setSubaction(subaction);
-                request.setP_id(data.get(position).getId());
-                request.setAuthtoken(mToken);
-                isLoading = true;
-                mViewModel.getPetsByFilter(request);
-            }
-        } else {
-            showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_SHORT);
-        }
+        int liked = data.get(position).isLiked() == 0 ? 1 : 0;
+
+        likeDislikeRequest.setAuthtoken(mToken);
+        likeDislikeRequest.setAction(getResources().getString(R.string.like_dislike_pet));
+        likeDislikeRequest.setLiked(liked);
+//        likeDislikeRequest.setSubaction(subaction);
+        likeDislikeRequest.setP_id(data.get(position).getId());
+//        isLoading = true;
+        mViewModel.likeDislikePet(likeDislikeRequest);
     }
 
     @Override
@@ -243,6 +251,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     @Override
     public void onPetDataSuccess(GetPetsResponse response) {
         dismissDialog();
+//        Log.e(debugTag, "HERE THATS "+response.getData() + " PAGE "+ page);
         mBinding.setHasError(false);
         isLoading = false;
         error = false;
@@ -263,6 +272,22 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                 rcvAdapter.notifyItemInserted(data.size());
             }
         }
+    }
+
+    @Override
+    public void onLikeDislikeSuccess(LikeDislikeResponse response) {
+        int total_likes = data.get(position).getTotal_likes();
+        if (response.getLiked() == 1) {
+            total_likes++;
+            data.get(position).setTotal_likes(total_likes);
+            data.get(position).setLiked(1);
+        } else {
+            total_likes--;
+            data.get(position).setTotal_likes(total_likes);
+            data.get(position).setLiked(0);
+        }
+        rcvAdapter.notifyItemChanged(position);
+        showSnackBar(getResources().getString(R.string.success_action), getResources().getString(R.string.close), Snackbar.LENGTH_SHORT);
     }
 
     @Override
@@ -294,7 +319,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                     mBinding.setErrorText(getResources().getString(R.string.no_items));
 //                    mBinding.setNoitems(true);
                 } else {
-                    initializeRcView(response.getData());
+//                    initializeRcView(response.getData());
                 }
             } else {
                 for (PetObj item : response.getData()) {
@@ -308,6 +333,21 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     @Override
     public void onError(int resource) {
         dismissDialog();
+        uiUtls.showSnackBar(mBinding.cntFrml, getResources().getString(resource), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                mViewModel.retry();
+//                final GetPetsByFilterRequest request = new GetPetsByFilterRequest();
+//                request.setAction(getResources().getString(R.string.get_all_pets_by_filter));
+//                request.setAuthtoken(mToken);
+//                request.setPage(page);
+//                mViewModel.getPetsByFilter(request);
+            }
+        });
+    }
+
+    @Override
+    public void onGetPetsByFilterError(int resource) {
         isLoading = false;
         error = true;
         if (resource == R.string.no_owner_exists) {
@@ -358,9 +398,9 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     private void initializeRcView(final ArrayList<PetObj> data) {
-//        RecyclerTouchListener listener = new RecyclerTouchListener(this, mBinding.rcv);
         linearLayoutManager = new LinearLayoutManager(this);
         if (rcvAdapter == null)mBinding.rcv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         rcvAdapter = new RecyclerViewAdapter(R.layout.love_match_rcv_row) {
             @Override
             protected Object getObjForPosition(int position, ViewDataBinding mBinding) {
@@ -369,7 +409,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
             @Override
             protected int getLayoutIdForPosition(int position) {
                 return R.layout.love_match_rcv_row;
-
             }
             @Override
             protected int getTotalItems() {
@@ -381,7 +420,7 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
                 return mViewModel;
             }
         };
-        mBinding.rcv.setLayoutManager(linearLayoutManager);
+        mBinding.rcv.setLayoutManager(new LinearLayoutManager(this));
         mBinding.rcv.setNestedScrollingEnabled(false);
         mBinding.rcv.setAdapter(rcvAdapter);
         mBinding.rcv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -401,30 +440,33 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
     }
 
     private void fetchData(int page) {
-        if (isNetworkAvailable()) {
-            if (page ==1 )initializeProgressDialog(getResources().getString(R.string.please_wait));
-            final LoveMatchRequest request = new LoveMatchRequest();
-            request.setAction(getResources().getString(R.string.get_all_pets_by_filter));
-            request.setAuthtoken(mToken);
-            request.setPage(page);
-            isLoading = true;
-            if (hasfilters) {
-                request.setHasfilters(true);
-                request.setCity(city);
-                request.setRace(race);
+//        if (page ==1 )initializeProgressDialog(getResources().getString(R.string.please_wait));
+        final GetPetsByFilterRequest request = new GetPetsByFilterRequest();
+        request.setAction(getResources().getString(R.string.get_all_pets_by_filter));
+        request.setAuthtoken(mToken);
+        request.setPage(page);
+        isLoading = true;
+        if (hasfilters) {
+            request.setHasfilters(true);
+            request.setCity(city);
+            request.setRace(race);
 //                collapseSearchFilters();
-            }
-            mViewModel.getPetsByFilter(request);
-
-        } else {
-            if (page > 1) {
-                error = true;
-                showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE);
-            } else {
-                mBinding.setHasError(true);
-                mBinding.setErrorText(getResources().getString(R.string.no_internet_connection));
-            }
         }
+        mViewModel.getPetsByFilter(request);
+
+
+//        if (isNetworkAvailable()) {
+//
+//
+//        } else {
+//            if (page > 1) {
+//                error = true;
+//                showSnackBar(getResources().getString(R.string.no_internet_connection), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE);
+//            } else {
+//                mBinding.setHasError(true);
+//                mBinding.setErrorText(getResources().getString(R.string.no_internet_connection));
+//            }
+//        }
     }
 
     private void expandSearchFilters() {

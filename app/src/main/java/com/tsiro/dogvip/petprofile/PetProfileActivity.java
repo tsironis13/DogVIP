@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,27 +14,19 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.ImageViewPagerActivity;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchRequest;
-import com.tsiro.dogvip.POJO.lovematch.LoveMatchResponse;
 import com.tsiro.dogvip.POJO.mypets.pet.PetObj;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.BaseActivity;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.databinding.ActivityPetProfileBinding;
 import com.tsiro.dogvip.ownerpets.OwnerPetsActivity;
 import com.tsiro.dogvip.petlikes.PetLikesActivity;
-import com.tsiro.dogvip.retrofit.RetrofitFactory;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
-import org.reactivestreams.Subscription;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by giannis on 4/7/2017.
@@ -173,7 +163,7 @@ public class PetProfileActivity extends BaseActivity implements PetProfileContra
     private void likedislikePet() {
 //        if (isNetworkAvailable()) {
 //            String subaction = petObj.isLiked() == 0 ? getResources().getString(R.string.like_pet) : getResources().getString(R.string.dislike_pet);
-//            LoveMatchRequest request = new LoveMatchRequest();
+//            GetPetsByFilterRequest request = new GetPetsByFilterRequest();
 //            request.setAction(getResources().getString(R.string.like_dislike_pet));
 //            request.setSubaction(subaction);
 //            request.setP_id(petObj.getId());

@@ -3,10 +3,16 @@ package com.tsiro.dogvip.retrofit;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.MOck;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 //import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.Protocol;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -42,6 +48,7 @@ public class RetrofitFactory {
                 .readTimeout(5, TimeUnit.MINUTES)
                 .writeTimeout(5, TimeUnit.MINUTES)
                 .addInterceptor(interceptor)
+//                .addInterceptor(new MockInterceptor())
                 .build();
 
         return new Retrofit.Builder()
@@ -51,6 +58,31 @@ public class RetrofitFactory {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
+    }
+
+    public static class MockInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+
+            addDelay();
+
+            return new Response.Builder()
+                    .code(200)
+                    .message("OK")
+                    .request(chain.request())
+                    .protocol(Protocol.HTTP_1_0)
+                    .body(ResponseBody.create(MediaType.parse("application/json"), "{}"))
+                    .build();
+        }
+
+        private void addDelay() {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
