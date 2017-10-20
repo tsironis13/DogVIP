@@ -35,20 +35,23 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.accountmngr.MyAccountManager;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.base.fragment.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.RegisterFrgmtBinding;
 import com.tsiro.dogvip.login.LoginActivity;
+import com.tsiro.dogvip.login.LoginContract;
+import com.tsiro.dogvip.login.LoginViewModel;
 import com.tsiro.dogvip.login.signin.SignInFrgmt;
-import com.tsiro.dogvip.requestmngrlayer.AuthenticationRequestManager;
+import com.tsiro.dogvip.requestmngrlayer.LoginRequestManager;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -58,11 +61,10 @@ import io.reactivex.functions.Consumer;
  * Created by giannis on 15/5/2017.
  */
 
-public class RegisterFrgmt extends BaseFragment implements RegistrationContract.View {
+public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
 
     private View mView;
     private RegisterFrgmtBinding mBinding;
-    private RegistrationContract.ViewModel mRegstrViewModel;
     private RegistrationRequest request;
     private ProgressDialog mProgressDialog;
     private CallbackManager mCallbackMngr;
@@ -71,6 +73,8 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
     private FragmentManager mFragmentManager;
     private Lifecycle.BaseView baseView;
     private GoogleApiClient mGoogleApiClient;
+    @Inject
+    LoginViewModel mLoginViewModel;
 
     public static RegisterFrgmt newInstance() {
         return new RegisterFrgmt();
@@ -97,7 +101,6 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
         mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
 
         mFragmentManager = getFragmentManager();
-        mRegstrViewModel = new RegistrationViewModel(AuthenticationRequestManager.getInstance());
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
@@ -202,7 +205,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mRegstrViewModel;
+        return mLoginViewModel;
     }
 
     @Override
@@ -229,7 +232,7 @@ public class RegisterFrgmt extends BaseFragment implements RegistrationContract.
                 request.setDeviceid(android.os.Build.SERIAL);
                 request.setRegstrType(regtype); // 1 -> fb registr, 2 -> google regstr
             }
-            mRegstrViewModel.register(request);
+            mLoginViewModel.signUp(request);
 //            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
 //        } else {
 //            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));

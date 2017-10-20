@@ -1,11 +1,9 @@
 package com.tsiro.dogvip.login.signin;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -37,15 +35,15 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.accountmngr.MyAccountManager;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.base.fragment.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.SigninFrgmtBinding;
 import com.tsiro.dogvip.login.LoginActivity;
+import com.tsiro.dogvip.login.LoginContract;
+import com.tsiro.dogvip.login.LoginViewModel;
 import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdFrgmt;
 import com.tsiro.dogvip.login.signup.RegisterFrgmt;
-import com.tsiro.dogvip.requestmngrlayer.SignInRequestManager;
 import com.tsiro.dogvip.utilities.UIUtls;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
@@ -55,7 +53,6 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -64,19 +61,20 @@ import io.reactivex.functions.Consumer;
  * Created by giannis on 17/5/2017.
  */
 
-public class SignInFrgmt extends BaseFragment implements SignInContract.View, GoogleApiClient.OnConnectionFailedListener {
+public class SignInFrgmt extends BaseFragment implements LoginContract.View, GoogleApiClient.OnConnectionFailedListener {
 
     private View mView;
     private SigninFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;
-    private SignInContract.ViewModel mSignInViewModel;
     private SignInRequest request;
     private AwesomeValidation mAwesomeValidation;
     private int fragmentCreatedCode; // login activity: check if fragments are created on button click
-    private Lifecycle.BaseView baseView;
+//    private Lifecycle.BaseView baseView;
     private CallbackManager mCallbackMngr;
     private GoogleApiClient mGoogleApiClient;
     private boolean mFBUserLoggedIn, mGoogleUserLoggedIn;
+    @Inject
+    LoginViewModel mLoginViewModel;
     @Inject
     UIUtls uiUtls;
 
@@ -91,7 +89,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
+//        if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
         mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
     }
 
@@ -118,8 +116,6 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mFragmentManager = getActivity().getSupportFragmentManager();
-
-        mSignInViewModel = new SignInViewModel(SignInRequestManager.getInstance());
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
@@ -154,7 +150,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
                 new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        baseView.hideSoftKeyboard();
+//                        baseView.hideSoftKeyboard();
                         mFragmentManager
                                 .beginTransaction()
                                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -170,7 +166,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
                 new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        baseView.hideSoftKeyboard();
+//                        baseView.hideSoftKeyboard();
                         mFragmentManager
                                 .beginTransaction()
                                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -185,8 +181,19 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
         Disposable disp4 = RxView.clicks(mBinding.signInBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
+                mBinding.signInBtn.setVisibility(View.INVISIBLE);
+                mBinding.test.setVisibility(View.VISIBLE);
+                mBinding.avi.setAlpha(0.f);
+                mBinding.avi.setScaleX(0.f);
+                mBinding.avi.setScaleY(0.f);
+                mBinding.avi.animate()
+                        .alpha(1.f)
+                        .scaleX(1.f).scaleY(1.f)
+//                        .setDuration(200)
+                        .start();
                 if (mAwesomeValidation.validate()) {
-                    baseView.hideSoftKeyboard();
+//                    baseView.hideSoftKeyboard();
+
                     signinUser(mBinding.emailEdt.getText().toString(), 0);
                 }
             }
@@ -218,13 +225,14 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mSignInViewModel;
+        return mLoginViewModel;
     }
 
     @Override
     public void onSuccess(final AuthenticationResponse response) {
         uiUtls.dismissDialog();
         logoutFBUser();
+        logoutGoogleUser();
 
         ((LoginActivity)getActivity()).addAccount(response);
     }
@@ -263,7 +271,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
             request.setRegstrType(account_type); //0 -> email registr, 1 -> fb registr, 2 -> google regstr
             request.setDeviceid(android.os.Build.SERIAL);
             if (account_type == 0) request.setPassword(mBinding.passEdt.getText().toString());
-            mSignInViewModel.signin(request);
+            mLoginViewModel.signIn(request);
             uiUtls.initializeProgressDialog(getResources().getString(R.string.please_wait));
 //        } else {
 //            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
@@ -308,6 +316,7 @@ public class SignInFrgmt extends BaseFragment implements SignInContract.View, Go
     }
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {
+        Log.e("aaa", result.isSuccess() + " ");
         if (result.isSuccess()) {
             mGoogleUserLoggedIn = true;
 

@@ -16,6 +16,7 @@ import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasFragmentInjector;
+import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
 
 
@@ -26,28 +27,22 @@ import dagger.android.support.HasSupportFragmentInjector;
 public abstract class BaseFragment extends Fragment implements HasSupportFragmentInjector, Lifecycle.View {
 
     @Inject
-    DispatchingAndroidInjector<Fragment> childFragmentInjector;
+    DispatchingAndroidInjector<Fragment> fragmentInjector;
     public abstract Lifecycle.ViewModel getViewModel();
-    @Inject
-    UIUtls uiUtls;
 
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // Perform injection here before M, L (API 22) and below because onAttach(Context)
-            // is not yet available at L.
-            AndroidInjection.inject(activity);
-        }
+        // Perform injection here before M, L (API 22) and below because onAttach(Context)
+        // is not yet available at L.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) AndroidSupportInjection.inject(this);
         super.onAttach(activity);
     }
 
     @Override
     public void onAttach(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // Perform injection here for M (API 23) due to deprecation of onAttach(Activity).
-            AndroidInjection.inject(getActivity());
-        }
+        // Perform injection here for M (API 23) due to deprecation of onAttach(Activity).
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 
@@ -76,12 +71,7 @@ public abstract class BaseFragment extends Fragment implements HasSupportFragmen
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.e("aaa", uiUtls + " dskjjkdskjdskjdskds");
-        return childFragmentInjector;
+        return fragmentInjector;
     }
 
-    //    @Override
-//    public AndroidInjector<Fragment> fragmentInjector() {
-//        return childFragmentInjector;
-//    }
 }

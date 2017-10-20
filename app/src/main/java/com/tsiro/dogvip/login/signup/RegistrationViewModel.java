@@ -1,10 +1,13 @@
 package com.tsiro.dogvip.login.signup;
 
+import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
+import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.requestmngrlayer.AuthenticationRequestManager;
+import com.tsiro.dogvip.login.LoginContract;
+import com.tsiro.dogvip.requestmngrlayer.LoginRequestManager;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -15,21 +18,21 @@ import io.reactivex.subscribers.DisposableSubscriber;
  * Created by giannis on 22/5/2017.
  */
 
-public class RegistrationViewModel implements RegistrationContract.ViewModel {
+public class RegistrationViewModel implements LoginContract.ViewModel {
 
-    private AuthenticationRequestManager mAuthenticationRequestManager;
-    private RegistrationContract.View mViewClback;
+    private LoginRequestManager mAuthenticationRequestManager;
+    private LoginContract.View mViewClback;
     private AsyncProcessor<AuthenticationResponse> mRegstrProcessor;
     private Disposable mRegstrDisp;
     private int requestState;
 
-    public RegistrationViewModel(AuthenticationRequestManager authenticationRequestManager) {
+    public RegistrationViewModel(LoginRequestManager authenticationRequestManager) {
         this.mAuthenticationRequestManager = authenticationRequestManager;
     }
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-        this.mViewClback = (RegistrationContract.View) viewCallback;
+        this.mViewClback = (LoginContract.View) viewCallback;
     }
 
     @Override
@@ -44,19 +47,34 @@ public class RegistrationViewModel implements RegistrationContract.ViewModel {
     }
 
     @Override
+    public void signIn(SignInRequest request) {
+
+    }
+
+    @Override
+    public void signUp(RegistrationRequest request) {
+
+    }
+
+    @Override
+    public void forgotPass(ForgotPaswrdObj request) {
+
+    }
+
+    @Override
     public void setRequestState(int state) {
         requestState = state;
     }
 
-    @Override
-    public void register(RegistrationRequest request) {
-        if (requestState != AppConfig.REQUEST_RUNNING) {
-            mRegstrProcessor = AsyncProcessor.create();
-            mRegstrDisp = mRegstrProcessor.subscribeWith(new RegistrationObserver());
-
-            mAuthenticationRequestManager.register(request, this).subscribe(mRegstrProcessor);
-        }
-    }
+//    @Override
+//    public void register(RegistrationRequest request) {
+//        if (requestState != AppConfig.REQUEST_RUNNING) {
+//            mRegstrProcessor = AsyncProcessor.create();
+//            mRegstrDisp = mRegstrProcessor.subscribeWith(new RegistrationObserver());
+//
+//            mAuthenticationRequestManager.register(request, this).subscribe(mRegstrProcessor);
+//        }
+//    }
 
     private void onRegistrationSuccess(AuthenticationResponse response) {
         mRegstrDisp = null;

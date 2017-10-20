@@ -4,8 +4,6 @@ import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.login.signin.SignInContract;
-import com.tsiro.dogvip.requestmngrlayer.SignInRequestManager;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -18,14 +16,14 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class SignInViewModel implements SignInContract.ViewModel {
 
-    private SignInRequestManager mSignInRequestManager;
+//    private SignInRequestManager mSignInRequestManager;
     private SignInContract.View mViewClback;
     private int requestState;
     private AsyncProcessor<AuthenticationResponse> mSignInProcessor;
     private Disposable mSignInDisp;
 
-    public SignInViewModel(SignInRequestManager signInRequestManager) {
-        this.mSignInRequestManager = signInRequestManager;
+    public SignInViewModel() {
+//        this.mSignInRequestManager = signInRequestManager;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class SignInViewModel implements SignInContract.ViewModel {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mSignInProcessor = AsyncProcessor.create();
             mSignInDisp = mSignInProcessor.subscribeWith(new SignInObserver());
-            mSignInRequestManager.signin(request, this).subscribe(mSignInProcessor);
+//            mSignInRequestManager.signin(request, this).subscribe(mSignInProcessor);
         }
     }
 

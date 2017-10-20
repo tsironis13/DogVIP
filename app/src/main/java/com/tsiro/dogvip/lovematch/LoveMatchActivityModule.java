@@ -18,8 +18,4 @@ public abstract class LoveMatchActivityModule {
     @Binds
     abstract Activity provideActivity(LoveMatchActivity mainActivity);
 
-//    @Provides
-//    LoveMatchViewModel provideLoveMatchViewModel(LoveMatchRequestManager loveMatchRequestManager, ResponseController responseController, GetPetsCommand getPetsCommand) {
-//        return new LoveMatchViewModel(loveMatchRequestManager, responseController, getPetsCommand);
-//    }
 }

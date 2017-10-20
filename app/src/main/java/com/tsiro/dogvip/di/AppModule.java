@@ -27,6 +27,7 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;
 import dagger.android.ContributesAndroidInjector;
+import dagger.android.support.AndroidSupportInjectionModule;
 import io.reactivex.processors.AsyncProcessor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -39,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by giannis on 24/9/2017.
  */
-@Module(includes = AndroidInjectionModule.class)
+@Module(includes = AndroidSupportInjectionModule.class)
 class AppModule {
 
     private static final String debugTag = AppModule.class.getSimpleName();

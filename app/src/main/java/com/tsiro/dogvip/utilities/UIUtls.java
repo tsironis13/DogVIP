@@ -38,12 +38,11 @@ import io.reactivex.functions.Function;
 
 public class UIUtls {
 
-//    @Inject
     private Context mContext;
     private ProgressDialog mProgressDialog;
 
     @Inject
-    public UIUtls(@ApplicationContext Context context) {
+    public UIUtls(Context context) {
         this.mContext = context;
     }
 

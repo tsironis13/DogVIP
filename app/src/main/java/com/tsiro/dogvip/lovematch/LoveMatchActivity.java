@@ -70,7 +70,6 @@ public class LoveMatchActivity extends BaseActivity implements LoveMatchContract
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         Log.e(debugTag, "onCreate: "+ this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_love_match);

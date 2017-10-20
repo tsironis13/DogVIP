@@ -20,6 +20,7 @@ import com.tsiro.dogvip.utilities.common.CommonUtls;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasFragmentInjector;
@@ -43,6 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         myAccountManager = new MyAccountManager(this);
         mCommonUtls = new CommonUtls(this);

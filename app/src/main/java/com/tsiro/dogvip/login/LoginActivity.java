@@ -42,7 +42,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class LoginActivity extends AppCompatActivity implements HasSupportFragmentInjector, Lifecycle.BaseView {
+public class LoginActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     private static final String debugTag = LoginActivity.class.getSimpleName();
     private static boolean anmtionOnPrgrs;
@@ -143,13 +143,7 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
 //        dismissDialog();
     }
 
-    @Override
-    public AndroidInjector<android.support.v4.app.Fragment> supportFragmentInjector() {
-        Log.e(debugTag, "fragmentInjector");
-        return fragmentInjector;
-    }
-
-    @Override
+//    @Override
     public void hideSoftKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -177,10 +171,6 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
         return mGoogleApiClient;
     }
 
-    public MyAccountManager getmAccountManager() {
-        return mAccountManager;
-    }
-
     public void showSnackBar(final int style, final String msg) {
         if (mBinding.snckBr != null) {
             runOnUiThread(new Runnable() {
@@ -192,5 +182,10 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
                 }
             });
         }
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
     }
 }

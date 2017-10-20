@@ -25,11 +25,13 @@ import com.tsiro.dogvip.base.fragment.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ForgotpaswrdFrgmtBinding;
 import com.tsiro.dogvip.login.LoginActivity;
+import com.tsiro.dogvip.login.LoginViewModel;
 import com.tsiro.dogvip.login.signin.SignInFrgmt;
-import com.tsiro.dogvip.requestmngrlayer.ForgotPaswrdRequestManager;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
+
+import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -46,13 +48,14 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     private ForgotpaswrdFrgmtBinding mBinding;
     private FragmentManager mFragmentManager;
     private int fragmentCreatedCode; // login activity: check if fragments are created on button click
-    private ForgotPaswrdContract.ViewModel mForgotPaswrdViewModel;
     private AwesomeValidation mAwesomeValidation;
     private ForgotPaswrdObj forgotPaswrdObj;
     private ProgressDialog mProgressDialog;
     private boolean emailValidated;
     private Lifecycle.BaseView baseView;
     private int user_id;
+    @Inject
+    LoginViewModel mLoginViewModel;
 
     public static ForgotPaswrdFrgmt newInstance(int x) {
         Bundle bundle = new Bundle();
@@ -91,8 +94,6 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
         super.onActivityCreated(savedInstanceState);
         mFragmentManager = getActivity().getSupportFragmentManager();
 
-        mForgotPaswrdViewModel = new ForgotPaswrdViewModel(ForgotPaswrdRequestManager.getInstance());
-
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
 
@@ -101,7 +102,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mForgotPaswrdViewModel;
+        return mLoginViewModel;
     }
 
     @Override
@@ -219,7 +220,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                 forgotPaswrdObj.setConfNewpassword(mBinding.confpassEdt.getText().toString());
                 forgotPaswrdObj.setUserId(user_id);
             }
-            mForgotPaswrdViewModel.fogotpass(forgotPaswrdObj);
+            mLoginViewModel.forgotPass(forgotPaswrdObj);
 //            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
 //        } else {
 //            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));

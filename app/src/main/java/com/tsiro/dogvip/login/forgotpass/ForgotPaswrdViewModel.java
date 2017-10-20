@@ -3,7 +3,6 @@ package com.tsiro.dogvip.login.forgotpass;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.requestmngrlayer.ForgotPaswrdRequestManager;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -16,14 +15,14 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 
-    private ForgotPaswrdRequestManager mForgotPaswrdRequestManager;
+//    private ForgotPaswrdRequestManager mForgotPaswrdRequestManager;
     private ForgotPaswrdContract.View mViewClback;
     private AsyncProcessor<ForgotPaswrdObj> mForgotPaswrdProcessor;
     private Disposable mForgotPaswrdDisp;
     private int requestState;
 
-    public ForgotPaswrdViewModel(ForgotPaswrdRequestManager forgotPaswrdRequestManager) {
-        this.mForgotPaswrdRequestManager = forgotPaswrdRequestManager;
+    public ForgotPaswrdViewModel() {
+//        this.mForgotPaswrdRequestManager = forgotPaswrdRequestManager;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
             mForgotPaswrdProcessor = AsyncProcessor.create();
             mForgotPaswrdDisp = mForgotPaswrdProcessor.subscribeWith(new ForgotPaswrdObserver());
 
-            mForgotPaswrdRequestManager.forgotPaswrd(request, this).subscribe(mForgotPaswrdProcessor);
+//            mForgotPaswrdRequestManager.forgotPaswrd(request, this).subscribe(mForgotPaswrdProcessor);
         }
     }
 
