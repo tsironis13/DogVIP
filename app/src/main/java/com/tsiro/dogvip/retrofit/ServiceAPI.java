@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.retrofit;
 
+import com.tsiro.dogvip.POJO.BaseResponseObj;
 import com.tsiro.dogvip.POJO.FcmTokenUpload;
 import com.tsiro.dogvip.POJO.Image;
 import com.tsiro.dogvip.POJO.Response;
@@ -11,6 +12,10 @@ import com.tsiro.dogvip.POJO.chat.SendMessageRequest;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
 import com.tsiro.dogvip.POJO.dashboard.DashboardRequest;
 import com.tsiro.dogvip.POJO.dashboard.DashboardResponse;
+import com.tsiro.dogvip.POJO.login.LoginResponse;
+import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
+import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
+import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
 import com.tsiro.dogvip.POJO.lostfound.ManipulateLostFoundPet;
@@ -53,11 +58,15 @@ import retrofit2.http.Part;
 public interface ServiceAPI {
 
     @POST("actions.php")
-    Flowable<AuthenticationResponse> signin(@Body SignInRequest request);
+    Flowable<Response> signInEmail(@Body SignInEmailRequest request);
 
-    //register user
+    //register user email
     @POST("actions.php")
-    Flowable<AuthenticationResponse> register(@Body RegistrationRequest request);
+    Flowable<Response> signUpEmail(@Body SignUpEmailRequest request);
+
+    //register user fb, google
+    @POST("actions.php")
+    Flowable<Response> signInUpFbGoogle(@Body SignInUpFbGoogleRequest request);
 
     //register user
     @POST("actions.php")

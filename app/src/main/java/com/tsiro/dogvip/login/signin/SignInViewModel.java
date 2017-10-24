@@ -14,10 +14,10 @@ import io.reactivex.subscribers.DisposableSubscriber;
  * Created by giannis on 28/5/2017.
  */
 
-public class SignInViewModel implements SignInContract.ViewModel {
+public class SignInViewModel {
 
 //    private SignInRequestManager mSignInRequestManager;
-    private SignInContract.View mViewClback;
+//    private SignInContract.View mViewClback;
     private int requestState;
     private AsyncProcessor<AuthenticationResponse> mSignInProcessor;
     private Disposable mSignInDisp;
@@ -26,23 +26,23 @@ public class SignInViewModel implements SignInContract.ViewModel {
 //        this.mSignInRequestManager = signInRequestManager;
     }
 
-    @Override
+//    @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-        this.mViewClback = (SignInContract.View) viewCallback;
+//        this.mViewClback = (SignInContract.View) viewCallback;
     }
 
-    @Override
+//    @Override
     public void onViewResumed() {
         if (mSignInDisp != null && requestState != AppConfig.REQUEST_RUNNING) mSignInProcessor.subscribe(new SignInObserver());
     }
 
-    @Override
+//    @Override
     public void onViewDetached() {
-        mViewClback = null;
+//        mViewClback = null;
         if (mSignInDisp != null) mSignInDisp.dispose();
     }
 
-    @Override
+//    @Override
     public void signin(SignInRequest request) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mSignInProcessor = AsyncProcessor.create();
@@ -51,20 +51,20 @@ public class SignInViewModel implements SignInContract.ViewModel {
         }
     }
 
-    @Override
+//    @Override
     public void setRequestState(int state) {
         requestState = state;
     }
 
     private void onSignInSuccess(AuthenticationResponse response) {
         mSignInDisp = null;
-        mViewClback.onSuccess(response);
+//        mViewClback.onSuccess(response);
     }
 
     private void onSignInError(int resource, boolean msglength) {
         mSignInDisp = null;
-        mViewClback.onError(resource, msglength);
-        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+//        mViewClback.onError(resource, msglength);
+//        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
     private class SignInObserver extends DisposableSubscriber<AuthenticationResponse> {

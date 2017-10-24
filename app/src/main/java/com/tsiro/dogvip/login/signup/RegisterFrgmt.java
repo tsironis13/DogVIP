@@ -32,6 +32,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.POJO.BaseResponseObj;
+import com.tsiro.dogvip.POJO.login.LoginResponse;
+import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
+import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.R;
@@ -41,8 +45,10 @@ import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.RegisterFrgmtBinding;
 import com.tsiro.dogvip.login.LoginActivity;
 import com.tsiro.dogvip.login.LoginContract;
+import com.tsiro.dogvip.login.LoginRetainFragment;
 import com.tsiro.dogvip.login.LoginViewModel;
 import com.tsiro.dogvip.login.signin.SignInFrgmt;
+import com.tsiro.dogvip.lovematch.LoveMatchActivityRetainFragment;
 import com.tsiro.dogvip.requestmngrlayer.LoginRequestManager;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
 import com.tsiro.dogvip.utilities.common.CommonUtls;
@@ -61,20 +67,22 @@ import io.reactivex.functions.Consumer;
  * Created by giannis on 15/5/2017.
  */
 
-public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
+public class RegisterFrgmt extends BaseFragment implements LoginContract.SignUpView {
 
     private View mView;
     private RegisterFrgmtBinding mBinding;
-    private RegistrationRequest request;
-    private ProgressDialog mProgressDialog;
     private CallbackManager mCallbackMngr;
     private AwesomeValidation mAwesomeValidation;
-    private boolean mFBUserLoggedIn, mGoogleUserLoggedIn;
-    private FragmentManager mFragmentManager;
-    private Lifecycle.BaseView baseView;
+//    private boolean mFBUserLoggedIn, mGoogleUserLoggedIn;
     private GoogleApiClient mGoogleApiClient;
     @Inject
-    LoginViewModel mLoginViewModel;
+    LoginViewModel mViewModel;
+    @Inject
+    LoginRetainFragment mLoginRetainFragment;
+    @Inject
+    SignUpEmailRequest signUpEmailRequest;
+    @Inject
+    SignInUpFbGoogleRequest signInUpFbGoogleRequest;
 
     public static RegisterFrgmt newInstance() {
         return new RegisterFrgmt();
@@ -83,7 +91,7 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
+//        if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
     }
 
     @Override
@@ -98,16 +106,13 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initializeViewModel();
         mGoogleApiClient = ((LoginActivity)getActivity()).getmGoogleApiClient();
-
-        mFragmentManager = getFragmentManager();
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
         mAwesomeValidation.addValidation(mBinding.passEdt, "^(?=.*\\D)[a-zA-Z\\d]{8}$", getResources().getString(R.string.not_valid_pass));
         mAwesomeValidation.addValidation(mBinding.confpassEdt, mBinding.passEdt, getResources().getString(R.string.passwrds_not_match));
-
-        request = new RegistrationRequest();
 
         initializeFBSignUp();
     }
@@ -119,8 +124,8 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
             @Override
             public void accept(@NonNull Object o) throws Exception {
                 if (mAwesomeValidation.validate()) {
-                    baseView.hideSoftKeyboard();
-                    registerUser(mBinding.emailEdt.getText().toString(), 0);
+                    ((LoginActivity)getActivity()).hideSoftKeyboard();
+                    registerEmailUser();
                 }
             }
         });
@@ -158,6 +163,12 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoginRetainFragment.retainViewModel(mViewModel);
+    }
+
+    @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (nextAnim != 0) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
@@ -174,38 +185,62 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
     }
 
     @Override
-    public void onSuccess(final AuthenticationResponse response) {
-//        ((LoginActivity) getActivity()).dismissDialog();
-        if (response.getRegtype() == 0) {
-            new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
-            mFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
-                    .addToBackStack(getResources().getString(R.string.signin_fgmt))
-                    .commit();
-        } else {
-            logoutFBUser();
-            logoutGoogleUser();
-
-            ((LoginActivity)getActivity()).addAccount(response);
-        }
+    public void onProcessing() {
+        mBinding.setProcessing(true);
     }
 
     @Override
-    public void onError(final int resource, final boolean msglength) {
-        logoutFBUser();
-        logoutGoogleUser();
+    public void onStopProcessing() {
+        if (mBinding.getProcessing()) mBinding.setProcessing(false);
+    }
 
-//        ((LoginActivity) getActivity()).dismissDialog();
-        int style = R.style.SnackBarSingleLine;
-        if (msglength) style = R.style.SnackBarMultiLine;
-        ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
+    @Override
+    public void onSuccessFbLogin(LoginResponse response) {
+        mBinding.setProcessing(false);
+        logoutFBUser();
+        ((LoginActivity)getActivity()).addAccount(response);
+    }
+
+    @Override
+    public void onSuccessGoogleLogin(LoginResponse response) {
+        mBinding.setProcessing(false);
+        logoutGoogleUser();
+        ((LoginActivity)getActivity()).addAccount(response);
+    }
+
+    @Override
+    public void onSuccessEmailSignUp(BaseResponseObj response) {
+        mBinding.setProcessing(false);
+        new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
+                .addToBackStack(getResources().getString(R.string.signin_fgmt))
+                .commit();
+    }
+
+    @Override
+    public void onError(final int resource) {
+        mBinding.setProcessing(false);
+        ((LoginActivity)getActivity()).onError(resource);
+    }
+
+    @Override
+    public void onErrorFbLogin(int resource) {
+        logoutFBUser();
+        onError(resource);
+    }
+
+    @Override
+    public void onErrorGoogleLogin(int resource) {
+        logoutGoogleUser();
+        onError(resource);
     }
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mLoginViewModel;
+        return mViewModel;
     }
 
     @Override
@@ -219,25 +254,46 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
         }
     }
 
-    private void registerUser(String email, int regtype) {
-//        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
-            request.setAction(getResources().getString(R.string.register_user));
-            if (regtype == 0) { //email registration
-                request.setEmail(email);
-                request.setPassword(mBinding.passEdt.getText().toString());
-                request.setConfpassword(mBinding.confpassEdt.getText().toString());
-                request.setRegstrType(regtype); //0 -> email registr
-            } else {
-                request.setEmail(email);
-                request.setDeviceid(android.os.Build.SERIAL);
-                request.setRegstrType(regtype); // 1 -> fb registr, 2 -> google regstr
-            }
-            mLoginViewModel.signUp(request);
-//            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
-//        } else {
-//            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
-//        }
+    private void registerEmailUser() {
+        signUpEmailRequest.setAction(getResources().getString(R.string.register_user));
+        signUpEmailRequest.setEmail(mBinding.emailEdt.getText().toString());
+        signUpEmailRequest.setPassword(mBinding.passEdt.getText().toString());
+        signUpEmailRequest.setConfpassword(mBinding.confpassEdt.getText().toString());
+        signUpEmailRequest.setRegtype(0); //0 -> email registr
+        mViewModel.signUpEmail(signUpEmailRequest);
     }
+
+    private void registerFbGoogleUser(String email, int regtype) {
+        signInUpFbGoogleRequest.setAction(getResources().getString(R.string.register_user));
+        signInUpFbGoogleRequest.setEmail(email);
+        signInUpFbGoogleRequest.setDeviceid(android.os.Build.SERIAL);
+        signInUpFbGoogleRequest.setRegtype(regtype); //1 -> fb registr, 2 -> google regstr
+        if (regtype == 1) {
+            mViewModel.signInUpFb(signInUpFbGoogleRequest);
+        } else {
+            mViewModel.signInUpGoogle(signInUpFbGoogleRequest);
+        }
+    }
+
+//    private void registerUser(String email, int regtype) {
+////        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
+//            request.setAction(getResources().getString(R.string.register_user));
+//            if (regtype == 0) { //email registration
+//                request.setEmail(email);
+//                request.setPassword(mBinding.passEdt.getText().toString());
+//                request.setConfpassword(mBinding.confpassEdt.getText().toString());
+//                request.setRegstrType(regtype); //0 -> email registr
+//            } else {
+//                request.setEmail(email);
+//                request.setDeviceid(android.os.Build.SERIAL);
+//                request.setRegstrType(regtype); // 1 -> fb registr, 2 -> google regstr
+//            }
+//            mViewModel.signUp(request);
+////            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
+////        } else {
+////            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
+////        }
+//    }
 
     private void initializeFBSignUp() {
         mCallbackMngr = CallbackManager.Factory.create();
@@ -251,8 +307,8 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
-                            mFBUserLoggedIn = true;
-                            registerUser(object.getString(getResources().getString(R.string.email)), 1);
+//                            mFBUserLoggedIn = true;
+                            registerFbGoogleUser(object.getString(getResources().getString(R.string.email)), 1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -278,24 +334,27 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.View {
 
     private void handleGoogleSignUpResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-            mGoogleUserLoggedIn = true;
-
+//            mGoogleUserLoggedIn = true;
             GoogleSignInAccount account = result.getSignInAccount();
-            if (account != null)registerUser(account.getEmail(), 2);
+            if (account != null) registerFbGoogleUser(account.getEmail(), 2);
         }
     }
 
     private void logoutFBUser() {
-        if (mFBUserLoggedIn) {
-            LoginManager.getInstance().logOut();
-            mFBUserLoggedIn = false;
-        }
+        LoginManager.getInstance().logOut();
     }
 
     private void logoutGoogleUser() {
-        if (mGoogleUserLoggedIn && mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected())
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {@Override public void onResult(@android.support.annotation.NonNull Status status) {}});
-            mGoogleUserLoggedIn = false;
+    }
+
+    private void initializeViewModel() {
+        if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.retained_fgmt)) == null) {
+            getFragmentManager().beginTransaction().add(mLoginRetainFragment, getResources().getString(R.string.retained_fgmt)).commit();
+        } else {
+            mLoginRetainFragment = (LoginRetainFragment) getFragmentManager().findFragmentByTag(getResources().getString(R.string.retained_fgmt));
         }
+        if (mLoginRetainFragment.getViewModel() != null) mViewModel = mLoginRetainFragment.getViewModel();
     }
 }

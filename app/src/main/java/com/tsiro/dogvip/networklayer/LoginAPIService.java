@@ -1,6 +1,15 @@
 package com.tsiro.dogvip.networklayer;
 
+import android.util.Log;
+
+import com.tsiro.dogvip.POJO.BaseRequestObj;
+import com.tsiro.dogvip.POJO.BaseResponseObj;
+import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
+import com.tsiro.dogvip.POJO.login.LoginResponse;
+import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
+import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
+import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -35,8 +44,8 @@ public class LoginAPIService {
         serviceAPI = RetrofitFactory.getInstance().getServiceAPI();
     }
 
-    public Flowable<AuthenticationResponse> signIn(SignInRequest request, final LoginViewModel loginViewModel) {
-        return serviceAPI.signin(request)
+    public Flowable<Response> signInEmail(final SignInEmailRequest request, final LoginViewModel loginViewModel) {
+        return serviceAPI.signInEmail(request)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
@@ -51,16 +60,17 @@ public class LoginAPIService {
                         loginViewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
-                .doOnNext(new Consumer<AuthenticationResponse>() {
+                .doOnNext(new Consumer<Response>() {
                     @Override
-                    public void accept(@NonNull AuthenticationResponse response) throws Exception {
+                    public void accept(@NonNull Response response) throws Exception {
+                        Log.e("aaa", response.getCode() + "");
                         loginViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });
     }
 
-    public Flowable<AuthenticationResponse> signUp(RegistrationRequest request, final LoginViewModel loginViewModel) {
-        return serviceAPI.register(request)
+    public Flowable<Response> signUpEmail(SignUpEmailRequest request, final LoginViewModel loginViewModel) {
+        return serviceAPI.signUpEmail(request)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
@@ -75,9 +85,33 @@ public class LoginAPIService {
                         loginViewModel.setRequestState(AppConfig.REQUEST_FAILED);
                     }
                 })
-                .doOnNext(new Consumer<AuthenticationResponse>() {
+                .doOnNext(new Consumer<Response>() {
                     @Override
-                    public void accept(@NonNull AuthenticationResponse registrationResponse) throws Exception {
+                    public void accept(@NonNull Response response) throws Exception {
+                        loginViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
+                    }
+                });
+    }
+
+    public Flowable<Response> signInUpFbGoogle(SignInUpFbGoogleRequest request, final LoginViewModel loginViewModel) {
+        return serviceAPI.signInUpFbGoogle(request)
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        loginViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        loginViewModel.setRequestState(AppConfig.REQUEST_FAILED);
+                    }
+                })
+                .doOnNext(new Consumer<Response>() {
+                    @Override
+                    public void accept(@NonNull Response response) throws Exception {
                         loginViewModel.setRequestState(AppConfig.REQUEST_SUCCEEDED);
                     }
                 });

@@ -1,15 +1,16 @@
 package com.tsiro.dogvip.lovematch;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.POJO.lovematch.GetPetsByFilterRequest;
-import com.tsiro.dogvip.POJO.lovematch.GetPetsCommand;
-import com.tsiro.dogvip.POJO.lovematch.LikeDislikeCommand;
+import com.tsiro.dogvip.responsecontroller.lovematch.GetPetsCommand;
+import com.tsiro.dogvip.responsecontroller.lovematch.LikeDislikeCommand;
 import com.tsiro.dogvip.POJO.lovematch.LikeDislikeRequest;
 import com.tsiro.dogvip.POJO.lovematch.LikeDislikeResponse;
-import com.tsiro.dogvip.POJO.lovematch.ResponseController;
+import com.tsiro.dogvip.responsecontroller.ResponseController;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
@@ -70,7 +71,6 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewClback = (LoveMatchContract.View) viewCallback;
     }
-
     @Override
     public void onViewResumed() {
         Log.e(debugTag, "onVIEWRESUMED "+ mLoveMatchDisp + " request state "+requestState);

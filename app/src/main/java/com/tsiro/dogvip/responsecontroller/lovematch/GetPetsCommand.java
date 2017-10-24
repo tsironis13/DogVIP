@@ -1,4 +1,4 @@
-package com.tsiro.dogvip.POJO.lovematch;
+package com.tsiro.dogvip.responsecontroller.lovematch;
 
 import android.util.Log;
 
@@ -7,6 +7,7 @@ import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.di.scope.PerActivity;
 import com.tsiro.dogvip.lovematch.LoveMatchActivity;
 import com.tsiro.dogvip.lovematch.LoveMatchContract;
+import com.tsiro.dogvip.responsecontroller.Command;
 
 import javax.inject.Inject;
 

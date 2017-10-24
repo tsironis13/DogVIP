@@ -1,5 +1,7 @@
 package com.tsiro.dogvip.dashboard;
 
+import android.os.Bundle;
+
 import com.tsiro.dogvip.POJO.dashboard.DashboardRequest;
 import com.tsiro.dogvip.POJO.dashboard.DashboardResponse;
 import com.tsiro.dogvip.app.AppConfig;

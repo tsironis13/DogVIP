@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.POJO;
 
+import com.tsiro.dogvip.POJO.login.LoginResponse;
 import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
 import com.tsiro.dogvip.POJO.lovematch.LikeDislikeResponse;
 
@@ -9,8 +10,13 @@ import com.tsiro.dogvip.POJO.lovematch.LikeDislikeResponse;
 
 public class Response extends BaseResponseObj {
 
+    private LoginResponse login;
     private GetPetsResponse petdata;
     private LikeDislikeResponse likedata;
+
+    public LoginResponse getLogin() { return login; }
+
+    public void setLogin(LoginResponse login) { this.login = login; }
 
     public GetPetsResponse getPetdata() {
         return petdata;

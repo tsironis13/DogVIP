@@ -13,10 +13,10 @@ import io.reactivex.subscribers.DisposableSubscriber;
  * Created by giannis on 29/5/2017.
  */
 
-public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
+public class ForgotPaswrdViewModel {
 
 //    private ForgotPaswrdRequestManager mForgotPaswrdRequestManager;
-    private ForgotPaswrdContract.View mViewClback;
+//    private ForgotPaswrdContract.View mViewClback;
     private AsyncProcessor<ForgotPaswrdObj> mForgotPaswrdProcessor;
     private Disposable mForgotPaswrdDisp;
     private int requestState;
@@ -25,23 +25,23 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
 //        this.mForgotPaswrdRequestManager = forgotPaswrdRequestManager;
     }
 
-    @Override
+//    @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-        this.mViewClback = (ForgotPaswrdContract.View) viewCallback;
+//        this.mViewClback = (ForgotPaswrdContract.View) viewCallback;
     }
 
-    @Override
+//    @Override
     public void onViewResumed() {
         if (mForgotPaswrdDisp != null && requestState != AppConfig.REQUEST_RUNNING) mForgotPaswrdProcessor.subscribe(new ForgotPaswrdObserver());
     }
 
-    @Override
+//    @Override
     public void onViewDetached() {
-        mViewClback = null;
+//        mViewClback = null;
         if (mForgotPaswrdDisp != null) mForgotPaswrdDisp.dispose();
     }
 
-    @Override
+//    @Override
     public void fogotpass(ForgotPaswrdObj request) {
         if (requestState != AppConfig.REQUEST_RUNNING) {
             mForgotPaswrdProcessor = AsyncProcessor.create();
@@ -51,20 +51,20 @@ public class ForgotPaswrdViewModel implements ForgotPaswrdContract.ViewModel {
         }
     }
 
-    @Override
+//    @Override
     public void setRequestState(int state) {
         requestState = state;
     }
 
     private void onForgotPaswrdSuccess(ForgotPaswrdObj response) {
         mForgotPaswrdDisp = null;
-        mViewClback.onSuccess(response);
+//        mViewClback.onSuccess(response);
     }
 
     private void onForgotPaswrdError(int resource, boolean msglength) {
         mForgotPaswrdDisp = null;
-        mViewClback.onError(resource, msglength);
-        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
+//        mViewClback.onError(resource, msglength);
+//        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 
     private class ForgotPaswrdObserver extends DisposableSubscriber<ForgotPaswrdObj> {

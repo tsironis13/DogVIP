@@ -1,6 +1,11 @@
 package com.tsiro.dogvip.login.signup;
 
+import android.os.Bundle;
+
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
+import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
+import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
+import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -35,6 +40,7 @@ public class RegistrationViewModel implements LoginContract.ViewModel {
         this.mViewClback = (LoginContract.View) viewCallback;
     }
 
+
     @Override
     public void onViewResumed() {
         if (mRegstrDisp != null && requestState != AppConfig.REQUEST_RUNNING) mRegstrProcessor.subscribe(new RegistrationObserver());
@@ -47,14 +53,30 @@ public class RegistrationViewModel implements LoginContract.ViewModel {
     }
 
     @Override
-    public void signIn(SignInRequest request) {
+    public void signInEmail(SignInEmailRequest request) {
 
     }
 
     @Override
-    public void signUp(RegistrationRequest request) {
+    public void onProcessing() {
 
     }
+
+    @Override
+    public void signInUpGoogle(SignInUpFbGoogleRequest request) {
+
+    }
+
+    @Override
+    public void signInUpFb(SignInUpFbGoogleRequest request) {
+
+    }
+
+    @Override
+    public void signUpEmail(SignUpEmailRequest request) {
+
+    }
+
 
     @Override
     public void forgotPass(ForgotPaswrdObj request) {
@@ -78,12 +100,12 @@ public class RegistrationViewModel implements LoginContract.ViewModel {
 
     private void onRegistrationSuccess(AuthenticationResponse response) {
         mRegstrDisp = null;
-        mViewClback.onSuccess(response);
+//        mViewClback.onSuccess(response);
     }
 
     private void onRegistrationError(int resource, boolean msglength) {
         mRegstrDisp = null;
-        mViewClback.onError(resource, msglength);
+        mViewClback.onError(resource);
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }
 

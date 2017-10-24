@@ -3,6 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="processing"
+            type="boolean" />
+
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -168,13 +177,10 @@
                 android:textColor="@color/error_color"
                 android:text="@string/required_fields" />
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:orientation="vertical"
-                android:layout_gravity="bottom">
+                android:layout_weight="1">
 
                 <Button
                     android:id="@+id/registerBtn"
@@ -183,7 +189,34 @@
                     android:text="@string/register_btn_label"
                     android:layout_marginBottom="4dp"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/ripple_drawable" />
+                    android:background="@drawable/ripple_drawable"
+                    android:visibility="@{processing ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@+id/termsBtn"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/loadingIndLlt"
+                    android:layout_width="222dp"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/ripple_drawable"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="@{!processing ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@+id/termsBtn"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/loadingInd"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        style="@style/AVLoadingIndicatorView"
+                        app:indicatorName="BallPulseIndicator" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/termsBtn"
@@ -192,9 +225,12 @@
                     android:text="@string/terms_label"
                     android:textAllCaps="false"
                     android:textSize="12sp"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
-            </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
 

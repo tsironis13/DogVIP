@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.tsiro.dogvip.POJO.TestImage;
+import com.tsiro.dogvip.POJO.login.LoginResponse;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.accountmngr.MyAccountManager;
@@ -29,6 +31,7 @@ import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityLoginBinding;
 import com.tsiro.dogvip.splashscreen.SplashFrgmt;
 import com.tsiro.dogvip.utilities.UIUtls;
+import com.tsiro.dogvip.utilities.animation.AnimationUtls;
 import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import javax.inject.Inject;
@@ -57,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     MyAccountManager mAccountManager;
     @Inject
     UIUtls uiUtls;
+    @Inject
+    AnimationUtls animationUtls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,16 +148,16 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
 //        dismissDialog();
     }
 
-//    @Override
     public void hideSoftKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        uiUtls.hideSoftKeyboard(this.getCurrentFocus());
     }
 
-    public void addAccount(AuthenticationResponse response) {
+    public void onProcessing(View view) {
+        Log.e(debugTag, "onProcessing");
+        animationUtls.animateLoadingIndicator(view);
+    }
+
+    public void addAccount(LoginResponse response) {
         if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
             logUserIn(true);
         } else {
@@ -169,6 +174,10 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
 
     public GoogleApiClient getmGoogleApiClient() {
         return mGoogleApiClient;
+    }
+
+    public void onError(int resource) {
+        uiUtls.showSnackBar(mBinding.cntFrml, getResources().getString(resource), getResources().getString(R.string.close), Snackbar.LENGTH_LONG).subscribe();
     }
 
     public void showSnackBar(final int style, final String msg) {

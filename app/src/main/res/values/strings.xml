@@ -10,6 +10,7 @@
     <string name="signin_fgmt">signin_fgmt</string>
     <string name="forgotpaswrd_fgmt">forgotpaswrd_fgmt</string>
     <string name="owner_fgmt">owner_fgmt</string>
+    <string name="retained_fgmt">retained_fgmt</string>
     <!-- ACTIONS -->
     <string name="action">action</string>
     <string name="view_from">view_from</string>

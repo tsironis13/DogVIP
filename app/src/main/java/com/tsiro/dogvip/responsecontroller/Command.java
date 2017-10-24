@@ -1,8 +1,6 @@
-package com.tsiro.dogvip.POJO.lovematch;
+package com.tsiro.dogvip.responsecontroller;
 
-import com.tsiro.dogvip.POJO.BaseResponseObj;
 import com.tsiro.dogvip.POJO.Response;
-import com.tsiro.dogvip.lovematch.LoveMatchContract;
 
 /**
  * Created by giannis on 9/10/2017.

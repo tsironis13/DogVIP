@@ -1,5 +1,7 @@
 package com.tsiro.dogvip.chatroom;
 
+import android.os.Bundle;
+
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomRequest;
 import com.tsiro.dogvip.POJO.chat.FetchChatRoomResponse;
 import com.tsiro.dogvip.POJO.chat.SendMessageRequest;

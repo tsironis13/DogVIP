@@ -4,6 +4,8 @@ package com.tsiro.dogvip.base.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -26,6 +28,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 
 public abstract class BaseFragment extends Fragment implements HasSupportFragmentInjector, Lifecycle.View {
 
+    private static final String debugTag = BaseFragment.class.getSimpleName();
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentInjector;
     public abstract Lifecycle.ViewModel getViewModel();
@@ -49,7 +52,15 @@ public abstract class BaseFragment extends Fragment implements HasSupportFragmen
     @Override
     public void onStart() {
         super.onStart();
+//        Log.e(debugTag, "onStart");
         getViewModel().onViewAttached(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//        getViewModel().onViewAttached(this);
+//        if (savedInstanceState != null) getViewModel().onConfigurationChange(savedInstanceState);
     }
 
     @Override

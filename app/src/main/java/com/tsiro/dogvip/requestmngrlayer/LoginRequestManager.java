@@ -1,6 +1,12 @@
 package com.tsiro.dogvip.requestmngrlayer;
 
+import com.tsiro.dogvip.POJO.BaseResponseObj;
+import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
+import com.tsiro.dogvip.POJO.login.LoginResponse;
+import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
+import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
+import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
 import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
@@ -29,14 +35,18 @@ public class LoginRequestManager {
         this.mLoginAPIService = loginAPIService;
     }
 
-    public Flowable<AuthenticationResponse> signUp(RegistrationRequest request, LoginViewModel loginViewModel) {
+    public Flowable<Response> signUpEmail(SignUpEmailRequest request, LoginViewModel loginViewModel) {
         //in case server response is faster than activity lifecycle callback methods
-        return mLoginAPIService.signUp(request, loginViewModel).delay(500, TimeUnit.MILLISECONDS);
+        return mLoginAPIService.signUpEmail(request, loginViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 
-    public Flowable<AuthenticationResponse> signin(SignInRequest request, LoginViewModel loginViewModel) {
+    public Flowable<Response> signInEmail(SignInEmailRequest request, LoginViewModel loginViewModel) {
         //in case server response is faster than activity lifecycle callback methods
-        return mLoginAPIService.signIn(request, loginViewModel).delay(500, TimeUnit.MILLISECONDS);
+        return mLoginAPIService.signInEmail(request, loginViewModel).delay(500, TimeUnit.MILLISECONDS);
+    }
+
+    public Flowable<Response> signInUpFbGoogle(SignInUpFbGoogleRequest request, LoginViewModel loginViewModel) {
+        return mLoginAPIService.signInUpFbGoogle(request, loginViewModel).delay(500, TimeUnit.MILLISECONDS);
     }
 
     public Flowable<ForgotPaswrdObj> forgotPaswrd(ForgotPaswrdObj request, LoginViewModel loginViewModel) {

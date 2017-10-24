@@ -3,7 +3,6 @@ package com.tsiro.dogvip.di;
 import com.tsiro.dogvip.chatroom.ChatRoomActivity;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.login.LoginActivityModule;
-import com.tsiro.dogvip.login.signin.SignInFragmentModule;
 import com.tsiro.dogvip.lostfound.LostActivity;
 import com.tsiro.dogvip.lostfound.manipulatefoundpet.ManipulateFoundPetActivity;
 import com.tsiro.dogvip.lostfound.manipulatelostpet.ManipulateLostPetActivity;

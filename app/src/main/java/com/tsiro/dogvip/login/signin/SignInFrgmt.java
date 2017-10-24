@@ -32,6 +32,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tsiro.dogvip.POJO.login.LoginResponse;
+import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
+import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
 import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.POJO.signin.SignInRequest;
 import com.tsiro.dogvip.R;
@@ -41,6 +44,7 @@ import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.SigninFrgmtBinding;
 import com.tsiro.dogvip.login.LoginActivity;
 import com.tsiro.dogvip.login.LoginContract;
+import com.tsiro.dogvip.login.LoginRetainFragment;
 import com.tsiro.dogvip.login.LoginViewModel;
 import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdFrgmt;
 import com.tsiro.dogvip.login.signup.RegisterFrgmt;
@@ -61,22 +65,24 @@ import io.reactivex.functions.Consumer;
  * Created by giannis on 17/5/2017.
  */
 
-public class SignInFrgmt extends BaseFragment implements LoginContract.View, GoogleApiClient.OnConnectionFailedListener {
+public class SignInFrgmt extends BaseFragment implements LoginContract.SignInView, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String debugTag = SignInFrgmt.class.getSimpleName();
     private View mView;
     private SigninFrgmtBinding mBinding;
-    private FragmentManager mFragmentManager;
-    private SignInRequest request;
     private AwesomeValidation mAwesomeValidation;
     private int fragmentCreatedCode; // login activity: check if fragments are created on button click
 //    private Lifecycle.BaseView baseView;
     private CallbackManager mCallbackMngr;
     private GoogleApiClient mGoogleApiClient;
-    private boolean mFBUserLoggedIn, mGoogleUserLoggedIn;
     @Inject
-    LoginViewModel mLoginViewModel;
+    LoginViewModel mViewModel;
     @Inject
-    UIUtls uiUtls;
+    SignInEmailRequest signInEmailRequest;
+    @Inject
+    SignInUpFbGoogleRequest signInUpFbGoogleRequest;
+    @Inject
+    LoginRetainFragment mLoginRetainFragment;
 
     public static SignInFrgmt newInstance(int x) {
         Bundle bundle = new Bundle();
@@ -96,7 +102,7 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("aaa", uiUtls + " aa");
+        initializeViewModel();
         fragmentCreatedCode = getArguments().getInt(AppConfig.FRAGMENT_CREATED);
     }
 
@@ -115,13 +121,10 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFragmentManager = getActivity().getSupportFragmentManager();
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
         mAwesomeValidation.addValidation(mBinding.passEdt, "^(?=.*\\D)[a-zA-Z\\d]{8}$", getResources().getString(R.string.not_valid_pass));
-
-        request = new SignInRequest();
 
         initializeFBSignUp();
     }
@@ -150,13 +153,13 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
                 new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-//                        baseView.hideSoftKeyboard();
-                        mFragmentManager
-                                .beginTransaction()
-                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                .replace(R.id.loginContainer, RegisterFrgmt.newInstance(), getResources().getString(R.string.regstr_fgmt))
-                                .addToBackStack(getResources().getString(R.string.regstr_fgmt))
-                                .commit();
+                        ((LoginActivity)getActivity()).hideSoftKeyboard();
+                        getFragmentManager()
+                                    .beginTransaction()
+                                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                    .replace(R.id.loginContainer, RegisterFrgmt.newInstance(), getResources().getString(R.string.regstr_fgmt))
+                                    .addToBackStack(getResources().getString(R.string.regstr_fgmt))
+                                    .commit();
                     }
                 }
         );
@@ -166,13 +169,13 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
                 new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-//                        baseView.hideSoftKeyboard();
-                        mFragmentManager
-                                .beginTransaction()
-                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                .replace(R.id.loginContainer, ForgotPaswrdFrgmt.newInstance(100), getResources().getString(R.string.forgotpaswrd_fgmt))
-                                .addToBackStack(getResources().getString(R.string.forgotpaswrd_fgmt))
-                                .commit();
+                        ((LoginActivity)getActivity()).hideSoftKeyboard();
+                        getFragmentManager()
+                                    .beginTransaction()
+                                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                    .replace(R.id.loginContainer, ForgotPaswrdFrgmt.newInstance(100), getResources().getString(R.string.forgotpaswrd_fgmt))
+                                    .addToBackStack(getResources().getString(R.string.forgotpaswrd_fgmt))
+                                    .commit();
                     }
                 }
         );
@@ -181,20 +184,9 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
         Disposable disp4 = RxView.clicks(mBinding.signInBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(@NonNull Object o) throws Exception {
-                mBinding.signInBtn.setVisibility(View.INVISIBLE);
-                mBinding.test.setVisibility(View.VISIBLE);
-                mBinding.avi.setAlpha(0.f);
-                mBinding.avi.setScaleX(0.f);
-                mBinding.avi.setScaleY(0.f);
-                mBinding.avi.animate()
-                        .alpha(1.f)
-                        .scaleX(1.f).scaleY(1.f)
-//                        .setDuration(200)
-                        .start();
-                if (mAwesomeValidation.validate()) {
-//                    baseView.hideSoftKeyboard();
-
-                    signinUser(mBinding.emailEdt.getText().toString(), 0);
+                if (!mAwesomeValidation.validate()) {
+                    ((LoginActivity)getActivity()).hideSoftKeyboard();
+                    signInEmailUser();
                 }
             }
         });
@@ -205,6 +197,12 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
     public void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoginRetainFragment.retainViewModel(mViewModel);
     }
 
     @Override
@@ -225,27 +223,58 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mLoginViewModel;
+        return mViewModel;
     }
 
     @Override
-    public void onSuccess(final AuthenticationResponse response) {
-        uiUtls.dismissDialog();
-        logoutFBUser();
-        logoutGoogleUser();
+    public void onProcessing() {
+        mBinding.setProcessing(true);
+        ((LoginActivity)getActivity()).onProcessing(mBinding.loadingInd);
+    }
 
+    @Override
+    public void onStopProcessing() {
+        if (mBinding.getProcessing()) mBinding.setProcessing(false);
+    }
+
+    @Override
+    public void onSuccessFbLogin(LoginResponse response) {
+        mBinding.setProcessing(false);
+        logoutFBUser();
         ((LoginActivity)getActivity()).addAccount(response);
     }
 
     @Override
-    public void onError(final int resource, final boolean msglength) {
-        logoutFBUser();
+    public void onSuccessGoogleLogin(LoginResponse response) {
+        mBinding.setProcessing(false);
         logoutGoogleUser();
+        ((LoginActivity)getActivity()).addAccount(response);
+    }
 
-        uiUtls.dismissDialog();
-        int style = R.style.SnackBarSingleLine;
-        if (msglength) style = R.style.SnackBarMultiLine;
-        ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
+    @Override
+    public void onSuccessEmailSignIn(LoginResponse response) {
+        mBinding.setProcessing(false);
+        ((LoginActivity)getActivity()).addAccount(response);
+    }
+
+    @Override
+    public void onErrorFbLogin(int resource) {
+        mBinding.setProcessing(false);
+        logoutFBUser();
+        onError(resource);
+    }
+
+    @Override
+    public void onErrorGoogleLogin(int resource) {
+        logoutGoogleUser();
+        onError(resource);
+    }
+
+    @Override
+    public void onError(final int resource) {
+        Log.e(debugTag, "onError");
+        mBinding.setProcessing(false);
+        ((LoginActivity)getActivity()).onError(resource);
     }
 
     @Override
@@ -264,19 +293,39 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
         ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
     }
 
-    private void signinUser(String email, int account_type) {
-//        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
-            request.setAction(getResources().getString(R.string.signin_user));
-            request.setEmail(email);
-            request.setRegstrType(account_type); //0 -> email registr, 1 -> fb registr, 2 -> google regstr
-            request.setDeviceid(android.os.Build.SERIAL);
-            if (account_type == 0) request.setPassword(mBinding.passEdt.getText().toString());
-            mLoginViewModel.signIn(request);
-            uiUtls.initializeProgressDialog(getResources().getString(R.string.please_wait));
-//        } else {
-//            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
-//        }
+    private void signInEmailUser() {
+        signInEmailRequest.setAction(getResources().getString(R.string.signin_user));
+        signInEmailRequest.setEmail(mBinding.emailEdt.getText().toString());
+        signInEmailRequest.setPassword(mBinding.passEdt.getText().toString());
+        signInEmailRequest.setRegtype(0); //0 -> email registr
+        mViewModel.signInEmail(signInEmailRequest);
     }
+
+    private void signInFbGoogleUser(String email, int regtype) {
+        signInUpFbGoogleRequest.setAction(getResources().getString(R.string.signin_user));
+        signInUpFbGoogleRequest.setEmail(email);
+        signInUpFbGoogleRequest.setDeviceid(android.os.Build.SERIAL);
+        signInUpFbGoogleRequest.setRegtype(regtype); //1 -> fb registr, 2 -> google regstr
+        if (regtype == 1) {
+            mViewModel.signInUpFb(signInUpFbGoogleRequest);
+        } else {
+            mViewModel.signInUpGoogle(signInUpFbGoogleRequest);
+        }
+    }
+
+//    private void signinUser(String email, int account_type) {
+////        if (((LoginActivity) getActivity()).isNetworkAvailable()) {
+//            request.setAction(getResources().getString(R.string.signin_user));
+//            request.setEmail(email);
+//            request.setRegstrType(account_type); //0 -> email registr, 1 -> fb registr, 2 -> google regstr
+//            request.setDeviceid(android.os.Build.SERIAL);
+//            if (account_type == 0) request.setPassword(mBinding.passEdt.getText().toString());
+//            mLoginViewModel.signInEmail(request);
+////            uiUtls.initializeProgressDialog(getResources().getString(R.string.please_wait));
+////        } else {
+////            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
+////        }
+//    }
 
     private void initializeFBSignUp() {
         mCallbackMngr = CallbackManager.Factory.create();
@@ -290,8 +339,8 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
-                            mFBUserLoggedIn = true;
-                            signinUser(object.getString(getResources().getString(R.string.email)), 1);
+//                            mFBUserLoggedIn = true;
+                            signInFbGoogleUser(object.getString(getResources().getString(R.string.email)), 1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -305,12 +354,12 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
 
             @Override
             public void onCancel() {
-                ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.signin_cancel));
+                ((LoginActivity)getActivity()).onError(AppConfig.getCodes().get(R.string.signin_cancel));
             }
 
             @Override
             public void onError(FacebookException error) {
-                ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
+                ((LoginActivity)getActivity()).onError(AppConfig.getCodes().get(R.string.error));
             }
         });
     }
@@ -318,24 +367,32 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.View, Goo
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         Log.e("aaa", result.isSuccess() + " ");
         if (result.isSuccess()) {
-            mGoogleUserLoggedIn = true;
-
+//            mGoogleUserLoggedIn = true;
             GoogleSignInAccount account = result.getSignInAccount();
-            if (account != null)signinUser(account.getEmail(), 2);
+            if (account != null)signInFbGoogleUser(account.getEmail(), 2);
         }
     }
 
     private void logoutFBUser() {
-        if (mFBUserLoggedIn) {
+//        if (mFBUserLoggedIn) {
             LoginManager.getInstance().logOut();
-            mFBUserLoggedIn = false;
-        }
+//            mFBUserLoggedIn = false;
+//        }
     }
 
     private void logoutGoogleUser() {
-        if (mGoogleUserLoggedIn && mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected()) {
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {@Override public void onResult(@android.support.annotation.NonNull Status status) {}});
-            mGoogleUserLoggedIn = false;
+//            mGoogleUserLoggedIn = false;
         }
+    }
+
+    private void initializeViewModel() {
+        if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.retained_fgmt)) == null) {
+            getFragmentManager().beginTransaction().add(mLoginRetainFragment, getResources().getString(R.string.retained_fgmt)).commit();
+        } else {
+            mLoginRetainFragment = (LoginRetainFragment) getFragmentManager().findFragmentByTag(getResources().getString(R.string.retained_fgmt));
+        }
+        if (mLoginRetainFragment.getViewModel() != null) mViewModel = mLoginRetainFragment.getViewModel();
     }
 }

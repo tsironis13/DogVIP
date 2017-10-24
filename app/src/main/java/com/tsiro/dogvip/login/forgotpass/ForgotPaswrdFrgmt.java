@@ -19,12 +19,15 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
+import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.base.fragment.BaseFragment;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.databinding.ForgotpaswrdFrgmtBinding;
 import com.tsiro.dogvip.login.LoginActivity;
+import com.tsiro.dogvip.login.LoginContract;
+import com.tsiro.dogvip.login.LoginRetainFragment;
 import com.tsiro.dogvip.login.LoginViewModel;
 import com.tsiro.dogvip.login.signin.SignInFrgmt;
 import com.tsiro.dogvip.utilities.animation.AnimationListener;
@@ -42,20 +45,20 @@ import io.reactivex.functions.Predicate;
  * Created by giannis on 17/5/2017.
  */
 
-public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContract.View{
+public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.ForgotPassView {
 
     private View mView;
     private ForgotpaswrdFrgmtBinding mBinding;
-    private FragmentManager mFragmentManager;
     private int fragmentCreatedCode; // login activity: check if fragments are created on button click
     private AwesomeValidation mAwesomeValidation;
     private ForgotPaswrdObj forgotPaswrdObj;
     private ProgressDialog mProgressDialog;
     private boolean emailValidated;
-    private Lifecycle.BaseView baseView;
     private int user_id;
     @Inject
-    LoginViewModel mLoginViewModel;
+    LoginViewModel mViewModel;
+    @Inject
+    LoginRetainFragment mLoginRetainFragment;
 
     public static ForgotPaswrdFrgmt newInstance(int x) {
         Bundle bundle = new Bundle();
@@ -68,7 +71,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
+//        if ( context instanceof Activity) this.baseView = (Lifecycle.BaseView) context;
     }
 
     @Override
@@ -92,7 +95,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFragmentManager = getActivity().getSupportFragmentManager();
+        initializeViewModel();
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
@@ -102,7 +105,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
-        return mLoginViewModel;
+        return mViewModel;
     }
 
     @Override
@@ -137,7 +140,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                     subaction = getResources().getString(R.string.forgot_paswrd_confpass_subaction);
                 }
                 if (mAwesomeValidation.validate()) {
-                    baseView.hideSoftKeyboard();
+                    ((LoginActivity)getActivity()).hideSoftKeyboard();
                     submit(mBinding.emailEdt.getText().toString(), subaction);
                 }
             }
@@ -148,13 +151,13 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                 new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        baseView.hideSoftKeyboard();
-                        mFragmentManager
-                                .beginTransaction()
-                                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                                .replace(R.id.loginContainer, SignInFrgmt.newInstance(200), getResources().getString(R.string.signin_fgmt))
-                                .addToBackStack(getResources().getString(R.string.signin_fgmt))
-                                .commit();
+                        ((LoginActivity)getActivity()).hideSoftKeyboard();
+                        getFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                                        .replace(R.id.loginContainer, SignInFrgmt.newInstance(200), getResources().getString(R.string.signin_fgmt))
+                                        .addToBackStack(getResources().getString(R.string.signin_fgmt))
+                                        .commit();
                     }
                 }
         );
@@ -165,6 +168,12 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     public void onPause() {
         super.onPause();
         RxEventBus.unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoginRetainFragment.retainViewModel(mViewModel);
     }
 
     @Override
@@ -184,6 +193,16 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
     }
 
     @Override
+    public void onProcessing() {
+
+    }
+
+    @Override
+    public void onStopProcessing() {
+//        if (mBinding.getProcessing()) mBinding.setProcessing(false);
+    }
+
+    //    @Override
     public void onSuccess(final ForgotPaswrdObj response) {
 //        ((LoginActivity) getActivity()).dismissDialog();
         if (response.getSubaction().equals(getResources().getString(R.string.forgot_paswrd_email_subaction))) {
@@ -192,22 +211,24 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
             user_id = response.getUserId();
         } else {
             new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.reset_passwrd_request), getResources().getString(R.string.reset_passwrd_success));
-            mFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
-                    .addToBackStack(getResources().getString(R.string.signin_fgmt))
-                    .commit();
+            getFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.loginContainer, SignInFrgmt.newInstance(100), getResources().getString(R.string.signin_fgmt))
+                            .addToBackStack(getResources().getString(R.string.signin_fgmt))
+                            .commit();
         }
 
     }
 
     @Override
-    public void onError(final int resource, final boolean msglength) {
-//        ((LoginActivity) getActivity()).dismissDialog();
-        int style = R.style.SnackBarSingleLine;
-        if (msglength) style = R.style.SnackBarMultiLine;
-        ((LoginActivity)getActivity()).showSnackBar(style, getResources().getString(resource));
+    public void onSuccess(AuthenticationResponse response) {
+
+    }
+
+    @Override
+    public void onError(final int resource) {
+        ((LoginActivity)getActivity()).onError(resource);
     }
 
     private void submit(String email, String subaction) {
@@ -220,11 +241,20 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements ForgotPaswrdContr
                 forgotPaswrdObj.setConfNewpassword(mBinding.confpassEdt.getText().toString());
                 forgotPaswrdObj.setUserId(user_id);
             }
-            mLoginViewModel.forgotPass(forgotPaswrdObj);
+            mViewModel.forgotPass(forgotPaswrdObj);
 //            mProgressDialog = ((LoginActivity) getActivity()).initializeProgressDialog(getResources().getString(R.string.please_wait));
 //        } else {
 //            ((LoginActivity)getActivity()).showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.no_internet_connection));
 //        }
+    }
+
+    private void initializeViewModel() {
+        if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.retained_fgmt)) == null) {
+            getFragmentManager().beginTransaction().add(mLoginRetainFragment, getResources().getString(R.string.retained_fgmt)).commit();
+        } else {
+            mLoginRetainFragment = (LoginRetainFragment) getFragmentManager().findFragmentByTag(getResources().getString(R.string.retained_fgmt));
+        }
+        if (mLoginRetainFragment.getViewModel() != null) mViewModel = mLoginRetainFragment.getViewModel();
     }
 
 }

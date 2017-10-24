@@ -5,22 +5,17 @@ import android.app.Activity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.tsiro.dogvip.POJO.TestImage;
 import com.tsiro.dogvip.base.activity.BaseActivityModule;
 import com.tsiro.dogvip.di.scope.PerActivity;
 import com.tsiro.dogvip.di.scope.PerFragment;
 import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdFrgmt;
-import com.tsiro.dogvip.login.signin.SignInFragmentModule;
 import com.tsiro.dogvip.login.signin.SignInFrgmt;
 import com.tsiro.dogvip.login.signup.RegisterFrgmt;
-
-import javax.inject.Singleton;
 
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
-import dagger.multibindings.Multibinds;
 
 /**
  * Created by giannis on 19/10/2017.
@@ -30,7 +25,7 @@ public abstract class LoginActivityModule {
 
     //SignIn Fragment injector
     @PerFragment
-    @ContributesAndroidInjector(modules = SignInFragmentModule.class)
+    @ContributesAndroidInjector
     abstract SignInFrgmt signInFrgmtInjector();
 
     //Register Fragment injector

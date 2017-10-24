@@ -1,5 +1,6 @@
 package com.tsiro.dogvip.app;
 
+import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.tsiro.dogvip.POJO.Image;
@@ -24,6 +25,13 @@ public interface Lifecycle {
         void onSuccessImageAction(Image image);
         void onErrorImageAction();
     }
+
+//    interface TestViewModel {
+//        void onViewAttached(View viewCallback);
+//        void onConfigurationChange(Bundle savedInstanceState);
+//        void onViewResumed();
+//        void onViewDetached();
+//    }
 
     interface ViewModel {
         void onViewAttached(View viewCallback);
