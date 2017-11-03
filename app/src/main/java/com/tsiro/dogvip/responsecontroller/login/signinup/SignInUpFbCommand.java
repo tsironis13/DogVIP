@@ -1,4 +1,4 @@
-package com.tsiro.dogvip.responsecontroller.login;
+package com.tsiro.dogvip.responsecontroller.login.signinup;
 
 import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.login.LoginContract;
@@ -12,13 +12,17 @@ import javax.inject.Inject;
 
 public class SignInUpFbCommand implements Command {
 
-    private LoginContract.SignInUpView mViewCallback;
+    private LoginContract.SignInUpFbGoogleView mViewCallback;
 
     @Inject
     public SignInUpFbCommand() {}
 
-    public void setViewCallback(LoginContract.SignInUpView mViewCallback) {
+    public void setViewCallback(LoginContract.SignInUpFbGoogleView mViewCallback) {
         this.mViewCallback = mViewCallback;
+    }
+
+    public void clearCallback() {
+        this.mViewCallback = null;
     }
 
     @Override

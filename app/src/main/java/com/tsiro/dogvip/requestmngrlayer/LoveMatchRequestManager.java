@@ -53,7 +53,7 @@ public class LoveMatchRequestManager {
             public void accept(@NonNull Response loveMatch) throws Exception {
                 //ONLY IF CODE IS 200 SAVE IT LOCALLY !!!!!!!!!!!!!!
 //                GetPetsResponse.destale = System.currentTimeMillis();
-                Log.e("aaaa", "getPetsByFilter");
+//                Log.e("aaaa", "getPetsByFilter");
                 GetPetsResponse.timestamp = System.currentTimeMillis()/1000;
 //                getPetsResponse.setState(System.currentTimeMillis());
                 setList();
@@ -84,7 +84,9 @@ public class LoveMatchRequestManager {
 //        list = new ArrayList<>();
         loveMatch.setCode(200);
         loveMatch.setPetdata(getPetsResponse);
+        list = new ArrayList<>();
         getPetsResponse.setData(list);
+
         return Observable.just(loveMatch).toFlowable(BackpressureStrategy.BUFFER);
     }
 

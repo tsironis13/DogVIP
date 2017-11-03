@@ -2,6 +2,8 @@ package com.tsiro.dogvip.login;
 
 import android.app.Activity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -10,6 +12,7 @@ import com.tsiro.dogvip.di.scope.PerActivity;
 import com.tsiro.dogvip.di.scope.PerFragment;
 import com.tsiro.dogvip.login.forgotpass.ForgotPaswrdFrgmt;
 import com.tsiro.dogvip.login.signin.SignInFrgmt;
+import com.tsiro.dogvip.login.signin.SignInFrgmtModule;
 import com.tsiro.dogvip.login.signup.RegisterFrgmt;
 
 import dagger.Binds;
@@ -25,7 +28,7 @@ public abstract class LoginActivityModule {
 
     //SignIn Fragment injector
     @PerFragment
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = SignInFrgmtModule.class)
     abstract SignInFrgmt signInFrgmtInjector();
 
     //Register Fragment injector
@@ -57,5 +60,10 @@ public abstract class LoginActivityModule {
 //                .enableAutoManage(loginActivity /* FragmentActivity */, loginActivity /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
+    }
+
+    @Provides
+    static AwesomeValidation provideAwesomeValidation() {
+        return new AwesomeValidation(ValidationStyle.BASIC);
     }
 }

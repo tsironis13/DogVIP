@@ -70,7 +70,7 @@ public class RetryWithDelay implements Function<Flowable<? extends Throwable>, F
 
     public PublishSubject<Object> getRetrySubject() {
 //        retryButtonClicked = PublishSubject.create();
-        Log.e("aaaa", retryButtonClicked +  " RETRU BUTTON");
+//        Log.e("aaaa", retryButtonClicked +  " RETRU BUTTON");
         return retryButtonClicked;
     }
 

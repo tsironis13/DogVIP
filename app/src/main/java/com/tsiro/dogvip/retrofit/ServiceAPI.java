@@ -15,6 +15,8 @@ import com.tsiro.dogvip.POJO.dashboard.DashboardResponse;
 import com.tsiro.dogvip.POJO.login.LoginResponse;
 import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
 import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
+import com.tsiro.dogvip.POJO.login.forgotpass.ForgotPassRequest;
+import com.tsiro.dogvip.POJO.login.forgotpass.ForgotPassResponse;
 import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundRequest;
 import com.tsiro.dogvip.POJO.lostfound.LostFoundResponse;
@@ -38,9 +40,6 @@ import com.tsiro.dogvip.POJO.profs.GetProfDetailsRequest;
 import com.tsiro.dogvip.POJO.profs.ProfDetailsResponse;
 import com.tsiro.dogvip.POJO.profs.SaveProfDetailsRequest;
 import com.tsiro.dogvip.POJO.profs.SearchProfsRequest;
-import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
-import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
-import com.tsiro.dogvip.POJO.signin.SignInRequest;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -68,9 +67,8 @@ public interface ServiceAPI {
     @POST("actions.php")
     Flowable<Response> signInUpFbGoogle(@Body SignInUpFbGoogleRequest request);
 
-    //register user
     @POST("actions.php")
-    Flowable<ForgotPaswrdObj> forgotPaswrd(@Body ForgotPaswrdObj request);
+    Flowable<Response> forgotPass(@Body ForgotPassRequest request);
 
     //logout user
     @POST("actions.php")

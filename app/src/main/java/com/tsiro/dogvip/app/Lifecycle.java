@@ -1,10 +1,6 @@
 package com.tsiro.dogvip.app;
 
-import android.os.Bundle;
-import android.os.Parcelable;
-
 import com.tsiro.dogvip.POJO.Image;
-import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.image_states.State;
 
 import java.io.File;

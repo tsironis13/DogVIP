@@ -7,8 +7,13 @@
         <import type="android.view.View"/>
 
         <variable
-            name="viewstate"
+            name="emailisvalid"
             type="boolean" />
+
+        <variable
+            name="processing"
+            type="boolean" />
+
     </data>
 
     <ScrollView
@@ -71,7 +76,7 @@
                 android:gravity="center_vertical"
                 android:elevation="2dp"
                 android:weightSum="1"
-                android:visibility="@{viewstate ? View.VISIBLE : View.GONE}">
+                android:visibility="@{emailisvalid ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:id="@+id/imageView412"
@@ -104,7 +109,7 @@
                 android:gravity="center_vertical"
                 android:elevation="2dp"
                 android:weightSum="1"
-                android:visibility="@{viewstate ? View.VISIBLE : View.GONE}">
+                android:visibility="@{emailisvalid ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:id="@+id/imageView4112"
@@ -140,22 +145,54 @@
                 android:textColor="@color/error_color"
                 android:text="@string/required_fields" />
 
-            <LinearLayout
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center|bottom"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_gravity="bottom">-->
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                android:layout_gravity="bottom">
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/loadingIndLlt"
+                    android:layout_width="222dp"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/ripple_drawable"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="@{processing ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@+id/signInBtn"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/loadingInd"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        style="@style/AVLoadingIndicatorView"
+                        app:indicatorName="BallPulseIndicator" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/submitBtn"
                     android:layout_width="222dp"
                     android:layout_height="48dp"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/submit_btn_label"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/ripple_drawable" />
+                    android:background="@drawable/ripple_drawable"
+                    android:visibility="@{!processing ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@+id/signInBtn"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <Button
                     android:id="@+id/signInBtn"
@@ -164,9 +201,13 @@
                     android:text="@string/member_label"
                     android:textAllCaps="false"
                     android:textSize="12sp"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
+            </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
 

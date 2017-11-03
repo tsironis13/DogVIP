@@ -1,8 +1,7 @@
-package com.tsiro.dogvip.responsecontroller.login;
+package com.tsiro.dogvip.responsecontroller.login.signinup;
 
 import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.login.LoginContract;
-import com.tsiro.dogvip.lovematch.LoveMatchContract;
 import com.tsiro.dogvip.responsecontroller.Command;
 
 import javax.inject.Inject;
@@ -20,6 +19,14 @@ public class SignInEmailCommand implements Command {
 
     public void setViewCallback(LoginContract.SignInView mViewCallback) {
         this.mViewCallback = mViewCallback;
+    }
+
+//    public LoginContract.SignInView getmViewCallback() {
+//        return mViewCallback;
+//    }
+
+    public void clearCallback() {
+        this.mViewCallback = null;
     }
 
     @Override

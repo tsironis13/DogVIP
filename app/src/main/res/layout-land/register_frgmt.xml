@@ -3,6 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="processing"
+            type="boolean" />
+
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -184,18 +193,19 @@
             android:layout_marginBottom="10dp"
             android:textColor="@android:color/white"
             android:background="@drawable/ripple_drawable"
+            android:visibility="@{processing ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
         <LinearLayout
             android:id="@+id/loadingIndLlt"
-            android:visibility="gone"
             android:layout_width="222dp"
             android:layout_height="48dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/ripple_drawable"
             android:elevation="2dp"
+            android:visibility="@{!processing ? View.GONE : View.VISIBLE}"
             android:orientation="vertical"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"

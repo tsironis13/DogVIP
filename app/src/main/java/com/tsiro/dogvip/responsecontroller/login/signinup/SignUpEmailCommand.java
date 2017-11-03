@@ -1,4 +1,4 @@
-package com.tsiro.dogvip.responsecontroller.login;
+package com.tsiro.dogvip.responsecontroller.login.signinup;
 
 import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.login.LoginContract;
@@ -19,6 +19,10 @@ public class SignUpEmailCommand implements Command {
 
     public void setViewCallback(LoginContract.SignUpView mViewCallback) {
         this.mViewCallback = mViewCallback;
+    }
+
+    public void clearCallback() {
+        this.mViewCallback = null;
     }
 
     @Override

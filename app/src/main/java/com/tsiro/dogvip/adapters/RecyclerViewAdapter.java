@@ -24,7 +24,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.interfaces.RecyclerCallback;
 
 import java.util.Calendar;
 import java.util.List;

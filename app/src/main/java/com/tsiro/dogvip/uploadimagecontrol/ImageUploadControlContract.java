@@ -3,8 +3,6 @@ package com.tsiro.dogvip.uploadimagecontrol;
 import android.view.View;
 
 import com.tsiro.dogvip.POJO.Image;
-import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
-import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
 import com.tsiro.dogvip.app.Lifecycle;
 
 import okhttp3.MultipartBody;

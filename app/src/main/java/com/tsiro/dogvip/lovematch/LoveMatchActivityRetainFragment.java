@@ -32,7 +32,6 @@ public class LoveMatchActivityRetainFragment extends Fragment {
     }
 
     public void retainViewModel(LoveMatchViewModel loveMatchViewModel) {
-        Log.e("df", loveMatchViewModel + " ");
         this.loveMatchViewModel = loveMatchViewModel;
     }
 

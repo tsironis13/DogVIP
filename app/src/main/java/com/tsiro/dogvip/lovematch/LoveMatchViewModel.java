@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.POJO.lovematch.GetPetsByFilterRequest;
+import com.tsiro.dogvip.POJO.lovematch.GetPetsResponse;
 import com.tsiro.dogvip.responsecontroller.lovematch.GetPetsCommand;
 import com.tsiro.dogvip.responsecontroller.lovematch.LikeDislikeCommand;
 import com.tsiro.dogvip.POJO.lovematch.LikeDislikeRequest;
@@ -73,7 +74,7 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     }
     @Override
     public void onViewResumed() {
-        Log.e(debugTag, "onVIEWRESUMED "+ mLoveMatchDisp + " request state "+requestState);
+//        Log.e(debugTag, "onVIEWRESUMED "+ mLoveMatchDisp + " request state "+requestState);
         if (mLoveMatchDisp != null && requestState != AppConfig.REQUEST_RUNNING && requestState != AppConfig.REQUEST_FAILED) {
             mProcessor
                     .subscribeOn(Schedulers.io())
@@ -138,34 +139,14 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
                     .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new GetPetsByFilterObserver());
 
             networkUtls.getNetworkFlowable.
-                    flatMap(new Function<Boolean, Publisher<Response>>() {
-                        @Override
-                        public Publisher<Response> apply(@NonNull Boolean aBoolean) throws Exception {
-                            return mLoveMatchRequestManager
+                    flatMap(aBoolean -> mLoveMatchRequestManager
                                                         .likeDislikePet(request, LoveMatchViewModel.this)
                                                         .subscribeOn(Schedulers.io())
                                                         .observeOn(AndroidSchedulers.mainThread())
-                                                        .retryWhen(configureRetryWithDelayParams(3, 2000));
-                        }
-                    })
-                    .flatMap(new Function<Response, Publisher<Response>>() {
-                        @Override
-                        public Publisher<Response> apply(@NonNull Response response) throws Exception {
-                            return responseCodeStatusFlowable(response).retryWhen(configureRetryWithDelayParams(0, 0));
-                        }
-                    })
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            handleError(throwable);
-                        }
-                    })
-                    .retryWhen(new Function<Flowable<Throwable>, Publisher<?>>() {
-                        @Override
-                        public Publisher<?> apply(@NonNull Flowable<Throwable> throwableFlowable) throws Exception {
-                            return retryWhen();
-                        }
-                    })
+                                                        .retryWhen(configureRetryWithDelayParams(3, 2000)))
+                    .flatMap(response -> responseCodeStatusFlowable(response).retryWhen(configureRetryWithDelayParams(0, 0)))
+                    .doOnError(this::handleError)
+                    .retryWhen(throwableFlowable -> retryWhen())
                     .take(1)
                     .subscribe(mProcessor);
 
@@ -179,7 +160,7 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     public void getPetsByFilter(final GetPetsByFilterRequest request) {
 
         if (requestState != AppConfig.REQUEST_RUNNING && requestState != AppConfig.REQUEST_FAILED) {
-            Log.e(debugTag, "REQUESTTTTTTTTTTTTT  "+ requestState);
+//            Log.e(debugTag, "REQUESTTTTTTTTTTTTT  "+ requestState);
             getPetsCommand.setViewCallback(mViewClback);
             responseController.setCommand(getPetsCommand);
 
@@ -189,48 +170,20 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
                                     .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new GetPetsByFilterObserver());
 
             Flowable.concat(
-                    mLoveMatchRequestManager.getPetsResponse().filter(new Predicate<Response>() {
-                        @Override
-                        public boolean test(@NonNull Response response) throws Exception {
-                            return !response.getPetdata().getData().isEmpty() && response.getPetdata().isUpToDate();
-                        }
-                    }),
+                    mLoveMatchRequestManager.getPetsResponse().filter(response -> !response.getPetdata().getData().isEmpty() && GetPetsResponse.isUpToDate()),
                     networkUtls.getNetworkFlowable
-                            .flatMap(new Function<Boolean, Publisher<Response>>() {
-                                @Override
-                                public Publisher<Response> apply(@NonNull Boolean aBoolean) throws Exception {
-                                    return mLoveMatchRequestManager
-                                                                .getPetsByFilter(request, LoveMatchViewModel.this)
-                                                                .subscribeOn(Schedulers.io())
-                                                                .observeOn(AndroidSchedulers.mainThread())
-                                                                .retryWhen(configureRetryWithDelayParams(3, 2000));
-                                }
-                            })
-                    .filter(new Predicate<Response>() {
-                        @Override
-                        public boolean test(@NonNull Response response) throws Exception {
-                            Log.e(debugTag, System.currentTimeMillis()/1000  + " is uptodate "+ response.getPetdata().isUpToDate());
-                            return !response.getPetdata().getData().isEmpty();
-                        }
+                            .flatMap(aBoolean -> mLoveMatchRequestManager
+                                                        .getPetsByFilter(request, LoveMatchViewModel.this)
+                                                        .subscribeOn(Schedulers.io())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .retryWhen(configureRetryWithDelayParams(3, 2000)))
+                    .filter(response -> {
+//                        Log.e(debugTag, System.currentTimeMillis()/1000  + " is uptodate "+ response.getPetdata().isUpToDate());
+                        return !response.getPetdata().getData().isEmpty();
                     })
-                    .flatMap(new Function<Response, Publisher<Response>>() {
-                        @Override
-                        public Publisher<Response> apply(@NonNull Response response) throws Exception {
-                            return responseCodeStatusFlowable(response).retryWhen(configureRetryWithDelayParams(0, 0));
-                        }
-                    })
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            handleError(throwable);
-                        }
-                    })
-                    .retryWhen(new Function<Flowable<Throwable>, Publisher<?>>() {
-                        @Override
-                        public Publisher<?> apply(@NonNull Flowable<Throwable> throwableFlowable) throws Exception {
-                            return retryWhen();
-                        }
-                    }))
+                    .flatMap(response -> responseCodeStatusFlowable(response).retryWhen(configureRetryWithDelayParams(0, 0)))
+                    .doOnError(this::handleError)
+                    .retryWhen(throwableFlowable -> retryWhen()))
                     .take(1)
                     .subscribe(mProcessor);
         }
@@ -258,15 +211,12 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     }
 
     private Flowable<Response> responseCodeStatusFlowable(final Response response) {
-        return Flowable.create(new FlowableOnSubscribe<Response>() {
-            @Override
-            public void subscribe(@NonNull FlowableEmitter<Response> e) throws Exception {
-                if (response.getCode() != 200) {
-                    e.onError(new InvalidPropertiesFormatException(""));
-                } else {
-                    e.onNext(response);
+        return Flowable.create(e -> {
+            if (response.getCode() != 200) {
+                e.onError(new InvalidPropertiesFormatException(""));
+            } else {
+                e.onNext(response);
 
-                }
             }
         }, BackpressureStrategy.LATEST);
     }
@@ -278,12 +228,12 @@ public class LoveMatchViewModel implements LoveMatchContract.ViewModel {
     private void handleError(Throwable throwable) {
         if (throwable instanceof IllegalStateException) { //server error
             mViewClback.onError(R.string.error);
-            Log.e(debugTag, " server error");
+//            Log.e(debugTag, " server error");
         } else if (throwable instanceof InvalidPropertiesFormatException) {
             mViewClback.onError(R.string.please_fill_out_search_filters);
         } else {//no network connection error
-            Log.e(debugTag, " on error");
-            mViewClback.onError(R.string.no_internet_connection);
+//            Log.e(debugTag, " on error");
+//            mViewClback.onError(R.string.no_internet_connection);
         }
         if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
     }

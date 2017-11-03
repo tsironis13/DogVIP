@@ -13,20 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.tsiro.dogvip.POJO.TestImage;
 import com.tsiro.dogvip.POJO.login.LoginResponse;
-import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.accountmngr.MyAccountManager;
 import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.base.activity.BaseActivity;
-import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.dashboard.DashboardActivity;
 import com.tsiro.dogvip.databinding.ActivityLoginBinding;
 import com.tsiro.dogvip.splashscreen.SplashFrgmt;
@@ -39,9 +30,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasFragmentInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -49,8 +38,6 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
 
     private static final String debugTag = LoginActivity.class.getSimpleName();
     private static boolean anmtionOnPrgrs;
-    private static CompositeDisposable mCompDisp;
-//    private GoogleApiClient mGoogleApiClient;
     private ActivityLoginBinding mBinding;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentInjector;
@@ -67,11 +54,7 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
-        Log.e(debugTag, uiUtls + " uiutls");
-
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         if (mAccountManager.checkAccountExists()) {
@@ -99,11 +82,6 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
          */
         mGoogleApiClient.connect();
     }
-
-//    @Override
-//    public Lifecycle.ViewModel getViewModel() {
-//        return null;
-//    }
 
     @Override
     protected void onResume() {
@@ -137,15 +115,11 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     protected void onDestroy() {
         super.onDestroy();
         RxEventBus.unregister(this);
-        Log.e(debugTag, mGoogleApiClient + "onDestroy");
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
             mGoogleApiClient = null;
 //            mGoogleApiClient.stopAutoManage(this);
-
         }
-        //prevent window leaks
-//        dismissDialog();
     }
 
     public void hideSoftKeyboard() {
@@ -153,7 +127,6 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     }
 
     public void onProcessing(View view) {
-        Log.e(debugTag, "onProcessing");
         animationUtls.animateLoadingIndicator(view);
     }
 
@@ -161,7 +134,7 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
         if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
             logUserIn(true);
         } else {
-            showSnackBar(R.style.SnackBarSingleLine, getResources().getString(R.string.error));
+            onError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
     }
 
@@ -178,19 +151,6 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
 
     public void onError(int resource) {
         uiUtls.showSnackBar(mBinding.cntFrml, getResources().getString(resource), getResources().getString(R.string.close), Snackbar.LENGTH_LONG).subscribe();
-    }
-
-    public void showSnackBar(final int style, final String msg) {
-        if (mBinding.snckBr != null) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mBinding.snckBr.applyStyle(style);
-                    mBinding.snckBr.text(msg);
-                    mBinding.snckBr.show();
-                }
-            });
-        }
     }
 
     @Override

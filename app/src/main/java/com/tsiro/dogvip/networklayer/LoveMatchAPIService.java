@@ -63,7 +63,7 @@ public class LoveMatchAPIService {
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
-                        Log.e("REQUEST_RUNNING", "REQUEST_RUNNING");
+//                        Log.e("REQUEST_RUNNING", "REQUEST_RUNNING");
                         loveMatchViewModel.setRequestState(AppConfig.REQUEST_RUNNING);
                     }
                 })

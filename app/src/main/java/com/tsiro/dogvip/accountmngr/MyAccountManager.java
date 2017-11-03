@@ -12,11 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.tsiro.dogvip.POJO.UserAccount;
-import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.app.AppConfig;
-import com.tsiro.dogvip.app.Lifecycle;
-import com.tsiro.dogvip.utilities.eventbus.RxEventBus;
 
 import java.io.IOException;
 

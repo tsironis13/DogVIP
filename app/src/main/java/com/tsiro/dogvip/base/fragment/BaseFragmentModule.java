@@ -14,6 +14,8 @@ import dagger.multibindings.Multibinds;
 @Module
 public abstract class BaseFragmentModule {
 
-    public static final String FRAGMENT = "BaseFragmentModule.fragment";
+//    public static final String FRAGMENT = "BaseFragmentModule.fragment";
+//    @Binds
+//    abstract Context provideFragmentContext(Fragment fragment);
 
 }

@@ -1,132 +1,222 @@
 package com.tsiro.dogvip.login.signup;
 
-import android.os.Bundle;
+import android.util.Log;
 
-import com.tsiro.dogvip.POJO.forgotpasswrd.ForgotPaswrdObj;
-import com.tsiro.dogvip.POJO.login.SignInEmailRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.tsiro.dogvip.POJO.Response;
 import com.tsiro.dogvip.POJO.login.SignInUpFbGoogleRequest;
 import com.tsiro.dogvip.POJO.login.signup.SignUpEmailRequest;
-import com.tsiro.dogvip.POJO.registration.AuthenticationResponse;
-import com.tsiro.dogvip.POJO.registration.RegistrationRequest;
-import com.tsiro.dogvip.POJO.signin.SignInRequest;
+import com.tsiro.dogvip.R;
 import com.tsiro.dogvip.app.AppConfig;
 import com.tsiro.dogvip.app.Lifecycle;
 import com.tsiro.dogvip.login.LoginContract;
 import com.tsiro.dogvip.requestmngrlayer.LoginRequestManager;
+import com.tsiro.dogvip.responsecontroller.ResponseController;
+import com.tsiro.dogvip.responsecontroller.login.signinup.SignInUpFbCommand;
+import com.tsiro.dogvip.responsecontroller.login.signinup.SignInUpGoogleCommand;
+import com.tsiro.dogvip.responsecontroller.login.signinup.SignUpEmailCommand;
+import com.tsiro.dogvip.utilities.NetworkUtls;
+import com.tsiro.dogvip.utilities.RetryWithDelay;
 
-import io.reactivex.annotations.NonNull;
+import java.util.InvalidPropertiesFormatException;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.AsyncProcessor;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Created by giannis on 22/5/2017.
  */
 
-public class RegistrationViewModel implements LoginContract.ViewModel {
+public class RegistrationViewModel implements LoginContract.SignUpViewModel {
 
-    private LoginRequestManager mAuthenticationRequestManager;
-    private LoginContract.View mViewClback;
-    private AsyncProcessor<AuthenticationResponse> mRegstrProcessor;
-    private Disposable mRegstrDisp;
+    private static final String debugTag = RegistrationViewModel.class.getSimpleName();
+    private LoginRequestManager mLoginRequestManager;
+    private LoginContract.View mViewCallback;
+    private AsyncProcessor<Response> mProcessor;
     private int requestState;
+    private Disposable mLoginDisp, mTempDisp;
+    @Inject
+    ResponseController responseController;
+    @Inject
+    SignUpEmailCommand signUpEmailCommand;
+    @Inject
+    SignInUpFbCommand signInUpFbCommand;
+    @Inject
+    SignInUpGoogleCommand signInUpGoogleCommand;
+    @Inject
+    NetworkUtls networkUtls;
+    @Inject
+    RetryWithDelay retryWithDelay;
 
-    public RegistrationViewModel(LoginRequestManager authenticationRequestManager) {
-        this.mAuthenticationRequestManager = authenticationRequestManager;
+    @Inject
+    public RegistrationViewModel(LoginRequestManager loginRequestManager) {
+        this.mLoginRequestManager = loginRequestManager;
     }
 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
-        this.mViewClback = (LoginContract.View) viewCallback;
+        this.mViewCallback = (LoginContract.SignUpView) viewCallback;
+        signUpEmailCommand.setViewCallback((LoginContract.SignUpView) mViewCallback);
+        signInUpFbCommand.setViewCallback((LoginContract.SignInUpFbGoogleView) mViewCallback);
+        signInUpGoogleCommand.setViewCallback((LoginContract.SignInUpFbGoogleView) mViewCallback);
     }
-
 
     @Override
     public void onViewResumed() {
-        if (mRegstrDisp != null && requestState != AppConfig.REQUEST_RUNNING) mRegstrProcessor.subscribe(new RegistrationObserver());
+//        Log.e(debugTag, "onResume: "+mViewCallback + " request state "+requestState + " login disp: "+ mLoginDisp);
+        if (requestState == AppConfig.REQUEST_RUNNING || requestState == AppConfig.REQUEST_FAILED) {
+//            Log.e(debugTag, "HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE PROCESSING");
+            mViewCallback.onProcessing();
+        }
+        if (mLoginDisp != null && requestState == AppConfig.REQUEST_RUNNING) {
+//            Log.e(debugTag, "HERE: "+ requestState);
+            mTempDisp = mProcessor
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new RegistrationObserver());
+        }
     }
 
     @Override
     public void onViewDetached() {
-        mViewClback = null;
-        if (mRegstrDisp != null) mRegstrDisp.dispose();
-    }
-
-    @Override
-    public void signInEmail(SignInEmailRequest request) {
-
+        mViewCallback.onStopProcessing();
+        mViewCallback = null;
+        if (mLoginDisp != null) mLoginDisp.dispose();
+        if (mTempDisp != null) mTempDisp.dispose();
+        signUpEmailCommand.clearCallback();
+        signInUpFbCommand.clearCallback();
+        signInUpGoogleCommand.clearCallback();
     }
 
     @Override
     public void onProcessing() {
-
+        mViewCallback.onProcessing();
     }
 
     @Override
-    public void signInUpGoogle(SignInUpFbGoogleRequest request) {
-
+    public void handleGoogleSignUpResult(GoogleSignInResult result, SignInUpFbGoogleRequest request) {
+        if (result.isSuccess() && result.getSignInAccount() != null) {
+            request.setEmail(result.getSignInAccount().getEmail());
+            Completable.complete()
+                    .delay(500, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> signUpGoogle(request))
+                    .subscribe();
+        }
     }
 
     @Override
-    public void signInUpFb(SignInUpFbGoogleRequest request) {
-
+    public void handleFbSignUpResult(String email, SignInUpFbGoogleRequest request) {
+        request.setEmail(email);
+        Completable.complete()
+                .delay(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> signUpFb(request))
+                .subscribe();
     }
 
     @Override
     public void signUpEmail(SignUpEmailRequest request) {
-
+        if (requestState != AppConfig.REQUEST_RUNNING && requestState != AppConfig.REQUEST_FAILED) {
+            responseController.setCommand(signUpEmailCommand);
+            prepareRequest(getSignUpEmailFlowableRequest(request));
+        }
     }
 
+    private void signUpFb(SignInUpFbGoogleRequest request) {
+        if (requestState != AppConfig.REQUEST_RUNNING && requestState != AppConfig.REQUEST_FAILED) {
+            responseController.setCommand(signInUpFbCommand);
+            prepareRequest(getSignUpFbGoogleRequest(request));
+        }
+    }
+
+    private void signUpGoogle(SignInUpFbGoogleRequest request) {
+        if (requestState != AppConfig.REQUEST_RUNNING && requestState != AppConfig.REQUEST_FAILED) {
+            responseController.setCommand(signInUpGoogleCommand);
+            prepareRequest(getSignUpFbGoogleRequest(request));
+        }
+    }
+
+    private void prepareRequest(final Flowable<Response> responseFlowable) {
+//        Log.e(debugTag, "prepare request " + mViewCallback);
+        mProcessor = AsyncProcessor.create();
+        mLoginDisp = mProcessor
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new RegistrationObserver());
+
+        networkUtls.getNetworkFlowable
+                .doOnSubscribe(subscription -> onProcessing())
+                .flatMap(aBoolean -> responseFlowable
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .retryWhen(configureRetryWithDelayParams(3, 2000)))
+                .take(1)
+                .subscribeWith(mProcessor);
+    }
+
+    private Flowable<Response> getSignUpEmailFlowableRequest(SignUpEmailRequest request) {
+        return mLoginRequestManager.signUpEmail(request, this);
+    }
+
+    private Flowable<Response> getSignUpFbGoogleRequest(SignInUpFbGoogleRequest request) {
+        return mLoginRequestManager.signUpFbGoogle(request, this);
+    }
+
+    private RetryWithDelay configureRetryWithDelayParams(int maxRetries, int retryDelayMillis) {
+        retryWithDelay.setMaxRetries(maxRetries);
+        retryWithDelay.setRetryDelayMillis(retryDelayMillis);
+        return retryWithDelay;
+    }
+
+    private void handleError(Throwable throwable) {
+//        Log.e("ddd", throwable + " throwable "+ mViewCallback + " callbacl");
+        if (throwable instanceof IllegalStateException) { //server error
+            mViewCallback.onError(R.string.error);
+        } else if (throwable instanceof InvalidPropertiesFormatException) {
+            mViewCallback.onError(R.string.please_fill_out_search_filters);
+        } else {//no network connection error
+//            Log.e(debugTag, " on error");
+            mViewCallback.onError(R.string.no_internet_connection);
+        }
+    }
 
     @Override
-    public void forgotPass(ForgotPaswrdObj request) {
-
+    public void setRequestState(int requestState) {
+        this.requestState = requestState;
     }
 
-    @Override
-    public void setRequestState(int state) {
-        requestState = state;
-    }
-
-//    @Override
-//    public void register(RegistrationRequest request) {
-//        if (requestState != AppConfig.REQUEST_RUNNING) {
-//            mRegstrProcessor = AsyncProcessor.create();
-//            mRegstrDisp = mRegstrProcessor.subscribeWith(new RegistrationObserver());
-//
-//            mAuthenticationRequestManager.register(request, this).subscribe(mRegstrProcessor);
-//        }
-//    }
-
-    private void onRegistrationSuccess(AuthenticationResponse response) {
-        mRegstrDisp = null;
-//        mViewClback.onSuccess(response);
-    }
-
-    private void onRegistrationError(int resource, boolean msglength) {
-        mRegstrDisp = null;
-        mViewClback.onError(resource);
-        if (mViewClback != null) requestState = AppConfig.REQUEST_NONE;
-    }
-
-    private class RegistrationObserver extends DisposableSubscriber<AuthenticationResponse> {
+    private class RegistrationObserver extends DisposableSubscriber<Response> {
 
         @Override
-        public void onNext(@NonNull AuthenticationResponse registrationResponse) {
-            if (registrationResponse.getCode() != AppConfig.STATUS_OK) {
-                onRegistrationError(AppConfig.getCodes().get(registrationResponse.getCode()), registrationResponse.isStringlength());
+        public void onNext(Response response) {
+            mLoginDisp = null;
+            requestState = AppConfig.REQUEST_SUCCEEDED;
+            if (response.getCode() != AppConfig.STATUS_OK) {
+                responseController.executeCommandOnError(AppConfig.getCodes().get(response.getCode()));
             } else {
-                onRegistrationSuccess(registrationResponse);
+                responseController.executeCommandOnSuccess(response);
             }
         }
 
         @Override
-        public void onError(@NonNull Throwable e) {
-            onRegistrationError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR), false);
+        public void onError(Throwable t) {
+            mLoginDisp = null;
+            if (mViewCallback != null) {
+                handleError(t);
+                requestState = AppConfig.REQUEST_NONE;
+            }
         }
 
         @Override
-        public void onComplete() {
-        }
+        public void onComplete() {}
     }
 }

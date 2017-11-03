@@ -28,14 +28,11 @@ public class NetworkUtls {
         this.mContext = context;
     }
 
-    public Flowable<Boolean> getNetworkFlowable = Flowable.create(new FlowableOnSubscribe<Boolean>() {
-        @Override
-        public void subscribe(@NonNull FlowableEmitter<Boolean> e) throws Exception {
-            if (isNetworkAvailable()) {
-                e.onNext(true);
-            } else {
-                e.onError(new Throwable());
-            }
+    public Flowable<Boolean> getNetworkFlowable = Flowable.create(e -> {
+        if (isNetworkAvailable()) {
+            e.onNext(true);
+        } else {
+            e.onError(new Throwable());
         }
     }, BackpressureStrategy.LATEST);
 

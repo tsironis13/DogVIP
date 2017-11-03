@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.tsiro.dogvip.R;
-import com.tsiro.dogvip.interfaces.RecyclerCallback;
 
 
 /**
@@ -18,12 +17,10 @@ import com.tsiro.dogvip.interfaces.RecyclerCallback;
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     private ViewDataBinding mBinding;
-//    private RecyclerCallback bindingInterface;
 
     public RecyclerViewHolder(ViewDataBinding viewDataBinding) {
         super(viewDataBinding.getRoot());
         this.mBinding = viewDataBinding;
-//        this.bindingInterface = bindingInterface;
     }
 
     public void bind(Object obj, Object object, int position) {
